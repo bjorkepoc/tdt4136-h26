@@ -33,7 +33,7 @@ Du kan også åpne `arbeid/nettside.html` direkte fra disken. Da lagres svarene 
 
 ## Retting med din egen AI
 
-«Rett denne» under en oppgave, og «Send alle besvarte til retting» nederst, legger oppgaven og svarene dine i `arbeid/svar/ko.jsonl`. En AI-assistent som kan lese og skrive filer og kjøre kommandoer i denne mappa kan rette svarene. Det kan være en assistent i terminalen eller editoren, eller en lokal modell. Tilbakemeldingen dukker opp under oppgaven etter noen sekunder.
+«Rett denne» under en oppgave, og «Send alle besvarte til retting» nederst, legger oppgaven og svarene dine i `arbeid/svar/ko.jsonl`. En AI-assistent som kan lese og skrive filer og kjøre kommandoer i denne mappa kan rette svarene. Det kan være en assistent i terminalen eller editoren, eller en lokal modell. Tilbakemeldingen dukker opp under oppgaven etter noen sekunder. «Spør» ved et begrep i leksikonet sender et spørsmål om akkurat det begrepet samme vei, og svaret vises under begrepet.
 
 Åpne mappa i assistenten og skriv:
 

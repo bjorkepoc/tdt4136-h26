@@ -92,6 +92,7 @@ textarea.in{min-height:90px;resize:vertical;field-sizing:content}textarea.in.en{
 .mic.rec{background:#c62828;border-color:#c62828;color:#fff}
 .fb{margin-top:10px;padding:10px 14px;border-radius:8px;background:var(--accent-bg);font-size:14px}
 .fb .fbt{white-space:pre-wrap;margin-top:4px}
+.lbody .spor{padding:1px 8px;font-size:12px}
 .sjr{font-size:13px;font-weight:600;margin-left:6px}.sjr.ja{color:var(--ok)}.sjr.nei{color:var(--bad)}
 .sjm{font-size:14px;margin-top:6px}.sjm:empty{display:none}
 main.ep{max-width:none;padding:0}
@@ -237,9 +238,11 @@ Object.entries(k.grid||{}).forEach(([g,f])=>{const m=el.querySelector(`.sjr[data
 (t.f||[]).forEach(([l],i)=>{const fa=(k.f||{})[l],m=el.querySelector(`.sjr[data-n="${i}"]`);if(!fa||!m)return;const s=a[l];mk(m,s,!!s&&fa.some(v=>likt(s,v)),fa[0])});
 el.querySelector(".sjm").innerHTML=`<b>${ok} av ${n} riktig.</b>`+(ok<n&&!vis?` <button type="button" class="vis" data-j="${j}">Vis riktig svar</button>`:"")+(k.merk?` <span class="mut">${esc(k.merk)}</span>`:"")}
 function visFB(){const id=location.hash.slice(1);document.querySelectorAll("#tasks .task").forEach(el=>{
-const j=el.id.slice(1),f=(FB[id]||{})[j],r=(S.rett[id]||{})[j],box=el.querySelector(".fb"),st=el.querySelector(".rs");if(!box)return;
-const ny=r&&!(f&&f.tid>=r),k=f?f.tid+f.tekst+ny:"";if(box.dataset.k!==k){box.dataset.k=k;box.hidden=!f;box.innerHTML=f?`<b>${ny?"Forrige tilbakemelding":"Tilbakemelding"}</b> <span class="mut">${esc(f.tid||"")}</span><div class="fbt">${esc(f.tekst)}</div>`:""}
-st.textContent=ny?`Sendt ${r.slice(11,16)}. Tilbakemeldingen kommer her.`:""})}
+const j=el.id.slice(1),f=(FB[id]||{})[j],r=(S.rett[id]||{})[j],box=el.querySelector(".fb"),st=el.querySelector(".rs");if(!box)return;fbBoks(box,st,f,r,"Tilbakemelding")});
+// «Spør» i leksikonet: svaret står i FB.leks[begrep] og vises under begrepet.
+document.querySelectorAll(".lbody li[data-b]").forEach(li=>fbBoks(li.querySelector(".fb"),li.querySelector(".rs"),(FB.leks||{})[li.dataset.b],(S.rett.leks||{})[li.dataset.b],"Svar"))}
+function fbBoks(box,st,f,r,ord){const ny=r&&!(f&&f.tid>=r),k=f?f.tid+f.tekst+ny:"";if(box.dataset.k!==k){box.dataset.k=k;box.hidden=!f;box.innerHTML=f?`<b>${ny?"Forrige "+ord.toLowerCase():ord}</b> <span class="mut">${esc(f.tid||"")}</span><div class="fbt">${esc(f.tekst)}</div>`:""}
+st.textContent=ny?`Sendt ${r.slice(11,16)}. ${ord==="Svar"?"Svaret":"Tilbakemeldingen"} kommer her.`:""}
 const hentFB=()=>API&&fetch("svar/tilbakemelding.json",{cache:"no-store"}).then(r=>r.ok?r.json():{}).then(f=>{FB=f;visFB()}).catch(()=>{});
 
 function rett(e,js){if(!js.length)return feil("Ingen besvarte oppgaver å sende.");clearTimeout(pt);push();const r=S.rett[e.id]||(S.rett[e.id]={}),t=now();
@@ -345,10 +348,15 @@ clearInterval(tt);tt=setInterval(tick,1000);lev();vis(p.k)}
 // Leksikon: siden #leksikon og dialogen bak knappen oppe til høyre bruker samme innhold og søk.
 function leks(el){el.innerHTML=`<h1>Leksikon</h1>${D.leks.intro}<input type="search" class="lsok" placeholder="Søk, for eksempel admissible eller b" aria-label="Søk i leksikonet"><p class="lingen" role="status"></p><div class="lbody">${D.leks.body}</div>`;
 const q=el.querySelector(".lsok"),B=el.querySelector(".lbody"),st=el.querySelector(".lingen");
+if(API){B.querySelectorAll("li").forEach(li=>{const s=li.querySelector("strong");if(s){li.dataset.b=s.textContent;li.insertAdjacentHTML("beforeend",` <button type="button" class="spor" title="Send et spørsmål om akkurat dette begrepet">Spør</button> <span class="mut rs"></span><div class="fb" hidden></div>`)}});
+B.onclick=x=>{const k=x.target.closest(".spor");if(k)spor(k.closest("li"))};visFB()}
 q.oninput=()=>{const s=q.value.trim().toLowerCase(),ord=new RegExp("(^|[^\\p{L}])"+s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"u");let n=0;
 B.querySelectorAll("li").forEach(li=>{const t=(li.querySelector("strong")||li).textContent.toLowerCase(),v=!s||(s.length<3?ord.test(t):t.includes(s)||li.textContent.toLowerCase().includes(s));li.hidden=!v;n+=v});
 B.querySelectorAll("h2").forEach(h=>{const ul=h.nextElementSibling;h.hidden=!!ul&&![...ul.children].some(li=>!li.hidden)});st.textContent=s?(n?`${n} treff`:"Ingen treff."):""};
 return q}
+// Spørsmålet går i samme kø som «Rett denne» (arbeid/svar/ko.jsonl), og svaret skrives til tilbakemelding.json under "leks".
+function spor(li){const b=li.dataset.b,q=prompt(`Hva lurer du på om ${b}? La feltet stå tomt for en grundigere forklaring.`);if(q===null)return;const t=now();
+fetch("/api/rett",{method:"POST",body:JSON.stringify({leks:b,sporsmal:q.trim()||"Forklar dette grundigere, med et lite eksempel."})}).then(x=>{if(!x.ok)throw 0;(S.rett.leks||(S.rett.leks={}))[b]=t;save();visFB()}).catch(()=>{li.querySelector(".rs").textContent="Fikk ikke sendt. Kjører serveren?"})}
 {const d=$("#leksdlg"),b=$("#leksknapp");
 b.onclick=()=>{const sel=String(getSelection()).trim(),q=leks(d.lastElementChild);d.showModal();if(sel&&sel.length<40){q.value=sel;q.oninput()}q.focus()};
 d.querySelector(".lukk").onclick=()=>d.close();d.addEventListener("close",()=>b.focus());addEventListener("hashchange",()=>d.open&&d.close());

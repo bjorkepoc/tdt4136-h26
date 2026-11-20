@@ -33,6 +33,8 @@ Studieside for eksamen i TDT4136 ved NTNU. Les [README.md](README.md) for hva so
    ```
 
    Teksten vises som ren tekst under oppgaven. Si hva som er riktig, hva som mangler eller er feil, og vis den riktige løsningen kort. Gi den samme tilbakemeldingen i chatten.
+
+   «Spør» ved et begrep i leksikonet gir linjen `{"leks": "begrep", "sporsmal": "…", "sendt": "…"}`. Svar på spørsmålet med `arbeid/LEKSIKON.md` og notatet til episoden i parentes, og skriv svaret til `{"leks": {"begrep": {"tekst": "…", "tid": "…"}}}` i samme fil. Det vises under begrepet.
 6. Start ventingen på nytt.
 
 ## Når du endrer innholdet
