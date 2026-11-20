@@ -77,7 +77,7 @@ Tillegg (motoren):
 - `"graf"`: `{retning: bool, noder: [{id, x, y, h?, domene?}], kanter: [{fra, til, kost?}], start: id, mal: [id…]}`. `h` brukes av heuristiske søk, `domene` (liste med verdier) av CSP (kantene er da ≠-begrensninger).
 - `"tre"`: samme form som `rot` over.
 
-Algoritmer med `data: "graf"` eller `"tre"` må tåle all slik input (tom graf, ingen sti, mål = start, løkker, like kostnader). Likhet brytes alfabetisk etter node-id med mindre kursets notat sier noe annet.
+Algoritmer med `data: "graf"` eller `"tre"` må tåle all slik input (tom graf, ingen sti, mål = start, løkker, like kostnader). Node-id er fri tekst på opptil 30 tegn og kan ha mellomrom («New York»); noder med mer enn tre tegn tegnes avlange så navnet får plass. Likhet brytes alfabetisk etter node-id med mindre kursets notat sier noe annet.
 
 ## Sjekk
 
@@ -101,7 +101,7 @@ Hver familiefil skal ha en `if (typeof module !== "undefined")`-blokk eller en e
 ## Sidene (motoren)
 
 - `ALGO.side(el, id)`: fyller `el` (`#main`, klassen `wide`) med algoritmesiden. `id` er algoritmen som vises (fra `#algoritmer/<id>`), ellers en oversikt. Naviger ved å sette `location.hash = "algoritmer/" + id`; siden tegnes da på nytt av ruteren.
-- `ALGO.verksted(el)`: hele tegneverktøyet som egen side (`#verksted`).
+- `ALGO.verksted(el)`: hele tegneverktøyet som egen side (`#verksted`). Tegneflaten kan dras høyere i hjørnet nede til høyre; tegningen får da mer plass. Høyreklikk og dra (eller Ctrl og dra) flytter utsnittet uten å endre grafen.
 - `ALGO.verksted(el, {type, data, endret})`: kompakt utgave inni et oppgavekort (ned til 300 px bredt). `type` er `"graf"`, `"tre"` eller `undefined` (velg selv). `data` er startdata eller `undefined`. Kall `endret({type, data})` ved hver endring. Tillegg: valgfritt `algo` (id som velges først, ellers første registrerte for datatypen) og `valg` (startverdier for den). Inline lagres ingenting annet enn via `endret`; helsiden lagrer i `localStorage` (`tdt4136-verksted`).
 - «Sammenlign algoritmer» i tegneverktøyet kjører tegningen gjennom flere algoritmer fra samme `familie` med `kjor` og `svar`, og viser svarene i én tabell (kolonner etter `navn`) og avspillerne side om side. Valg med samme `id` følger med fra den valgte algoritmen. Algoritmesidene har en knapp som tar eksempelet med dit.
 - Fargene og typografien kommer fra sidens CSS-variabler: `--bg --surface --fg --muted --border --accent --accent-bg --ok --ok-bg --today --code` (lys og mørk modus). Knapper arver sidens `button`-stil.

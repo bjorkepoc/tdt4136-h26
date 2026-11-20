@@ -24,7 +24,7 @@ Studieside for eksamen i TDT4136 ved NTNU. Les [README.md](README.md) for hva so
    ```
 
    På Windows uten bash lager du en tilsvarende løkke i PowerShell.
-3. Hver linje er JSON: `{"eid": "e02", "ep": "E02", "j": 0, "oppgave": "…", "svar": {"feltnavn": "svaret"}, "sendt": "…"}`. `j` er oppgavens nummer i lista, talt fra 0.
+3. Hver linje er JSON: `{"eid": "e02", "ep": "E02", "j": 0, "oppgave": "…", "svar": {"feltnavn": "svaret"}, "sendt": "…"}`. `j` er oppgavens nummer i lista, talt fra 0. Feltet `Papir` er et svar på papir: én sti per linje til et bilde under `arbeid/` (for eksempel `svar/bilder/e16-3-….jpg` er `arbeid/svar/bilder/e16-3-….jpg`). Se på bildet og rett det som de andre svarene.
 4. Finn oppgaven i `tasks[j]` i `arbeid/nettside-oppgaver/<eid>.json`, `arbeid/nettside-ovinger/<eid>.json` eller `arbeid/nettside-prover/<eid>.json`. Rett mot feltet `sjekk`, fasiten i fila (`fasit`) og notatet `arbeid/videoer/notater/<eid>-*.md` for episodene. Regn selv når oppgaven er en utregning.
 5. Skriv tilbakemeldingen inn i `arbeid/svar/tilbakemelding.json` uten å fjerne det som står der fra før:
 

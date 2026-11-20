@@ -3,9 +3,11 @@
 
 - Videoene kan spoles (Range-forespørsler, som python3 -m http.server mangler).
 - Svarene lagres i arbeid/svar/svar.json mens du skriver.
+- «Svar på papir» lagrer bildet i arbeid/svar/bilder/ (JPEG, skalert av siden) og gir filnavnet tilbake.
 - «Rett denne» legger oppgaven i arbeid/svar/ko.jsonl. Tilbakemeldingen skrives til
   arbeid/svar/tilbakemelding.json ({"e05": {"0": {"tekst": …, "tid": …}}}) og vises under oppgaven.
 Lytter bare på 127.0.0.1."""
+import base64
 import json
 import os
 import re
@@ -30,6 +32,7 @@ class H(SimpleHTTPRequestHandler):
 
     def end_headers(self):
         self.send_header("Accept-Ranges", "bytes")
+        self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header("Cache-Control", "no-cache")
         super().end_headers()
 
@@ -93,7 +96,7 @@ class H(SimpleHTTPRequestHandler):
         # Andre nettsider i nettleseren kan også sende hit; godta bare siden selv.
         if self.headers.get("Origin") not in EGNE:
             return self.send_error(403)
-        if self.path not in ("/api/svar", "/api/rett"):
+        if self.path not in ("/api/svar", "/api/rett", "/api/bilde"):
             return self.send_error(404)
         try:
             n = int(self.headers.get("Content-Length", ""))
@@ -104,6 +107,8 @@ class H(SimpleHTTPRequestHandler):
             return self.send_error(400)
         if not isinstance(body, dict):
             return self.send_error(400)
+        if self.path == "/api/bilde":
+            return self.bilde(body)
         with LAAS:
             SV.mkdir(exist_ok=True)
             if self.path == "/api/svar":
@@ -115,6 +120,26 @@ class H(SimpleHTTPRequestHandler):
                 with open(SV / "ko.jsonl", "a") as f:
                     f.write(json.dumps(body, ensure_ascii=False) + "\n")
         self.svar({"ok": True})
+
+    def bilde(self, body):
+        m = re.fullmatch(r"data:image/jpeg;base64,([A-Za-z0-9+/]+=*)", str(body.get("data", "")))
+        eid, j = str(body.get("id", "")), body.get("j")
+        if not (m and re.fullmatch(r"[a-z0-9]{1,12}", eid) and type(j) is int and 0 <= j < 1000):
+            return self.send_error(400)
+        try:
+            raw = base64.b64decode(m[1], validate=True)
+        except ValueError:
+            return self.send_error(400)
+        if not raw.startswith(b"\xff\xd8"):
+            return self.send_error(400)
+        with LAAS:
+            d = SV / "bilder"
+            d.mkdir(parents=True, exist_ok=True)
+            stamme, n = f"{eid}-{j}-{time.strftime('%Y%m%d-%H%M%S')}", 1
+            while (d / f"{stamme}-{n}.jpg").exists():
+                n += 1
+            (d / f"{stamme}-{n}.jpg").write_bytes(raw)
+        self.svar({"fil": f"svar/bilder/{stamme}-{n}.jpg"})
 
     def svar(self, obj):
         b = json.dumps(obj, ensure_ascii=False).encode()

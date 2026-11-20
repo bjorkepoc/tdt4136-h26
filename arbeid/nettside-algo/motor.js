@@ -54,6 +54,8 @@ window.ALGO = window.ALGO || {
     }
     if (n.form === "blad") return { hw: 15, hh: 15, boks: 1 };
     if (n.form === "max" || n.form === "min") return { hw: R + 3, hh: R + 1 };
+    const t = String(n.tekst ?? "").split("\n")[0];
+    if (t.length > 3) return { hw: Math.max(R, t.length * 4.3 + 9), hh: R, boks: 1, pille: 1 }; // lange navn: avlang node med plass til teksten
     return { hw: R, hh: R };
   }
   const grenseAv = (p, ux, uy) => (p.m.boks ? Math.min(ux ? p.m.hw / Math.abs(ux) : 1e9, uy ? p.m.hh / Math.abs(uy) : 1e9) : p.m.hw) + (p.n.mal ? 4 : 0);
@@ -161,9 +163,10 @@ window.ALGO = window.ALGO || {
           const k = R + 4 + e, v = f === "max" ? 1 : -1;
           return `<path class="${cls}" d="M${r1(p.x)} ${r1(p.y - v * k)}L${r1(p.x + k * 0.95)} ${r1(p.y + v * k * 0.62)}L${r1(p.x - k * 0.95)} ${r1(p.y + v * k * 0.62)}Z"/>`;
         }
+        if (p.m.pille) return `<rect class="${cls}" x="${r1(p.x - p.m.hw - e)}" y="${r1(p.y - p.m.hh - e)}" width="${r1(2 * (p.m.hw + e))}" height="${r1(2 * (p.m.hh + e))}" rx="${r1(p.m.hh + e)}"/>`;
         return `<circle class="${cls}" cx="${r1(p.x)}" cy="${r1(p.y)}" r="${R + e}"/>`;
       };
-      const linjer = String(n.tekst ?? "").split("\n"), lang = f !== "boks" && linjer[0].length > 3 ? (linjer[0].length > 5 ? " xl" : " l") : "";
+      const linjer = String(n.tekst ?? "").split("\n"), lang = f !== "boks" && !p.m.pille && linjer[0].length > 3 ? (linjer[0].length > 5 ? " xl" : " l") : "";
       const ty = p.y + (f === "max" ? 4 : f === "min" ? -4 : 0) - (linjer.length - 1) * 8;
       const tekst = linjer.length > 1 ? linjer.map((l, i) => `<tspan x="${r1(p.x)}" y="${r1(ty + i * 16)}">${esc(l)}</tspan>`).join("") : esc(linjer[0]);
       s += `<g class="n t-${kl(n.tilstand)} f-${f}${o.valgt === "n" + p.id ? " valgt" : ""}" data-k="n${esc(p.id)}">${ring ? form(4, "ring") : ""}${form(0, "s")}` +
@@ -499,7 +502,7 @@ window.ALGO = window.ALGO || {
     const sett = new Set(), navn = new Map(), noder = [];
     (Array.isArray(d.noder) ? d.noder : []).forEach((n, i) => {
       if (!n || typeof n !== "object") return;
-      const id = String(n.id ?? "").trim().replace(/\s+/g, "_").slice(0, 12);
+      const id = String(n.id ?? "").trim().replace(/\s+/g, " ").slice(0, 30);
       if (!id || sett.has(id)) return;
       sett.add(id);
       navn.set(String(n.id), id);
@@ -520,7 +523,7 @@ window.ALGO = window.ALGO || {
     const ga = (n, dybde) => {
       if (!n || typeof n !== "object" || dybde > 14 || antall >= 400) return null;
       antall++;
-      let id = String(n.id ?? "").trim().replace(/\s+/g, "_").slice(0, 12) || "N";
+      let id = String(n.id ?? "").trim().replace(/\s+/g, " ").slice(0, 30) || "N";
       while (sett.has(id)) id += "′";
       sett.add(id);
       const barn = (Array.isArray(n.barn) ? n.barn : []).map(b => ga(b, dybde + 1)).filter(Boolean);
@@ -583,6 +586,9 @@ window.ALGO = window.ALGO || {
     const rot = el.querySelector(".algo-verk"), svg = rot.querySelector("svg.algo-red"), lerret = rot.querySelector(".algo-lerret");
     const insp = rot.querySelector(".algo-insp"), sjekk = rot.querySelector(".algo-sjekk"), anim = rot.querySelector(".algo-anim");
     const algoSel = rot.querySelector("[data-f=algo]"), vv = rot.querySelector(".algo-vv"), json = rot.querySelector(".algo-json");
+    // Tegneflaten dras høyere eller lavere i hjørnet nede til høyre (CSS resize). Da får tegningen den nye høyden som plass, ikke bare større skala.
+    let hoyde = 0;
+    new ResizeObserver(() => { const h = lerret.style.height && lerret.clientHeight; if (h && Math.abs(h - hoyde) > 2) { hoyde = h; S.vb = null; tegn(); } }).observe(lerret);
 
     // --- tilstand og endringer
     const lagre = () => {
@@ -631,7 +637,7 @@ window.ALGO = window.ALGO || {
     let drag = null;
     function tegn(fryst) {
       const g = visGraf(), G = geometri(g);
-      const W = lerret.clientWidth || 480, minH = inline ? 220 : 320, maksH = inline ? 420 : 560;
+      const W = lerret.clientWidth || 480, minH = hoyde || (inline ? 220 : 320), maksH = hoyde || (inline ? 420 : 560);
       const [x0, y0, x1, y1] = G.ramme;
       // Visningen utvides bare når noe havner utenfor, så nodene ikke hopper mens du tegner. Trær ordnes på nytt og tilpasses hver gang.
       // Aldri mindre enn 65 % (ellers blir teksten uleselig); da blir tegneflaten bredere og kan rulles sidelengs.
@@ -643,9 +649,10 @@ window.ALGO = window.ALGO || {
         svg.style.width = B > W ? B + "px" : "";
       };
       if (!fryst) {
+        if (!S.vb) S.fri = false;
         if (!g.noder.length) { if (!S.vb) { S.vb = [0, 0, Math.round(W), minH]; svg.style.height = minH + "px"; svg.style.width = ""; } }
         else if (!S.vb || S.type === "tre") pass(x0 - 30, y0 - 30, x1 + 30, y1 + 30);
-        else if (x0 < S.vb[0] || y0 < S.vb[1] || x1 > S.vb[0] + S.vb[2] || y1 > S.vb[1] + S.vb[3]) pass(Math.min(S.vb[0], x0 - 30), Math.min(S.vb[1], y0 - 30), Math.max(S.vb[0] + S.vb[2], x1 + 30), Math.max(S.vb[1] + S.vb[3], y1 + 30));
+        else if (!S.fri && (x0 < S.vb[0] || y0 < S.vb[1] || x1 > S.vb[0] + S.vb[2] || y1 > S.vb[1] + S.vb[3])) pass(Math.min(S.vb[0], x0 - 30), Math.min(S.vb[1], y0 - 30), Math.max(S.vb[0] + S.vb[2], x1 + 30), Math.max(S.vb[1] + S.vb[3], y1 + 30));
       }
       svg.setAttribute("viewBox", S.vb.join(" "));
       const hand = S.type === "graf" && S.valgt && S.valgt[0] === "n" ? S.valgt.slice(1) : null;
@@ -731,7 +738,7 @@ window.ALGO = window.ALGO || {
       const v = S.valgt;
       if (v && S.type === "graf" && v[0] === "n" && gn(v.slice(1))) {
         const n = gn(v.slice(1)), c = csp(), andre = S.data.noder.filter(m => m.id !== n.id).concat(S.data.retning ? [n] : []);
-        insp.innerHTML = `<div class="algo-rad"><b>Node ${esc(n.id)}</b><label class="algo-v">Navn <input class="in kort" data-f="navn" value="${esc(n.id)}" maxlength="12" autocomplete="off"></label>` +
+        insp.innerHTML = `<div class="algo-rad"><b>Node ${esc(n.id)}</b><label class="algo-v">Navn <input class="in" data-f="navn" value="${esc(n.id)}" maxlength="30" autocomplete="off"></label>` +
           (c ? `<label class="algo-v">Domene <input class="in" data-f="domene" value="${esc((n.domene || []).join(", "))}" placeholder="1, 2, 3"></label>`
             : `<label class="algo-v">h <input class="in kort" data-f="h" inputmode="decimal" value="${fin(n.h) ? fmt(n.h) : ""}" placeholder="–"></label><label class="algo-v"><input type="checkbox" data-f="start"${S.data.start === n.id ? " checked" : ""}> Start</label><label class="algo-v"><input type="checkbox" data-f="mal"${S.data.mal.includes(n.id) ? " checked" : ""}> Mål</label>`) +
           (andre.length ? `<label class="algo-v">Ny kant til <select data-f="kobletil">${andre.map(m => `<option>${esc(m.id)}</option>`).join("")}</select></label><button type="button" data-a="kant">Legg til</button>` : "") +
@@ -744,15 +751,15 @@ window.ALGO = window.ALGO || {
           `<button type="button" data-a="slett">Slett kant</button><button type="button" data-a="lukk" aria-label="Fjern markeringen" title="Fjern markeringen (Escape)">×</button></div><p class="mut algo-hint" data-m="insp" aria-live="polite"></p>`;
       } else if (v && S.type === "tre" && tn(v.slice(1))) {
         const { n, far } = tn(v.slice(1));
-        insp.innerHTML = `<div class="algo-rad"><b>Node ${esc(n.id)}</b><label class="algo-v">Navn <input class="in kort" data-f="navn" value="${esc(n.id)}" maxlength="12" autocomplete="off"></label>` +
+        insp.innerHTML = `<div class="algo-rad"><b>Node ${esc(n.id)}</b><label class="algo-v">Navn <input class="in" data-f="navn" value="${esc(n.id)}" maxlength="30" autocomplete="off"></label>` +
           `<label class="algo-v">Type <select data-f="ttype">${["max", "min", "sjanse", "blad"].map(t => `<option${t === n.type ? " selected" : ""}${t === "blad" && n.barn.length ? " disabled" : ""}>${t}</option>`).join("")}</select></label>` +
           (n.type === "blad" ? `<label class="algo-v">Verdi <input class="in kort" data-f="verdi" inputmode="decimal" value="${fin(n.verdi) ? fmt(n.verdi) : ""}"></label>` : "") +
           (far && far.type === "sjanse" ? `<label class="algo-v">p <input class="in kort" data-f="p" inputmode="decimal" value="${fin(n.p) ? fmt(n.p) : ""}"></label>` : "") +
           `<button type="button" data-a="barn">+ Barn</button>${far ? `<button type="button" data-a="slett">Slett deltre</button>` : ""}<button type="button" data-a="lukk" aria-label="Fjern markeringen" title="Fjern markeringen (Escape)">×</button></div><p class="mut algo-hint" data-m="insp" aria-live="polite"></p>`;
       } else {
         S.valgt = null;
-        insp.innerHTML = `<p class="mut algo-hint">${S.type === "tre" ? "Klikk på en node for å endre type og verdi, legge til barn eller slette deltreet. Treet ordnes automatisk." :
-          "Klikk på et tomt sted for å lage en node. Dra i ⊕ på en valgt node for å lage en kant (slipp på et tomt sted for å lage en ny node samtidig). Dra en node for å flytte den. Klikk på en node eller kant for å endre den."} Med tastaturet: gå til tegneflaten og trykk N for neste node${S.type === "tre" ? "" : " og K for neste kant"}.</p>`;
+        insp.innerHTML = `<p class="mut algo-hint">${S.type === "tre" ? "Klikk på en node for å endre type og verdi, legge til barn eller slette deltreet. Treet ordnes automatisk. Dra i hjørnet nede til høyre for å gjøre tegneflaten høyere." :
+          "Klikk på et tomt sted for å lage en node. Dra i ⊕ på en valgt node for å lage en kant (slipp på et tomt sted for å lage en ny node samtidig). Dra en node for å flytte den. Klikk på en node eller kant for å endre den. Høyreklikk og dra (eller Ctrl og dra) for å flytte utsnittet. Dra i hjørnet nede til høyre for å gjøre tegneflaten høyere."} Med tastaturet: gå til tegneflaten og trykk N for neste node${S.type === "tre" ? "" : " og K for neste kant"}.</p>`;
       }
     }
     const inspMelding = t => { const m = insp.querySelector("[data-m=insp]"); if (m) m.textContent = t; };
@@ -771,9 +778,9 @@ window.ALGO = window.ALGO || {
       const f = e.target.dataset.f, v = S.valgt, t = e.target; if (!f || !v) return;
       const id = v.slice(1);
       if (f === "navn") {
-        const ny = t.value.trim();
+        const ny = t.value.trim().replace(/\s+/g, " ");
         if (ny === id) return;
-        if (!ny || /\s/.test(ny) || brukteId().has(ny)) { t.setAttribute("aria-invalid", "true"); inspMelding(!ny ? "Navnet kan ikke være tomt." : /\s/.test(ny) ? "Navnet kan ikke ha mellomrom." : `${ny} finnes allerede.`); return; }
+        if (!ny || brukteId().has(ny)) { t.setAttribute("aria-invalid", "true"); inspMelding(!ny ? "Navnet kan ikke være tomt." : `${ny} finnes allerede.`); return; }
         endre(() => omdop(id, ny));
       } else if (f === "start") endre(() => { if (t.checked) S.data.start = id; else if (S.data.start === id) delete S.data.start; });
       else if (f === "mal") endre(() => { S.data.mal = t.checked ? [...new Set([...S.data.mal, id])] : S.data.mal.filter(m => m !== id); });
@@ -897,7 +904,16 @@ window.ALGO = window.ALGO || {
     });
 
     // --- peker: klikk, dra, koble (mus, styreflate og berøring via pointer events)
+    // Høyreklikk og dra (eller Ctrl og dra) flytter utsnittet uten å endre grafen. Etterpå utvides ikke utsnittet av seg selv før det nullstilles.
+    let pan = null;
+    svg.addEventListener("contextmenu", e => e.preventDefault());
     svg.addEventListener("pointerdown", e => {
+      if (e.button === 2 || (e.button === 0 && e.ctrlKey)) {
+        pan = { id: e.pointerId, x: e.clientX, y: e.clientY };
+        try { svg.setPointerCapture(e.pointerId); } catch (z) { /* ikke støttet */ }
+        e.preventDefault();
+        return;
+      }
       if (e.button > 0) return;
       const h = e.target.closest("[data-hand]"), k = e.target.closest("[data-k]");
       drag = { id: e.pointerId, x0: e.clientX, y0: e.clientY, hand: h ? h.getAttribute("data-hand") : null, k: k ? k.getAttribute("data-k") : null, flyttet: false };
@@ -905,6 +921,12 @@ window.ALGO = window.ALGO || {
       if (drag.hand || (drag.k && drag.k[0] === "n")) e.preventDefault();
     });
     svg.addEventListener("pointermove", e => {
+      if (pan && e.pointerId === pan.id && S.vb) {
+        const m = svg.getScreenCTM();
+        if (m) { S.vb[0] = r1(S.vb[0] - (e.clientX - pan.x) / m.a); S.vb[1] = r1(S.vb[1] - (e.clientY - pan.y) / m.d); S.fri = true; tegn(true); }
+        pan.x = e.clientX; pan.y = e.clientY;
+        return;
+      }
       if (!drag || e.pointerId !== drag.id) return;
       if (!drag.flyttet && Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) < 5) return;
       const p = punkt(e);
@@ -917,6 +939,7 @@ window.ALGO = window.ALGO || {
       }
     });
     const slipp = e => {
+      if (pan && e.pointerId === pan.id) { pan = null; return; }
       if (!drag || e.pointerId !== drag.id) return;
       const d = drag; drag = null;
       if (e.type === "pointercancel") return tegn();

@@ -25,6 +25,8 @@ python3 arbeid/server.py
 
 Åpne http://localhost:8765/. På Windows heter kommandoen ofte `python` i stedet for `python3`.
 
+Logikkoppgavene kan du svare på papir, som på eksamen: ta bilde av arket og last det opp med «Svar på papir». Bildet lagres i `arbeid/svar/bilder/`.
+
 Svarene dine lagres i nettleseren og i `arbeid/svar/svar.json` på din egen maskin. Mappa `arbeid/svar/` er holdt utenfor git.
 
 Du kan også åpne `arbeid/nettside.html` direkte fra disken. Da lagres svarene bare i nettleseren, og retting og diktering er slått av. Kjører serveren, går siden over til den av seg selv og tar med svarene du har skrevet.

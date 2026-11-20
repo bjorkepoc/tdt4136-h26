@@ -65,9 +65,14 @@ def oppgaver(sec):
     return md("\n".join(intro)), tasks, md("\n".join(outro))
 
 
-def klargjor(tasks):
+PAPIR = {"e11", "e12", "e13", "e14", "e15", "e16", "a4"}  # logikken: kan besvares på papir, som oppgave 9 og 10 på eksamen 2025
+
+
+def klargjor(tasks, papir=False):
     """Oppgaver fra JSON: markdown til HTML (tekst og fasit), figurene etter teksten, svarfelt hvis ingen er gitt."""
     for x in tasks:
+        if papir or "handwritten sheets" in x.get("d", ""):
+            x["papir"] = 1
         for s in x.get("img", []):
             assert (A / s).exists(), s
         alt = html.escape(f'Figur til oppgaven «{x.get("t", "")}»', quote=True)
@@ -110,7 +115,7 @@ for p in sorted((V / "notater").glob("e[0-9][0-9]-*.md")):
     egen = A / "nettside-oppgaver" / f"{eid}.json"
     if egen.exists():  # utskrevne eksamensoppgaver med figurer, se nettside-oppgaver/
         data = json.loads(egen.read_text())
-        intro, tasks, outro = md(data.get("intro", "")), klargjor(data["tasks"]), ""
+        intro, tasks, outro = md(data.get("intro", "")), klargjor(data["tasks"], eid in PAPIR), ""
     body = drop(t, "Kapitler i videoen", "Øv selv", "Fasit")
     body = re.sub(r"\A# .*\n|^> (Pensum|Video): .*\n", "", body, flags=re.M)
     eps.append({"id": eid, "ep": ep, "title": html.escape(title), "pensum": html.escape(pensum), "video": "videoer/" + quote(video),
@@ -142,7 +147,7 @@ for f, grp, art in filer:
     if o.get("vis_fra", "") > date.today().isoformat():  # AL3 bygger på 2020Qv2, spart til fullprøven 03.12
         continue
     ovinger.append({"id": o["id"], "ep": o["ep"], "title": html.escape(o["tittel"]), "kilde": o.get("kilde", ""),
-                    "note": md(o.get("om", "")), "intro": md(o.get("intro", "")), "tasks": klargjor(o["tasks"]), "outro": "",
+                    "note": md(o.get("om", "")), "intro": md(o.get("intro", "")), "tasks": klargjor(o["tasks"], o["id"] in PAPIR), "outro": "",
                     "fasit": md(o.get("fasit", "")), "grp": grp, "art": art})
 
 valgfri = lambda p: md(p.read_text()) if p.exists() else ""  # seeplan og feillogg er personlige og finnes ikke i den offentlige kopien

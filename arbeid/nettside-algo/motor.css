@@ -114,7 +114,7 @@
 .algo-gruppe button+button{border-radius:0 7px 7px 0;margin-left:-1px}
 .algo-grafv{display:inline-flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
 .algo-grafv[hidden]{display:none}
-.algo-lerret{border:1px solid var(--border);border-radius:10px;background:var(--surface);overflow-x:auto;overflow-y:hidden}
+.algo-lerret{border:1px solid var(--border);border-radius:10px;background:var(--surface);overflow-x:auto;overflow-y:hidden;resize:vertical;min-height:150px}
 .algo-red{max-height:none;cursor:crosshair;touch-action:manipulation}
 .algo-red .n,.algo-red .hand{cursor:grab;touch-action:none}
 .algo-red .e{cursor:pointer}
