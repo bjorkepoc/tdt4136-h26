@@ -1,0 +1,556 @@
+1
+00:00:00,450 --> 00:00:07,010
+Alle personer har to bein. John er en person. Men John har bare ett bein. Har
+
+2
+00:00:07,010 --> 00:00:12,450
+hver person ett beinantall, er det i ren logikk en selvmotsigelse. Likevel
+
+3
+00:00:12,450 --> 00:00:18,170
+svarer et semantisk nett rolig: John har ett bein, Mary har to. Hvordan får
+
+4
+00:00:18,170 --> 00:00:20,210
+nettet til det logikken ikke klarer?
+
+5
+00:00:21,583 --> 00:00:25,903
+Inferens handler om hvordan du slutter, kunnskapsrepresentasjon om hva
+
+6
+00:00:25,903 --> 00:00:32,223
+kunnskapsbasen skal inneholde. Vi tar ontologi og kategorier, hendelser og tid,
+
+7
+00:00:32,223 --> 00:00:38,543
+semantiske nett og description logics. Pensum ser du her; ti punkt fire og seks
+
+8
+00:00:38,543 --> 00:00:39,343
+er ute.
+
+9
+00:00:40,617 --> 00:00:43,657
+Hvordan ordner en agent alt som finnes?
+
+10
+00:00:45,417 --> 00:00:50,777
+I wumpusverdenen holdt noen få predikater. Den virkelige verden krever generelle
+
+11
+00:00:50,777 --> 00:00:58,057
+begreper, og å representere dem heter ontological engineering. Øverst: Anything.
+
+12
+00:00:58,057 --> 00:01:04,377
+Så abstrakte objekter: mengder, tall, mål. Og generaliserte hendelser:
+
+13
+00:01:04,377 --> 00:01:10,377
+intervaller, steder, fysiske objekter, prosesser. Fysiske objekter er ting eller
+
+14
+00:01:10,377 --> 00:01:16,137
+stoff. Treet er en upper ontology, og domenene henger seg på. Lenkene
+
+15
+00:01:16,137 --> 00:01:20,457
+spesialiserer, og et menneske er både dyr og agent.
+
+16
+00:01:21,750 --> 00:01:27,750
+Kan én ontologi dekke alt? Da må den passe i nesten alle domener, og forene
+
+17
+00:01:27,750 --> 00:01:33,990
+områder: tid må virke for både nanosekunder og minutter. Fire veier er prøvd,
+
+18
+00:01:33,990 --> 00:01:37,750
+fra eksperter til frivillige, med begrenset suksess.
+
+19
+00:01:39,117 --> 00:01:45,037
+En kunde vil ha en basketball, ikke akkurat BB ni. Vi handler med objekter, men
+
+20
+00:01:45,037 --> 00:01:50,717
+resonnerer med kategorier. En kategori kan være et predikat, eller et objekt:
+
+21
+00:01:50,717 --> 00:01:57,757
+reification. Da er BB ni member av Basketballs, og Basketballs subset av Balls.
+
+22
+00:01:57,757 --> 00:02:01,117
+Hunder er selv element i en kategori av arter.
+
+23
+00:02:02,417 --> 00:02:09,417
+Kategorier gir arv. All mat er spiselig. Fruit er subset av Food, Apples av
+
+24
+00:02:09,417 --> 00:02:16,497
+Fruit, så hvert eple er spiselig. Subset-lenkene danner en taxonomy. Felle: «er
+
+25
+00:02:16,497 --> 00:02:22,657
+en» om begge. Fifi er en katt er member. En katt er et pattedyr er subset.
+
+26
+00:02:23,950 --> 00:02:29,670
+Subset sier ikke alt. Bachelor- og masterstudenter er studenter, men kan noen
+
+27
+00:02:29,670 --> 00:02:36,750
+være begge? Disjoint: alle par har tomt snitt. Exhaustive decomposition: hvert
+
+28
+00:02:36,750 --> 00:02:42,310
+medlem av c er i minst én. Amerikanere, kanadiere og meksikanere dekker
+
+29
+00:02:42,310 --> 00:02:46,750
+nordamerikanerne, men dobbelt statsborgerskap gjør dem ikke disjunkte.
+
+30
+00:02:48,117 --> 00:02:55,397
+Partition er begge deler. Dyr, planter, sopp, protister og monera: hvert levende
+
+31
+00:02:55,397 --> 00:03:01,397
+vesen i nøyaktig én. Nordamerikanerne er uttømmende, men ingen partition.
+
+32
+00:03:02,750 --> 00:03:13,550
+Din tur, fra eksamen tjuenitten: pattedyr og ikke-pattedyr som oppdeling av dyr?
+
+33
+00:03:13,550 --> 00:03:19,550
+En partition: ingen dyr er begge, og alle er ett av dem. Disjunkt pluss
+
+34
+00:03:19,550 --> 00:03:20,670
+uttømmende.
+
+35
+00:03:22,050 --> 00:03:26,050
+Hva er et objekt laget av, og hvordan måler du det?
+
+36
+00:03:27,817 --> 00:03:34,617
+Bucharest er part of Romania, Romania av Øst-Europa, Øst-Europa av Europa og
+
+37
+00:03:34,617 --> 00:03:40,977
+Europa av Jorda. Part of er transitiv, så Bucharest er part of Earth. Og
+
+38
+00:03:40,977 --> 00:03:48,724
+refleksiv. En biped har nøyaktig to bein, og det er klønete i FOL: to ulike bein,
+
+39
+00:03:48,724 --> 00:03:50,057
+og ingen flere.
+
+40
+00:03:51,350 --> 00:03:56,470
+Tre epler i en pose veier to pund, men mengden av dem er abstrakt og veier
+
+41
+00:03:56,470 --> 00:04:02,910
+ingenting. Bunch of gjør eplene til deler av ett objekt, med hvert eple som del,
+
+42
+00:04:02,910 --> 00:04:06,870
+og som det minste slike objektet: logical minimization.
+
+43
+00:04:08,250 --> 00:04:13,930
+En strek er én komma fem tommer. Eller tre komma åtte én centimeter: samme
+
+44
+00:04:13,930 --> 00:04:20,490
+lengde. Inches og Centimeters er units functions. Centimeters av to komma fem
+
+45
+00:04:20,490 --> 00:04:27,050
+fire ganger d er Inches av d, så én komma fem tommer blir tre komma åtte én.
+
+46
+00:04:28,417 --> 00:04:34,737
+Ti punkt to punkt tre er ute av pensum ifølge Canvas, så dette er bare bakgrunn.
+
+47
+00:04:34,737 --> 00:04:41,537
+Del et jordsvin, og du får ikke to. Del smør, og du får smør. Jordsvinet er en
+
+48
+00:04:41,537 --> 00:04:48,177
+thing, smøret stuff. Egenskaper som overlever delingen er intrinsic, vekt og
+
+49
+00:04:48,177 --> 00:04:57,457
+form extrinsic. Din tur: er et pund smør stuff?
+
+50
+00:04:57,457 --> 00:05:00,497
+Nei. Halvparten er ikke et pund.
+
+51
+00:05:01,850 --> 00:05:04,490
+Hvordan beskriver du noe som tar tid?
+
+52
+00:05:06,250 --> 00:05:10,850
+I wumpus var handlinger øyeblikkelige. Pila var der neste steg hvis du ikke
+
+53
+00:05:10,850 --> 00:05:16,970
+skjøt. Men et badekar tar tid, og du kan pusse tennene imens. Event calculus
+
+54
+00:05:16,970 --> 00:05:22,490
+gjør hendelser, fluents og tidspunkter til objekter. En fluent er en tilstand
+
+55
+00:05:22,490 --> 00:05:28,490
+som endrer seg. E én: Shankar flyr fra San Francisco til Washington. Den var
+
+56
+00:05:28,490 --> 00:05:29,610
+humpete.
+
+57
+00:05:30,983 --> 00:05:39,463
+Fire predikater. Happens: e skjer fra t én til t to. Initiates: e gjør f sann
+
+58
+00:05:39,463 --> 00:05:48,903
+ved t. Terminates: e gjør f usann. T: f er sann hele veien fra t én til t to. En
+
+59
+00:05:48,903 --> 00:05:54,823
+flytur terminerer At her når den letter, og initierer At der når den lander.
+
+60
+00:05:56,183 --> 00:06:01,703
+Se det på en tidslinje. Start gjør San Francisco sann ved null, og ingenting
+
+61
+00:06:01,703 --> 00:06:08,703
+stopper den. Ved to letter flyet: San Francisco slås av. Ved fire lander det:
+
+62
+00:06:08,703 --> 00:06:14,343
+Washington slås på. Ved åtte flyr Shankar hjem, og ved ti er San Francisco sann
+
+63
+00:06:14,343 --> 00:06:19,143
+igjen. En fluent holder verdien til en hendelse endrer den.
+
+64
+00:06:20,517 --> 00:06:27,677
+Regelen bak er persistensaksiomet. En hendelse skjer, gjør f sann ved t to, og
+
+65
+00:06:27,677 --> 00:06:35,037
+ingenting terminerer f før t fire. Da er f sann hele veien. E én initierer
+
+66
+00:06:35,037 --> 00:06:40,597
+Washington ved fire, og er tidslinjen hele loggen, terminerer ingenting før sju,
+
+67
+00:06:40,597 --> 00:06:46,437
+så Washington er sann fra fire til sju. En speilregel gjør det samme for usann.
+
+68
+00:06:47,717 --> 00:06:56,677
+Din tur: er Washington sann hele veien fra fire til elleve?
+
+69
+00:06:56,677 --> 00:07:02,517
+Nei. Flyet hjem terminerer den ved åtte, så persistensregelen gjelder ikke. En
+
+70
+00:07:02,517 --> 00:07:05,157
+fluent varer bare til noe endrer den.
+
+71
+00:07:06,517 --> 00:07:09,157
+Hvordan henger to tidsintervaller sammen?
+
+72
+00:07:10,917 --> 00:07:16,677
+Et intervall er et moment på null sekunder, eller et extended interval. Begin og
+
+73
+00:07:16,677 --> 00:07:23,157
+End gir endepunktene. Allen listet hvordan to intervaller kan stå. Meet: i
+
+74
+00:07:23,157 --> 00:07:30,837
+slutter der j begynner. Before: en luke imellom. After er det snudde. During: i
+
+75
+00:07:30,837 --> 00:07:32,437
+ligger inne i j.
+
+76
+00:07:33,817 --> 00:07:42,057
+Overlap: i begynner før j og slutter inne i j. Starts: samme start. Finishes:
+
+77
+00:07:42,057 --> 00:07:49,737
+samme slutt. Equals: begge endepunktene like. Felle: Overlap er ikke symmetrisk.
+
+78
+00:07:49,737 --> 00:07:51,417
+i må begynne først.
+
+79
+00:07:52,783 --> 00:08:02,463
+Din tur: femtitallet og Elizabeth den andres regjering fra nitten femtito?
+
+80
+00:08:02,463 --> 00:08:07,703
+Overlap av femtitallet og regjeringen: femtitallet starter først og slutter inne
+
+81
+00:08:07,703 --> 00:08:13,863
+i den. Alternativ D snur rekkefølgen. Og Georg den sjettes regjering møter
+
+82
+00:08:13,863 --> 00:08:14,943
+hennes.
+
+83
+00:08:16,217 --> 00:08:22,937
+Ti punkt tre punkt to er pensum, men ikke forelest. Et fysisk objekt er en bit
+
+84
+00:08:22,937 --> 00:08:30,057
+av rom og tid. Kan President av USA bety ulike personer? En term peker på ett
+
+85
+00:08:30,057 --> 00:08:37,177
+objekt, så President av USA er ett objekt: først Washington, så Adams. For
+
+86
+00:08:37,177 --> 00:08:41,817
+sytten nitti skriver vi T av Equals, ikke likhetstegnet.
+
+87
+00:08:43,183 --> 00:08:46,863
+Hvordan tegner du kunnskap, og hvordan finner nettet svaret?
+
+88
+00:08:48,617 --> 00:08:54,537
+Et semantic network har noder og lenker. Nodene er objekter og kategorier,
+
+89
+00:08:54,537 --> 00:09:01,137
+lenkene binære relasjoner. Mary er member of FemalePersons, som er subset of
+
+90
+00:09:01,137 --> 00:09:07,097
+Persons. Sister of er et vanlig faktum. Kan HasMother gå fra Persons? Kategorier
+
+91
+00:09:07,097 --> 00:09:13,337
+har ikke mødre. Dobbel ramme: moren til hver person er kvinne. Enkel ramme: hver
+
+92
+00:09:13,337 --> 00:09:14,937
+person har to bein.
+
+93
+00:09:16,217 --> 00:09:22,137
+Hvor mange bein har Mary? Søket følger member of til FemalePersons, og opp til
+
+94
+00:09:22,137 --> 00:09:28,657
+Persons. Der står to. Nå John. Søket finner én hos John selv og stopper ved
+
+95
+00:09:28,657 --> 00:09:34,217
+første treff. Toeren er en default, og den spesifikke verdien overrider den. Ren
+
+96
+00:09:34,217 --> 00:09:38,137
+logikk må skrive unntaket inn: alle personer unntatt John.
+
+97
+00:09:39,517 --> 00:09:44,997
+Lenker er binære. Hvordan sier du at Shankar fløy fra New York til New Delhi i
+
+98
+00:09:44,997 --> 00:09:51,357
+går? Gjør flyturen til en node, Fly sytten. Så får hvert argument en lenke.
+
+99
+00:09:51,357 --> 00:09:53,357
+Samme triks som E én.
+
+100
+00:09:54,717 --> 00:10:01,197
+Hva kan ikke nettet si? Negasjon, disjunksjon, eksistenskvantor og nøstede
+
+101
+00:10:01,197 --> 00:10:07,917
+funksjoner, alt lett i FOL. Nettet bytter uttrykkskraft mot rask arv. Og flere
+
+102
+00:10:07,917 --> 00:10:11,677
+foreldre kan gi to svar: multiple inheritance.
+
+103
+00:10:13,050 --> 00:10:24,490
+Din tur. Ola er member of MalePersons, uten egen Legs-lenke. Hvor mange bein?
+
+104
+00:10:24,490 --> 00:10:31,530
+To: Ola, MalePersons, Persons, og første treff er toeren. Johns ener gjelder
+
+105
+00:10:31,530 --> 00:10:32,490
+bare John.
+
+106
+00:10:33,850 --> 00:10:37,370
+Hvordan definerer du en kategori presist, og raskt?
+
+107
+00:10:39,150 --> 00:10:45,150
+Description logics vokste ut av semantiske nett, med presis mening. FOL
+
+108
+00:10:45,150 --> 00:10:52,190
+beskriver objekter lett, DL definerer kategorier lett. I Classic er Bachelor And
+
+109
+00:10:52,190 --> 00:11:00,190
+av Unmarried, Adult og Male. I FOL: alle tre må holde. Bokas eksempel: menn med
+
+110
+00:11:00,190 --> 00:11:05,950
+minst tre sønner, høyst to døtre, og arbeidsløse sønner gift med leger.
+
+111
+00:11:07,317 --> 00:11:12,837
+Tre slutninger. Subsumption: er én kategori del av en annen, ut fra
+
+112
+00:11:12,837 --> 00:11:18,277
+definisjonene? Bachelor har alle kravene til And av Adult og Male, så den
+
+113
+00:11:18,277 --> 00:11:25,797
+subsumeres: flere krav, mindre kategori. Classification: Ola er ugift, voksen og
+
+114
+00:11:25,797 --> 00:11:32,357
+mann, altså bachelor. Consistency: kan noe oppfylle definisjonen? Minst tre
+
+115
+00:11:32,357 --> 00:11:34,837
+sønner og høyst to: nei.
+
+116
+00:11:36,217 --> 00:11:43,497
+Hvorfor så stramt? Full FOL gir ingen tidsgaranti. DL sikter mot subsumption i
+
+117
+00:11:43,497 --> 00:11:49,377
+polynomisk tid. Prisen: vanskelige problemer kan ikke uttrykkes, eller blir
+
+118
+00:11:49,377 --> 00:11:55,097
+enorme. Derfor mangler de vanligvis negasjon og disjunksjon, og Classic tillater
+
+119
+00:11:55,097 --> 00:11:57,817
+eller bare over navngitte individer.
+
+120
+00:11:59,183 --> 00:12:06,383
+Din tur. Hvilken påstand er sann?
+
+121
+00:12:06,383 --> 00:12:13,263
+B: den generelle kategorien subsumerer den spesielle. A snur retningen, C er
+
+122
+00:12:13,263 --> 00:12:16,783
+inkonsistent, og Classic har ikke negasjon.
+
+123
+00:12:18,150 --> 00:12:20,790
+Klar for en ekte eksamensoppgave?
+
+124
+00:12:22,550 --> 00:12:29,990
+Eksamen tjuetjuefem, oppgave tretten a, to poeng. Definer ontologi, forklar arv
+
+125
+00:12:29,990 --> 00:12:39,830
+via kategorier, og gi et eksempel. Prøv selv.
+
+126
+00:12:39,830 --> 00:12:44,870
+Fasiten: en strukturert representasjon av tingene i et domene og hvordan de
+
+127
+00:12:44,870 --> 00:12:49,830
+henger sammen. Kategorier kobles med subclass-lenker, og objekter arver
+
+128
+00:12:49,830 --> 00:12:56,150
+egenskapene deres. Fasiten har intet eksempel, så ta bokas: Mary er i
+
+129
+00:12:56,150 --> 00:13:01,830
+FemalePersons, subset av Persons, som har to bein. Altså har Mary to.
+
+130
+00:13:03,117 --> 00:13:05,037
+Hvor dukker dette opp igjen?
+
+131
+00:13:06,817 --> 00:13:12,977
+Alt her er førsteordens logikk fra E fjorten. Arv og persistens er slutninger,
+
+132
+00:13:12,977 --> 00:13:19,697
+som i E femten og seksten. Fluents kommer igjen i PDDL i E atten, uten tid som
+
+133
+00:13:19,697 --> 00:13:26,017
+objekt. WordNet i E tjue er en taksonomi av ord. Og alt hviler på structured
+
+134
+00:13:26,017 --> 00:13:28,177
+representation fra E én.
+
+135
+00:13:29,450 --> 00:13:35,210
+Hele kjeden: en upper ontology ordner begrepene. Kategorier blir objekter med
+
+136
+00:13:35,210 --> 00:13:41,050
+member, subset og arv. Event calculus gjør hendelser til objekter, og Allen
+
+137
+00:13:41,050 --> 00:13:46,290
+ordner intervallene. Semantiske nett arver langs lenkene, og description logics
+
+138
+00:13:46,290 --> 00:13:51,690
+holder slutningene raske. Og John? Nettet stopper ved første verdi. Hvis du bare
+
+139
+00:13:51,690 --> 00:13:55,850
+husker én ting: gjør det du vil si noe om, til et objekt.
+

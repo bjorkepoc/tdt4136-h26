@@ -1,0 +1,616 @@
+1
+00:00:00,450 --> 00:00:07,970
+Eksamen 2023. A-stjerne søker fra S til G. Etter tre ekspansjoner ligger målet i
+
+2
+00:00:07,970 --> 00:00:14,850
+frontier, med f lik sytten. Fristende å svare S, B, G. Det er feil. Den
+
+3
+00:00:14,850 --> 00:00:18,930
+billigste veien koster tolv, og A-stjerne finner den fordi den venter.
+
+4
+00:00:20,283 --> 00:00:27,123
+I dag: grådig søk, A-stjerne, kravene til h og beviset, varianter og gode
+
+5
+00:00:27,123 --> 00:00:31,163
+heuristikker, og til slutt en ekte eksamensoppgave.
+
+6
+00:00:32,517 --> 00:00:35,797
+Hvorfor ikke bare gå mot det som ser nærmest ut?
+
+7
+00:00:37,550 --> 00:00:43,950
+Fra episode to: best-first search sorterer frontier etter f og husker reached.
+
+8
+00:00:43,950 --> 00:00:50,190
+Med f lik g får du uniform-cost search. Nå legger vi til h av n, anslått kostnad
+
+9
+00:00:50,190 --> 00:00:53,230
+herfra til målet. Det er en heuristikk.
+
+10
+00:00:54,583 --> 00:01:02,343
+Grådig søk tar alltid lavest h. S gir A og B, begge med h lik tre. Likt, så
+
+11
+00:01:02,343 --> 00:01:09,223
+alfabetisk: A. A har en løkke til seg selv, og den nye A-en har også h lik tre.
+
+12
+00:01:09,223 --> 00:01:13,863
+Uten reached-tabell tar søket A igjen, og igjen, for alltid.
+
+13
+00:01:15,150 --> 00:01:20,590
+Med reached-tabell stopper løkka: A er nådd med kost fire, og løkka koster
+
+14
+00:01:20,590 --> 00:01:28,390
+sytten. B og C står likt på tre, og B vinner alfabetisk. B gir G med h lik null,
+
+15
+00:01:28,390 --> 00:01:34,670
+og svaret blir S, B, G, kost sytten. Men S, A, C, G koster tolv.
+
+16
+00:01:36,050 --> 00:01:42,730
+Dette er greedy best-first search, f lik h. Den glemmer hva veien har kostet. På
+
+17
+00:01:42,730 --> 00:01:47,490
+bokas Romania-kart finner den fire hundre og femti, mens beste rute er fire
+
+18
+00:01:47,490 --> 00:01:52,290
+hundre og atten. Med graph search er den komplett i endelige rom, men aldri
+
+19
+00:01:52,290 --> 00:01:54,210
+garantert optimal.
+
+20
+00:01:55,583 --> 00:02:05,663
+Din tur. Grådig graph search i et endelig rom med løkker. Er det komplett?
+
+21
+00:02:05,663 --> 00:02:11,503
+Ja. Reached stopper løkkene, og et endelig rom går tomt for nye tilstander. Ta
+
+22
+00:02:11,503 --> 00:02:15,103
+med deg: grådig søk vet ikke hva det har betalt.
+
+23
+00:02:16,483 --> 00:02:20,403
+Hva om vi også teller det vi allerede har betalt?
+
+24
+00:02:22,183 --> 00:02:28,743
+A-stjerne bruker f lik g pluss h. g er det du har kjørt, h er gjetningen på
+
+25
+00:02:28,743 --> 00:02:35,023
+resten, og f anslår hele turen gjennom n. Som en GPS som teller både kilometerne
+
+26
+00:02:35,023 --> 00:02:37,383
+bak deg og luftlinja foran.
+
+27
+00:02:38,683 --> 00:02:47,043
+Samme graf. S gir A med fire pluss tre, sju, og B med sju pluss tre, ti. A er
+
+28
+00:02:47,043 --> 00:02:54,203
+lavest. A gir C med åtte pluss tre, elleve. Løkka koster sytten, og A er nådd
+
+29
+00:02:54,203 --> 00:03:01,243
+med fire, så den forkastes. Nå er B lavest, og B gir G med sytten pluss null.
+
+30
+00:03:02,617 --> 00:03:08,217
+Her er fella. G ligger i frontier, men A-stjerne tester målet først når noden
+
+31
+00:03:08,217 --> 00:03:15,017
+tas ut. C har elleve, under sytten, så det kan finnes en billigere vei. C gir G
+
+32
+00:03:15,017 --> 00:03:22,537
+med tolv, og den billigere stien erstatter den gamle. Nå tas G ut: S, A, C, G,
+
+33
+00:03:22,537 --> 00:03:28,057
+kost tolv. Rekkefølgen er S, A, B, C, så G.
+
+34
+00:03:29,417 --> 00:03:36,457
+Tester du målet ved generering, slik BFS gjør, svarer du sytten. Regelen: BFS
+
+35
+00:03:36,457 --> 00:03:42,297
+tester ved generering, uniform-cost og A-stjerne ved ekspansjon. Med tree-like
+
+36
+00:03:42,297 --> 00:03:47,977
+search, som eksamen 2023 ba om, ligger løkke-A også i frontier, men rekkefølgen
+
+37
+00:03:47,977 --> 00:03:49,097
+blir lik.
+
+38
+00:03:50,450 --> 00:03:59,650
+Din tur. Hva blir A-stjerne hvis h er null for alle noder?
+
+39
+00:03:59,650 --> 00:04:06,730
+Uniform-cost search, fordi f blir lik g. Ta med deg: f er hele turen, ikke bare
+
+40
+00:04:06,730 --> 00:04:07,650
+resten.
+
+41
+00:04:09,017 --> 00:04:12,217
+Når kan vi stole på at svaret er det billigste?
+
+42
+00:04:13,983 --> 00:04:21,583
+Fra forelesning tre. Billigste vei fra A til G går via B og C og koster tre. Men
+
+43
+00:04:21,583 --> 00:04:28,783
+h av B er tusen, så B får f lik tusen og én, mens C, via den dyre kanten, får
+
+44
+00:04:28,783 --> 00:04:36,623
+tusen. A-stjerne svarer tusen. Kravet som brytes, heter admissible: h av n er
+
+45
+00:04:36,623 --> 00:04:40,143
+aldri større enn h-stjerne, den ekte restkostnaden.
+
+46
+00:04:41,517 --> 00:04:48,157
+Det sterkere kravet heter consistent: for hver kant fra n til n-merket er h av n
+
+47
+00:04:48,157 --> 00:04:53,997
+høyst kantkostnaden pluss h av n-merket. Gjetningen rett fra n kan ikke være
+
+48
+00:04:53,997 --> 00:04:59,517
+lengre enn ett steg pluss gjetningen derfra. Det er trekantulikheten, sjekket
+
+49
+00:04:59,517 --> 00:05:00,957
+kant for kant.
+
+50
+00:05:02,317 --> 00:05:09,477
+Consistent gir alltid admissible. Følg billigste sti fra n til målet. h av n er
+
+51
+00:05:09,477 --> 00:05:16,317
+høyst c én pluss h av neste node, som er høyst c én pluss c to pluss h av noden
+
+52
+00:05:16,317 --> 00:05:21,117
+etter, helt til målet, der h er null. Summen er h-stjerne.
+
+53
+00:05:22,483 --> 00:05:32,643
+Omvendt holder ikke. Eksamen 2018: S til A koster to, A til G tre, S til G seks.
+
+54
+00:05:32,643 --> 00:05:40,723
+La h av S være fire og h av A én. Admissible: fire er under fem, én er under tre.
+
+55
+00:05:40,723 --> 00:05:46,723
+Men kanten S til A gir fire mot to pluss én. Fire er større enn tre: ikke
+
+56
+00:05:46,723 --> 00:05:48,003
+consistent.
+
+57
+00:05:49,383 --> 00:05:56,063
+Hva skjer i graph search med en slik h? Her ser A for dyr ut. Søket tar B først,
+
+58
+00:05:56,063 --> 00:06:02,703
+når C med g lik tre og ekspanderer den. Så tas A ut og finner C med g lik to.
+
+59
+00:06:02,703 --> 00:06:08,583
+Bokas algoritme legger C inn igjen og svarer fem, optimalt. En variant som aldri
+
+60
+00:06:08,583 --> 00:06:13,863
+åpner ferdige noder igjen, svarer seks. Med consistent h skjer ikke dette.
+
+61
+00:06:15,217 --> 00:06:21,750
+Forelesning tre spør: kan h være negativ? Gi målet h lik minus ni hundre og
+
+62
+00:06:21,750 --> 00:06:28,497
+nittini. Da blir f for målet sterkt negativ, så målet tas ut straks og koster ti,
+
+63
+00:06:28,497 --> 00:06:34,577
+ikke to. Beviset trenger h av målet lik null. Og trekker du en konstant fra alle
+
+64
+00:06:34,577 --> 00:06:37,057
+h, endres ikke rekkefølgen.
+
+65
+00:06:38,417 --> 00:06:49,417
+Din tur. Samme graf, men h av S er fem og h av A er to.
+
+66
+00:06:49,417 --> 00:06:55,537
+Bare admissible: fem er ikke over fem, og to er under tre, men fem er større enn
+
+67
+00:06:55,537 --> 00:07:01,177
+to pluss to. Ta med deg: consistent gir admissible, aldri omvendt.
+
+68
+00:07:02,550 --> 00:07:06,150
+Hvorfor finner A-stjerne alltid den billigste veien?
+
+69
+00:07:07,917 --> 00:07:13,677
+Anta at A-stjerne svarer sytten, mens beste sti koster tolv. Da ligger en node
+
+70
+00:07:13,677 --> 00:07:21,877
+på beste sti i frontier, her C. f av C er elleve. Med admissible h er f høyst g
+
+71
+00:07:21,877 --> 00:07:28,957
+pluss h-stjerne, altså tolv. Elleve er under sytten, så C tas ut før G. Generelt
+
+72
+00:07:28,957 --> 00:07:33,757
+er f av n høyst C-stjerne, under kostnaden til det dårlige målet.
+
+73
+00:07:35,050 --> 00:07:41,610
+Boka tegner dette som høydekurver. Uniform-cost sprer seg i sirkler rundt start.
+
+74
+00:07:41,610 --> 00:07:47,570
+A-stjerne sprer seg i bånd med økende f, strukket mot målet. Med consistent h
+
+75
+00:07:47,570 --> 00:07:53,290
+synker f aldri langs en sti. Det heter search contours, og står bare i boka.
+
+76
+00:07:54,583 --> 00:08:00,623
+C-stjerne er kostnaden til beste løsning. Noder der hele stien fra start har f
+
+77
+00:08:00,623 --> 00:08:06,983
+under C-stjerne, blir ekspandert. De er surely expanded. Med f lik C-stjerne
+
+78
+00:08:06,983 --> 00:08:14,743
+kanskje, over aldri. Her ekspanderes A, B og C, men aldri G via B med sytten
+
+79
+00:08:14,743 --> 00:08:20,663
+eller løkke-A med tjue. Med consistent h er A-stjerne optimally efficient: alle
+
+80
+00:08:20,663 --> 00:08:24,263
+algoritmer med samme h må ekspandere minst disse.
+
+81
+00:08:25,550 --> 00:08:35,950
+Din tur. C-stjerne er tolv. Blir en node med f lik tretten ekspandert?
+
+82
+00:08:35,950 --> 00:08:42,910
+Nei, aldri. Målet med tolv tas ut først. Det heter pruning. Ta med deg: hele
+
+83
+00:08:42,910 --> 00:08:47,390
+stien under C-stjerne, alltid. Over, aldri.
+
+84
+00:08:48,750 --> 00:08:52,670
+Hva gjør du når A-stjerne bruker for mye tid eller minne?
+
+85
+00:08:54,450 --> 00:09:02,690
+Weighted A-stjerne bruker f lik g pluss W ganger h. W lik null er uniform-cost,
+
+86
+00:09:02,690 --> 00:09:08,970
+én er A-stjerne, og mot uendelig grådig søk. På løkkegrafen gir W lik to
+
+87
+00:09:08,970 --> 00:09:15,570
+fortsatt tolv, men med W lik fire tas G med sytten ut før C med tjue. Med W
+
+88
+00:09:15,570 --> 00:09:22,050
+minst én og admissible h blir kostnaden høyst W ganger C-stjerne: raskere, men
+
+89
+00:09:22,050 --> 00:09:23,810
+ikke garantert optimal.
+
+90
+00:09:25,083 --> 00:09:30,443
+Beam search beholder bare de k beste nodene: rask, men verken komplett eller
+
+91
+00:09:30,443 --> 00:09:36,563
+optimal. IDA-stjerne er iterative deepening med grense på f. Neste grense er
+
+92
+00:09:36,563 --> 00:09:42,843
+minste f som falt utenfor: her sju, ti, elleve og tolv. Mellom rundene husker
+
+93
+00:09:42,843 --> 00:09:44,363
+den bare ett tall.
+
+94
+00:09:45,717 --> 00:09:52,357
+RBFS går i dybden, men husker f til beste alternativ. Blir stien dyrere, rygger
+
+95
+00:09:52,357 --> 00:09:59,637
+den og lagrer beste f i forelderen. Minnet er lineært. SMA-stjerne, bare i boka,
+
+96
+00:09:59,637 --> 00:10:04,437
+fyller minnet og kaster bladet med høyest f. Begge kan kaste bort tid på å
+
+97
+00:10:04,437 --> 00:10:07,237
+gjenskape glemte noder: thrashing.
+
+98
+00:10:08,517 --> 00:10:14,757
+Bidirectional heuristic search står bare i boka. Ett søk går fra start, ett
+
+99
+00:10:14,757 --> 00:10:21,397
+baklengs fra målet. Prioriteten er det største av to ganger g og g pluss h. Da
+
+100
+00:10:21,397 --> 00:10:26,037
+møtes søkene på midten. Med admissible h er den optimal.
+
+101
+00:10:27,417 --> 00:10:29,657
+Hvor kommer en god h fra?
+
+102
+00:10:31,417 --> 00:10:39,017
+Bokas eksempel er åtte-puzzle. h én teller brikker på feil plass: her alle åtte.
+
+103
+00:10:39,017 --> 00:10:44,937
+h to summerer hvor langt hver brikke er fra plassen sin, Manhattan distance: tre,
+
+104
+00:10:44,937 --> 00:10:52,937
+én, to, to, to, tre, tre og to, til sammen atten. Korteste løsning er tjue-seks
+
+105
+00:10:52,937 --> 00:10:53,817
+trekk.
+
+106
+00:10:55,117 --> 00:11:00,757
+Hvorfor gjetter de aldri over? En brikke kan flytte fra X til Y hvis rutene er
+
+107
+00:11:00,757 --> 00:11:07,197
+naboer og Y er tom. Fjern kravet om tom rute, og h to er eksakt løsning. Fjern
+
+108
+00:11:07,197 --> 00:11:12,917
+også nabokravet, og du får h én. Det heter et relaxed problem. Det har bare
+
+109
+00:11:12,917 --> 00:11:19,037
+flere kanter, så optimal løsning der er aldri dyrere. Derfor er h admissible, og
+
+110
+00:11:19,037 --> 00:11:20,717
+også consistent.
+
+111
+00:11:22,017 --> 00:11:29,137
+h to er minst like stor som h én overalt. Da dominerer h to. Med consistent h
+
+112
+00:11:29,137 --> 00:11:34,417
+ekspanderer A-stjerne med h to aldri flere noder, bortsett fra likheter der f er
+
+113
+00:11:34,417 --> 00:11:39,457
+lik C-stjerne. Ved dybde tolv genererer bredde-først to tusen seks hundre og
+
+114
+00:11:39,457 --> 00:11:45,297
+syttito noder, h én to hundre og syttini, og h to åttifire. Har du flere
+
+115
+00:11:45,297 --> 00:11:47,697
+admissible h, ta maksimum.
+
+116
+00:11:48,983 --> 00:11:55,063
+Boka måler også effective branching factor, b-stjerne. Det er forgreningen et
+
+117
+00:11:55,063 --> 00:12:01,463
+jevnt tre med dybde d trenger for å få N pluss én noder. Bokas eksempel er 52
+
+118
+00:12:01,463 --> 00:12:08,223
+noder på dybde fem: b lik to gir sekstitre, for mye, én komma ni to gir omtrent
+
+119
+00:12:08,223 --> 00:12:11,383
+femtitre. Nær én er bra.
+
+120
+00:12:12,683 --> 00:12:18,523
+Tre andre kilder. Pattern databases lagrer eksakt kost for delproblemet med
+
+121
+00:12:18,523 --> 00:12:24,603
+brikkene én til fire, for alle femten tusen hundre og tjue mønstre. Landmarks
+
+122
+00:12:24,603 --> 00:12:30,123
+regner ut ekte avstander til faste punkter på forhånd, slik kartapper gjør. Og
+
+123
+00:12:30,123 --> 00:12:35,883
+learning heuristics lærer h fra løste eksempler. De to siste står bare i boka,
+
+124
+00:12:35,883 --> 00:12:37,723
+og kan overestimere.
+
+125
+00:12:39,083 --> 00:12:51,323
+Din tur, fra eksamen 2023. h én og h to er admissible. Er gjennomsnittet det?
+
+126
+00:12:51,323 --> 00:12:57,163
+Ja. Det er aldri over den største, og den er aldri over h-stjerne. Maksimum er
+
+127
+00:12:57,163 --> 00:13:02,923
+likevel bedre. Ta med deg: så høy h som mulig, men aldri for høy.
+
+128
+00:13:04,283 --> 00:13:06,923
+Klarer du en ekte eksamensoppgave?
+
+129
+00:13:08,683 --> 00:13:17,483
+Start A, mål G. Alle h er gitt, unntatt h av B. Én: hvilke h av B gjør h
+
+130
+00:13:17,483 --> 00:13:25,603
+consistent? To: hvilke gir ekspansjon A, C, B uten tie-break? Tre: hvilke gir
+
+131
+00:13:25,603 --> 00:13:37,003
+suboptimal sti? Sett på pause om du vil.
+
+132
+00:13:37,003 --> 00:13:38,043
+Vi løser.
+
+133
+00:13:39,417 --> 00:13:47,737
+Del én. Bare kanter som rører B, avhenger av h av B. Kanten fra A: fem er høyst
+
+134
+00:13:47,737 --> 00:13:55,217
+én pluss h av B, så h av B er minst fire. Kanten til C: høyst to pluss fire,
+
+135
+00:13:55,217 --> 00:14:03,417
+seks. Kanten til D: høyst tre pluss tre, seks. Svar: fire til seks. Admissible
+
+136
+00:14:03,417 --> 00:14:06,377
+krever bare h av B høyst seks.
+
+137
+00:14:07,750 --> 00:14:15,990
+Del to. A gir B med én pluss h av B, og C med fire pluss fire, åtte. C først
+
+138
+00:14:15,990 --> 00:14:23,590
+krever én pluss h av B over åtte: h av B over sju. C gir E med ni pluss tre,
+
+139
+00:14:23,590 --> 00:14:31,510
+tolv. B før E krever én pluss h av B under tolv: under elleve. Svar: strengt
+
+140
+00:14:31,510 --> 00:14:36,150
+mellom sju og elleve. Ved sju eller elleve avgjør tie-break.
+
+141
+00:14:37,517 --> 00:14:46,797
+Del tre. Beste sti er A, B, D, F, G med kost sju. Med h av B lik tolv får B
+
+142
+00:14:46,797 --> 00:14:54,077
+tretten, og G via E med tolv tas ut før B. Suboptimalt. Med elleve står B og E
+
+143
+00:14:54,077 --> 00:15:00,357
+likt på tolv, og B vinner alfabetisk. B gir C billigere, så C åpnes igjen og
+
+144
+00:15:00,357 --> 00:15:09,117
+vinner over D. Så D, F og G med sju: optimalt. Svar: h av B over elleve.
+
+145
+00:15:10,483 --> 00:15:13,043
+Hvor møter du disse ideene igjen?
+
+146
+00:15:14,817 --> 00:15:21,377
+Uten h er A-stjerne uniform-cost search fra episode to. I episode ni, om spill,
+
+147
+00:15:21,377 --> 00:15:27,137
+er evalueringsfunksjonen samme idé som h: et anslag på hvor god en tilstand er.
+
+148
+00:15:27,137 --> 00:15:33,017
+Og i planlegging, episode atten, lages heuristikker med relaxed problems: ignore
+
+149
+00:15:33,017 --> 00:15:36,177
+preconditions og ignore delete lists.
+
+150
+00:15:37,550 --> 00:15:43,470
+Kort oppsummert: grådig søk ser bare h og kan gå i løkke eller velge dyrt.
+
+151
+00:15:43,470 --> 00:15:49,070
+A-stjerne legger til g og tester målet når det tas ut. Admissible h gir optimal
+
+152
+00:15:49,070 --> 00:15:55,070
+sti, og consistent h sparer gjenåpninger. Høyere h, uten å overestimere, gir
+
+153
+00:15:55,070 --> 00:16:01,150
+færre noder. Derfor ventet A-stjerne på C med elleve. Husker du bare én ting:
+
+154
+00:16:01,150 --> 00:16:04,510
+målet er ikke funnet før det tas ut av frontier.
+

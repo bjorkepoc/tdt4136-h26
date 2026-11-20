@@ -1,0 +1,620 @@
+1
+00:00:00,450 --> 00:00:06,663
+Sju regioner, tre farger, og naboer må ha ulik farge. Det er to tusen hundre og
+
+2
+00:00:06,663 --> 00:00:12,370
+åttisju fargelegginger. Søket fra kapittel tre ville sjekket dem én og én. Men
+
+3
+00:00:12,370 --> 00:00:17,410
+gjør South Australia blå, og ingen av de fem naboene kan være blå. For dem
+
+4
+00:00:17,410 --> 00:00:22,690
+faller to hundre og førtitre muligheter til trettito. Åttisju prosent borte, med
+
+5
+00:00:22,690 --> 00:00:23,570
+én regel.
+
+6
+00:00:24,950 --> 00:00:32,190
+Dette er constraint satisfaction problems, CSP. Du lærer å modellere, kjøre AC-3
+
+7
+00:00:32,190 --> 00:00:38,830
+i tabellform, se hva AC-3 ikke klarer, og løse en eksamensoppgave. Pensum er fem
+
+8
+00:00:38,830 --> 00:00:43,350
+punkt én og to, i den amerikanske utgaven seks punkt én og to.
+
+9
+00:00:44,650 --> 00:00:48,650
+Hvorfor en ny type problem? Søket virket jo.
+
+10
+00:00:50,350 --> 00:00:55,950
+I kapittel tre var en tilstand en svart boks. Søket kunne bare spørre: er dette
+
+11
+00:00:55,950 --> 00:01:02,670
+målet? En CSP åpner boksen. Tilstanden er variabler med verdier, en factored
+
+12
+00:01:02,670 --> 00:01:08,110
+representation. Da ser algoritmen hvilken regel som brytes, og kaster alle
+
+13
+00:01:08,110 --> 00:01:11,630
+utvidelser av en ulovlig delløsning på én gang.
+
+14
+00:01:12,983 --> 00:01:22,823
+En CSP har tre deler. X, variablene: regionene. D, domenene: rød, grønn og blå.
+
+15
+00:01:22,823 --> 00:01:29,903
+C, constraints: én per grense, ni i alt. En constraint er variablene den gjelder,
+
+16
+00:01:29,903 --> 00:01:35,383
+pluss en relasjon: en formel eller en liste over lovlige par. En løsning er
+
+17
+00:01:35,383 --> 00:01:40,343
+komplett og konsistent: alle har en verdi, og ingen regel brytes.
+
+18
+00:01:41,617 --> 00:01:47,617
+Variablene blir noder, og constraints blir kanter. Det er constraint-grafen.
+
+19
+00:01:47,617 --> 00:01:53,697
+Tasmania står alene. Hver kant gir to buer, én hver vei, og det er dem AC-3
+
+20
+00:01:53,697 --> 00:01:56,737
+jobber med. Her er bokas løsning.
+
+21
+00:01:58,117 --> 00:02:07,117
+Din tur. Hvor mange buer får AC-3 for Australia?
+
+22
+00:02:07,117 --> 00:02:14,277
+Atten: ni constraints, to retninger. Ta med deg: en CSP er søk som ser inn i
+
+23
+00:02:14,277 --> 00:02:15,317
+tilstanden.
+
+24
+00:02:16,683 --> 00:02:18,603
+Hvilke typer regler finnes?
+
+25
+00:02:20,383 --> 00:02:26,903
+En unary constraint gjelder én variabel: South Australia vil ikke være grønn. En
+
+26
+00:02:26,903 --> 00:02:33,663
+binary constraint binder to. Bare slike gir en vanlig graf. Between binder tre.
+
+27
+00:02:33,663 --> 00:02:38,623
+En global constraint binder vilkårlig mange, ikke nødvendigvis alle. Den
+
+28
+00:02:38,623 --> 00:02:45,183
+vanligste er Alldiff: alle ulike. Forelesning fire viser at Alldiff av tre er
+
+29
+00:02:45,183 --> 00:02:46,703
+tre ulikheter.
+
+30
+00:02:47,983 --> 00:02:53,463
+Job-shop scheduling ble ikke forelest, men er pensum. Hver monteringsoppgave er
+
+31
+00:02:53,463 --> 00:02:58,543
+en variabel med starttiden som verdi. Akselen tar ti minutter og må på før
+
+32
+00:02:58,543 --> 00:03:03,743
+hjulet: en precedence constraint. To aksler som deler verktøy, kan ikke
+
+33
+00:03:03,743 --> 00:03:09,663
+overlappe: en disjunctive constraint. Fristen: start pluss varighet er høyst
+
+34
+00:03:09,663 --> 00:03:10,463
+tretti.
+
+35
+00:03:11,817 --> 00:03:19,377
+Forelesning fire viste TWO pluss TWO er FOUR. Hver bokstav er et eget siffer,
+
+36
+00:03:19,377 --> 00:03:24,937
+som sju hundre og sekstifem pluss seg selv. Enerkolonnen gir O pluss O er R
+
+37
+00:03:24,937 --> 00:03:31,337
+pluss ti ganger menten. Menten er en auxiliary variable, C1. Slike regler tegnes
+
+38
+00:03:31,337 --> 00:03:35,417
+som en constraint hypergraph. Begge deler står bare i boka.
+
+39
+00:03:36,783 --> 00:03:42,143
+Alt så langt er absolutte regler. Boka har også preference constraints, som
+
+40
+00:03:42,143 --> 00:03:48,383
+foreleser ikke tok: professor R vil helst ha morgen. Ønsket blir en kostnad, og
+
+41
+00:03:48,383 --> 00:03:53,983
+du søker den billigste løsningen: et constrained optimization problem, COP.
+
+42
+00:03:55,283 --> 00:04:05,643
+Din tur. Hvilken type er O pluss O er R pluss ti ganger C1?
+
+43
+00:04:05,643 --> 00:04:13,043
+Ternary: O, R og C1. Hjelpevariabelen teller med. Ta med deg: velg variabler og
+
+44
+00:04:13,043 --> 00:04:14,403
+domener først.
+
+45
+00:04:15,783 --> 00:04:18,823
+Kan vi stryke umulige verdier før vi søker?
+
+46
+00:04:20,583 --> 00:04:26,343
+Det enkleste først. Vil South Australia ikke være grønn, stryker du grønn. Da er
+
+47
+00:04:26,343 --> 00:04:31,263
+variabelen node-consistent. Foreleser tok ikke dette, men det dukker opp på
+
+48
+00:04:31,263 --> 00:04:34,263
+eksamen, for eksempel som et krav om ordlengde.
+
+49
+00:04:35,550 --> 00:04:43,070
+Så til par. Regelen er Y lik X i andre, og begge er siffer. X lik null har
+
+50
+00:04:43,070 --> 00:04:50,670
+partner: null. X lik fire krever seksten, som ikke finnes. Fire til ni strykes.
+
+51
+00:04:50,670 --> 00:04:57,950
+Nå er X arc-consistent mot Y. Andre veien blir Y null, én, fire og ni.
+
+52
+00:04:59,317 --> 00:05:06,957
+Legg merke til retningen. Buen X mot Y rydder bare i X. Derfor to buer per
+
+53
+00:05:06,957 --> 00:05:12,037
+constraint. For Australia med tre farger gjør arc consistency ingenting: alle
+
+54
+00:05:12,037 --> 00:05:13,637
+verdier har partner.
+
+55
+00:05:14,917 --> 00:05:23,717
+Fra forelesning fire: X3 kan bare være blå, og X4 rød eller blå. Er buen X4 mot
+
+56
+00:05:23,717 --> 00:05:29,877
+X3 arc-consistent?
+
+57
+00:05:29,877 --> 00:05:36,837
+Nei. Blå i X4 har ingen partner. Stryk den. Motsatt vei er i orden.
+
+58
+00:05:38,217 --> 00:05:42,697
+Én stryking kan ødelegge en bue du har kontrollert. Hva da?
+
+59
+00:05:44,383 --> 00:05:51,223
+AC-3 har en kø med buer. I starten ligger alle der. Ta ut den første, X i mot X
+
+60
+00:05:51,223 --> 00:05:58,823
+j, og rydd X i. Det heter REVISE. Ingen endring? Gå videre. Krympet X i, legger
+
+61
+00:05:58,823 --> 00:06:04,543
+du alle buer inn mot X i tilbake, unntatt den fra X j. Blir et domene tomt,
+
+62
+00:06:04,543 --> 00:06:09,103
+svarer AC-3 false. Tom kø betyr true.
+
+63
+00:06:10,483 --> 00:06:17,443
+Hvorfor ikke buen fra X j? Verdiene du strøk, hadde ingen partner i X j, så X j
+
+64
+00:06:17,443 --> 00:06:22,803
+har ikke mistet noe. Men X k kan ha brukt dem, og må sjekkes på nytt. Og står
+
+65
+00:06:22,803 --> 00:06:26,243
+buen alt i køen, legges den ikke inn igjen.
+
+66
+00:06:27,617 --> 00:06:35,657
+Et eksempel. Tre oppgaver kan starte i time én, to eller tre. A må før B, og B
+
+67
+00:06:35,657 --> 00:06:44,737
+før C. Køen starter med fire buer. Rad én: A mot B. A lik tre har ingen større B.
+
+68
+00:06:44,737 --> 00:06:53,817
+Stryk. Rad to: B mot A. B lik én har ingen mindre A. Stryk. C mot B står alt i
+
+69
+00:06:53,817 --> 00:06:54,617
+køen.
+
+70
+00:06:55,850 --> 00:07:03,850
+Rad tre: B mot C. B lik tre har ingen større C. Stryk. Hvilke buer legges
+
+71
+00:07:03,850 --> 00:07:08,050
+tilbake?
+
+72
+00:07:08,050 --> 00:07:16,130
+Bare A mot B. Ikke C mot B, for det var C du ryddet mot. Rad fire: C mot B. Én
+
+73
+00:07:16,130 --> 00:07:23,490
+og to strykes. Rad fem: A mot B, som kom inn igjen. A blir én. Tom kø, og
+
+74
+00:07:23,490 --> 00:07:25,650
+problemet er løst uten søk.
+
+75
+00:07:27,017 --> 00:07:33,017
+To vanlige feil. Å legge tilbake buen fra X j også gir samme svar, men ekstra
+
+76
+00:07:33,017 --> 00:07:39,017
+rader. Å glemme buer som alt er brukt, gir feil svar: uten rad fem står A igjen
+
+77
+00:07:39,017 --> 00:07:40,377
+med én og to.
+
+78
+00:07:41,750 --> 00:07:48,790
+Hva koster det? Si c buer og høyst d verdier per domene. En bue kommer bare
+
+79
+00:07:48,790 --> 00:07:55,190
+tilbake når et domene krymper, altså høyst d ganger. Hver REVISE sjekker d
+
+80
+00:07:55,190 --> 00:08:00,390
+ganger d par. Til sammen blir det O av c d i tredje.
+
+81
+00:08:01,750 --> 00:08:11,550
+Din tur. Hva om C bare kan starte i time én eller to?
+
+82
+00:08:11,550 --> 00:08:18,430
+I rad tre må B være under én eller to. B blir tom, og algoritmen svarer false.
+
+83
+00:08:18,430 --> 00:08:25,710
+Ta med deg regelen: endres D av X, legg tilbake alle Z mot X, unntatt Y mot X.
+
+84
+00:08:27,083 --> 00:08:31,483
+Tom kø og ingen tomme domener. Finnes en løsning da?
+
+85
+00:08:33,183 --> 00:08:39,423
+Ikke nødvendigvis. Prøv Australia med bare rød og blå. Alle buer har partner, så
+
+86
+00:08:39,423 --> 00:08:44,863
+AC-3 stryker ingenting. Men Western Australia, Northern Territory og South
+
+87
+00:08:44,863 --> 00:08:51,663
+Australia er naboer parvis. Tre ulike med to farger går ikke. AC-3 ser bare par.
+
+88
+00:08:52,950 --> 00:08:58,710
+Path consistency ser på tre. Den står bare i boka. Hvert lovlig par må kunne
+
+89
+00:08:58,710 --> 00:09:07,430
+utvides med en verdi for den tredje. Ta WA og SA mot NT. Rød-blå: NT har ingen
+
+90
+00:09:07,430 --> 00:09:13,790
+farge igjen. Stryk paret. Blå-rød: det samme. Ingen par igjen, altså ingen
+
+91
+00:09:13,790 --> 00:09:14,710
+løsning.
+
+92
+00:09:16,083 --> 00:09:22,163
+Det generaliseres til k-consistency: enhver lovlig tilordning til k minus én
+
+93
+00:09:22,163 --> 00:09:30,083
+variabler kan utvides til en k-te. Én er node, to er arc, tre er path. Strongly
+
+94
+00:09:30,083 --> 00:09:36,323
+k betyr alle nivåene opp til k. Strongly n gir en løsning uten å angre, men tar
+
+95
+00:09:36,323 --> 00:09:41,763
+eksponentiell tid i verste fall. I praksis brukes to, av og til tre.
+
+96
+00:09:43,050 --> 00:09:52,250
+Din tur. Er en tre-konsistent CSP alltid arc-consistent?
+
+97
+00:09:52,250 --> 00:09:58,610
+Nei, det krever strongly tre. Ta med deg: arc consistency alene garanterer ingen
+
+98
+00:09:58,610 --> 00:09:59,530
+løsning.
+
+99
+00:10:00,883 --> 00:10:03,843
+Kan en regel se mer enn to variabler?
+
+100
+00:10:05,617 --> 00:10:11,777
+Ja. En Alldiff med m variabler og bare n verdier, der m er større enn n, er
+
+101
+00:10:11,777 --> 00:10:18,897
+umulig. Boka setter Western Australia og New South Wales til rød. AC-3 lar tre
+
+102
+00:10:18,897 --> 00:10:25,457
+naboer stå med grønn og blå, uten feil. Tre variabler, to verdier: umulig.
+
+103
+00:10:25,457 --> 00:10:31,297
+Metoden: fjern entydige variabler, stryk verdien hos de andre, og gjenta.
+
+104
+00:10:32,583 --> 00:10:38,263
+Store tallproblemer har for mange verdier å liste. Da lagrer du bare grensene:
+
+105
+00:10:38,263 --> 00:10:44,103
+bounds propagation, også bare i boka. To fly har plass til hundre og sekstifem
+
+106
+00:10:44,103 --> 00:10:50,023
+og tre hundre og åttifem. Sammen skal de ta fire hundre og tjue. Da må fly én ta
+
+107
+00:10:50,023 --> 00:10:54,343
+minst trettifem, og fly to minst to hundre og femtifem.
+
+108
+00:10:55,717 --> 00:11:02,637
+Sudoku er en CSP. Rutene er variabler. Rader, kolonner og bokser er tjuesju
+
+109
+00:11:02,637 --> 00:11:07,837
+Alldiff. Forelesning fire og tretten bruker fire ganger fire, med fire gitte
+
+110
+00:11:07,837 --> 00:11:08,677
+tall.
+
+111
+00:11:10,050 --> 00:11:16,890
+Kjør AC-3 én gang før søket. Hjørnet oppe til venstre mister fire og én fra
+
+112
+00:11:16,890 --> 00:11:23,090
+raden, og tre fra kolonnen. Igjen står to. Slik sprer det seg. Alle seksten
+
+113
+00:11:23,090 --> 00:11:28,610
+ruter blir entydige, som på sliden. Det går bare for lette brett. Vanskelige
+
+114
+00:11:28,610 --> 00:11:31,090
+krever søk, i neste episode.
+
+115
+00:11:32,450 --> 00:11:41,090
+Din tur. Hvor mange Alldiff har fire ganger fire-brettet?
+
+116
+00:11:41,090 --> 00:11:46,370
+Tolv. Ta med deg: global constraints ser mer enn par.
+
+117
+00:11:47,650 --> 00:11:50,290
+Hvordan blir en tekst til en CSP?
+
+118
+00:11:52,050 --> 00:11:59,250
+Fire spørsmål. Hva skal bestemmes? Variablene. Hvilke verdier? Domenene. Hvilke
+
+119
+00:11:59,250 --> 00:12:06,090
+regler? Constraints, gjerne Alldiff. Og gir hver løsning ett svar? Ofte må du
+
+120
+00:12:06,090 --> 00:12:11,170
+bytte variabel og verdi. I zebra-gåten fra forelesning fire er husnumrene
+
+121
+00:12:11,170 --> 00:12:12,130
+verdiene.
+
+122
+00:12:13,483 --> 00:12:21,043
+Eksamen 2025, oppgave tre. Tre hus i rødt, grønt og blått. Alice bor til høyre
+
+123
+00:12:21,043 --> 00:12:33,723
+for det røde, Bob i det blå, Carrie i hus to. Hva er variablene og domenene?
+
+124
+00:12:33,723 --> 00:12:39,643
+Seks variabler, tre personer og tre farger, alle med husnummer én til tre. Alice
+
+125
+00:12:39,643 --> 00:12:46,523
+er Red pluss én, Bob er Blue, Carrie er to, pluss to Alldiff. Eneste løsning:
+
+126
+00:12:46,523 --> 00:12:49,883
+Bob blått, Carrie rødt, Alice grønt.
+
+127
+00:12:51,250 --> 00:12:57,010
+En ekte eksamensoppgave: kont-eksamen august tjuetjueen, problem tre.
+
+128
+00:12:58,783 --> 00:13:06,263
+Et kryssord og nitten ord. Fire plasser, V1 til V4. Ordlengden er en unary
+
+129
+00:13:06,263 --> 00:13:13,103
+constraint, og node consistency gir domenene: fire ord, fem ord, og ti for V2 og
+
+130
+00:13:13,103 --> 00:13:14,063
+V4.
+
+131
+00:13:15,417 --> 00:13:21,497
+Der ordene krysser, får du binære constraints. Tredje bokstav i V1 er første i
+
+132
+00:13:21,497 --> 00:13:31,737
+V2. Femte i V1 er første i V3. Og V4 krysser V2 og V3. Køen starter sortert. V1
+
+133
+00:13:31,737 --> 00:13:46,257
+V2 betyr: rydd V1 mot V2. Prøv selv først. Pause videoen.
+
+134
+00:13:46,257 --> 00:13:47,177
+Klar?
+
+135
+00:13:48,550 --> 00:13:58,177
+Rad én: V1 mot V2. Ingenting strykes. Rad to: V1 mot V3. Femte bokstav må starte
+
+136
+00:13:58,177 --> 00:14:06,950
+et ord på tre, så happy og hoses ryker. Rad tre: V2 mot V1. Fem ord ryker. Rad
+
+137
+00:14:06,950 --> 00:14:15,990
+fire: V2 mot V4. Live og talk ryker, og V1 mot V2 legges bakerst. Rad fem: V3
+
+138
+00:14:15,990 --> 00:14:19,030
+mot V1. Ant og ten ryker.
+
+139
+00:14:20,383 --> 00:14:28,943
+Rad seks endrer ingenting. Rad sju: V4 mot V2. Fem ord ryker, og V3 mot V4
+
+140
+00:14:28,943 --> 00:14:36,943
+kommer tilbake. Rad åtte: V4 mot V3. Loom og save ryker, og V2 mot V4 kommer
+
+141
+00:14:36,943 --> 00:14:40,943
+tilbake. De tre siste radene endrer ingenting.
+
+142
+00:14:42,317 --> 00:14:48,277
+AC-3 løste ikke kryssordet. Tre løsninger passer fortsatt, og søket i neste
+
+143
+00:14:48,277 --> 00:14:53,197
+episode må velge. Fasiten legger også tilbake den omvendte buen og får tolv
+
+144
+00:14:53,197 --> 00:14:59,997
+rader, men like domener. Og 2025 oppgave sju, tree-structured CSP, er ikke
+
+145
+00:14:59,997 --> 00:15:01,117
+pensum i år.
+
+146
+00:15:02,483 --> 00:15:04,723
+Hvor dukker ideene opp igjen?
+
+147
+00:15:06,483 --> 00:15:13,363
+Factored representation er fra kapittel to, E01. Backtracking er dybde-først-søk,
+
+148
+00:15:13,363 --> 00:15:21,683
+E02 og E07. Min-conflicts er lokalt søk, E04. Forelesning fem fargela kart med
+
+149
+00:15:21,683 --> 00:15:27,883
+resolusjon, E12. Og en plan med fast lengde kan kodes som en CSP, i kapittel
+
+150
+00:15:27,883 --> 00:15:28,683
+elleve.
+
+151
+00:15:29,850 --> 00:15:36,370
+Hele kjeden: variabler, domener og constraints. Node og arc consistency stryker
+
+152
+00:15:36,370 --> 00:15:41,810
+det umulige. Endres et domene, legg alle buer inn mot det tilbake, unntatt den
+
+153
+00:15:41,810 --> 00:15:47,290
+du ryddet mot. Men arc consistency alene garanterer ingen løsning. Husker du
+
+154
+00:15:47,290 --> 00:15:52,690
+South Australia? Hvis du bare husker én ting: constraints kaster store deler av
+
+155
+00:15:52,690 --> 00:15:54,410
+søkerommet før du søker.
+

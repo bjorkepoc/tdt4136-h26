@@ -1,0 +1,52 @@
+;FFMETADATA1
+title=CSP 1: modellering og constraint propagation
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=44200
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=44200
+END=136234
+title=Hvorfor CSP?
+[CHAPTER]
+TIMEBASE=1/1000
+START=136233
+END=255333
+title=Hva kan en constraint være?
+[CHAPTER]
+TIMEBASE=1/1000
+START=255333
+END=337767
+title=Node og arc consistency
+[CHAPTER]
+TIMEBASE=1/1000
+START=337767
+END=506633
+title=AC-3 i tabellform
+[CHAPTER]
+TIMEBASE=1/1000
+START=506633
+END=600433
+title=Arc-konsistent er ikke nok
+[CHAPTER]
+TIMEBASE=1/1000
+START=600433
+END=707200
+title=Global constraints og Sudoku
+[CHAPTER]
+TIMEBASE=1/1000
+START=707200
+END=770800
+title=Modellering
+[CHAPTER]
+TIMEBASE=1/1000
+START=770800
+END=902034
+title=Eksamen: AC-3-tabell
+[CHAPTER]
+TIMEBASE=1/1000
+START=902033
+END=960233
+title=Koblinger og oppsummering

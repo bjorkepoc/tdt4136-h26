@@ -1,0 +1,600 @@
+1
+00:00:00,450 --> 00:00:05,890
+To tyver avhøres hver for seg. Vitner du mot den andre, går du fri, og han får
+
+2
+00:00:05,890 --> 00:00:12,610
+ti år. Vitner begge, får begge fem. Tier begge, får de ett år hver. Begge tenker
+
+3
+00:00:12,610 --> 00:00:18,450
+riktig, og likevel får begge fem år. Hvordan kan smarte valg gi et så dumt
+
+4
+00:00:18,450 --> 00:00:19,250
+resultat?
+
+5
+00:00:20,550 --> 00:00:25,390
+Etter denne episoden finner du likevekter i en matrise, regner blandede
+
+6
+00:00:25,390 --> 00:00:30,270
+likevekter med brøker uten den klassiske feilen, og forklarer når fangene kan
+
+7
+00:00:30,270 --> 00:00:36,310
+samarbeide. Dette er seksjon sytten punkt to, én til tre, som er atten punkt to
+
+8
+00:00:36,310 --> 00:00:41,350
+i den amerikanske utgaven. Resten av sytten punkt to er ikke pensum.
+
+9
+00:00:42,650 --> 00:00:46,330
+Hvordan skriver du ned et spill der alle velger samtidig?
+
+10
+00:00:48,083 --> 00:00:55,523
+Et normal form game har tre deler. Spillere, her to fanger. Handlinger: testify,
+
+11
+00:00:55,523 --> 00:01:01,403
+å vitne, eller refuse, å tie. Og en payoff-funksjon som gir hver spiller en
+
+12
+00:01:01,403 --> 00:01:07,563
+nytte for hver kombinasjon. Alt står i én payoff-matrise. Spiller én velger rad
+
+13
+00:01:07,563 --> 00:01:12,563
+og får tallet til venstre. Spiller to velger kolonne og får tallet til høyre.
+
+14
+00:01:13,850 --> 00:01:20,810
+Se det fra spiller én. Vitner den andre, gir testify minus fem og refuse minus
+
+15
+00:01:20,810 --> 00:01:27,330
+ti. Tier den andre, gir testify null og refuse minus én. Testify er bedre
+
+16
+00:01:27,330 --> 00:01:33,650
+uansett. Testify strictly dominates refuse, og er en dominant strategy. Spiller
+
+17
+00:01:33,650 --> 00:01:39,610
+to tenker likt, så begge vitner: en dominant strategy equilibrium. Boka har også
+
+18
+00:01:39,610 --> 00:01:46,090
+weak: aldri dårligere, og bedre minst én gang. Forelesningen brukte bare strict.
+
+19
+00:01:47,450 --> 00:01:59,210
+Din tur. Rad A gir fem, to og sju. Rad B gir fem, én og seks.
+
+20
+00:01:59,210 --> 00:02:05,050
+A dominerer B svakt. I første kolonne er de like, og da holder ikke strict.
+
+21
+00:02:06,417 --> 00:02:10,097
+Hva gjør du når ingen har en dominant strategi?
+
+22
+00:02:11,850 --> 00:02:17,930
+Spillet er fra forelesning ti. Ingen har en dominant strategi. Men vi kan stryke
+
+23
+00:02:17,930 --> 00:02:22,970
+det ingen rasjonell spiller ville valgt, én strategi om gangen: iterated
+
+24
+00:02:22,970 --> 00:02:26,330
+elimination of strictly dominated strategies.
+
+25
+00:02:27,683 --> 00:02:33,563
+Start med spiller to, og se bare på tallene til høyre. Middle gir fire, tre og
+
+26
+00:02:33,563 --> 00:02:41,603
+åtte. Right gir tre, to og minus én. Right taper overalt, så den strykes.
+
+27
+00:02:41,603 --> 00:02:50,243
+Spiller én: Middle gir fire og tre, Down minus én og to. Down ut. Spiller to:
+
+28
+00:02:50,243 --> 00:02:57,843
+Left gir tre og én, Middle fire og tre. Left ut. Til slutt slår Middle Up, tre
+
+29
+00:02:57,843 --> 00:03:02,403
+mot én. Igjen står Middle, Middle, med tre til hver.
+
+30
+00:03:03,783 --> 00:03:11,383
+Din tur. Kunne du strøket Down først?
+
+31
+00:03:11,383 --> 00:03:17,503
+Nei. I Right-kolonnen gir Down åtte og Middle seks. Først når Right er borte, er
+
+32
+00:03:17,503 --> 00:03:20,263
+Down dominert. Derfor iterated.
+
+33
+00:03:21,617 --> 00:03:27,297
+Spiller rekkefølgen noen rolle? Ikke når dominansen er strict. Er en strategi
+
+34
+00:03:27,297 --> 00:03:32,017
+dårligere i alle kolonner, er den fortsatt dårligere når kolonner forsvinner.
+
+35
+00:03:32,017 --> 00:03:37,537
+Den blir aldri reddet, bare strøket senere. Alle rekkefølger ender likt.
+
+36
+00:03:38,917 --> 00:03:46,917
+Med weak kan svaret endre seg. Her dominerer M både T og B svakt. Stryk T først:
+
+37
+00:03:46,917 --> 00:03:54,117
+da dominerer R svakt L, og du ender på to og én. Stryk B først: da dominerer L
+
+38
+00:03:54,117 --> 00:04:00,277
+svakt R, og du ender på én og én. Grunnen er likhetene. Forsvinner kolonnen der
+
+39
+00:04:00,277 --> 00:04:05,317
+én var bedre, blir de to like og overlever begge. Stryk derfor bare strictly
+
+40
+00:04:05,317 --> 00:04:09,397
+dominerte strategier, med mindre oppgaven ber om weak.
+
+41
+00:04:10,750 --> 00:04:15,150
+Hvilke utfall er stabile når ingen strategi dominerer?
+
+42
+00:04:16,917 --> 00:04:21,957
+En Nash equilibrium er et utfall der ingen tjener på å bytte alene, så lenge den
+
+43
+00:04:21,957 --> 00:04:28,037
+andre holder fast. Begge spiller da en best response, et beste svar på den andre.
+
+44
+00:04:28,037 --> 00:04:32,837
+I hver kolonne ringer du inn spiller éns beste tall. I hver rad ringer du inn
+
+45
+00:04:32,837 --> 00:04:39,317
+spiller tos beste. Celler med to ringer er Nash-likevekter. Her bare testify,
+
+46
+00:04:39,317 --> 00:04:40,437
+testify.
+
+47
+00:04:41,817 --> 00:04:47,817
+Men er minus fem til hver et godt utfall? Et utfall er Pareto optimal hvis du
+
+48
+00:04:47,817 --> 00:04:53,897
+ikke kan gjøre én bedre uten å gjøre en annen dårligere. Refuse, refuse er bedre
+
+49
+00:04:53,897 --> 00:05:00,057
+for begge, så likevekten er ikke Pareto optimal. Utilitarian social welfare er
+
+50
+00:05:00,057 --> 00:05:05,697
+summen av nyttene, og den er størst i refuse, refuse. Foreleser tok ikke dette,
+
+51
+00:05:05,697 --> 00:05:08,377
+men det står i boka, og eksamen spør om det.
+
+52
+00:05:09,750 --> 00:05:15,590
+Battle of the Sexes fra forelesningen: spiller én vil helst på film, spiller to
+
+53
+00:05:15,590 --> 00:05:21,030
+i operaen, men begge vil være sammen. Ring inn beste svar, og to celler får to
+
+54
+00:05:21,030 --> 00:05:27,030
+ringer. Et spill kan ha flere likevekter. Hvilken velger de? Boka foreslår focal
+
+55
+00:05:27,030 --> 00:05:33,110
+points: et utfall som peker seg ut. Gir én likevekt ti til hver og den andre én,
+
+56
+00:05:33,110 --> 00:05:37,670
+er ti det åpenbare valget. Focal points står bare i boka.
+
+57
+00:05:38,950 --> 00:05:44,950
+Din tur, fra eksamen tjue tjuefem, oppgave fire. Hvor mange Nash-likevekter har
+
+58
+00:05:44,950 --> 00:05:51,470
+spillet?
+
+59
+00:05:51,470 --> 00:05:58,990
+To: opp, venstre og ned, høyre. I ned, høyre får ingen mer ved å bytte alene.
+
+60
+00:05:58,990 --> 00:06:03,710
+Ned er bare svakt dominert. Stryker du den, mister du en likevekt.
+
+61
+00:06:05,083 --> 00:06:07,563
+Hva om ingen celle er stabil?
+
+62
+00:06:09,317 --> 00:06:15,117
+Two-finger Morra, fra boka og forelesningen. Begge viser én eller to fingre
+
+63
+00:06:15,117 --> 00:06:21,717
+samtidig. Spiller én vinner på partall, og spillet er zero-sum. I hver celle vil
+
+64
+00:06:21,717 --> 00:06:27,077
+én av dem bytte, så det finnes ingen ren likevekt. Da må de trekke tilfeldig, en
+
+65
+00:06:27,077 --> 00:06:33,477
+mixed strategy. Men hvordan? Si at spiller to blander halvt om halvt. Da gir to
+
+66
+00:06:33,477 --> 00:06:37,317
+fingre spiller én pluss en halv, og hun utnytter det.
+
+67
+00:06:38,617 --> 00:06:43,977
+Spiller to må gjøre spiller én likegyldig, så hun ikke kan utnyttes. Tegn
+
+68
+00:06:43,977 --> 00:06:49,337
+spiller éns gevinst for begge handlingene hennes. Med pi to lik en halv er to
+
+69
+00:06:49,337 --> 00:06:55,817
+fingre best. Linjene krysser der de to forventningene er like. Det gir pi to lik
+
+70
+00:06:55,817 --> 00:07:00,937
+sju tolvdeler. Der får spiller én minus en tolvdel, hva hun enn gjør.
+
+71
+00:07:02,317 --> 00:07:07,677
+Spiller éns sannsynlighet finner du likt, men med spiller tos tall. Hun gjør
+
+72
+00:07:07,677 --> 00:07:13,677
+spiller to likegyldig, og pi én blir også sju tolvdeler. Spillets verdi er minus
+
+73
+00:07:13,677 --> 00:07:19,677
+en tolvdel for spiller én. Forventningen er en sjansenode, som i expectimax.
+
+74
+00:07:21,050 --> 00:07:26,050
+Her gjør mange feil. Du tror kanskje at spiller én velger sannsynligheten som
+
+75
+00:07:26,050 --> 00:07:31,530
+gir henne mest. Se Battle of the Sexes. Når spiller to blander riktig, er
+
+76
+00:07:31,530 --> 00:07:37,930
+spiller éns gevinst flat: to tredjedeler, uansett pi én. Egen gevinst kan altså
+
+77
+00:07:37,930 --> 00:07:43,770
+ikke bestemme pi én. Det gjør kravet om at spiller to er likegyldig. Med spiller
+
+78
+00:07:43,770 --> 00:07:51,050
+tos tall: pi én er lik to ganger én minus pi én, så pi én er to tredjedeler. Med
+
+79
+00:07:51,050 --> 00:07:57,210
+egne tall får du en tredjedel, og det er feil. Pi to blir en tredjedel, og begge
+
+80
+00:07:57,210 --> 00:07:59,130
+får bare to tredjedeler.
+
+81
+00:08:00,483 --> 00:08:06,883
+Og fangens dilemma? Likningen gir pi to lik minus en firedel, utenfor null til
+
+82
+00:08:06,883 --> 00:08:14,123
+én. Linjene krysser aldri, fordi testify alltid er bedre. Ingen blandet likevekt.
+
+83
+00:08:14,123 --> 00:08:19,123
+Nash viste at alle endelige spill har minst én likevekt, men noen ganger bare
+
+84
+00:08:19,123 --> 00:08:20,083
+blandet.
+
+85
+00:08:21,450 --> 00:08:27,930
+Boka løser Morra med von Neumanns maximin. Gjør spillet tur-basert: spiller én
+
+86
+00:08:27,930 --> 00:08:33,077
+avslører strategien sin først. Da tar spiller to alltid den laveste linja.
+
+87
+00:08:33,077 --> 00:08:38,250
+Spiller én velger toppen av den nedre kanten: sju tolvdeler, verdi minus en
+
+88
+00:08:38,250 --> 00:08:43,370
+tolvdel. Går spiller to først, blir verdien den samme. Von Neumann viste at alle
+
+89
+00:08:43,370 --> 00:08:48,330
+tomanns zero-sum-spill har en slik maximin equilibrium. Forelesningen sier at
+
+90
+00:08:48,330 --> 00:08:53,930
+for zero-sum er blandet Nash det samme. Metoden er minimax fra kapittel seks,
+
+91
+00:08:53,930 --> 00:08:55,050
+episode åtte.
+
+92
+00:08:56,417 --> 00:09:03,057
+Din tur, eksamen tjue tjuefire, spørsmål tolv: hjortejakt. Finn pi én i den
+
+93
+00:09:03,057 --> 00:09:14,497
+blandede likevekten. Sett gjerne på pause.
+
+94
+00:09:14,497 --> 00:09:21,537
+En firedel. Spiller to skal være likegyldig: fem pi én er lik to pi én pluss én
+
+95
+00:09:21,537 --> 00:09:22,897
+minus pi én.
+
+96
+00:09:24,250 --> 00:09:27,770
+Kan fangene lære å samarbeide hvis de møtes igjen?
+
+97
+00:09:29,550 --> 00:09:35,390
+Fangene spiller ti runder, og begge vet det. Start i siste runde. Der finnes
+
+98
+00:09:35,390 --> 00:09:40,950
+ingen framtid å beskytte, så begge vitner. Da er runde ti avgjort uansett, og
+
+99
+00:09:40,950 --> 00:09:45,870
+runde ni blir et vanlig engangsspill. Slik fortsetter det bakover, helt til
+
+100
+00:09:45,870 --> 00:09:52,230
+første runde. Det heter backward induction. Med fast, endelig og kjent antall
+
+101
+00:09:52,230 --> 00:09:54,430
+runder vitner begge hver gang.
+
+102
+00:09:55,783 --> 00:10:02,263
+Din tur, eksamen tjue tjuefire, spørsmål tretten. Spillet spilles to runder. Hva
+
+103
+00:10:02,263 --> 00:10:08,463
+spiller de?
+
+104
+00:10:08,463 --> 00:10:14,103
+Ned og høyre i begge runder. De er dominante, og andre runde er et engangsspill,
+
+105
+00:10:14,103 --> 00:10:15,823
+så første blir det også.
+
+106
+00:10:17,183 --> 00:10:23,263
+Hva om spillet aldri slutter? Da kan du ikke bare summere: både alltid tie og
+
+107
+00:10:23,263 --> 00:10:29,543
+alltid vitne gir minus uendelig. Forelesningen ganger runde t med delta opphøyd
+
+108
+00:10:29,543 --> 00:10:34,783
+i t, der delta er mellom null og én. Med liten delta teller bare de første
+
+109
+00:10:34,783 --> 00:10:40,703
+rundene. Boka bruker i stedet limit of means, gjennomsnittet i det lange løp.
+
+110
+00:10:42,083 --> 00:10:47,123
+Grim trigger tier til motstanderen vitner én gang, og vitner for alltid etter
+
+111
+00:10:47,123 --> 00:10:53,043
+det. Lønner det seg å svike en grim trigger? Samarbeider du, får du minus én
+
+112
+00:10:53,043 --> 00:10:59,603
+hver runde: minus én delt på én minus delta. Svikter du, får du null nå, og
+
+113
+00:10:59,603 --> 00:11:05,523
+minus fem i hver runde etterpå: minus fem delta delt på én minus delta.
+
+114
+00:11:05,523 --> 00:11:11,176
+Samarbeid lønner seg når minus én er minst like stort som minus fem delta, altså
+
+115
+00:11:11,176 --> 00:11:13,683
+når delta er minst en femtedel.
+
+116
+00:11:15,050 --> 00:11:21,570
+Se det som en handel. Svik gir én ekstra nå: null i stedet for minus én. Men det
+
+117
+00:11:21,570 --> 00:11:28,050
+koster fire i hver runde etterpå, diskontert. Jo større delta, jo dyrere straff.
+
+118
+00:11:28,050 --> 00:11:33,610
+De møtes nøyaktig i en femtedel, som i forelesningen. Over det er grim trigger
+
+119
+00:11:33,610 --> 00:11:36,170
+mot grim trigger en Nash-likevekt.
+
+120
+00:11:37,550 --> 00:11:43,750
+Tit-for-tat tier først, og kopierer så motstanderens forrige trekk. Den tilgir:
+
+121
+00:11:43,750 --> 00:11:49,550
+etter ett svik straffer den én gang og går tilbake. Den vant Axelrods turnering.
+
+122
+00:11:49,550 --> 00:11:55,510
+I boka gir grim mot grim minus én i limit of means, og ingen tjener på å avvike.
+
+123
+00:11:55,510 --> 00:12:00,590
+Det er et eksempel på folk theorem, som bare står i boka: utfall der alle får
+
+124
+00:12:00,590 --> 00:12:05,190
+minst det de kan sikre seg selv, kan holdes oppe som likevekt. Ukjent antall
+
+125
+00:12:05,190 --> 00:12:09,550
+runder virker likt, for da finnes ingen siste runde å regne bakover fra.
+
+126
+00:12:10,850 --> 00:12:14,370
+Klarer du en hel spillteorioppgave på ti poeng?
+
+127
+00:12:16,150 --> 00:12:23,430
+Eksamen tjue tjuetre, oppgave fem, ti poeng. USA og Kina kan akselerere, holde
+
+128
+00:12:23,430 --> 00:12:29,870
+tempoet eller bremse AGI. Finnes en dominant strategi? Løs med iterert
+
+129
+00:12:29,870 --> 00:12:35,550
+eliminering, finn Nash-likevekten og utfallet med størst social welfare. Sett på
+
+130
+00:12:35,550 --> 00:12:43,110
+pause og prøv selv.
+
+131
+00:12:43,110 --> 00:12:43,990
+Klar?
+
+132
+00:12:45,283 --> 00:12:52,563
+Dominant strategi? Nei. Accelerate er best for USA, unntatt når Kina bremser: da
+
+133
+00:12:52,563 --> 00:12:58,163
+gir Maintain ti mot ni. Hinder er strictly dominert for begge, så rad og kolonne
+
+134
+00:12:58,163 --> 00:13:04,163
+tre strykes. Nå er Maintain dominert av Accelerate, for begge. Igjen står
+
+135
+00:13:04,163 --> 00:13:09,950
+Accelerate, Accelerate. Fasiten stryker begge Hinder i samme steg. Det går fint,
+
+136
+00:13:09,950 --> 00:13:12,723
+fordi rekkefølgen ikke betyr noe ved strict.
+
+137
+00:13:14,017 --> 00:13:20,497
+Nash-likevekt? Ring inn beste svar i hele matrisen. Bare Accelerate, Accelerate
+
+138
+00:13:20,497 --> 00:13:27,297
+får to ringer. Social welfare: summer hver celle. Størst er Maintain, Maintain,
+
+139
+00:13:27,297 --> 00:13:33,857
+med fjorten. Fangens dilemma igjen: likevekten seks, seks er ikke Pareto optimal,
+
+140
+00:13:33,857 --> 00:13:36,257
+for sju, sju er bedre for begge.
+
+141
+00:13:37,617 --> 00:13:40,257
+Hvor møter du disse ideene igjen?
+
+142
+00:13:42,017 --> 00:13:47,377
+Kapittel to, episode én: multiagent-miljøer, og at tilfeldig oppførsel kan være
+
+143
+00:13:47,377 --> 00:13:54,217
+rasjonelt. Kapittel seks, episode åtte: zero-sum og minimax, som maximin bygger
+
+144
+00:13:54,217 --> 00:14:00,657
+på. Episode ni: expectimax regner forventning som her, og regret matching, der
+
+145
+00:14:00,657 --> 00:14:03,297
+snittstrategien går mot en Nash-likevekt.
+
+146
+00:14:04,650 --> 00:14:10,410
+Hele kjeden: skriv spillet som matrise, stryk det som er strictly dominert, og
+
+147
+00:14:10,410 --> 00:14:15,850
+ring inn beste svar. Finnes ingen ren likevekt, bland slik at motstanderen blir
+
+148
+00:14:15,850 --> 00:14:20,810
+likegyldig. I gjentatte spill holder trusselen om straff samarbeidet oppe, hvis
+
+149
+00:14:20,810 --> 00:14:26,303
+framtiden teller nok. Fangene i starten vitnet fordi de bare møttes én gang.
+
+150
+00:14:26,303 --> 00:14:31,770
+Hvis du bare husker én ting: en likevekt er stabil, ikke nødvendigvis god.
+

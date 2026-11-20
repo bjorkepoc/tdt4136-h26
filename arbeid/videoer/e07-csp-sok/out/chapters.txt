@@ -1,0 +1,42 @@
+;FFMETADATA1
+title=CSP 2: backtracking, heuristikker og min-conflicts
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=51233
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=51233
+END=165134
+title=Hvorfor backtracking?
+[CHAPTER]
+TIMEBASE=1/1000
+START=165133
+END=306800
+title=Hvem først, og hvilken verdi?
+[CHAPTER]
+TIMEBASE=1/1000
+START=306800
+END=440267
+title=Håndsporing: Australia
+[CHAPTER]
+TIMEBASE=1/1000
+START=440267
+END=571767
+title=Forward checking mot MAC
+[CHAPTER]
+TIMEBASE=1/1000
+START=571767
+END=774867
+title=Lokalt søk: min-conflicts
+[CHAPTER]
+TIMEBASE=1/1000
+START=774867
+END=884933
+title=Eksamensoppgave
+[CHAPTER]
+TIMEBASE=1/1000
+START=884933
+END=957533
+title=Koblinger og oppsummering

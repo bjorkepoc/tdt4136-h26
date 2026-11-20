@@ -1,0 +1,1143 @@
+{
+ "id": "a1",
+ "ep": "A1",
+ "tittel": "Assignment 1: Search Algorithms",
+ "kilde": "../materiale/Files/Assignment_1.pdf",
+ "om": "Responsible for assignments this year: Aleksandra Jekic<br>\nAssignment created by Xavier F.C. Sánchez-Díaz with help from Aleksandra Jekic\n\n26th August 2026<br>\nDeadline: 11.09.2026, 23:59 hrs\n\n### Overview\n\nIn this assignment, you will experiment with the search algorithms we covered in the lecture. This is an exercise set where you will manually generate the list of expanded nodes and get a feel of the differences between various informed and uninformed search strategies.\n\nThe assignment consists of eight tasks divided into three parts. The first part is uninformed search, the second part will cover informed search, and the third part will focus on A∗ search, admissibility and consistency. You need to make a passable effort on at least two parts to get this assignment approved. Each section specifies a set of required tasks you must do, either on your own or teaming up with at most one teammate.\n\n### 1 The Problem: Speedrunning Routes\n\nAre you a gamer? Some gamers push their abilities to the limit by completing the game as fast as possible. Here you will look for possible routes to complete a map from Doom, the classic shooter game from 1993, aiming to find the fastest route to the exit. Although modelling the map is an interesting way to practice our skills in data structures and mathematics, we have done that for you. We have conveniently provided a visualisation of this abstraction in Figure 1.\n\nIn Figure 1, every vertex represents an interest point, and every edge is an action (or movement). All actions have a cost of 1, but as you may notice, some of the edges have obstacles and thus the cost of traversing them will increase. Table 1 includes the costs for each obstacle. The starting state is A, marked with an arrow. The goal state is F, marked with a double ring. The heuristic value h(n) for each state n is inside the floating circle, so h(A) = 25 and h(I) = 22.\n\n*Figure 1: An abstract representation of E1M8: Phobos Anomaly. For simplicity, the states have been labelled from A to I so you can refer to them in your solutions.*\n\nTable 1: Costs of actions in the graph.\n\n| Obstacle | Cost |\n|---|---|\n| Stairs | 1 |\n| Lift | 2 |\n\n### 2.1.1 Assumptions\n\n- Follow the pseudocode from the book:\n  - For BFS, use Breadth-First-Search from Figure 3.9 (p. 95)\n  - For DFS and UCS (and in fact, for all other algorithms in Parts Two and Three), use Best-First-Search from Figure 3.7 (p. 91) with their appropriate heuristic functions and data structures.\n- Process (or generate) nodes in alphabetical order\n  - So, C gets processed before H when B gets expanded.\n- In case of a tie, use alphabetical order as a tie breaker\n  - For example, if both C and D are equally good candidates for expansion, C should be expanded first.\n\n### 3 Deliverables\n\nYou must upload a single PDF containing typeset text, equations, and/or diagrams of your solutions.\n\n- Include natively digital equations and diagrams. You can as well use hand writing on an tablet as long as it is readable. Do not upload scans or photos of hand-written solutions as these will be ignored by the TAs\n- You can typeset your equations in Microsoft Word/Google Docs. If you're feeling adventurous, try LaTeX. Overleaf is a great place to start\n\n### Presiseringer fra assignment lecture 1 (lysbilde 7)\n\nAssignment lecture 1 viste denne utdypingen av antakelsene. Den gjelder A1 direkte (eksempelet med *G* og *I* er fra Doom-grafen).\n\n**Assumptions**\n\n- Use the pseudocode from the book:\n  - For 1 (BFS), use `Breadth-First-Search`, from **Figure 3.9 (p. 95)**\n  - For 2–5, use `Best-First-Search`, from **Figure 3.7 (p. 91)** with the following heuristic functions:\n    - DFS: use *f*(*n*) = −depth(*n*)\n    - Uniform-Cost Search: use *f*(*n*) = *g*(*n*) = PathCost(*n*)\n    - Greedy Best-First Search: use *f*(*n*) = *h*(*n*)\n    - A\\*: use *f*(*n*) = *g*(*n*) + *h*(*n*)\n  - Process (or generate) nodes in alphabetical order\n    - So, *C* gets processed before *H* when Expand(*B*)\n  - In case of a tie, use alphabetical order as a tie breaker\n    - E.g., *G* will be at the top of the stack when Expand(*A*) on DFS, although *G* and *I* have the same depth\n\n**Implications of using the pseudocode**\n\n- By using the pseudocode directly, we avoid \"graph-search\"- or \"tree-search\"-like terms\n- We don't have to specify that \"BFS has an early goal check\" as it is clearly described in the algorithm\n  - `Best-First-Search` has a late goal check, and we don't have to specify it either\n- In `Best-First-Search`, if we find cheaper path to a node, it may be added into `Frontier` more than once. However, since there can only be one of each node in `Reached`, the second expansion will make no difference. To keep the solution easy to read, we do not include these superfluous expansions.\n- When we `Expand` a node, we check **all descendants** (including nodes \"seen\" before) as we are traversing a graph\n  - In `Breadth-First`, we **only add** them to the data structures `Reached` and `Frontier` if they are not in `Reached`\n  - In `Best-First`, we **only add** them to the data structures `Reached` and `Frontier` if:\n    - the node is not in `Reached`, or\n    - the node has a cheaper PathCost from this node\n  - We **never** add the parent node (where we came from) since the `Node` data structure contains it as an attribute\n  - The **parent** of a node *n* is the node which was expanded when *n* was added to `Reached`\n    - This also includes 'overwrites', when a node has a cheaper PathCost",
+ "intro": "Håndsporing av søk på én graf fra Doom (E1M8). Del 1 er kostnader og uinformert søk (BFS, DFS, UCS, E02), del 2 informert søk (GBFS og A∗, E03), og del 3 admissible og consistent heuristikk (E03). Følg bokas pseudokode og alfabetisk rekkefølge, se oppgaveteksten til venstre. Det finnes ingen offisiell fasit for Doom-grafen: assignment lecture 1 løser bare en liten eksempelgraf (AL1). Fasiten her er derfor egen utregning, og oppgavene har ingen automatisk sjekk.",
+ "tasks": [
+  {
+   "t": "Oppgave 1: Kostnadene i grafen",
+   "d": "**2.1 Part One: Setup and Uninformed Search**\n\n1. Set up the costs of actions in the graph. Consider the following costs as a starting point: (A, G) = 4, (A, I) = 1, (B, H) = 3\n\n*Figure 1: An abstract representation of E1M8: Phobos Anomaly. For simplicity, the states have been labelled from A to I so you can refer to them in your solutions.*",
+   "img": [
+    "nettside-figurer/a1-figur1.png"
+   ],
+   "f": [
+    [
+     "Kostnaden for hver kant",
+     "area",
+     "(A, G) = 4\n(A, I) = 1\n(B, H) = 3\n(B, I) = …"
+    ]
+   ],
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "F",
+       "x": 200,
+       "y": 20,
+       "h": 0
+      },
+      {
+       "id": "D",
+       "x": 230,
+       "y": 80,
+       "h": 1
+      },
+      {
+       "id": "E",
+       "x": 230,
+       "y": 170,
+       "h": 5
+      },
+      {
+       "id": "C",
+       "x": 180,
+       "y": 260,
+       "h": 9
+      },
+      {
+       "id": "H",
+       "x": 290,
+       "y": 310,
+       "h": 13
+      },
+      {
+       "id": "B",
+       "x": 230,
+       "y": 400,
+       "h": 17
+      },
+      {
+       "id": "I",
+       "x": 230,
+       "y": 500,
+       "h": 22
+      },
+      {
+       "id": "A",
+       "x": 100,
+       "y": 580,
+       "h": 25
+      },
+      {
+       "id": "G",
+       "x": 360,
+       "y": 580,
+       "h": 26
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "I"
+      },
+      {
+       "fra": "A",
+       "til": "G"
+      },
+      {
+       "fra": "G",
+       "til": "I"
+      },
+      {
+       "fra": "B",
+       "til": "I"
+      },
+      {
+       "fra": "B",
+       "til": "C"
+      },
+      {
+       "fra": "B",
+       "til": "H"
+      },
+      {
+       "fra": "C",
+       "til": "H"
+      },
+      {
+       "fra": "C",
+       "til": "E"
+      },
+      {
+       "fra": "E",
+       "til": "H"
+      },
+      {
+       "fra": "D",
+       "til": "E"
+      },
+      {
+       "fra": "D",
+       "til": "F"
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "F"
+     ]
+    }
+   },
+   "fasit": "**Kostnadene:** (A, G) = 4, (A, I) = 1, (G, I) = 1, (B, I) = 2, (B, C) = 4, (B, H) = 3, (C, H) = 1, (C, E) = 1, (E, H) = 1, (D, E) = 2, (D, F) = 1.\n\nRegelen står i AL1 (lysbilde 9): å krysse en kant koster 1, stairs koster 1 ekstra og lift 2 ekstra. A–G har både stairs og lift, så den koster 1 + 1 + 2 = 4.\n\n| Kant | Hinder | Kost |\n|---|---|---|\n| (A, G) | stairs + lift | 4 |\n| (A, I) | – | 1 |\n| (G, I) | – | 1 |\n| (B, I) | stairs | 2 |\n| (B, C) | stairs + lift | 4 |\n| (B, H) | lift | 3 |\n| (C, H) | – | 1 |\n| (C, E) | – | 1 |\n| (E, H) | – | 1 |\n| (D, E) | stairs | 2 |\n| (D, F) | – | 1 |\n\nGrafen er urettet, så kostnaden gjelder begge veier. Kontroller mot de tre oppgitte kantene: (A, G) = 4, (A, I) = 1 og (B, H) = 3. Glemmer du grunnkostnaden 1, får du (B, H) = 2.\n\n*Kilde: egen utregning fra figur 1 og regelen i AL1, lysbilde 9. Ingen offisiell fasit for Doom-grafen.*"
+  },
+  {
+   "t": "Oppgave 2: BFS, DFS og UCS",
+   "d": "2. Execute the search on the graph shown in Figure 1 for the given algorithms below.\n   - a) Breadth-first search (BFS)\n   - b) Depth-first search (DFS)\n   - c) Uniform-cost search (UCS)\n\nWrite down the order of expansion, the path from start to goal (or write None if no path to goal is found), and write the cost of the path found. For example:\n\n**Example of output**\n\n```\nBFS:\n\n    Order of expansion: S, A, B, (G)\n    Found path: SBG\n    Path cost: 4\n```\n\nYou can include your search trees as diagrams as well, but it is not necessary.",
+   "img": [
+    "nettside-figurer/a1-figur1.png"
+   ],
+   "f": [
+    [
+     "a) BFS",
+     "area",
+     "Order of expansion: A, …, (F)\nFound path: …\nPath cost: …"
+    ],
+    [
+     "b) DFS",
+     "area",
+     "Order of expansion: A, …, (F)\nFound path: …\nPath cost: …"
+    ],
+    [
+     "c) UCS",
+     "area",
+     "Order of expansion: A, …, (F)\nFound path: …\nPath cost: …"
+    ]
+   ],
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "F",
+       "x": 200,
+       "y": 20,
+       "h": 0
+      },
+      {
+       "id": "D",
+       "x": 230,
+       "y": 80,
+       "h": 1
+      },
+      {
+       "id": "E",
+       "x": 230,
+       "y": 170,
+       "h": 5
+      },
+      {
+       "id": "C",
+       "x": 180,
+       "y": 260,
+       "h": 9
+      },
+      {
+       "id": "H",
+       "x": 290,
+       "y": 310,
+       "h": 13
+      },
+      {
+       "id": "B",
+       "x": 230,
+       "y": 400,
+       "h": 17
+      },
+      {
+       "id": "I",
+       "x": 230,
+       "y": 500,
+       "h": 22
+      },
+      {
+       "id": "A",
+       "x": 100,
+       "y": 580,
+       "h": 25
+      },
+      {
+       "id": "G",
+       "x": 360,
+       "y": 580,
+       "h": 26
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "A",
+       "til": "G",
+       "kost": 4
+      },
+      {
+       "fra": "G",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "B",
+       "til": "I",
+       "kost": 2
+      },
+      {
+       "fra": "B",
+       "til": "C",
+       "kost": 4
+      },
+      {
+       "fra": "B",
+       "til": "H",
+       "kost": 3
+      },
+      {
+       "fra": "C",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "C",
+       "til": "E",
+       "kost": 1
+      },
+      {
+       "fra": "E",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "D",
+       "til": "E",
+       "kost": 2
+      },
+      {
+       "fra": "D",
+       "til": "F",
+       "kost": 1
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "F"
+     ]
+    }
+   },
+   "fasit": "**a) BFS:** Order of expansion: A, G, I, B, C, H, E, D, (F). Found path: AIBCEDF. Path cost: 11.\n\n**b) DFS:** Order of expansion: A, G, I, B, C, E, D, (F). Found path: AIBCEDF. Path cost: 11.\n\n**c) UCS:** Order of expansion: A, I, G, B, H, C, E, D, (F). Found path: AIBHEDF. Path cost: 10.\n\n**a) BFS** (fig. 3.9). Målet testes når en node genereres, og en tilstand legges bare inn hvis den ikke er i reached.\n\n| Utvider | Nye barn | Frontier etterpå (FIFO) |\n|---|---|---|\n| A | G, I | G, I |\n| G | – (A og I er i reached) | I |\n| I | B | B |\n| B | C, H | C, H |\n| C | E | H, E |\n| H | – | E |\n| E | D | D |\n| D | F er målet, stopp | |\n\nE får C som forelder fordi C utvides før H. Stien blir A–I–B–C–E–D–F med kost 1 + 2 + 4 + 1 + 2 + 1 = 11. BFS teller kanter, ikke kostnad, og finner derfor ikke den billigste stien.\n\n**b) DFS** (fig. 3.7 med f = −depth). Tallet i parentes er dybden, og like dybder tas alfabetisk.\n\n| Tar ut | Legger inn (g) | Frontier etterpå |\n|---|---|---|\n| A (0) | G (1, g 4), I (1, g 1) | G(1), I(1) |\n| G (1) | – (I via G koster 5 > 1) | I(1) |\n| I (1) | B (2, g 3), G (2, g 2 < 4) | B(2), G(2) |\n| B (2) | C (3, g 7), H (3, g 6) | C(3), H(3), G(2) |\n| C (3) | E (4, g 8); H via C koster 8 > 6 | E(4), H(3), G(2) |\n| E (4) | D (5, g 10); H via E koster 9 > 6 | D(5), H(3), G(2) |\n| D (5) | F (6, g 11) | F(6), H(3), G(2) |\n| F | mål | |\n\n**c) UCS** (fig. 3.7 med f = g).\n\n| Tar ut (g) | Legger inn | Frontier etterpå |\n|---|---|---|\n| A (0) | G 4, I 1 | I1, G4 |\n| I (1) | B 3, G 2 (billigere enn 4) | G2, B3, G4 |\n| G (2) | – | B3, G4 |\n| B (3) | C 7, H 6 | G4, H6, C7 |\n| G (4) | gammel kopi, utvides ikke på nytt | H6, C7 |\n| H (6) | E 7; C via H koster 7, ikke billigere | C7, E7 |\n| C (7) | –; E og H via C koster 8 | E7 |\n| E (7) | D 9 | D9 |\n| D (9) | F 10 | F10 |\n| F (10) | mål | |\n\nDen gamle G-kopien (g = 4) står ikke i rekkefølgen, slik AL1 sier om overflødige utvidelser. Stien A–I–B–H–E–D–F koster 1 + 2 + 3 + 1 + 2 + 1 = 10.\n\nVanlig feil: å stoppe UCS når F genereres, eller å glemme at G får en billigere sti via I.\n\n*Kilde: egen utregning etter fig. 3.9 og 3.7 med presiseringene fra AL1, lysbilde 7. Kontroll: håndsporing og søkealgoritmene i `nettside-algo/sok.js` gir det samme.*"
+  },
+  {
+   "t": "Oppgave 3: GBFS og A∗",
+   "d": "**2.2 Part Two: Informed Search**\n\n3. Execute the search on the graph shown in Figure 1 for the given algorithms below.\n   - a) Greedy Best-First Search (GBFS)\n   - b) A∗ Search\n\nAs with the previous part, write down the order of expansion, the path from start to goal (or write None if no path to goal is found), and write the cost of the path found.",
+   "img": [
+    "nettside-figurer/a1-figur1.png"
+   ],
+   "f": [
+    [
+     "a) GBFS",
+     "area",
+     "Order of expansion: A, …, (F)\nFound path: …\nPath cost: …"
+    ],
+    [
+     "b) A∗",
+     "area",
+     "Order of expansion: A, …, (F)\nFound path: …\nPath cost: …"
+    ]
+   ],
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "F",
+       "x": 200,
+       "y": 20,
+       "h": 0
+      },
+      {
+       "id": "D",
+       "x": 230,
+       "y": 80,
+       "h": 1
+      },
+      {
+       "id": "E",
+       "x": 230,
+       "y": 170,
+       "h": 5
+      },
+      {
+       "id": "C",
+       "x": 180,
+       "y": 260,
+       "h": 9
+      },
+      {
+       "id": "H",
+       "x": 290,
+       "y": 310,
+       "h": 13
+      },
+      {
+       "id": "B",
+       "x": 230,
+       "y": 400,
+       "h": 17
+      },
+      {
+       "id": "I",
+       "x": 230,
+       "y": 500,
+       "h": 22
+      },
+      {
+       "id": "A",
+       "x": 100,
+       "y": 580,
+       "h": 25
+      },
+      {
+       "id": "G",
+       "x": 360,
+       "y": 580,
+       "h": 26
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "A",
+       "til": "G",
+       "kost": 4
+      },
+      {
+       "fra": "G",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "B",
+       "til": "I",
+       "kost": 2
+      },
+      {
+       "fra": "B",
+       "til": "C",
+       "kost": 4
+      },
+      {
+       "fra": "B",
+       "til": "H",
+       "kost": 3
+      },
+      {
+       "fra": "C",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "C",
+       "til": "E",
+       "kost": 1
+      },
+      {
+       "fra": "E",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "D",
+       "til": "E",
+       "kost": 2
+      },
+      {
+       "fra": "D",
+       "til": "F",
+       "kost": 1
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "F"
+     ]
+    }
+   },
+   "fasit": "**a) GBFS:** Order of expansion: A, I, B, C, E, D, (F). Found path: AIBCEDF. Path cost: 11.\n\n**b) A\\*:** Order of expansion: A, I, B, C, E, D, (F). Found path: AIBCEDF. Path cost: 11. Det er ikke den billigste stien, som koster 10 (AIBHEDF).\n\n**a) GBFS** (f = h):\n\n| Tar ut (h) | Legger inn | Frontier etterpå |\n|---|---|---|\n| A | G 26, I 22 | I22, G26 |\n| I (22) | B 17; G på nytt (g 2 < 4) | B17, G26, G26 |\n| B (17) | C 9, H 13 | C9, H13, G26, G26 |\n| C (9) | E 5; H via C koster 8 > 6 | E5, H13, G26, G26 |\n| E (5) | D 1 | D1, H13, G26, G26 |\n| D (1) | F 0 | F0, H13, G26, G26 |\n| F | mål | |\n\nDen gamle G-kopien (g = 4) blir liggende i køen ved siden av den nye (g = 2), som i UCS i oppgave 2, og hoppes over hvis den tas ut. Greedy ser bare h og velger C framfor H selv om B–C koster 4.\n\n**b) A\\*** (f = g + h):\n\n| Tar ut (f) | Legger inn (g + h) | Frontier etterpå |\n|---|---|---|\n| A | I 1 + 22 = 23, G 4 + 26 = 30 | I23, G30 |\n| I (23) | B 3 + 17 = 20, G 2 + 26 = 28 | B20, G28, G30 |\n| B (20) | C 7 + 9 = 16, H 6 + 13 = 19 | C16, H19, G28, G30 |\n| C (16) | E 8 + 5 = 13; H via C koster 8 > 6 | E13, H19, G28, G30 |\n| E (13) | D 10 + 1 = 11; H via E koster 9 > 6 | D11, H19, G28, G30 |\n| D (11) | F 11 + 0 = 11 | F11, H19, G28, G30 |\n| F (11) | mål | |\n\nH ligger på den optimale stien, men f(H) = 6 + 13 = 19 er større enn 11. Derfor tas F ut via C med kost 11 før H utvides. Årsaken er at h overestimerer (oppgave 4 og 5).\n\n*Kilde: egen utregning etter fig. 3.7 med presiseringene fra AL1. Kontroll: håndsporing og `nettside-algo/sok.js` gir det samme.*"
+  },
+  {
+   "t": "Oppgave 4: Egenskapen som mangler",
+   "d": "**2.3 Part Three: A∗ Search, Admissibility and Consistency**\n\nWhile running A∗ search you may have noticed that the result was not what you would have expected from an algorithm that is guaranteed to find the optimal solution. Why was this the case?\n\n4. What mathematical property needed for optimality is not present in our graph? Explain intuitively why it is needed.",
+   "img": [
+    "nettside-figurer/a1-figur1.png"
+   ],
+   "f": [
+    [
+     "Egenskapen",
+     "text"
+    ],
+    [
+     "Intuitiv forklaring",
+     "area"
+    ]
+   ],
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "F",
+       "x": 200,
+       "y": 20,
+       "h": 0
+      },
+      {
+       "id": "D",
+       "x": 230,
+       "y": 80,
+       "h": 1
+      },
+      {
+       "id": "E",
+       "x": 230,
+       "y": 170,
+       "h": 5
+      },
+      {
+       "id": "C",
+       "x": 180,
+       "y": 260,
+       "h": 9
+      },
+      {
+       "id": "H",
+       "x": 290,
+       "y": 310,
+       "h": 13
+      },
+      {
+       "id": "B",
+       "x": 230,
+       "y": 400,
+       "h": 17
+      },
+      {
+       "id": "I",
+       "x": 230,
+       "y": 500,
+       "h": 22
+      },
+      {
+       "id": "A",
+       "x": 100,
+       "y": 580,
+       "h": 25
+      },
+      {
+       "id": "G",
+       "x": 360,
+       "y": 580,
+       "h": 26
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "A",
+       "til": "G",
+       "kost": 4
+      },
+      {
+       "fra": "G",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "B",
+       "til": "I",
+       "kost": 2
+      },
+      {
+       "fra": "B",
+       "til": "C",
+       "kost": 4
+      },
+      {
+       "fra": "B",
+       "til": "H",
+       "kost": 3
+      },
+      {
+       "fra": "C",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "C",
+       "til": "E",
+       "kost": 1
+      },
+      {
+       "fra": "E",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "D",
+       "til": "E",
+       "kost": 2
+      },
+      {
+       "fra": "D",
+       "til": "F",
+       "kost": 1
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "F"
+     ]
+    }
+   },
+   "fasit": "**Egenskapen: admissibility.** h(n) ≤ h\\*(n) for alle n, der h\\*(n) er den billigste kostnaden fra n til målet. h må aldri overestimere.\n\n**Intuitiv forklaring:** A\\* tar alltid ut noden med lavest f = g + h og stopper når målet tas ut. Med admissible h er f(n) for en node på den optimale stien aldri større enn den optimale kostnaden C\\*. Et mål nådd via en dyrere sti har f = sin egen kostnad > C\\*. Derfor tas noden på den optimale stien ut først, og A\\* finner den billigste stien. Overestimerer h, kan en node på den optimale stien få for høy f og bli liggende i frontier mens målet tas ut via en dyrere sti.\n\nDet skjedde i oppgave 3: H ligger på den optimale stien (kost 10), men h(H) = 13 mens h\\*(H) = 4. Da ble f(H) = 19 > 11, og F ble tatt ut med kost 11.\n\nNår h ikke er admissible, er den heller ikke consistent (med h(mål) = 0). Fig. 3.7 legger inn tilstander på nytt ved billigere sti, så admissibility er nok for optimalitet der.\n\n*Kilde: egen vurdering. Definisjonene står i AL1 og notatet til E03.*"
+  },
+  {
+   "t": "Oppgave 5: Bevis eller motbevis",
+   "d": "5. Prove (or disprove) this mathematical property.",
+   "img": [
+    "nettside-figurer/a1-figur1.png"
+   ],
+   "f": [
+    [
+     "Bevis eller motbevis",
+     "area",
+     "h*(n) for nodene: …\nMoteksempel: …"
+    ]
+   ],
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "F",
+       "x": 200,
+       "y": 20,
+       "h": 0
+      },
+      {
+       "id": "D",
+       "x": 230,
+       "y": 80,
+       "h": 1
+      },
+      {
+       "id": "E",
+       "x": 230,
+       "y": 170,
+       "h": 5
+      },
+      {
+       "id": "C",
+       "x": 180,
+       "y": 260,
+       "h": 9
+      },
+      {
+       "id": "H",
+       "x": 290,
+       "y": 310,
+       "h": 13
+      },
+      {
+       "id": "B",
+       "x": 230,
+       "y": 400,
+       "h": 17
+      },
+      {
+       "id": "I",
+       "x": 230,
+       "y": 500,
+       "h": 22
+      },
+      {
+       "id": "A",
+       "x": 100,
+       "y": 580,
+       "h": 25
+      },
+      {
+       "id": "G",
+       "x": 360,
+       "y": 580,
+       "h": 26
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "A",
+       "til": "G",
+       "kost": 4
+      },
+      {
+       "fra": "G",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "B",
+       "til": "I",
+       "kost": 2
+      },
+      {
+       "fra": "B",
+       "til": "C",
+       "kost": 4
+      },
+      {
+       "fra": "B",
+       "til": "H",
+       "kost": 3
+      },
+      {
+       "fra": "C",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "C",
+       "til": "E",
+       "kost": 1
+      },
+      {
+       "fra": "E",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "D",
+       "til": "E",
+       "kost": 2
+      },
+      {
+       "fra": "D",
+       "til": "F",
+       "kost": 1
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "F"
+     ]
+    }
+   },
+   "fasit": "**Motbevis: h er ikke admissible.** Moteksempel: h\\*(E) = c(E, D) + c(D, F) = 2 + 1 = 3, men h(E) = 5 > 3.\n\nEgenskapen skal gjelde for alle n, så ett moteksempel er nok. h\\* regnes baklengs fra F med kostnadene fra oppgave 1:\n\n| n | A | B | C | D | E | F | G | H | I |\n|---|---|---|---|---|---|---|---|---|---|\n| h(n) | 25 | 17 | 9 | 1 | 5 | 0 | 26 | 13 | 22 |\n| h\\*(n) | 10 | 7 | 4 | 1 | 3 | 0 | 10 | 4 | 9 |\n| h ≤ h\\*? | nei | nei | nei | ja | nei | ja | nei | nei | nei |\n\nFor eksempel er h\\*(B) = min(3 + h\\*(H), 4 + h\\*(C)) = min(3 + 4, 4 + 4) = 7. Bare D og F overestimeres ikke.\n\nh er heller ikke consistent: h(E) = 5 > c(E, D) + h(D) = 2 + 1 = 3.\n\n*Kilde: egen utregning. Kontroll: h\\* er regnet både for hånd og med UCS fra hver node.*"
+  },
+  {
+   "t": "Oppgave 6: A∗ med h′(n)",
+   "d": "Consider an updated heuristic function h′(n), as shown in Figure 2.\n\n6. Execute the search again, now on the updated and simplified graph (shown in Figure 2) using A∗ search. Consider the same cost table you calculated in Part One, including the obstacles.\n\n*Figure 2: Updated and simplified representation of E1M8: Phobos Anomaly, with new heuristic values h′(n). The edges have been adjusted visually to consider also the costs of the obstacles.*",
+   "img": [
+    "nettside-figurer/a1-figur2.png"
+   ],
+   "f": [
+    [
+     "A∗ med h′",
+     "area",
+     "Order of expansion: A, …, (F)\nFound path: …\nPath cost: …"
+    ]
+   ],
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "A",
+       "x": 100,
+       "y": 40,
+       "h": 10
+      },
+      {
+       "id": "G",
+       "x": 300,
+       "y": 40,
+       "h": 10
+      },
+      {
+       "id": "I",
+       "x": 200,
+       "y": 120,
+       "h": 9
+      },
+      {
+       "id": "B",
+       "x": 200,
+       "y": 230,
+       "h": 7
+      },
+      {
+       "id": "C",
+       "x": 110,
+       "y": 330,
+       "h": 4
+      },
+      {
+       "id": "H",
+       "x": 290,
+       "y": 330,
+       "h": 4
+      },
+      {
+       "id": "E",
+       "x": 200,
+       "y": 400,
+       "h": 3
+      },
+      {
+       "id": "D",
+       "x": 200,
+       "y": 500,
+       "h": 1
+      },
+      {
+       "id": "F",
+       "x": 200,
+       "y": 590,
+       "h": 0
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "A",
+       "til": "G",
+       "kost": 4
+      },
+      {
+       "fra": "G",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "B",
+       "til": "I",
+       "kost": 2
+      },
+      {
+       "fra": "B",
+       "til": "C",
+       "kost": 4
+      },
+      {
+       "fra": "B",
+       "til": "H",
+       "kost": 3
+      },
+      {
+       "fra": "C",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "C",
+       "til": "E",
+       "kost": 1
+      },
+      {
+       "fra": "E",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "D",
+       "til": "E",
+       "kost": 2
+      },
+      {
+       "fra": "D",
+       "til": "F",
+       "kost": 1
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "F"
+     ]
+    }
+   },
+   "fasit": "**Order of expansion: A, I, B, H, E, D, (F). Found path: AIBHEDF. Path cost: 10.**\n\nf = g + h′:\n\n| Tar ut (f) | Legger inn (g + h′) | Frontier etterpå |\n|---|---|---|\n| A | I 1 + 9 = 10, G 4 + 10 = 14 | I10, G14 |\n| I (10) | B 3 + 7 = 10, G 2 + 10 = 12 | B10, G12, G14 |\n| B (10) | C 7 + 4 = 11, H 6 + 4 = 10 | H10, C11, G12, G14 |\n| H (10) | E 7 + 3 = 10; C via H koster 7, ikke billigere | E10, C11, G12, G14 |\n| E (10) | D 9 + 1 = 10; C via E koster 8 > 7 | D10, C11, G12, G14 |\n| D (10) | F 10 + 0 = 10 | F10, C11, G12, G14 |\n| F (10) | mål | |\n\nNå finner A\\* den optimale stien, samme kost som UCS (10). A\\* utvider 6 noder før målet, mens UCS utvider 8.\n\n*Kilde: egen utregning etter fig. 3.7 med presiseringene fra AL1. Kontroll: håndsporing og `nettside-algo/sok.js` gir det samme.*"
+  },
+  {
+   "t": "Oppgave 7: Er h′(n) admissible?",
+   "d": "7. Is the heuristic h′(n) admissible? Prove (or disprove) that it is admissible and discuss what it implies.",
+   "img": [
+    "nettside-figurer/a1-figur2.png"
+   ],
+   "f": [
+    [
+     "Admissible (ja/nei)",
+     "text"
+    ],
+    [
+     "Bevis og hva det innebærer",
+     "area"
+    ]
+   ],
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "A",
+       "x": 100,
+       "y": 40,
+       "h": 10
+      },
+      {
+       "id": "G",
+       "x": 300,
+       "y": 40,
+       "h": 10
+      },
+      {
+       "id": "I",
+       "x": 200,
+       "y": 120,
+       "h": 9
+      },
+      {
+       "id": "B",
+       "x": 200,
+       "y": 230,
+       "h": 7
+      },
+      {
+       "id": "C",
+       "x": 110,
+       "y": 330,
+       "h": 4
+      },
+      {
+       "id": "H",
+       "x": 290,
+       "y": 330,
+       "h": 4
+      },
+      {
+       "id": "E",
+       "x": 200,
+       "y": 400,
+       "h": 3
+      },
+      {
+       "id": "D",
+       "x": 200,
+       "y": 500,
+       "h": 1
+      },
+      {
+       "id": "F",
+       "x": 200,
+       "y": 590,
+       "h": 0
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "A",
+       "til": "G",
+       "kost": 4
+      },
+      {
+       "fra": "G",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "B",
+       "til": "I",
+       "kost": 2
+      },
+      {
+       "fra": "B",
+       "til": "C",
+       "kost": 4
+      },
+      {
+       "fra": "B",
+       "til": "H",
+       "kost": 3
+      },
+      {
+       "fra": "C",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "C",
+       "til": "E",
+       "kost": 1
+      },
+      {
+       "fra": "E",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "D",
+       "til": "E",
+       "kost": 2
+      },
+      {
+       "fra": "D",
+       "til": "F",
+       "kost": 1
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "F"
+     ]
+    }
+   },
+   "fasit": "**Ja, h′ er admissible.**\n\n**Bevis:** h′ er admissible hvis h′(n) ≤ h\\*(n) for alle n. h\\* er regnet ut i oppgave 5:\n\n| n | A | B | C | D | E | F | G | H | I |\n|---|---|---|---|---|---|---|---|---|---|\n| h′(n) | 10 | 7 | 4 | 1 | 3 | 0 | 10 | 4 | 9 |\n| h\\*(n) | 10 | 7 | 4 | 1 | 3 | 0 | 10 | 4 | 9 |\n\nh′(n) = h\\*(n) for hver node, så h′ overestimerer aldri.\n\n**Hva det innebærer:** A\\* er garantert cost-optimal med h′ (positive kantkostnader), og oppgave 6 fant kost 10. h′ er den eksakte heuristikken, så ingen admissible heuristikk kan være bedre informert. Den dominerer alle andre admissible heuristikker på grafen. Langs den optimale stien er f = 10 hele veien, og nodene utenfor har f > 10 (C 11, G 12), så A\\* utvider her bare nodene på den optimale stien.\n\n*Kilde: egen utregning.*"
+  },
+  {
+   "t": "Oppgave 8: Er h′(n) consistent?",
+   "d": "8. Is the heuristic h′(n) consistent? Prove (or disprove) that it is consistent and discuss what it implies.",
+   "img": [
+    "nettside-figurer/a1-figur2.png"
+   ],
+   "f": [
+    [
+     "Consistent (ja/nei)",
+     "text"
+    ],
+    [
+     "Bevis og hva det innebærer",
+     "area"
+    ]
+   ],
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "A",
+       "x": 100,
+       "y": 40,
+       "h": 10
+      },
+      {
+       "id": "G",
+       "x": 300,
+       "y": 40,
+       "h": 10
+      },
+      {
+       "id": "I",
+       "x": 200,
+       "y": 120,
+       "h": 9
+      },
+      {
+       "id": "B",
+       "x": 200,
+       "y": 230,
+       "h": 7
+      },
+      {
+       "id": "C",
+       "x": 110,
+       "y": 330,
+       "h": 4
+      },
+      {
+       "id": "H",
+       "x": 290,
+       "y": 330,
+       "h": 4
+      },
+      {
+       "id": "E",
+       "x": 200,
+       "y": 400,
+       "h": 3
+      },
+      {
+       "id": "D",
+       "x": 200,
+       "y": 500,
+       "h": 1
+      },
+      {
+       "id": "F",
+       "x": 200,
+       "y": 590,
+       "h": 0
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "A",
+       "til": "G",
+       "kost": 4
+      },
+      {
+       "fra": "G",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "B",
+       "til": "I",
+       "kost": 2
+      },
+      {
+       "fra": "B",
+       "til": "C",
+       "kost": 4
+      },
+      {
+       "fra": "B",
+       "til": "H",
+       "kost": 3
+      },
+      {
+       "fra": "C",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "C",
+       "til": "E",
+       "kost": 1
+      },
+      {
+       "fra": "E",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "D",
+       "til": "E",
+       "kost": 2
+      },
+      {
+       "fra": "D",
+       "til": "F",
+       "kost": 1
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "F"
+     ]
+    }
+   },
+   "fasit": "**Ja, h′ er consistent.**\n\n**Bevis:** Sjekk h′(n) ≤ c(n, n′) + h′(n′) for hver kant i begge retninger. Retningen fra den største h′-verdien er den som kan feile. Den andre retningen holder alltid her.\n\n| Kant | Sjekk | Motsatt retning |\n|---|---|---|\n| A → I | 10 ≤ 1 + 9 = 10 | 9 ≤ 1 + 10 |\n| A → G | 10 ≤ 4 + 10 = 14 | 10 ≤ 4 + 10 |\n| G → I | 10 ≤ 1 + 9 = 10 | 9 ≤ 1 + 10 |\n| I → B | 9 ≤ 2 + 7 = 9 | 7 ≤ 2 + 9 |\n| B → C | 7 ≤ 4 + 4 = 8 | 4 ≤ 4 + 7 |\n| B → H | 7 ≤ 3 + 4 = 7 | 4 ≤ 3 + 7 |\n| C → H | 4 ≤ 1 + 4 = 5 | 4 ≤ 1 + 4 |\n| C → E | 4 ≤ 1 + 3 = 4 | 3 ≤ 1 + 4 |\n| H → E | 4 ≤ 1 + 3 = 4 | 3 ≤ 1 + 4 |\n| E → D | 3 ≤ 2 + 1 = 3 | 1 ≤ 2 + 3 |\n| D → F | 1 ≤ 1 + 0 = 1 | 0 ≤ 1 + 1 |\n\nAlle holder. Kortere: h′ = h\\*, og h\\* oppfyller alltid trekantulikheten, fordi veien via n′ er én av veiene fra n til målet.\n\n**Hva det innebærer:** f synker aldri langs en sti. En tilstand har sin billigste sti første gang den tas ut av frontier og utvides, så ingen tilstand må utvides på nytt. Graph search som aldri åpner en utvidet tilstand igjen, er da også optimal. En tilstand kan likevel få en billigere sti mens den ligger i frontier, slik G gjør i oppgave 6 (4 → 2), og den oppdateringen trengs fortsatt. Consistent gir også admissible når h′(F) = 0.\n\nVanlig feil: å sjekke bare én retning, eller å tro at admissible gir consistent. Det er omvendt.\n\n*Kilde: egen utregning. Definisjonen av consistency står i AL1 og notatet til E03.*"
+  },
+  {
+   "t": "Oppgave 9 (bonus): Når trengs consistency?",
+   "d": "**2.3.1 Bonus Task**\n\n9. How would you have to change the code of the A∗ algorithm to make consistency necessary for cost optimality? What may you gain from making the algorithm less robust?",
+   "f": [
+    [
+     "Endringen i koden",
+     "area"
+    ],
+    [
+     "Hva du vinner",
+     "area"
+    ]
+   ],
+   "fasit": "**Endringen i koden:** I fig. 3.7 legges en tilstand inn på nytt når `child.PATH-COST < reached[s].PATH-COST`, også når den allerede er utvidet. Endre koden slik at en tilstand som er utvidet én gang, aldri legges inn eller utvides igjen (en closed-mengde). Behold oppdateringen for tilstander som ennå ligger i frontier. Da er admissibility ikke lenger nok, og consistency blir nødvendig for cost-optimalitet.\n\n**Hva du vinner:** Hver tilstand utvides høyst én gang, så arbeidet er begrenset av antall tilstander. En utvidet tilstand åpnes aldri igjen, så du slipper å utvide den og oppdatere etterfølgerne på nytt når en billigere sti dukker opp. Closed-mengden hindrer ikke at samme tilstand ligger flere ganger i køen før den utvides (oppgave 6 har G 12 og G 14 samtidig); den sørger bare for at de gamle kopiene hoppes over. Med en inkonsistent h kan fig. 3.7 ellers utvide samme tilstand mange ganger. Det koster både tid og minne (AIMA 3.5.2).\n\nMed consistent h tapes ingenting: en tilstand har allerede sin billigste sti første gang den utvides. Med en h som bare er admissible, kan en tilstand utvides via en dyrere sti først, og uten gjenåpning blir svaret suboptimalt.\n\nIkke lås stien første gang tilstanden genereres (bare legg inn hvis den ikke er i `reached`). Da kan selv UCS (h = 0, som er consistent) svare feil: med S→A 5, S→B 1, B→A 1 og A→G 1 blir svaret 6 i stedet for 3. Bokas «the first time we reach a state» må leses som første gang tilstanden utvides.\n\n*Kilde: egen vurdering etter AIMA 3.5.2 (avsnittet om consistency) og tipset i AL1. Bonusoppgaven er ikke obligatorisk.*"
+  }
+ ],
+ "fasit": "**Ingen offisiell fasit for Doom-grafen.** Assignment lecture 1 viser bare konvensjonene og løser en liten eksempelgraf (se AL1). Alt under er egen utregning, håndsporet etter bokas `Breadth-First-Search` (fig. 3.9) og `Best-First-Search` (fig. 3.7) med presiseringene fra AL1, lysbilde 7. Et skript som følger den samme pseudokoden, gir de samme svarene, og på eksempelgrafen i AL1 gir det svarene fra lysbildene. Bruk dette som kontroll, ikke som offisielt svar.\n\n### Oppgave 1: Kostnader\n\nRegelen står i AL1, lysbilde 9: hver kant koster 1, trapp (stairs) koster 1 ekstra og heis (lift) 2 ekstra.\n\n| Kant | Hinder | Kost |\n|---|---|---|\n| (A, G) | stairs + lift | 4 |\n| (A, I) | – | 1 |\n| (G, I) | – | 1 |\n| (B, I) | stairs | 2 |\n| (B, C) | lift + stairs | 4 |\n| (B, H) | lift | 3 |\n| (C, H) | – | 1 |\n| (C, E) | – | 1 |\n| (E, H) | – | 1 |\n| (D, E) | stairs | 2 |\n| (D, F) | – | 1 |\n\n### Oppgave 2 og 3\n\n| Algoritme | Order of expansion | Found path | Path cost |\n|---|---|---|---|\n| BFS | A, G, I, B, C, H, E, D, (F) | AIBCEDF | 11 |\n| DFS | A, G, I, B, C, E, D, (F) | AIBCEDF | 11 |\n| UCS | A, I, G, B, H, C, E, D, (F) | AIBHEDF | 10 |\n| GBFS | A, I, B, C, E, D, (F) | AIBCEDF | 11 |\n| A∗ | A, I, B, C, E, D, (F) | AIBCEDF | 11 |\n\n- **BFS** tester målet når noden genereres. F genereres når D utvides og står derfor i parentes. Fra B genereres C før H, så E får C som forelder.\n- **DFS** (f = −depth): G og I har samme dybde, og G tas først. Fra I er veien til G billigere (2 < 4), så G legges inn på nytt med dybde 2. B har også dybde 2 og kommer først alfabetisk. C og H har dybde 3, og C tas først. Den nye G-noden tas aldri ut før målet.\n- **UCS**, frontier med g: A gir I = 1 og G = 4. I gir B = 3 og G = 2 (billigere). G gir ingenting nytt. B gir H = 6 og C = 7. Den gamle G = 4 hoppes over (overflødig utvidelse). H gir E = 7, mens C via H også koster 7 og ikke er billigere. C og E har begge 7, og C tas først. E gir D = 9, og D gir F = 10.\n- **GBFS** (f = h): I (22) før G (26), så B (17), C (9) før H (13), E (5), D (1), F (0).\n- **A∗** med h (f = g + h): I = 1 + 22 = 23 og G = 4 + 26 = 30. I gir B = 3 + 17 = 20 og G = 2 + 26 = 28. B gir C = 7 + 9 = 16 og H = 6 + 13 = 19. C gir E = 8 + 5 = 13. E gir D = 10 + 1 = 11, og D gir F = 11 + 0 = 11. F tas ut med kost 11, men den billigste stien (via H) koster 10. H (f = 19) blir aldri utvidet.\n\n### Oppgave 4 og 5\n\nDet som mangler, er **admissibility**: h(n) ≤ h\\*(n) for alle n, der h\\*(n) er den billigste kostnaden fra n til målet. A∗ stoler på at f = g + h aldri er større enn kostnaden til den beste løsningen gjennom n. Overestimerer h, kan en node på den optimale stien få for høy f og bli liggende i frontier mens målet tas ut via en dyrere sti. Det skjedde med H over.\n\nMotbevis med ett moteksempel er nok: h\\*(E) = c(E, D) + c(D, F) = 2 + 1 = 3, men h(E) = 5 > 3. Hele tabellen:\n\n| n | A | B | C | D | E | F | G | H | I |\n|---|---|---|---|---|---|---|---|---|---|\n| h(n) | 25 | 17 | 9 | 1 | 5 | 0 | 26 | 13 | 22 |\n| h\\*(n) | 10 | 7 | 4 | 1 | 3 | 0 | 10 | 4 | 9 |\n\nDa er h heller ikke consistent, for eksempel er h(E) = 5 > c(E, D) + h(D) = 2 + 1 = 3.\n\n### Oppgave 6\n\nA∗ med h′: A gir I = 1 + 9 = 10 og G = 4 + 10 = 14. I gir B = 3 + 7 = 10 og G = 2 + 10 = 12. B gir H = 6 + 4 = 10 og C = 7 + 4 = 11. H gir E = 7 + 3 = 10 (C via H koster 7 og er ikke billigere). E gir D = 9 + 1 = 10, og D gir F = 10 + 0 = 10.\n\n- Order of expansion: A, I, B, H, E, D, (F)\n- Found path: AIBHEDF\n- Path cost: 10\n\n### Oppgave 7\n\nJa. h′(n) = h\\*(n) for hver node (se tabellen i oppgave 4 og 5), så h′ overestimerer aldri og er admissible. Da er A∗ cost-optimal. Siden h′ er eksakt, utvider A∗ bare nodene på den optimale stien.\n\n### Oppgave 8\n\nJa. Sjekk h′(n) ≤ c(n, n′) + h′(n′) for hver kant i begge retninger. Retningen fra den største h′-verdien er den som kan feile:\n\n| Kant | Sjekk |\n|---|---|\n| A → I | 10 ≤ 1 + 9 |\n| A → G | 10 ≤ 4 + 10 |\n| G → I | 10 ≤ 1 + 9 |\n| I → B | 9 ≤ 2 + 7 |\n| B → C | 7 ≤ 4 + 4 |\n| B → H | 7 ≤ 3 + 4 |\n| C → H og H → C | 4 ≤ 1 + 4 |\n| C → E | 4 ≤ 1 + 3 |\n| H → E | 4 ≤ 1 + 3 |\n| E → D | 3 ≤ 2 + 1 |\n| D → F | 1 ≤ 1 + 0 |\n\nAlle holder, så h′ er consistent. Det betyr at f aldri synker langs en sti, og at en tilstand har sin billigste sti første gang den tas ut av frontier og utvides. Ingen tilstand må derfor utvides på nytt. En tilstand kan likevel få en billigere sti mens den ligger i frontier, slik G gjør i oppgave 6 (4 → 2), og den oppdateringen trengs fortsatt. Consistent gir også admissible når h′(F) = 0.\n\n### Oppgave 9 (bonus)\n\nEgen vurdering: `Best-First-Search` legger inn en tilstand på nytt når den nås via en billigere sti (`child.PATH-COST < reached[s].PATH-COST`), også når den allerede er utvidet. Endre koden slik at en tilstand som er utvidet én gang, aldri legges inn eller utvides igjen (en closed-mengde), men behold oppdateringen for tilstander som ennå ligger i frontier. Da er admissibility ikke lenger nok, og consistency blir nødvendig for cost-optimalitet. Gevinsten er at hver tilstand utvides høyst én gang, så arbeidet er begrenset av antall tilstander, og frontier får ikke flere kopier av samme tilstand. Ikke lås stien første gang tilstanden genereres (bare legg inn hvis den ikke er i `reached`): da kan selv UCS (h = 0, som er consistent) svare feil. Med S→A 5, S→B 1, B→A 1 og A→G 1 blir svaret 6 i stedet for 3."
+}

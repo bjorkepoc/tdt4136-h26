@@ -1,0 +1,480 @@
+1
+00:00:00,450 --> 00:00:06,570
+Du skal på ferie til Hawaii. Planlegger du som i E atten, ned til «bøy venstre
+
+2
+00:00:06,570 --> 00:00:11,850
+kne fem grader», blir planen milliarder av handlinger lang. Vel framme skal du
+
+3
+00:00:11,850 --> 00:00:18,090
+male en stol og et bord i samme farge, uten å se fargene. Umulig? Nei, og begge
+
+4
+00:00:18,090 --> 00:00:19,730
+deler kom på eksamen i fjor.
+
+5
+00:00:21,083 --> 00:00:26,443
+Etterpå kan du kjøre hierarkisk søk for hånd, oppdatere en belief state og si
+
+6
+00:00:26,443 --> 00:00:33,083
+når agenten må planlegge på nytt. Seksjon elleve punkt fire, fem og sju.
+
+7
+00:00:33,083 --> 00:00:38,763
+Hierarkier, uten sensorer, med sensorer, underveis, og eksamen.
+
+8
+00:00:40,117 --> 00:00:42,277
+Hvorfor planlegger du i lag?
+
+9
+00:00:44,050 --> 00:00:51,370
+Du planlegger ikke ferien muskel for muskel. Øverst: til flyplassen, fly, ferie,
+
+10
+00:00:51,370 --> 00:00:58,450
+fly hjem. Så bryter du ned «til flyplassen»: velg tjeneste, bestill bil, kjør.
+
+11
+00:00:58,450 --> 00:01:04,610
+Helt ned til knappetrykk. Det heter hierarchical decomposition. Få valg per nivå
+
+12
+00:01:04,610 --> 00:01:06,130
+gir små søk.
+
+13
+00:01:07,483 --> 00:01:13,683
+«Til flyplassen» er en high-level action, en HLA: en abstrakt handling som må
+
+14
+00:01:13,683 --> 00:01:21,803
+brytes ned. I boka: Go av Home og SFO. Den har to refinements: kjør og ta
+
+15
+00:01:21,803 --> 00:01:28,443
+skyttelbussen, eller ta taxi. Drive, Shuttle og Taxi er primitive actions, som i
+
+16
+00:01:28,443 --> 00:01:33,963
+E atten. Refinements er kunnskap: å kjøpe melk blir aldri vurdert.
+
+17
+00:01:35,317 --> 00:01:41,557
+En refinement kan inneholde HLA-en selv. Navigate: ta ett steg, og navigér
+
+18
+00:01:41,557 --> 00:01:49,797
+videre. På målet er refinementen tom. Fra en-tre til tre-to: høyre, høyre, ned,
+
+19
+00:01:49,797 --> 00:01:56,677
+eller ned, høyre, høyre. Bare primitive handlinger: en implementation. Flere
+
+20
+00:01:56,677 --> 00:02:00,597
+HLA-er? Sett implementasjonene etter hverandre.
+
+21
+00:02:01,950 --> 00:02:13,950
+Din tur. Uten bil feiler Drive, men Taxi virker. Når Go av Home og SFO målet?
+
+22
+00:02:13,950 --> 00:02:19,070
+Ja. En høynivåplan når målet hvis minst én implementasjon gjør det, for du
+
+23
+00:02:19,070 --> 00:02:25,230
+velger selv. I kapittel fire velger naturen, så planen må virke for alle. HLA:
+
+24
+00:02:25,230 --> 00:02:28,190
+minst én. Usikker verden: alle.
+
+25
+00:02:29,483 --> 00:02:33,323
+Hvordan finner datamaskinen en implementasjon som virker?
+
+26
+00:02:35,083 --> 00:02:41,723
+Hierarkisk søk starter med planen Act. Frontier er en FIFO-kø: breddeførst. Ta
+
+27
+00:02:41,723 --> 00:02:48,083
+ut den grunneste planen, og finn første HLA. Det foran er prefix, og outcome er
+
+28
+00:02:48,083 --> 00:02:53,363
+tilstanden etter prefix. Bytt HLA-en med hver refinement som passer, og legg
+
+29
+00:02:53,363 --> 00:02:54,843
+planene bakerst.
+
+30
+00:02:56,217 --> 00:03:05,297
+Neste: Go og Fly. Første HLA er Go, prefix er tom. To refinements, to nye planer.
+
+31
+00:03:05,297 --> 00:03:12,057
+Så Drive, Shuttle, Fly. Ingen HLA igjen: planen er primitiv, og målet testes på
+
+32
+00:03:12,057 --> 00:03:19,177
+outcome. Men uten bil kan Drive ikke utføres. Planen forkastes. Neste: Taxi og
+
+33
+00:03:19,177 --> 00:03:22,537
+Fly. Den når Honolulu og returneres.
+
+34
+00:03:23,917 --> 00:03:32,477
+Din tur. Nå har du bil. Hvilken plan returneres?
+
+35
+00:03:32,477 --> 00:03:39,277
+Drive, Shuttle, Fly, selv om taxiplanen er kortere. Begge har to refinements, og
+
+36
+00:03:39,277 --> 00:03:44,317
+Drive-planen står først i køen. Søket er breddeførst over refinements, ikke over
+
+37
+00:03:44,317 --> 00:03:45,117
+steg.
+
+38
+00:03:46,417 --> 00:03:52,204
+Hvorfor hjelper hierarkiet? Si at løsningen har seksten handlinger, med ti valg
+
+39
+00:03:52,204 --> 00:03:59,537
+hver. Flatt søk: ti i sekstende. Brytes hver HLA ned i fire, blir treet to
+
+40
+00:03:59,537 --> 00:04:07,297
+nivåer dypt, med fem indre noder. Ti refinements hver: ti i femte. Generelt: r
+
+41
+00:04:07,297 --> 00:04:13,217
+opphøyd i d minus én, delt på k minus én. Få refinements og lange nedbrytninger
+
+42
+00:04:13,217 --> 00:04:15,297
+lønner seg, men er sjeldne.
+
+43
+00:04:16,650 --> 00:04:19,290
+Kan du løse en oppgave uten å se noe?
+
+44
+00:04:21,050 --> 00:04:28,010
+Nå adlyder ikke verden. Boka har tre svar: sensorless, uten observasjoner,
+
+45
+00:04:28,010 --> 00:04:34,090
+contingent, med grener, og online, som planlegger på nytt underveis. Eksempelet
+
+46
+00:04:34,090 --> 00:04:39,210
+er malingen. Paint tar et objekt og en boks, men ikke fargen, for den vet
+
+47
+00:04:39,210 --> 00:04:40,810
+agenten kanskje ikke.
+
+48
+00:04:42,083 --> 00:04:48,563
+Uten sensorer gjelder open world: det som ikke står, er ukjent, ikke usant.
+
+49
+00:04:48,563 --> 00:04:55,683
+Agenten vet bare at alt har en farge. Med Skolem: Color av x og C av x. Med to
+
+50
+00:04:55,683 --> 00:05:02,083
+farger: seksten verdener. Fjern lokket. Med RESULT fra E atten legges Open til.
+
+51
+00:05:02,083 --> 00:05:08,003
+Mal stolen fra boks én: verdenene smelter sammen til åtte. Mal bordet: fire.
+
+52
+00:05:08,003 --> 00:05:12,723
+Målet er sant i alle. Agenten vet ikke fargen, bare at den er lik.
+
+53
+00:05:14,017 --> 00:05:20,577
+Din tur. RemoveLid på boks én nevner ikke boks to. Hva vet agenten om Open av
+
+54
+00:05:20,577 --> 00:05:25,897
+boks to?
+
+55
+00:05:25,897 --> 00:05:31,057
+Ingenting: den er ukjent. Usant hadde vært closed world, som i klassisk
+
+56
+00:05:31,057 --> 00:05:35,697
+planlegging. Sensorless: open world og belief states.
+
+57
+00:05:37,050 --> 00:05:42,570
+Dette kjenner du fra kapittel fire, E fem. Der var belief staten en mengde:
+
+58
+00:05:42,570 --> 00:05:50,730
+støvsugeren uten sensorer starter i alle åtte. Right: fire, formel At R. Suck:
+
+59
+00:05:50,730 --> 00:05:59,770
+to, At R og Clean R. Left: At L og Clean R. Suck: én, alt rent. Samme belief
+
+60
+00:05:59,770 --> 00:06:05,690
+state, kortere. n fluents gir høyst n literaler, men to i n-te tilstander.
+
+61
+00:06:07,050 --> 00:06:14,010
+Men Suck rengjør der roboten står: conditional effects. Brukt på True: At L og
+
+62
+00:06:14,010 --> 00:06:19,930
+Clean L, eller At R og Clean R. Ikke lenger én konjunksjon, og formlene kan
+
+63
+00:06:19,930 --> 00:06:25,330
+vokse eksponentielt. En usann precondition stopper handlingen. En conditional
+
+64
+00:06:25,330 --> 00:06:28,250
+effect som ikke slår til, endrer ingenting.
+
+65
+00:06:29,550 --> 00:06:33,310
+Hva om agenten kan se, men bare én ting om gangen?
+
+66
+00:06:35,083 --> 00:06:41,483
+Med sensorer trenger agenten percept schemas. Objekt i synsfeltet: agenten ser
+
+67
+00:06:41,483 --> 00:06:48,443
+fargen. Åpen boks i synsfeltet: den ser malingen. LookAt flytter blikket, ett
+
+68
+00:06:48,443 --> 00:06:54,123
+objekt om gangen. Fullt observerbart: et percept schema uten precondition for
+
+69
+00:06:54,123 --> 00:06:57,803
+hver fluent. Sensorless: ingen.
+
+70
+00:06:59,183 --> 00:07:06,863
+En betinget plan fra boka: se på bordet og stolen. Like? Ferdig. Ellers se i
+
+71
+00:07:06,863 --> 00:07:13,503
+begge boksene. Har en boks bordets farge, mal stolen. Har en boks stolens farge,
+
+72
+00:07:13,503 --> 00:07:19,983
+mal bordet. Ellers mal begge fra boks én. Agenten velger handling, percepten
+
+73
+00:07:19,983 --> 00:07:24,783
+velger gren: AND-OR fra kapittel fire, over belief states.
+
+74
+00:07:26,150 --> 00:07:30,230
+Hva gjør agenten når verden ikke stemmer med modellen?
+
+75
+00:07:31,983 --> 00:07:37,983
+Modellen kan være feil. Mangler en precondition: lokket krever skrutrekker.
+
+76
+00:07:37,983 --> 00:07:44,143
+Mangler en effekt: maling på gulvet. Mangler en fluent: hvor mye maling er igjen?
+
+77
+00:07:44,143 --> 00:07:51,423
+Noen velter boksen. Målet endres. Eller planen sier bare Replan. Agenten trenger
+
+78
+00:07:51,423 --> 00:07:52,863
+execution monitoring.
+
+79
+00:07:54,150 --> 00:08:00,710
+Agenten har denne planen. Bordet og boks én er hvite, stolen svart. Den maler
+
+80
+00:08:00,710 --> 00:08:07,430
+stolen og sjekker: stolen er flekkete grå. Den ventet E, men ser O. Den leter
+
+81
+00:08:07,430 --> 00:08:12,550
+etter et punkt P på planen og minimerer reparasjon pluss resten av planen.
+
+82
+00:08:12,550 --> 00:08:17,750
+Preconditions for Paint holder fortsatt, så reparasjonen er tom: mal igjen, til
+
+83
+00:08:17,750 --> 00:08:22,070
+stolen er hvit. Løkken kommer fra replanning, ikke fra planen.
+
+84
+00:08:23,350 --> 00:08:29,190
+Du så action monitoring: sjekk preconditions for neste steg. Si at rød maling
+
+85
+00:08:29,190 --> 00:08:34,630
+bare rekker til stolen. Action monitoring maler stolen rød, ser at boksen er tom
+
+86
+00:08:34,630 --> 00:08:39,270
+ved bordet, og maler begge grønne. Plan monitoring sjekker resten av planen, og
+
+87
+00:08:39,270 --> 00:08:44,070
+stopper før den maler. Den fanger også flaks: maler noen bordet rødt, er du
+
+88
+00:08:44,070 --> 00:08:47,910
+ferdig. Goal monitoring spør om det finnes bedre mål.
+
+89
+00:08:49,183 --> 00:08:59,823
+Din tur. Agenten maler fra en tom boks, igjen og igjen. Hva hjelper?
+
+90
+00:08:59,823 --> 00:09:05,983
+C. Å prøve igjen hjelper bare ved ekte tilfeldighet. Her mangler en precondition.
+
+91
+00:09:05,983 --> 00:09:10,983
+Velg en annen reparasjon, eller lær modellen. Uten blindveier, og med en viss
+
+92
+00:09:10,983 --> 00:09:15,903
+sjanse til å lykkes hver gang, når agenten fram til slutt. Men et tomt batteri
+
+93
+00:09:15,903 --> 00:09:17,263
+er en blindvei.
+
+94
+00:09:18,617 --> 00:09:21,497
+Hvorfor er planlegging så vanskelig?
+
+95
+00:09:23,250 --> 00:09:29,890
+Dette tok ikke foreleser, men det er pensum. Planlegging forener søk og logikk:
+
+96
+00:09:29,890 --> 00:09:35,090
+let etter en plan, eller bevis at den finnes. Kjernen er kombinatorisk
+
+97
+00:09:35,090 --> 00:09:41,010
+eksplosjon: tjue proposisjoner, over en million tilstander. To uavhengige
+
+98
+00:09:41,010 --> 00:09:46,610
+halvdeler: to ganger tusen og tjuefire. Negative interaksjoner ødelegger
+
+99
+00:09:46,610 --> 00:09:52,290
+oppdelingen. Ingen metode vinner alltid, så nye systemer bruker en portefølje.
+
+100
+00:09:53,650 --> 00:09:56,370
+Klarer du en ekte eksamensoppgave?
+
+101
+00:09:58,150 --> 00:10:05,830
+Eksamen tjue tjuefem, oppgave elleve. A, to poeng: hva er en HLA, og når er en
+
+102
+00:10:05,830 --> 00:10:11,750
+refinement en implementation? B, tre poeng: beskriv klassisk og sensorless
+
+103
+00:10:11,750 --> 00:10:23,030
+planning, og forskjellene. Sett på pause.
+
+104
+00:10:23,030 --> 00:10:24,150
+Fasiten.
+
+105
+00:10:25,450 --> 00:10:31,690
+A: en HLA er en abstrakt handling for en større oppgave, med én eller flere
+
+106
+00:10:31,690 --> 00:10:37,250
+refinements: sekvenser av handlinger. En implementation er en refinement med
+
+107
+00:10:37,250 --> 00:10:43,450
+bare primitive handlinger. B: klassisk planlegging er diskret, deterministisk,
+
+108
+00:10:43,450 --> 00:10:49,130
+statisk og fullt observerbar. Sensorless har ingen observasjoner. Tre
+
+109
+00:10:49,130 --> 00:10:54,730
+forskjeller: observerbarhet, closed mot open world, og tilstander mot belief
+
+110
+00:10:54,730 --> 00:10:55,690
+states.
+
+111
+00:10:57,050 --> 00:10:58,810
+Hvor dukker dette opp igjen?
+
+112
+00:11:00,583 --> 00:11:06,743
+Belief states, sensorless search, AND-OR og online search er kapittel fire, E
+
+113
+00:11:06,743 --> 00:11:14,663
+fem, her som formler. RESULT og action schemas er E atten. Skolem-termen C av x
+
+114
+00:11:14,663 --> 00:11:21,383
+er kapittel ni, E seksten. En planleggende agent er goal-based, kapittel to, E
+
+115
+00:11:21,383 --> 00:11:24,983
+én, og goal monitoring peker mot utility.
+
+116
+00:11:26,283 --> 00:11:33,003
+Hele kjeden: bryt ned med HLA-er, og søk breddeførst over refinements. Ser du
+
+117
+00:11:33,003 --> 00:11:39,483
+ingenting: belief states som formler. Ser du litt: grener. Sjekk underveis, og
+
+118
+00:11:39,483 --> 00:11:45,830
+planlegg på nytt. Ferien blir få valg per nivå, og stolen blir malt uten øyne.
+
+119
+00:11:45,830 --> 00:11:51,643
+Hvis du bare husker én ting: en HLA trenger minst én implementasjon som virker,
+
+120
+00:11:51,643 --> 00:11:54,843
+en plan i en usikker verden må virke i alle.
+

@@ -1,0 +1,215 @@
+{
+ "intro": "A4 er Assignment 4 i årets emne (Propositional and First Order Logic in Reasoning). Eksamen 2021 oppgave 1.1 står også i E11.",
+ "tasks": [
+  {
+   "t": "A4 2.1: CNF",
+   "d": "Gjør hver av setningene om til conjunctive normal form (CNF).\n\n- a) A ∨ (B ∧ C ∧ ¬D)\n- b) ¬(A ⇒ ¬B) ∧ ¬(C ⇒ ¬D)\n- c) ¬((A ⇒ B) ∧ (C ⇒ D))\n- d) (A ∧ B) ∨ (C ⇒ D)\n- e) A ⇔ (B ⇒ ¬C)",
+   "f": [
+    [
+     "a) A ∨ (B ∧ C ∧ ¬D)",
+     "area",
+     "steg: …\nCNF: …"
+    ],
+    [
+     "b) ¬(A ⇒ ¬B) ∧ ¬(C ⇒ ¬D)",
+     "area",
+     "steg: …\nCNF: …"
+    ],
+    [
+     "c) ¬((A ⇒ B) ∧ (C ⇒ D))",
+     "area",
+     "steg: …\nCNF: …"
+    ],
+    [
+     "d) (A ∧ B) ∨ (C ⇒ D)",
+     "area",
+     "steg: …\nCNF: …"
+    ],
+    [
+     "e) A ⇔ (B ⇒ ¬C)",
+     "area",
+     "steg: …\nCNF: …"
+    ]
+   ],
+   "fasit": "**a) (A ∨ B) ∧ (A ∨ C) ∧ (A ∨ ¬D)**\n\n**b) A ∧ B ∧ C ∧ D**\n\n**c) (A ∨ C) ∧ (A ∨ ¬D) ∧ (¬B ∨ C) ∧ (¬B ∨ ¬D)**\n\n**d) (A ∨ ¬C ∨ D) ∧ (B ∨ ¬C ∨ D)**\n\n**e) (¬A ∨ ¬B ∨ ¬C) ∧ (A ∨ B) ∧ (A ∨ C)**\n\nStegene følger fast rekkefølge: ⇔ ut, ⇒ ut, ¬ inn, ∨ over ∧.\n\n**a)** Ingen ⇔, ⇒ eller ¬ å flytte. Distribusjon av ∨ over ∧: A ∨ (B ∧ C ∧ ¬D) blir (A ∨ B) ∧ (A ∨ C) ∧ (A ∨ ¬D).\n\n**b)**\n1. ⇒ ut: ¬(¬A ∨ ¬B) ∧ ¬(¬C ∨ ¬D)\n2. De Morgan: (¬¬A ∧ ¬¬B) ∧ (¬¬C ∧ ¬¬D)\n3. Double-negation elimination: A ∧ B ∧ C ∧ D (fire enhetsklausuler)\n\n**c)**\n1. ⇒ ut: ¬((¬A ∨ B) ∧ (¬C ∨ D))\n2. De Morgan: ¬(¬A ∨ B) ∨ ¬(¬C ∨ D)\n3. De Morgan og double negation: (A ∧ ¬B) ∨ (C ∧ ¬D)\n4. Distribusjon: (A ∨ C) ∧ (A ∨ ¬D) ∧ (¬B ∨ C) ∧ (¬B ∨ ¬D)\n\n**d)**\n1. ⇒ ut: (A ∧ B) ∨ ¬C ∨ D\n2. Distribusjon: (A ∨ ¬C ∨ D) ∧ (B ∨ ¬C ∨ D)\n\n**e)**\n1. ⇔ ut: (A ⇒ (B ⇒ ¬C)) ∧ ((B ⇒ ¬C) ⇒ A)\n2. ⇒ ut: (¬A ∨ ¬B ∨ ¬C) ∧ (¬(¬B ∨ ¬C) ∨ A)\n3. De Morgan og double negation: (¬A ∨ ¬B ∨ ¬C) ∧ ((B ∧ C) ∨ A)\n4. Distribusjon: (¬A ∨ ¬B ∨ ¬C) ∧ (A ∨ B) ∧ (A ∨ C)\n\nAlle fem er kontrollert mot sannhetstabell: CNF-en har samme sannhetsverdi som den opprinnelige setningen i hver modell.\n\nVanlige feil: å distribuere før negasjonen er flyttet inn, og De Morgan uten å bytte konnektiv.\n\n*Kilde: notatet til E12, Fasit Øv selv 1 (A4 2.1; A4 har ingen publisert fasit).*"
+  },
+  {
+   "t": "A4 2.2: resolution med været",
+   "d": "Kunnskapen er:\n\n> If the weather is both Sunny and Warm, then I Enjoy. If the weather is both Warm and Nice (not Raining), then I pick up Berries. If it is Raining, then I won't pick up Berries. If it is Raining, then I will get wet. It is Warm. It is Raining. It is Sunny.\n\nBygg en kunnskapsbase, og bevis eller motbevis påstandene med resolution:\n\n- (Q1) I won't pick up Berries\n- (Q2) I will Enjoy\n- (Q3) I will get wet\n\nHint fra A4: Bruk enten hele ord eller forbokstaven i hver betingelse som symboler.",
+   "f": [
+    [
+     "KB i PL og i CNF",
+     "area",
+     "1. … ⇒ …\n…\nCNF: …"
+    ],
+    [
+     "Q1: I won't pick up Berries",
+     "area",
+     "Negert mål: …\n… og … gir …\n…\nKonklusjon: …"
+    ],
+    [
+     "Q2: I will Enjoy",
+     "area",
+     "Negert mål: …\n… og … gir …\n…\nKonklusjon: …"
+    ],
+    [
+     "Q3: I will get wet",
+     "area",
+     "Negert mål: …\n… og … gir …\n…\nKonklusjon: …"
+    ]
+   ],
+   "fasit": "**Alle tre påstandene kan bevises med resolution: Q1, Q2 og Q3 følger av KB.**\n\n**KB i PL.** Nice tolkes som ¬Raining, slik teksten sier.\n1. Sunny ∧ Warm ⇒ Enjoy\n2. Warm ∧ ¬Raining ⇒ Berries\n3. Raining ⇒ ¬Berries\n4. Raining ⇒ Wet\n5. Warm\n6. Raining\n7. Sunny\n\n**KB i CNF** (⇒ ut og De Morgan):\n\n| Nr | Klausul |\n|---|---|\n| C1 | ¬Sunny ∨ ¬Warm ∨ Enjoy |\n| C2 | ¬Warm ∨ Raining ∨ Berries |\n| C3 | ¬Raining ∨ ¬Berries |\n| C4 | ¬Raining ∨ Wet |\n| C5 | Warm |\n| C6 | Raining |\n| C7 | Sunny |\n\n**Q1: I won't pick up Berries (α = ¬Berries).**\n- Negert mål: C8 = Berries\n- C8 og C3 gir ¬Raining\n- ¬Raining og C6 gir □\n- Konklusjon: KB ∧ Berries er unsatisfiable, så **KB ⊨ ¬Berries**.\n\n**Q2: I will Enjoy (α = Enjoy).**\n- Negert mål: C8 = ¬Enjoy\n- C8 og C1 gir ¬Sunny ∨ ¬Warm\n- Det og C7 gir ¬Warm\n- ¬Warm og C5 gir □\n- Konklusjon: **KB ⊨ Enjoy**.\n\n**Q3: I will get wet (α = Wet).**\n- Negert mål: C8 = ¬Wet\n- C8 og C4 gir ¬Raining\n- ¬Raining og C6 gir □\n- Konklusjon: **KB ⊨ Wet**.\n\nC2 brukes aldri, fordi premisset Nice (¬Raining) er usant. Husk å legge til *negasjonen* av påstanden, ikke påstanden selv.\n\n*Kilde: notatet til E12, Fasit Øv selv 2 (A4 2.2; A4 har ingen publisert fasit).*"
+  },
+  {
+   "t": "Eksamen 2021, oppgave 1.1 (del av Logic, 25 p): ekvivalens og validity",
+   "d": "**1) LOGIC (25 pts)**\n\n1. Show, using a truth table, that ¬a → (b → c) and b → (a ∨ c) are logically equivalent. Is ¬a → (b → c) valid or satisfiable?\n\n*Merknad:* Poeng per deloppgave står ikke i oppgaveteksten.",
+   "f": [
+    [
+     "1.1 Sannhetstabell",
+     "area",
+     "a b c | ¬a → (b → c) | b → (a ∨ c)\nT T T | … | …\n…"
+    ],
+    [
+     "1.1 Er setningene logisk ekvivalente? (ja/nei)",
+     "text"
+    ],
+    [
+     "1.1 Hvorfor?",
+     "text"
+    ],
+    [
+     "1.1 Er ¬a → (b → c) valid eller satisfiable?",
+     "text"
+    ],
+    [
+     "1.1 Begrunnelse",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "1.1 Er setningene logisk ekvivalente? (ja/nei)": [
+      "ja",
+      "yes"
+     ],
+     "1.1 Er ¬a → (b → c) valid eller satisfiable?": [
+      "satisfiable"
+     ]
+    },
+    "merk": "Satisfiable, men ikke valid: setningen er usann når a = F, b = T, c = F.",
+    "kilde": "2021A.docx, Logic 1"
+   },
+   "fasit": "**1.1 Sannhetstabell:**\n\n| a | b | c | b → c | ¬a → (b → c) | a ∨ c | b → (a ∨ c) |\n|---|---|---|---|---|---|---|\n| T | T | T | T | T | T | T |\n| T | T | F | F | T | T | T |\n| T | F | T | T | T | T | T |\n| T | F | F | T | T | T | T |\n| F | T | T | T | T | T | T |\n| F | T | F | F | **F** | F | **F** |\n| F | F | T | T | T | T | T |\n| F | F | F | T | T | F | T |\n\n**Ja, setningene er logisk ekvivalente.**\n\n**Hvorfor: kolonnene for ¬a → (b → c) og b → (a ∨ c) er like i alle 8 radene.** Begge er usanne bare når a = F, b = T og c = F. Begge er ekvivalente med klausulen a ∨ ¬b ∨ c.\n\n**¬a → (b → c) er satisfiable, men ikke valid.**\n\n**Begrunnelse: den er sann i 7 av 8 modeller, så den er satisfiable. Den er usann i modellen a = F, b = T, c = F, så den er ikke valid.**\n\nValid betyr sann i alle modeller, satisfiable sann i minst én. Ekvivalens krever like kolonner i alle rader, ikke bare i radene der én side er sann.\n\n*Kilde: løsningsforslaget til eksamen 2021, oppgave 1.1 (Logic).*"
+  },
+  {
+   "t": "Eksamen 2021, oppgave 1.2 (del av Logic, 25 p): ekvivalens med regler",
+   "d": "**1) LOGIC (25 pts)**\n\n2. Prove that A⇔B is logically equivalent to A∨B⇒ A∧B. Use Standard logical equivalence rules here, not the truth table method.\n\n*Merknad:* A∨B⇒ A∧B betyr (A ∨ B) ⇒ (A ∧ B). Poeng per deloppgave står ikke i oppgaveteksten.",
+   "f": [
+    [
+     "1.2 Beviset, ett steg per linje med regelnavn",
+     "area",
+     "1. … (regel)\n2. … (regel)\n…"
+    ]
+   ],
+   "fasit": "**Beviset, ett steg per linje:**\n1. A ⇔ B\n2. (A ⇒ B) ∧ (B ⇒ A) (biconditional elimination)\n3. (¬A ∨ B) ∧ (¬B ∨ A) (implication elimination, to ganger)\n4. (¬A ∧ (¬B ∨ A)) ∨ (B ∧ (¬B ∨ A)) (distributivitet)\n5. (¬A ∧ ¬B) ∨ (¬A ∧ A) ∨ (B ∧ ¬B) ∨ (B ∧ A) (distributivitet)\n6. (¬A ∧ ¬B) ∨ (A ∧ B) (¬A ∧ A og B ∧ ¬B er alltid usanne, α ∨ False ≡ α; kommutativitet)\n7. ¬(A ∨ B) ∨ (A ∧ B) (De Morgan)\n8. (A ∨ B) ⇒ (A ∧ B) (implication elimination, baklengs)\n\nHver linje er ekvivalent med linja over, så A ⇔ B ≡ (A ∨ B) ⇒ (A ∧ B). Ekvivalensreglene kan brukes begge veier, så steg 8 er implication elimination lest fra høyre mot venstre.\n\nKontroll med sannhetstabell (ikke lov som svar her): begge sider er sanne bare når A = B.\n\nFasiten skriver «(¬A ∨ A)» i det andre leddet i steg 5. Det skal være (¬A ∧ A), ellers kunne leddet ikke strykes.\n\n*Kilde: løsningsforslaget til eksamen 2021, oppgave 1.2.*"
+  },
+  {
+   "t": "Eksamen 2023, oppgave 3.1 (10 p): hvor er boka?",
+   "d": "**3 Logic (20 pts total)**\n\n**3.1 Propositional logic (10 pts)**\n\nYou are given the task of finding a book hidden somewhere in the house or the garden. You are given the following set of hints:\n\n1. If the house is painted red, then the book is not in the kitchen.\n2. If there is an apple tree in the front yard, then the book is in the kitchen\n3. The house is painted red.\n4. The tree in the front yard is an apple tree or the book is under the flower pot.\n5. If the tree in the backyard is a plum tree, then the book is in the garage.\n\nQuestion: Where is the book?\n\n- a) Translate these hints into propositional logic sentences and show each proposition with a capital letter. e.g.,\n\n  ```\n  A: The house is painted red.\n  .\n  .\n  F:...\n  ```\n\n- b) Using the inference rules provided below find out where the book is hidden. You may use only the inference rules in the given list but it is not necessary to use all the rules in the list, and you can use a rule more than once if needed. **Constraint: Your solution must use Modus tollens.**\n\nIn your answer refer to the name of the rule you are using in each step. Give a number to each step, and write in each step: which of the propositional sentences (A, B…) are used, the name of the inference rule used, and the derived sentence (also give a new capital letter to the derived sentence which may in turn be used in one of the next steps).\n\n*Merknad:* Lista med inferensregler («provided below») mangler i kildefila. Bruk vanlige navngitte inferensregler.",
+   "f": [
+    [
+     "a) Hintene i proposisjonslogikk",
+     "area",
+     "X: …\n1. … ⇒ …\n…"
+    ],
+    [
+     "b) Utledningen med navngitte regler",
+     "area",
+     "6. Regel: … på … og … gir …\n…"
+    ],
+    [
+     "b) Hvor er boka?",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "b) Hvor er boka?": [
+      "under blomsterpotta",
+      "under blomsterpotten",
+      "blomsterpotta",
+      "blomsterpotten",
+      "under the flower pot",
+      "under the flowerpot",
+      "the flower pot",
+      "flower pot",
+      "flowerpot"
+     ]
+    },
+    "kilde": "2023Q&A.pdf, 3.1.1 Solution"
+   },
+   "fasit": "**a)** Symboler:\n- R: The house is painted red.\n- K: The book is in the kitchen.\n- A: There is an apple tree in the front yard.\n- F: The book is under the flower pot.\n- P: The tree in the backyard is a plum tree.\n- G: The book is in the garage.\n\nHintene: **1. R ⇒ ¬K, 2. A ⇒ K, 3. R, 4. A ∨ F, 5. P ⇒ G.**\n\n**b)**\n- **6. Modus Ponens på 1 og 3:** R ⇒ ¬K og R gir **¬K**.\n- **7. Modus tollens på 2 og 6:** A ⇒ K og ¬K gir **¬A**.\n- **8. Disjunctive syllogism på 4 og 7:** A ∨ F og ¬A gir **F**.\n\n**Boka er under blomsterpotta (F).**\n\nModus tollens (fra α ⇒ β og ¬β får du ¬α) er brukt i steg 7, som oppgaven krever. Hint 5 brukes ikke, og verken G eller ¬G følger. Mangler disjunctive syllogism i regellista, gir resolution av A ∨ F og ¬A samme resultat. Bokstavene kan velges fritt, så A for «huset er rødt» som i oppgavens eksempel er også riktig.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 3.1.*"
+  },
+  {
+   "t": "Eksamen 2015, problem 3 c og d (2 + 2 p): Horn og CNF",
+   "d": "**Problem 3 (15 points)**\n\nc) (2 points) Consider the following knowledge base containing four sentences in propositional logic:\n\nA=> (B ∨ C)\\\n¬A=> (B ∨ C)\\\n¬C\\\n(B ∨ D) => E\n\nCan these four sentences be converted to a set of Horn clauses? If yes, write them down; if not, explain why not.\n\nd) (2 points) Consider the following knowledge base containing four sentences in propositional logic: A => (B ∨ C), ¬A => (B ∨ C), ¬C, (B ∨ D) => E\n\nConvert the four sentences above into conjunctive normal form(CNF) and show the result as a set of clauses.\n\n*Merknad:* Ekstra (ikke i eksamensoppgaven): Følger B av KB? Følger E?",
+   "f": [
+    [
+     "c) Horn-klausuler?",
+     "area",
+     "ja/nei: …"
+    ],
+    [
+     "d) CNF som mengde klausuler",
+     "area",
+     "{…, …, …}"
+    ],
+    [
+     "Ekstra: Følger B?",
+     "text",
+     "ja/nei, fordi …"
+    ],
+    [
+     "Ekstra: Følger E?",
+     "text",
+     "ja/nei, fordi …"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Ekstra: Følger B?": [
+      "ja",
+      "yes"
+     ],
+     "Ekstra: Følger E?": [
+      "ja",
+      "yes"
+     ]
+    },
+    "merk": "De to første klausulene resolveres på A til B ∨ C, og med ¬C gir det B. B med ¬B ∨ E gir E.",
+    "kilde": "videoer/notater/e12-resolusjon-pl.md, Fasit Øv selv 6 (ekstraspørsmålet er ikke med i eksamensfasiten)"
+   },
+   "fasit": "**c) Setning for setning: nei. KB som helhet: ja, {B, ¬C, E}.** A ⇒ (B ∨ C) blir ¬A ∨ B ∨ C, og ¬A ⇒ (B ∨ C) blir A ∨ B ∨ C. Begge har mer enn én positiv literal, og en Horn-klausul har høyst én. Fasiten: første setning har to literaler på høyresiden, så CNF-en har to positive literaler.\n\nKB *som helhet* er likevel ekvivalent med Horn-mengden {B, ¬C, E}. De to første gir sammen B ∨ C, ¬C gir da B, og B med ¬B ∨ E gir E, så ¬D ∨ E blir overflødig. Begge har de samme fire modellene (A og D fri), så spørsmålet om KB-en kan skrives som Horn-klausuler, har svaret ja. Fasitens «nei» gjelder bare den direkte omskrivingen av hver setning. Si begge deler.\n\n**d) {¬A ∨ B ∨ C, A ∨ B ∨ C, ¬C, ¬B ∨ E, ¬D ∨ E}**\n1. A ⇒ (B ∨ C) blir ¬A ∨ B ∨ C (⇒ ut).\n2. ¬A ⇒ (B ∨ C) blir ¬¬A ∨ B ∨ C, altså A ∨ B ∨ C (⇒ ut, double negation).\n3. ¬C står som den er.\n4. (B ∨ D) ⇒ E blir ¬(B ∨ D) ∨ E, så (¬B ∧ ¬D) ∨ E (De Morgan), så (¬B ∨ E) ∧ (¬D ∨ E) (distribusjon).\n\n**Ekstra: B følger, ja.** ¬A ∨ B ∨ C og A ∨ B ∨ C resolveres på A til B ∨ C. Mot ¬C gir det B.\n\n**Ekstra: E følger, ja.** B mot ¬B ∨ E gir E. Med refutation: ¬E mot ¬B ∨ E gir ¬B, ¬B mot B ∨ C gir C, og C mot ¬C gir □.\n\nD følger ikke, og heller ikke ¬D.\n\n*Kilde: løsningsforslaget til eksamen 2015, problem 3 c og d. Ekstraspørsmålet er fra notatet til E12, Fasit Øv selv 6.*"
+  },
+  {
+   "t": "Eksamen 2024, Q14 Entailment (6 marks)",
+   "d": "**Entailment**\n\nGiven the following small knowledge base consisting of 1 sentence, which of the alternative sentences is true?\n\nKB:\\\n(P ∨ Q) ∧ (S ∧ P)\n\n**Select one alternative:**\n\n- A. Q ∧ (P ⟹ S)\n- B. S ∧ P ∧ Q\n- C. P ⟹ Q ∨ (S ∧ P)\n- D. P ⟹ S ∧ Q\n\nMaximum marks: 6\n\n*Merknad:* Bokstavene A–D er lagt til her.",
+   "f": [
+    [
+     "Q14 Svar (A–D)",
+     "text",
+     "A, B, C eller D"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Q14 Svar (A–D)": [
+      "C"
+     ]
+    },
+    "kilde": "2024Q&A.docx, Q14 – Entailment («Correct sentence: P→Q∨(S ∧P)»)"
+   },
+   "fasit": "**C: P ⇒ Q ∨ (S ∧ P).**\n\nKB = (P ∨ Q) ∧ (S ∧ P) er sann nøyaktig når P = T og S = T. Q kan være begge deler, så KB har to modeller:\n\n| P | Q | S | KB | A: Q ∧ (P ⇒ S) | B: S ∧ P ∧ Q | C: P ⇒ Q ∨ (S ∧ P) | D: P ⇒ S ∧ Q |\n|---|---|---|---|---|---|---|---|\n| T | T | T | T | T | T | T | T |\n| T | F | T | T | **F** | **F** | T | **F** |\n\n⇒ binder svakest, så C er P ⇒ (Q ∨ (S ∧ P)) og D er P ⇒ (S ∧ Q).\n- C er sann i begge KB-modellene, fordi S ∧ P er sann. Altså KB ⊨ C.\n- A, B og D krever Q, og Q er usann i KB-modellen P = T, Q = F, S = T. Ingen av dem følger.\n\n*Kilde: løsningsforslaget til eksamen 2024, Q14.*"
+  }
+ ]
+}

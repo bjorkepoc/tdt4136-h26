@@ -1,0 +1,812 @@
+# TDT4136 Lecture 1 – Part 1 (Pinar)
+
+Source: Canvas H26, Lecture1-Fall2026_Part1_Pinar.pdf
+Exported from the authenticated Canvas DocViewer because the direct CDN PDF was blocked by Chrome. Page markers and wording are preserved below.
+
+DocViewer
+Page
+of 23
+ZOOM
+Pages
+Goal of the course
+
+
+is not to learn Machine Learning, LLM, ANN..
+
+
+is to learn how to deﬁne problems, choose representations, design
+
+
+agents and ﬁnd solutions
+
+
+to learn to decide which algorithms to use for speciﬁc problems and
+
+
+situations
+
+
+August 20, 2026
+ 
+1 / 23
+Course topic overview
+
+
+Intelligent agents
+
+
+Problem solving by Searching
+
+
+Constraint Satisfaction Problems
+
+
+Logical systems
+
+
+Adversarial Search
+
+
+Knowledge representation
+
+
+Ethical issues in AI
+
+
+Planning
+
+
+Game Theory
+
+
+Natural Language processing
+
+
+August 20, 2026
+ 
+2 / 23
+Birth of AI ﬁeld
+
+
+A Summer Research Project in the Dartmouth College, in 1956 was the birth of the AI
+
+
+research ﬁeld.
+
+
+(From left: Trenchard More, John McCarthy, Marvin Minsky, Oliver Selfridge, and Ray
+
+
+Solomonoﬀ)
+
+
+From the project proposal: "...to proceed on the basis of the conjecture that every
+
+
+aspect of learning or any other feature of intelligence can in principle be so precisely
+
+
+described that a machine can be made to simulate it."
+
+
+August 20, 2026
+ 
+3 / 23
+What is AI?
+
+
+There are no crisp deﬁnitions. Here is one from John McCarthy, (father of
+
+
+the phrase
+ 
+Artiﬁcial Intelligence
+)
+
+
+Question: What is artiﬁcial intelligence?
+
+
+Answer: It is the science and engineering of making intelligent machines,
+
+
+especially intelligent computer programs. It is related to the similar task of
+
+
+using computers to understand human intelligence, but AI does not have to
+
+
+conﬁne itself to methods that are biologically observable.
+
+
+Question: Yes, but what is intelligence?
+
+
+Answer: Intelligence is the computational part of the ability to achieve
+
+
+goals in the world. Varying kinds and degrees of intelligence occur in
+
+
+people, many animals and some machines.
+
+
+see
+ 
+http://www.formal.Stanford.EDU/jmc/whatisai/
+
+
+August 20, 2026
+ 
+4 / 23
+What is AI? - cont
+
+
+"AI is the science of making machines to do things that would require
+
+
+intelligence if done by men." Marvin Minsky
+
+
+"The study of mental faculties through the use of computational models"
+
+
+Eugen Charniak
+
+
+In short: There is no formal deﬁnition covering all aspects of intelligence
+
+
+August 20, 2026
+ 
+5 / 23
+Can machines be Intelligent?
+
+
+Symbolic system hypothesis
+ 
+(Newell and Simon)
+
+
+- Intelligence is substrate neutral
+
+
+- A
+ 
+physical symbol system
+ 
+has necessary and suﬃcient means for
+
+
+general intelligent action.
+
+
+Biological substrate only (John Searle, philosopher)
+
+
+- Intelligence is substrate dependent.
+
+
+- The material humans are made of is fundamental for our intelligence.
+
+
+- Thinking is possible only in special machines - living ones made of
+
+
+proteins.
+
+
+August 20, 2026
+ 
+6 / 23
+What is AI?
+
+
+Russell and Norvig’s deﬁnition of AI
+
+
+Two dimensions:
+AI
+ 
+approaches
+
+
+criteria
+
+
+Thinking
+ 
+acting
+ 
+Performance
+
+
+evaluated
+
+
+in
+ 
+comparison
+
+
+with
+ 
+human
+
+
+Performance
+
+
+evaluated
+
+
+according
+ 
+to
+
+
+rationality
+
+
+evaluation
+process
+/
+task
+
+
+August 20, 2026
+ 
+7 / 23
+What is AI?
+
+
+August 20, 2026
+ 
+8 / 23
+Acting humanly
+
+
+Alan Turing designed an operational test for intelligence -1950
+AI SYSTEM
+
+
+HUMAN
+
+
+?
+
+
+HUMAN
+
+
+INTERROGATOR
+
+
+Computer would need:
+
+
+natural language processing
+
+
+knowledge representation
+
+
+automated reasoning
+
+
+machine learning
+
+
+Total Turing test requires interaction with the external world, would
+
+
+require:
+
+
+computer vision and speech recognition
+
+
+robotics
+
+
+August 20, 2026
+ 
+9 / 23
+Acting Humanly - Eliza
+
+
+One of the most famous early AI programs: Eliza, the computer
+
+
+psychotherapist, created by Joseph Weizenbaum in 1966 at MIT.
+
+
+Eliza functions by "twisting the statements of her ’patients’ back at
+
+
+them in the classic manner of a non-directive psychotherapist."
+
+
+The fact that it understands the subject’s statements is an illusion.
+
+
+Surprisingly, many users were taking its performance quite seriously.
+
+
+August 20, 2026
+ 
+10 / 23
+Acting Humanly - Eliza 2
+young woman:
+ 
+Men are all alike.
+
+
+eliza:
+ 
+In what way?
+
+
+young woman:
+ 
+They're always bugging us about something
+
+
+specific or other.
+
+
+eliza:
+ 
+Can you think of a specific example?
+
+
+young woman:
+ 
+Well, my boyfriend made me come here.
+
+
+eliza:
+ 
+Your boyfriend made you come here?
+
+
+young woman:
+ 
+He says I'm depressed much of the time.
+
+
+eliza:
+ 
+I am sorry to hear you are depressed.
+
+
+young woman:
+ 
+It's true. I'm unhappy.
+
+
+eliza:
+ 
+Do you think coming here will help
+ 
+you not to be unhappy?
+
+
+young woman:
+ 
+I need some help, that much seems certain.
+
+
+eliza:
+ 
+What would it mean to you if you got some help?
+
+
+young woman:
+ 
+Perhaps I could learn to get along with my mother.
+
+
+eliza:
+ 
+Tell me more about your family.
+
+
+young woman:
+ 
+My mo
+ther takes care of me.
+
+
+eliza:
+ 
+Who else in your family takes care of you?
+
+
+young woman:
+ 
+My father.
+
+
+eliza:
+ 
+Your father.
+
+
+young woman:
+ 
+You are like my father in some ways.
+
+
+eliza:
+ 
+What resemblance do you see?
+
+
+young woman:
+ 
+You are not very aggressive but I think
+ 
+you don't
+
+
+want me to notice that.
+
+
+eliza:
+ 
+What makes you think I am not very aggressive?
+
+
+young woman:
+ 
+You don't argue with me.
+
+
+eliza:
+ 
+Why do you think I don't argue with you?
+
+
+young woman:
+ 
+You are afraid of me.
+
+
+eliza:
+ 
+Does it please you to believe I am afrai
+d of you?
+
+
+young woman:
+ 
+My father is afraid of everybody.
+
+
+eliza:
+ 
+What else comes to mind when you think of your father?
+
+
+young woman:
+ 
+Bullies.
+
+
+eliza:
+ 
+Does that have anything to do with the fact that your
+
+
+boyfriend made you come here
+?
+
+
+August 20, 2026
+ 
+11 / 23
+Thinking Humanly
+
+
+Cognitive modelling approach
+
+
+Learn about how humans think
+
+
+introspection
+
+
+psychological experiments
+
+
+brain imaging
+
+
+Cognitive Science promising
+
+
+August 20, 2026
+ 
+12 / 23
+Thinking rationally
+
+
+Aristotle: what are correct thought processes - Laws of Thought?
+
+
+- Formalize “correct” reasoning using a mathematical model
+
+
+- Syllogism (as a law of though) codiﬁes the patterns for argument
+
+
+structures.
+
+
+Theory of probability
+
+
+August 20, 2026
+ 
+13 / 23
+Thinking rationally
+
+
+August 20, 2026
+ 
+14 / 23
+Thinking rationally
+
+
+August 20, 2026
+ 
+15 / 23
+Thinking rationally
+
+
+.
+
+
+Problems:
+
+
+General deductive inference is computationally intractable
+
+
+It does not generate intelligent
+ 
+behaviour
+
+
+August 20, 2026
+ 
+16 / 23
+Acting Rationally: Rational Agents approach
+
+
+Rational behavior: doing the right thing
+
+
+The right thing: that which is expected to maximize goal achievement,
+
+
+given the available information and computational abilities
+
+
+Doesn’t necessarily involve thinking—e.g., blinking reﬂex—but
+
+
+thinking should be in the service of rational action
+
+
+Two advantages:
+
+
+Not limited to "laws of thought" in order to achieve rationality
+
+
+Rationality is mathematically well-deﬁned - more operationable
+
+
+August 20, 2026
+ 
+17 / 23
+Foundations of AI
+
+
+Computer Science is the main discipline underlying AI
+
+
+Can we think which other disciplines AI is grounded on?
+ArtificiaI
+
+
+Inteligence
+ 
+?
+
+
+?
+
+
+Computer
+
+
+Science
+
+
+August 20, 2026
+ 
+18 / 23
+Foundations of AI
+Psychology
+
+
+ArtificiaI
+
+
+Inteligence
+ 
+Mathematics
+
+
+Economics
+
+
+Neuroscience
+
+
+Control
+ 
+theory
+
+
+&
+ 
+Cybernetics
+
+
+Linguistics
+
+
+Philosophy
+
+
+Computer
+
+
+science
+
+
+August 20, 2026
+ 
+19 / 23
+Brief history of AI
+
+
+1943
+ 
+McCulloch & Pitts: Boolean circuit model of brain
+
+
+1950
+ 
+Turing’s “Computing Machinery and Intelligence”
+
+
+1952-69
+ 
+Early AI programs, including Samuel’s checkers program,
+
+
+Newell & Simon’s Logic Theorist, Gelernter’s Geometry Engine
+
+
+1956
+ 
+Dartmouth meeting: “Artiﬁcial Intelligence” adopted
+
+
+1962
+ 
+Rosenblatt’s Perceptron for training simple neural networks
+
+
+1965
+ 
+Robinson’s complete algorithm for logical reasoning
+
+
+1972
+ 
+The logic programming language PROLOG is created.
+
+
+1966–74
+ 
+Disappointment: AI discovers computational complexity
+
+
+Neural network research almost disappears
+
+
+August 20, 2026
+ 
+20 / 23
+Brief history of AI -cont.
+
+
+1969–79
+ 
+Early development of knowledge-based systems
+
+
+1980–88
+ 
+Expert systems industry booms
+
+
+1988–93
+ 
+Expert systems industry busts: “AI Winter”
+
+
+1985–95
+ 
+Backpropagation learning returns neural networks to popularity
+
+
+1988–
+ 
+Resurgence of probability; general increase in technical depth
+
+
+“Nouvelle AI”: ALife, GA
+
+
+1995–
+ 
+Agents, agents, everywhere
+ 
+. . .
+
+
+2003–
+ 
+Human-level AI back on the agenda
+
+
+2005–2010
+ 
+AI disappoints again, AI is not much appreciated
+
+
+2012 -
+ 
+Deep learning and a very hot AI summer since then
+
+
+August 20, 2026
+ 
+21 / 23
+Example from Early History of AI
+
+
+1943 McCulloch & Pitts: Boolean circuit model of brain
+
+
+August 20, 2026
+ 
+22 / 23
+How humanly is Soﬁa (Hong Kong ﬁrm Hanson Robotics)?
+
+
+https://www.youtube.com/watch?v=suRuQbDXcrc
+
+
+August 20, 2026
+ 
+23 / 23
+Annotations

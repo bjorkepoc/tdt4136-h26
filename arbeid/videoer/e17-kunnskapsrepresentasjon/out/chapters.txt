@@ -1,0 +1,47 @@
+;FFMETADATA1
+title=Kunnskapsrepresentasjon: ontologier, hendelser og semantiske nett
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=40166
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=40167
+END=201600
+title=Ontologi og kategorier
+[CHAPTER]
+TIMEBASE=1/1000
+START=201600
+END=301400
+title=Deler, mål og stoff
+[CHAPTER]
+TIMEBASE=1/1000
+START=301400
+END=426067
+title=Hendelser
+[CHAPTER]
+TIMEBASE=1/1000
+START=426067
+END=522734
+title=Tid og fluents
+[CHAPTER]
+TIMEBASE=1/1000
+START=522733
+END=633400
+title=Semantiske nett
+[CHAPTER]
+TIMEBASE=1/1000
+START=633400
+END=737700
+title=Description logics
+[CHAPTER]
+TIMEBASE=1/1000
+START=737700
+END=782667
+title=Eksamen
+[CHAPTER]
+TIMEBASE=1/1000
+START=782667
+END=836700
+title=Koblinger og oppsummering

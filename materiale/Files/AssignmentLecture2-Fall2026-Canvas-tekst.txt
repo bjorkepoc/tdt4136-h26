@@ -1,0 +1,560 @@
+Kilde: AssignmentLecture2-Fall2026.pdf
+https://canvas.ntnu.no/courses/24540/files/1312212
+Lest i Canvas 23.09.2026. Teksten nedenfor er hentet fra alle 25 sider i DocViewer. Diagrammer, skjermbilder av kode og andre bildeelementer er ikke med i tekstuttrekket. Originalnedlasting ble blokkert i nettleseren. Bruk den separate originale code handout-kilden for eksakt startkode.
+
+DocViewer
+Page
+of 25
+ZOOM
+Pages
+Assignment Lecture 2
+
+
+Constraint Satisfaction Problems
+
+
+TDT4137 – Introduction to Artificial Intelligence, 2026
+
+
+Aleksandra Jekic, Department of Computer Science
+2
+
+
+Relevant for this assignment
+
+
+•
+ 
+Lecture 4 (yesterday, 10.09.26)
+
+
+•
+ 
+Chapter 5 in the Russell and Norvig book (4th edition, Global).
+3
+
+
+How important is this?
+
+
+•
+ 
+Historically, there has usually been a problem covering this in exams.
+
+
+•
+ 
+Not the hardest topic and the algorithms are quite intuitive. However, if you
+
+
+are not familiar with the terminology the problem will seem like gibberish.
+
+
+•
+ 
+Watch out, read the book! Last year there was a problem on topological sort. I
+
+
+believe this was only in the book and a lot of people were confused.
+
+
+•
+ 
+Note: Assignment is programming only, which is different from exams. Might
+
+
+be a good idea to look at some old exam problems now as well.
+4
+
+
+Constraint satis-what?
+
+
+•
+ 
+What are we doing now: You want to decide the value of lots of variables
+
+
+given a bunch of possible values and certain constraints.
+
+
+•
+ 
+A lot of problems have this underlying structure such as scheduling different
+
+
+teachers for lectures, what order to build a car in given limited resources,
+
+
+deciding where to seat people at a dinner party who have very strong opinions
+
+
+about each other, solving Sudoku boards, etc.
+
+
+•
+ 
+This is an NP-complete problem. Can make a lot of money for companies who
+
+
+do things at a large scale by improving their schedules.
+5
+
+
+Constraint satis-what?
+
+
+•
+ 
+You need a set of variables, X={seat1, seat2, …, seat7}.
+
+
+•
+ 
+You need a domain for each variable,
+ 
+D_seat1 = {Emily, Anne, …, Charlotte}.
+
+
+•
+ 
+You need constraints like C(Emily, Charlotte): Not adjacent, etc.
+
+
+•
+ 
+Doesn’t really matter how you represent this.
+
+
+•
+ 
+Intuition: Probably some of these constraints immediately rule out possibilities
+
+
+(constraint propagation like AC-3). Then we can just try some assignments
+
+
+and go back if we get stuck (backtrack search). We can also update
+
+
+connected domains after making each move (forward checking).
+6
+
+
+Small problem
+
+
+•
+ 
+The 8-queens problem was used as an example of a problem that is
+
+
+appropriate for genetic algorithms in a recent lecture.
+
+
+•
+ 
+Would genetic algorithms or a CSP solvers be more efficient? Why?
+7
+
+
+Assignment 2
+
+
+•
+ 
+Basically, you’re going to run AC-3 on the
+
+
+constraint network (variables, domains and
+
+
+constraints) of several Sudoku boards.
+
+
+•
+ 
+Pseudocode for this constraint propagation
+
+
+algorithm is found on p. 171 in Norvig &
+
+
+Russell’s book (4th edition, Global).
+
+
+•
+ 
+Afterwards you run backtracking-search,
+
+
+pseudocode found on p. 176 in Norvig &
+
+
+Russell’s book (4th edition, Global).
+
+
+•
+ 
+AC-3 may immediately complete some of
+
+
+the simpler boards and that is fine!
+8
+
+
+Assignment 2
+
+
+•
+ 
+You are very lucky!
+
+
+•
+ 
+We have already programmed almost everything for you in Python.
+
+
+•
+ 
+The CSP class, visualizing the Sudoku boards, etc.
+
+
+•
+ 
+We have also provided the simple map coloring problem that you can
+
+
+easily use to check if your algorithm does its job.
+
+
+•
+ 
+You just need to complete the code for
+ 
+AC-3
+ 
+and
+ 
+backtrack-search
+.
+
+
+•
+ 
+Of course, if you want to – you can represent the problem however you
+
+
+want in whatever language you would like to from scratch.
+9
+
+
+Assignment 2
+
+
+•
+ 
+You have the files csp.py,
+
+
+map_coloring.py
+ 
+and
+
+
+sudoku.py.
+10
+
+
+Assignment 2
+
+
+•
+ 
+From csp.py
+11
+
+
+Assignment 2
+
+
+•
+ 
+From csp.py
+12
+
+
+Assignment 2
+
+
+•
+ 
+From csp.py
+
+
+Example output after implementing csp.backtracking_search():
+
+
+{'WA': 'red', 'NT': 'green', 'Q': 'red', 'NSW': 'green', 'V': 'red', 'SA': 'blue', 'T': 'red'}
+13
+
+
+Assignment 2
+
+
+•
+ 
+Select-Unassigned-Variable?
+
+
+–
+ 
+Anything is fine. Can try
+
+
+minimum-remaining-values
+
+
+(MRV) heuristic if you want.
+
+
+•
+ 
+Order-Domain-Values?
+
+
+–
+ 
+Anything is fine. Can try least-
+
+
+constraining-value (LCV)
+
+
+heuristic if you want.
+
+
+•
+ 
+Inference?
+
+
+–
+ 
+This is where you would do
+
+
+forward-check. Just skip.
+14
+
+
+Small problem
+
+
+•
+ 
+Very simple constraint problem.
+
+
+•
+ 
+Assume minimum-remaining-
+
+
+value heuristic for variables and
+
+
+least-constraining-value
+
+
+heuristic for value assignments.
+
+
+•
+ 
+Break ties alphabetically.
+
+
+•
+ 
+Is MRV+LCV better than
+
+
+random choices on average for
+
+
+the graph on the right?
+ 
+•
+ 
+Don’t worry about exactly
+
+
+calculating expected mistakes.
+15
+
+
+Small problem
+
+
+•
+ 
+Basically with the heuristics you are
+ 
+guaranteed
+
+
+1 mistake.
+
+
+•
+ 
+With random choices, 4/6 times you will pick B
+
+
+first or second which gives you 1/3+1/3=2/3
+
+
+expected mistakes.
+
+
+•
+ 
+The two other cases are more tedious, but the
+
+
+expected amount of mistakes is (4(2/3)+2(7/9))/
+
+
+6=~0.704.
+
+
+•
+ 
+1/3 (A and C, same color) times 1/3 (expected
+
+
+mistakes)=1/9. 2/3 (A and C, different color)
+
+
+times 1 (expected mistakes) = 2/3. Now
+
+
+1/9+2/3=7/9.
+16
+
+
+Assignment 2
+
+
+•
+ 
+From sudoku.py
+17
+
+
+Assignment 2
+
+
+•
+ 
+From csp.py
+18
+
+
+Assignment 2
+
+
+•
+ 
+From sudoku.py
+19
+
+
+Assignment 2
+
+
+•
+ 
+From sudoku.py
+20
+
+
+Assignment 2
+
+
+•
+ 
+From csp.py
+21
+
+
+Assignment 2
+22
+
+
+Assignment 2
+23
+
+
+Small problem
+
+
+•
+ 
+Going back to our old friend.
+
+
+•
+ 
+Assume we make A blue.
+
+
+•
+ 
+What do the domains look like
+
+
+after AC-3?
+
+
+•
+ 
+B’s domain becomes {G, R}.
+
+
+•
+ 
+Is MRV+LCV better than
+
+
+random choices now? Break
+
+
+ties alphabetically.
+24
+
+
+Practical reminders
+
+
+Any questions or comments?
+For more
+
+
+information:
+
+
+www.ntnu.edu
+
+
+Photo – first slide and this slide: Gløshaugen – Photo: Mentz Indergaard/NTNU
+
+
+Gjøvik – Photo: Espen Taftø Vestad/NTNU
+ 
+|
+ 
+Ålesund – Photo: Sissel Basso/NTNU
+Annotations

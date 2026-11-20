@@ -1,0 +1,512 @@
+1
+00:00:00,450 --> 00:00:08,130
+Flyet P1 står på flyplassen SFO. Det flyr til JFK. Skriv tilstanden etterpå.
+
+2
+00:00:08,130 --> 00:00:15,410
+Mange skriver: P1 er i JFK, og P1 er ikke i SFO. Det er jo sant! Men det er
+
+3
+00:00:15,410 --> 00:00:21,250
+ugyldig PDDL, og nettopp sånt spør eksamen om. Om tolv minutter vet du hvorfor.
+
+4
+00:00:22,617 --> 00:00:29,017
+Etterpå kan du skrive gyldig PDDL, kjøre en plan, regne bakover og forklare
+
+5
+00:00:29,017 --> 00:00:34,737
+hvorfor heuristikkene ikke gjetter for høyt. Vi tar tilstander, handlinger,
+
+6
+00:00:34,737 --> 00:00:38,297
+forover, bakover, heuristikker og eksamen.
+
+7
+00:00:39,650 --> 00:00:42,610
+Hvorfor trenger planlegging et eget språk?
+
+8
+00:00:44,383 --> 00:00:49,823
+I kapittel tre var en tilstand en svart boks. Søket kjente bare navnet, og
+
+9
+00:00:49,823 --> 00:00:56,063
+heuristikken måtte du lage selv. Planlegging åpner boksen: flyet står i SFO,
+
+10
+00:00:56,063 --> 00:01:02,063
+lasten i JFK. Det heter factored representation. Nå ser planleggeren hvilke
+
+11
+00:01:02,063 --> 00:01:04,783
+fakta som mangler, og lager h selv.
+
+12
+00:01:06,083 --> 00:01:12,003
+Klassisk planlegging antar fire ting. Discrete: ett steg om gangen.
+
+13
+00:01:12,003 --> 00:01:18,963
+Deterministic: ett kjent utfall. Static: bare agenten endrer verden. Fully
+
+14
+00:01:18,963 --> 00:01:25,603
+observable: agenten ser hele tilstanden. Ryker en av dem, er du i E nitten.
+
+15
+00:01:26,983 --> 00:01:34,023
+Språket heter PDDL. En tilstand er en konjunksjon av fluents, fakta som kan
+
+16
+00:01:34,023 --> 00:01:41,463
+endre seg. Hvert fluent er ground og atomic: ett predikat, bare konstanter som
+
+17
+00:01:41,463 --> 00:01:48,183
+argumenter. Det som ikke står der, er usant. Det er closed world, fra database
+
+18
+00:01:48,183 --> 00:01:50,023
+semantics i E fjorten.
+
+19
+00:01:51,383 --> 00:01:57,943
+Derfor er tre ting forbudt i en tilstand: variabler, negasjon og funksjoner.
+
+20
+00:01:57,943 --> 00:02:03,863
+Negasjon trengs heller ikke. At flyet ikke er i SFO, sier du ved å ikke skrive
+
+21
+00:02:03,863 --> 00:02:06,663
+det. Det var feilen fra starten.
+
+22
+00:02:08,017 --> 00:02:10,817
+Hvordan beskriver du hva en handling gjør?
+
+23
+00:02:12,583 --> 00:02:18,823
+En handling skrives som et action schema. Navn med variabler. Precondition: hva
+
+24
+00:02:18,823 --> 00:02:24,903
+som må være sant før. Effect: hva som endrer seg. Sett inn konstanter, så får du
+
+25
+00:02:24,903 --> 00:02:29,863
+en ground action. Den er applicable når hvert positivt literal i precondition
+
+26
+00:02:29,863 --> 00:02:32,663
+står i s, og ingen negerte gjør det.
+
+27
+00:02:34,017 --> 00:02:40,817
+Effect deles i to. Negative literaler er delete-lista, DEL. Positive er
+
+28
+00:02:40,817 --> 00:02:50,977
+add-lista, ADD. Start med s. Ta bort DEL: P1 i SFO forsvinner. Legg til ADD: P1
+
+29
+00:02:50,977 --> 00:02:58,577
+i JFK kommer til. Resten står. Result er s minus DEL, union ADD.
+
+30
+00:02:59,950 --> 00:03:05,790
+Tre feil går igjen på eksamen. Glemmer du det negative literalet, står flyet to
+
+31
+00:03:05,790 --> 00:03:12,510
+steder. En variabel i effect må også stå i precondition og i parameterlista. Og
+
+32
+00:03:12,510 --> 00:03:18,990
+PDDL har verken «for alle» eller «eller», bare konjunksjoner av literaler.
+
+33
+00:03:20,350 --> 00:03:27,710
+Din tur. Hvilken av disse er lov?
+
+34
+00:03:27,710 --> 00:03:33,590
+C. Det er et mål, og et mål er som en precondition: der er variabler og negasjon
+
+35
+00:03:33,590 --> 00:03:40,070
+lov. A har en variabel, B en negasjon og D en funksjon, og alle tre er
+
+36
+00:03:40,070 --> 00:03:41,310
+tilstander.
+
+37
+00:03:42,583 --> 00:03:45,143
+Hvordan ser et helt problem ut?
+
+38
+00:03:46,917 --> 00:03:54,277
+Eksempelet fra boka og forelesningen: to fly, to laster, to flyplasser. C1 skal
+
+39
+00:03:54,277 --> 00:04:03,397
+til JFK, C2 til SFO. Load legger last i et fly. Unload tar den ut. Fly flytter
+
+40
+00:04:03,397 --> 00:04:10,277
+flyet. Last i et fly står ikke på noen flyplass. At betyr «klar til bruk her».
+
+41
+00:04:11,650 --> 00:04:21,770
+Her er planen. Load C1 i P1: C1 i SFO forsvinner, C1 i P1 kommer til. Fly P1 til
+
+42
+00:04:21,770 --> 00:04:30,210
+JFK. Unload, og C1 er framme. Så det samme for C2: last, fly og losse. Begge
+
+43
+00:04:30,210 --> 00:04:33,970
+mållitteralene holder. Flyene kan stå hvor som helst.
+
+44
+00:04:35,350 --> 00:04:47,830
+Din tur. Etter steg tre står P1 i JFK. Er Load C2 i P1 applicable der?
+
+45
+00:04:47,830 --> 00:04:55,110
+Ja. C2 og P1 står begge i JFK, og typene stemmer. P1 kunne altså tatt C2 med
+
+46
+00:04:55,110 --> 00:04:57,350
+tilbake, også på seks steg.
+
+47
+00:04:58,717 --> 00:05:01,997
+Hvorfor kan ikke planleggeren bare prøve seg fram?
+
+48
+00:05:03,750 --> 00:05:10,030
+Forward search, eller progression, starter i initialtilstanden. Finn alle ground
+
+49
+00:05:10,030 --> 00:05:15,350
+actions som er applicable, bruk Result og gjenta til målet holder. Alt fra
+
+50
+00:05:15,350 --> 00:05:17,990
+kapittel tre virker, også A-stjerne.
+
+51
+00:05:19,350 --> 00:05:25,350
+Men bokas større problem har ti flyplasser med fem fly og tjue laster på hver.
+
+52
+00:05:25,350 --> 00:05:30,550
+Bare flyvningene gir fire hundre og femti handlinger. Står alt på samme flyplass,
+
+53
+00:05:30,550 --> 00:05:37,390
+over ti tusen. Si to tusen i snitt. Planen er førtien steg. Da har treet to
+
+54
+00:05:37,390 --> 00:05:42,750
+tusen opphøyd i førtien noder, et tall med hundre og trettiseks sifre. Uten god
+
+55
+00:05:42,750 --> 00:05:44,950
+heuristikk er det håpløst.
+
+56
+00:05:46,250 --> 00:05:48,330
+Kan du starte i målet i stedet?
+
+57
+00:05:50,083 --> 00:05:55,283
+Backward search, eller regression, starter i målet og ser bare på relevante
+
+58
+00:05:55,283 --> 00:06:00,763
+handlinger. En effekt må gi en del av målet, og ingen effekt får slette en annen
+
+59
+00:06:00,763 --> 00:06:08,403
+del. Forelesningens eksempel: målet er å ikke være fattig, men berømt. Effekten
+
+60
+00:06:08,403 --> 00:06:14,443
+berømt er relevant. Fattig og berømt er det ikke: var den siste steg, ville
+
+61
+00:06:14,443 --> 00:06:19,283
+agenten vært fattig til slutt. Det andre kravet kalles også consistent.
+
+62
+00:06:20,650 --> 00:06:29,770
+Hva må ha vært sant før? Målet er P1 og P2 i B, handlingen Fly P1 fra A til B.
+
+63
+00:06:29,770 --> 00:06:35,930
+Den gir P1 i B og sletter ingenting i målet: relevant. Det den gir, trenger ikke
+
+64
+00:06:35,930 --> 00:06:42,970
+være sant før: trekk ADD fra. Men preconditions må ha holdt: legg den til. For
+
+65
+00:06:42,970 --> 00:06:49,890
+positive mål er g merket g minus ADD, union preconditions. Negative mål trekker
+
+66
+00:06:49,890 --> 00:06:51,290
+fra det a sletter.
+
+67
+00:06:52,650 --> 00:07:01,290
+Bakover kan målet få variabler. Skal C2 til SFO, gir regresjon over Unload: C2 i
+
+68
+00:07:01,290 --> 00:07:07,610
+et fly p merket som står i SFO. Det nye navnet er standardizing apart fra E
+
+69
+00:07:07,610 --> 00:07:12,290
+femten. Forgreningen blir lavere, men det er vanskelig å lage heuristikker for
+
+70
+00:07:12,290 --> 00:07:16,410
+slike mål. Derfor søker de fleste planleggere forover.
+
+71
+00:07:17,783 --> 00:07:34,903
+Din tur. Målet er C1 i JFK og C2 i SFO. Regresser over Unload C1 fra P1 i JFK.
+
+72
+00:07:34,903 --> 00:07:43,103
+B. C1 i JFK faller bort, fordi Unload gir det. A glemmer å trekke fra ADD, C
+
+73
+00:07:43,103 --> 00:07:48,383
+mister resten av målet, og D bruker effekten i stedet for preconditions.
+
+74
+00:07:49,750 --> 00:07:52,870
+Hvor kommer h fra når ingen har laget den?
+
+75
+00:07:54,550 --> 00:08:01,030
+Husker du relaxed problems fra E tre? Fjern en regel, så får grafen flere kanter.
+
+76
+00:08:01,030 --> 00:08:06,310
+Alt som var lov, er fortsatt lov, så beste løsning kan bare bli kortere. Eksakt
+
+77
+00:08:06,310 --> 00:08:12,870
+kost der er derfor admissible. I PDDL fjerner maskinen reglene rett i skjemaet.
+
+78
+00:08:12,870 --> 00:08:16,630
+Stryk «tom rute» i 8-puzzle, så får du Manhattan.
+
+79
+00:08:17,983 --> 00:08:24,063
+Første triks: ignore preconditions. Uten preconditions kan hver handling brukes
+
+80
+00:08:24,063 --> 00:08:30,183
+overalt, og hvert mållitteral nås med ett steg. I air cargo mangler to, så h er
+
+81
+00:08:30,183 --> 00:08:36,063
+to, mens ekte plan har seks. Men å telle mål er bare nesten riktig: én handling
+
+82
+00:08:36,063 --> 00:08:37,423
+kan gi to mål.
+
+83
+00:08:38,717 --> 00:08:42,757
+Ser du også bort fra at handlinger opphever hverandre, vil du ha færrest
+
+84
+00:08:42,757 --> 00:08:48,237
+handlinger som dekker hele målet. Det er set cover, som står i boka, men ikke
+
+85
+00:08:48,237 --> 00:08:54,797
+ble forelest. Her holder to. Set cover er NP-hard, så du tar gjerne greedy:
+
+86
+00:08:54,797 --> 00:09:00,957
+største først. Den tar fire mål og trenger to til. Tre er for mye: greedy mister
+
+87
+00:09:00,957 --> 00:09:01,997
+admissibility.
+
+88
+00:09:03,350 --> 00:09:09,670
+Andre triks: ignore delete lists. Med positive mål og preconditions fjerner du
+
+89
+00:09:09,670 --> 00:09:15,990
+alle negative effekter. Etter Fly står flyet på begge flyplassene. Rart, men
+
+90
+00:09:15,990 --> 00:09:23,430
+ingen handling ødelegger fremgang. P1 kan losse C2 i SFO uten å fly tilbake. Den
+
+91
+00:09:23,430 --> 00:09:29,110
+relakserte planen har fem steg. Korteste plan er fortsatt NP-hard, men hill
+
+92
+00:09:29,110 --> 00:09:31,110
+climbing finner en god raskt.
+
+93
+00:09:32,383 --> 00:09:37,903
+Figuren fra forelesningen viser hvorfor: landskapet har ingen lokale minima og
+
+94
+00:09:37,903 --> 00:09:43,743
+ingen blindveier. Hill climbing går rett ned, kanskje ikke optimalt. Og her gir
+
+95
+00:09:43,743 --> 00:09:50,063
+de to, fem og seks. Men ett tall i starten avgjør ikke antall noder. Først når
+
+96
+00:09:50,063 --> 00:09:55,423
+én h ligger høyere i alle tilstander, ekspanderer A-stjerne ikke flere.
+
+97
+00:09:56,717 --> 00:10:08,197
+Din tur, fra eksamen tjue tjueto: hvorfor er ignore delete lists admissible?
+
+98
+00:10:08,197 --> 00:10:14,517
+B. Med positive mål og preconditions virker hver ekte plan også uten slettinger,
+
+99
+00:10:14,517 --> 00:10:20,357
+så beste relakserte plan er aldri lengre enn beste ekte. Men bare den optimale.
+
+100
+00:10:20,357 --> 00:10:22,437
+En tilnærming kan bli for lang.
+
+101
+00:10:23,817 --> 00:10:26,537
+Klarer du en hel eksamensoppgave?
+
+102
+00:10:28,317 --> 00:10:35,477
+Eksamen tjue tjuetre, oppgave åtte, fem poeng. En bruker er hjemme, eier en bil
+
+103
+00:10:35,477 --> 00:10:41,437
+og vil ha en leke fra lekebutikken. Handlingene er buss, bil og kjøp. Skriv
+
+104
+00:10:41,437 --> 00:10:50,757
+problemet i PDDL, og vis tre steg bakover. Sett på pause og prøv selv.
+
+105
+00:10:52,050 --> 00:10:57,570
+Tre skjemaer. DriveCar krever at brukeren eier bilen, og at begge står samme
+
+106
+00:10:57,570 --> 00:11:05,010
+sted. Buy krever bruker og leke i samme butikk. Init og Goal tar du fra teksten.
+
+107
+00:11:05,010 --> 00:11:11,090
+To feller i selve fasiten: user er ikke parameter, og reisemålet to står bare i
+
+108
+00:11:11,090 --> 00:11:15,970
+effect. Bruk konstanten User, og legg til Place for reisemålet.
+
+109
+00:11:17,350 --> 00:11:24,110
+Start i målet: hjemme, og eier leken. DriveCar fra butikken hjem gir hjemme og
+
+110
+00:11:24,110 --> 00:11:29,510
+sletter ingenting i målet. Den er relevant. Trekk fra ADD og legg til
+
+111
+00:11:29,510 --> 00:11:34,470
+preconditions: bruker og bil i butikken, og bilen er hans.
+
+112
+00:11:35,850 --> 00:11:42,930
+Buy gir at han eier leken. Ny precondition: leken er i butikken. DriveCar
+
+113
+00:11:42,930 --> 00:11:49,610
+hjemmefra gir bruker og bil i butikken. Igjen står: eier bilen, leken i butikken,
+
+114
+00:11:49,610 --> 00:11:55,130
+bruker og bil hjemme, pluss typene. Alt står i Init. Ferdig.
+
+115
+00:11:56,417 --> 00:12:02,817
+Snu rekkefølgen, så har du planen: kjør, kjøp, kjør hjem. Fasiten vil ha
+
+116
+00:12:02,817 --> 00:12:08,537
+tilstanden før og etter hvert steg, som kjeden her. TakeBus hjem er også
+
+117
+00:12:08,537 --> 00:12:14,337
+relevant og gir en annen gren. Ape og bananer fra tjue tjueto løses likt. Den
+
+118
+00:12:14,337 --> 00:12:15,777
+står i notatet.
+
+119
+00:12:17,150 --> 00:12:18,990
+Hvor dukker dette opp igjen?
+
+120
+00:12:20,750 --> 00:12:27,390
+Forover er søket fra E to og E tre, og h kommer fra relaxed problems. Fluents
+
+121
+00:12:27,390 --> 00:12:32,590
+ligner førsteordens logikk, men med closed world fra E fjorten. Unification fra
+
+122
+00:12:32,590 --> 00:12:37,830
+E femten finner relevante handlinger. E nitten tar belief states fra E fem inn i
+
+123
+00:12:37,830 --> 00:12:43,390
+planlegging. SATPlan, GraphPlan og resten av lista er ikke pensum i år.
+
+124
+00:12:44,683 --> 00:12:51,843
+Hele kjeden: en tilstand er sanne fakta. Result fjerner DEL og legger til ADD.
+
+125
+00:12:51,843 --> 00:12:58,523
+Forover er det mange handlinger, bakover få: for positive mål g minus ADD, union
+
+126
+00:12:58,523 --> 00:13:05,296
+preconditions. Relaxed problems gir h. Og flyet fra starten står bare i JFK.
+
+127
+00:13:05,296 --> 00:13:10,843
+Husker du bare én ting: usant står ikke i tilstanden. Handlinger sletter, de
+
+128
+00:13:10,843 --> 00:13:12,523
+skriver aldri «ikke».
+

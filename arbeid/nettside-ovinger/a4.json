@@ -1,0 +1,200 @@
+{
+ "id": "a4",
+ "ep": "A4",
+ "tittel": "Assignment 4: Propositional and First Order Logic in Reasoning",
+ "kilde": "../materiale/Files/Assignment_4.pdf",
+ "om": "Responsible for assignments this year: Aleksandra Jekic<br>\nAssignment created by Xavier F.C. Sánchez-Díaz\n\n21st October 2026\n\nDeadline: 06.11.2026, 23:59 hrs\n\n**Overview**\n\nThis is a problem set for you to gain experience with propositional logic and First-Order Logic (FOL) by solving many small problems. Refer to the textbook (**Artificial Intelligence: A Modern Approach, 4rd ed. (Global edition)**) for reference, specially Chapters 7, 8 and 9.\n\nTry solving as many problems as you can. The more you solve, the better you will understand the concepts.\n\n**Deliverables and recommendations**\n\nYou must upload a **single** PDF containing the **typeset** equations, formulas and/or diagrams of your solutions.\n\n- Include **natively digital** equations and diagrams. Do **not** upload scans or photos of hand-written solutions as these will be ignored by the TAs. Tablet writing is accepted.\n- You can typeset your equations in Microsoft Word/Google Docs. If you’re feeling adventurous, try LaTeX. [Overleaf](https://overleaf.com) is a great place to start.",
+ "intro": "Oppgavesett i proposisjonslogikk og FOL. 1.1–1.2 hører til E11 (modeller, entailment og model checking), 2.1–2.2 til E12 (CNF og resolution), 3.1–3.2 til E14 (FOL) og 4 til E15–E16 (FOL-inferens og resolution). Oppgave 3 og 4 står også i E14 og E16, der omskrevet på norsk. Her står originalteksten.",
+ "tasks": [
+  {
+   "t": "Oppgave 1.1: Modelling",
+   "d": "**1 Models and entailment in propositional logic**\n\nFor each of the following statements, determine whether it is true or not by building the complete model (truth table). *Hint: you can add the full statement as a column in the table by replacing the “entails” ( ⊨ ) symbol by an “implies” ( ⇒ ) symbol.*",
+   "tf": [
+    "a) ¬A ∧ ¬B ⊨ ¬B",
+    "b) ¬A ∨ ¬B ⊨ ¬B",
+    "c) ¬A ∧ B ⊨ A ∨ B",
+    "d) A ⇒ B ⊨ A ⇔ B",
+    "e) (A ⇒ B) ⇔ C ⊨ A ∨ ¬B ∨ C",
+    "f) (¬A ⇒ ¬B) ∧ (A ∧ ¬B) is satisfiable",
+    "g) (¬A ⇔ ¬B) ∧ (A ∧ ¬B) is satisfiable"
+   ],
+   "f": [
+    [
+     "Sannhetstabellene (a–g)",
+     "area",
+     "a)\nA | B | ¬A ∧ ¬B | ¬B | (¬A ∧ ¬B) ⇒ ¬B\n…"
+    ]
+   ],
+   "fasit": "- **a) Sant.** Bare raden A = F, B = F gjør ¬A ∧ ¬B sann, og der er ¬B også sann.\n- **b) Usant.** Motmodell A = F, B = T: ¬A ∨ ¬B er sann, men ¬B er usann.\n- **c) Sant.** Bare raden A = F, B = T gjør ¬A ∧ B sann, og der er A ∨ B sann.\n- **d) Usant.** Motmodell A = F, B = T: A ⇒ B er sann, men A ⇔ B er usann.\n- **e) Sant.** A ∨ ¬B ∨ C er usann bare i A = F, B = T, C = F, og der er venstresiden usann (A ⇒ B = T, C = F).\n- **f) Sant (satisfiable).** A = T, B = F gjør begge leddene sanne.\n- **g) Usant (unsatisfiable).** A ∧ ¬B krever A = T, B = F, og da er ¬A ⇔ ¬B usann.\n\nα ⊨ β holder nøyaktig når α ⇒ β er sann i hver rad. Satisfiable betyr sann i minst én rad. Rader som bryter, er i fet skrift.\n\na) ¬A ∧ ¬B ⊨ ¬B\n\n| A | B | ¬A ∧ ¬B | ¬B | (¬A ∧ ¬B) ⇒ ¬B |\n|---|---|---|---|---|\n| F | F | T | T | T |\n| F | T | F | F | T |\n| T | F | F | T | T |\n| T | T | F | F | T |\n\nb) ¬A ∨ ¬B ⊨ ¬B\n\n| A | B | ¬A ∨ ¬B | ¬B | (¬A ∨ ¬B) ⇒ ¬B |\n|---|---|---|---|---|\n| F | F | T | T | T |\n| **F** | **T** | **T** | **F** | **F** |\n| T | F | T | T | T |\n| T | T | F | F | T |\n\nc) ¬A ∧ B ⊨ A ∨ B\n\n| A | B | ¬A ∧ B | A ∨ B | (¬A ∧ B) ⇒ (A ∨ B) |\n|---|---|---|---|---|\n| F | F | F | F | T |\n| F | T | T | T | T |\n| T | F | F | T | T |\n| T | T | F | T | T |\n\nd) A ⇒ B ⊨ A ⇔ B\n\n| A | B | A ⇒ B | A ⇔ B | (A ⇒ B) ⇒ (A ⇔ B) |\n|---|---|---|---|---|\n| F | F | T | T | T |\n| **F** | **T** | **T** | **F** | **F** |\n| T | F | F | F | T |\n| T | T | T | T | T |\n\ne) (A ⇒ B) ⇔ C ⊨ A ∨ ¬B ∨ C\n\n| A | B | C | A ⇒ B | (A ⇒ B) ⇔ C | A ∨ ¬B ∨ C | ⇒-kolonnen |\n|---|---|---|---|---|---|---|\n| F | F | F | T | F | T | T |\n| F | F | T | T | T | T | T |\n| F | T | F | T | F | F | T |\n| F | T | T | T | T | T | T |\n| T | F | F | F | T | T | T |\n| T | F | T | F | F | T | T |\n| T | T | F | T | F | T | T |\n| T | T | T | T | T | T | T |\n\nf) (¬A ⇒ ¬B) ∧ (A ∧ ¬B)\n\n| A | B | ¬A ⇒ ¬B | A ∧ ¬B | Hele setningen |\n|---|---|---|---|---|\n| F | F | T | F | F |\n| F | T | F | F | F |\n| **T** | **F** | **T** | **T** | **T** |\n| T | T | T | F | F |\n\ng) (¬A ⇔ ¬B) ∧ (A ∧ ¬B)\n\n| A | B | ¬A ⇔ ¬B | A ∧ ¬B | Hele setningen |\n|---|---|---|---|---|\n| F | F | T | F | F |\n| F | T | F | F | F |\n| T | F | F | T | F |\n| T | T | T | F | F |\n\nVanlig feil: å kreve like kolonner for ⊨. Det er ekvivalens. For entailment ser du bare på radene der venstresiden er sann.\n\n*Kilde: notatet til E11 (A4 1.1 a og Fasit Øv selv 1–2). Ingen offisiell fasit for A4. Kontroll: alle tabellene er regnet ut med eget skript.*"
+  },
+  {
+   "t": "Oppgave 1.2: Trouble in the lab",
+   "d": "The Bio Space Lab orbiting Earth suffered an electrical anomaly, leading to severe damage in some of its sectors. One of the most affected sectors was Sector 4 (VANN), which holds aquatic and marine specimens of our planet in its tanks. HQ has assigned you the task to implement a control system for the 32 tanks in the sector while maintenance and repairs are being carried out. Each tank has three sensors:\n\n(*S*<sub>1</sub>) A **motion detection** sensor to know whether if there are specimens in the tank or if it is empty\n\n(*S*<sub>2</sub>) A **toxicity level** detector\n\n(*S*<sub>3</sub>) An **electrical charge** meter\n\nFor Sensors *S*<sub>2</sub> and *S*<sub>3</sub>, the signal is marked as ‘high’ after a certain threshold.\n\nTanks send updates to the control mechanism once every minute, using an 8-byte packet that looks like this:\n\n<p style=\"text-align:center\"><span style=\"color:#e0312b\">010</span><span style=\"color:#3a6df0\">00111</span></p>\n\nwhere the first three bits (in <span style=\"color:#e0312b\">red</span> above) represent the reading of the sensors (motion, toxicity and electrical charge; in this order). The remaining five bits (in <span style=\"color:#3a6df0\">blue</span> above) are used for representing the ID of the tank (in binary encoding).\n\nHQ has notified you that a tank gate should be closed if **any** of the following situations arise:\n\n(*C*<sub>1</sub>) If species inside are safe (low toxicity and low electric charge).\n\n(*C*<sub>2</sub>) If the tank is unoccupied and water toxicity is high.\n\n(*C*<sub>3</sub>) If the electrical charge level in a tank is marked as ‘dangerous’, no matter if it is inhabited or its toxicity.\n\nFor the remaining cases, energy should be saved and normal flow is to be expected. Your task is to design a control system using model checking to close tank gates whenever an 8-bit packet arrives:\n\na) Generate the vocabulary of the system\n\nb) Express all closing conditions (*C*<sub>1</sub>, *C*<sub>2</sub>, *C*<sub>3</sub>) for the gates as propositional logic statements\n\nc) Write the complete model (truth table) of the system\n\nd) Write an example packet and explain what the packet means in terms of the control system\n\n*Merknad:* «8-byte packet» er en skrivefeil i originalen. Pakken har 3 + 5 = 8 biter.",
+   "f": [
+    [
+     "a) Vokabularet",
+     "area"
+    ],
+    [
+     "b) C1, C2 og C3 som utsagn i proposisjonslogikk",
+     "area"
+    ],
+    [
+     "c) Hele modellen (sannhetstabellen)",
+     "area"
+    ],
+    [
+     "d) Eksempelpakke og hva den betyr",
+     "area"
+    ]
+   ],
+   "fasit": "**a) Vokabular:** M = motion detected (tanken har dyr), T = toxicity high, E = electrical charge high (dangerous), Close = tankporten skal lukkes. Med ID-en blir det M<sub>i</sub>, T<sub>i</sub>, E<sub>i</sub> og Close<sub>i</sub> for tank i = 0, …, 31. ID-bitene velger bare hvilken tank symbolene gjelder.\n\n**b) Lukkebetingelsene:**\n- C1: ¬T ∧ ¬E ⇒ Close (dyrene er trygge: lav toksisitet og lav ladning)\n- C2: ¬M ∧ T ⇒ Close (tom tank og høy toksisitet)\n- C3: E ⇒ Close (farlig ladning, uansett M og T)\n\nAlle andre tilfeller gir normal flow, så hele systemet er Close ⇔ (¬T ∧ ¬E) ∨ (¬M ∧ T) ∨ E. Tabellen viser at det forenkles til Close ⇔ ¬M ∨ ¬T ∨ E, altså ¬Close ⇔ M ∧ T ∧ ¬E.\n\n**c) Hele modellen** (bitene i samme rekkefølge som i pakken):\n\n| M | T | E | C1 | C2 | C3 | Close |\n|---|---|---|---|---|---|---|\n| 0 | 0 | 0 | T | F | F | T |\n| 0 | 0 | 1 | F | F | T | T |\n| 0 | 1 | 0 | F | T | F | T |\n| 0 | 1 | 1 | F | T | T | T |\n| 1 | 0 | 0 | T | F | F | T |\n| 1 | 0 | 1 | F | F | T | T |\n| **1** | **1** | **0** | **F** | **F** | **F** | **F** |\n| 1 | 1 | 1 | F | F | T | T |\n\nMed de 5 ID-bitene blir den fulle tabellen 2⁸ = 256 rader, men de 8 radene over gjentas for hver tank.\n\n**d) Eksempelpakke:** Pakken fra oppgaven, 010 00111, betyr M = 0, T = 1, E = 0 for tank 00111₂ = 7. Tanken er tom og har høy toksisitet, så C2 slår til, og porten til tank 7 lukkes. Pakken 110 00011 betyr at tank 3 har dyr, høy toksisitet og lav ladning. Ingen betingelse slår til, så porten holdes åpen med normal flow. Kontrollsystemet gjør model checking: det ser på raden som passer med sensorverdiene og sjekker om KB ∧ M ∧ T ∧ ¬E ⊨ Close.\n\nTolkning: «species inside are safe» kan også leses som M ∧ ¬T ∧ ¬E. Da gir også raden 000 normal flow, og resten av tabellen er lik. Si hvilken tolkning du bruker.\n\n*Merknad: «8-byte packet» er en skrivefeil i originalen. Pakken har 3 + 5 = 8 biter.*\n\n*Kilde: egen løsning, ingen offisiell fasit for A4. Kontroll: tabellen og forenklingen er regnet ut med eget skript.*"
+  },
+  {
+   "t": "Oppgave 2.1: Conjunctive Normal Form",
+   "d": "**2 Resolution in propositional logic**\n\nConvert each of the following sentences to their Conjunctive Normal Form (CNF).\n\na) A ∨ (B ∧ C ∧ ¬D)\n\nb) ¬(A ⇒ ¬B) ∧ ¬(C ⇒ ¬D)\n\nc) ¬((A ⇒ B) ∧ (C ⇒ D))\n\nd) (A ∧ B) ∨ (C ⇒ D)\n\ne) A ⇔ (B ⇒ ¬C)",
+   "f": [
+    [
+     "a) CNF",
+     "text"
+    ],
+    [
+     "b) CNF",
+     "text"
+    ],
+    [
+     "c) CNF",
+     "text"
+    ],
+    [
+     "d) CNF",
+     "text"
+    ],
+    [
+     "e) CNF",
+     "text"
+    ]
+   ],
+   "fasit": "**a) (A ∨ B) ∧ (A ∨ C) ∧ (A ∨ ¬D)**\n\n**b) A ∧ B ∧ C ∧ D**\n\n**c) (A ∨ C) ∧ (A ∨ ¬D) ∧ (¬B ∨ C) ∧ (¬B ∨ ¬D)**\n\n**d) (A ∨ ¬C ∨ D) ∧ (B ∨ ¬C ∨ D)**\n\n**e) (¬A ∨ ¬B ∨ ¬C) ∧ (A ∨ B) ∧ (A ∨ C)**\n\nRekkefølgen er alltid: fjern ⇔, fjern ⇒, flytt ¬ innover (De Morgan, double negation), distribuer ∨ over ∧.\n\n- **a)** Distribusjon: A ∨ (B ∧ C ∧ ¬D) ≡ (A ∨ B) ∧ (A ∨ C) ∧ (A ∨ ¬D).\n- **b)** ¬(A ⇒ ¬B) ≡ ¬(¬A ∨ ¬B) ≡ A ∧ B (implication elimination, De Morgan, double negation). Det samme gir C ∧ D.\n- **c)** De Morgan: ¬(A ⇒ B) ∨ ¬(C ⇒ D) ≡ (A ∧ ¬B) ∨ (C ∧ ¬D). Distribusjon gir de fire klausulene.\n- **d)** C ⇒ D ≡ ¬C ∨ D, så (A ∧ B) ∨ ¬C ∨ D. Distribusjon gir to klausuler.\n- **e)** A ⇔ (¬B ∨ ¬C) ≡ (¬A ∨ ¬B ∨ ¬C) ∧ (¬(¬B ∨ ¬C) ∨ A) ≡ (¬A ∨ ¬B ∨ ¬C) ∧ ((B ∧ C) ∨ A). Distribusjon gir (A ∨ B) ∧ (A ∨ C).\n\nVanlig feil: å distribuere før negasjonen er flyttet inn, eller å glemme å bytte ∧ og ∨ i De Morgan.\n\n*Kilde: notatet til E12, Fasit Øv selv 1 (egen løsning, ingen offisiell fasit for A4). Kontroll: hver CNF har samme sannhetstabell som originalen (alle 16 rader, eget skript).*"
+  },
+  {
+   "t": "Oppgave 2.2: Inference in propositional logic",
+   "d": "Consider the following knowledge:\n\nIf the weather is both Sunny and Warm, then I Enjoy. If the weather is both Warm and Nice (not Raining), then I pick up Berries. If it is Raining, then I won’t pick up Berries. If it is Raining, then I will get wet. It is Warm. It is Raining. It is Sunny.\n\n**Build a knowledge base** and **prove or disprove** the following statements using **resolution**:\n\n(*Q*<sub>1</sub>) I won’t pick up Berries\n\n(*Q*<sub>2</sub>) I will Enjoy\n\n(*Q*<sub>3</sub>) I will get wet\n\n*Hint: we suggest you use either complete words or the initial letter of each condition as your symbols.*",
+   "f": [
+    [
+     "Kunnskapsbasen (KB)",
+     "area"
+    ],
+    [
+     "Q1: bevis eller motbevis med resolution",
+     "area"
+    ],
+    [
+     "Q2: bevis eller motbevis med resolution",
+     "area"
+    ],
+    [
+     "Q3: bevis eller motbevis med resolution",
+     "area"
+    ]
+   ],
+   "fasit": "**KB:** Sunny ∧ Warm ⇒ Enjoy, Warm ∧ ¬Raining ⇒ Berries, Raining ⇒ ¬Berries, Raining ⇒ Wet, Warm, Raining, Sunny. «Nice» er ¬Raining.\n\n**Q1, Q2 og Q3 kan alle bevises.** KB ⊨ ¬Berries, KB ⊨ Enjoy og KB ⊨ Wet.\n\nKB i CNF:\n\n1. ¬Sunny ∨ ¬Warm ∨ Enjoy\n2. ¬Warm ∨ Raining ∨ Berries\n3. ¬Raining ∨ ¬Berries\n4. ¬Raining ∨ Wet\n5. Warm\n6. Raining\n7. Sunny\n\nResolution refutation: legg til negasjonen av målet og utled den tomme klausulen □.\n\n**Q1: I won't pick up Berries** (mål ¬Berries)\n- 8. Berries (negert mål)\n- 9. ¬Raining (3 og 8)\n- 10. □ (6 og 9)\n\n**Q2: I will Enjoy**\n- 8. ¬Enjoy (negert mål)\n- 9. ¬Sunny ∨ ¬Warm (1 og 8)\n- 10. ¬Warm (7 og 9)\n- 11. □ (5 og 10)\n\n**Q3: I will get wet**\n- 8. ¬Wet (negert mål)\n- 9. ¬Raining (4 og 8)\n- 10. □ (6 og 9)\n\nKlausul 2 trengs ikke, fordi det regner. KB har nøyaktig én modell: Sunny, Warm, Raining, Enjoy, Wet og ¬Berries.\n\nVanlig feil: å legge til målet selv i stedet for negasjonen.\n\n*Kilde: notatet til E12, Fasit Øv selv 2 (egen løsning, ingen offisiell fasit for A4). Kontroll: model checking med eget skript gir det samme.*"
+  },
+  {
+   "t": "Oppgave 3.1: Predicates",
+   "d": "**3 Representation in First-Order Logic (FOL)**\n\nQuestion taken from AIMA 3rd edition.\n\nConsider the following vocabulary:\n\n1. *Occupation*(*p*, *o*) is a predicate where person *p* has occupation *o*\n2. *Customer*(*p*<sub>1</sub>, *p*<sub>2</sub>) is a predicate where person *p*<sub>1</sub> is a customer of person *p*<sub>2</sub>\n3. *Boss*(*p*<sub>1</sub>, *p*<sub>2</sub>) is a predicate where person *p*<sub>1</sub> is a boss of person *p*<sub>2</sub>\n4. *Doctor*, *Surgeon*, *Lawyer*, *Actor* are constants denoting an occupation\n5. *Emily*, *Joe* are constants denoting people\n\nUse the symbols above to **write the following statements in FOL**:\n\na) Emily is either a surgeon or a lawyer\n\nb) Joe is an actor, but he also holds another job\n\nc) All surgeons are doctos\n\nd) Joe does not have a lawyer (i.e. he’s not a customer of any lawyer)\n\ne) Emily has a boss who is a lawyer\n\nf) There exists a lawyer all of whose customers are doctors\n\ng) Every surgeon has a lawyer",
+   "f": [
+    [
+     "a) i FOL",
+     "text"
+    ],
+    [
+     "b) i FOL",
+     "text"
+    ],
+    [
+     "c) i FOL",
+     "text"
+    ],
+    [
+     "d) i FOL",
+     "text"
+    ],
+    [
+     "e) i FOL",
+     "text"
+    ],
+    [
+     "f) i FOL",
+     "text"
+    ],
+    [
+     "g) i FOL",
+     "text"
+    ]
+   ],
+   "fasit": "- **a) Occupation(Emily, Surgeon) ∨ Occupation(Emily, Lawyer)**\n- **b) Occupation(Joe, Actor) ∧ ∃o [Occupation(Joe, o) ∧ ¬(o = Actor)]**\n- **c) ∀p [Occupation(p, Surgeon) ⇒ Occupation(p, Doctor)]**\n- **d) ¬∃p [Customer(Joe, p) ∧ Occupation(p, Lawyer)]**\n- **e) ∃p [Boss(p, Emily) ∧ Occupation(p, Lawyer)]**\n- **f) ∃p [Occupation(p, Lawyer) ∧ ∀q (Customer(q, p) ⇒ Occupation(q, Doctor))]**\n- **g) ∀p [Occupation(p, Surgeon) ⇒ ∃q (Occupation(q, Lawyer) ∧ Customer(p, q))]**\n\nKommentarer:\n- a) «either … or» leses vanligvis inkluderende. Vil du ha eksklusiv eller, legg til ∧ ¬(Occupation(Emily, Surgeon) ∧ Occupation(Emily, Lawyer)).\n- b) ¬(o = Actor) er det som gjør jobben til en *annen* jobb.\n- d) kan like gjerne skrives ∀p [Customer(Joe, p) ⇒ ¬Occupation(p, Lawyer)] (De Morgan for kvantorer).\n- f) og g) har to kvantorer. Rekkefølgen og parentesene bestemmer hvem som er advokat og hvem som er kunde.\n\nVanlig feil: ∧ under ∀ (c blir da «alle er kirurger og leger») og ⇒ under ∃ (e blir sann bare fordi noen ikke er sjefen til Emily).\n\n*Kilde: notatet til E14 (A4 oppgave 3.1, eget forslag; ingen offisiell fasit).*"
+  },
+  {
+   "t": "Oppgave 3.2: Functions as predicates",
+   "d": "Arithmetic assertions can be written using First Order Logic. For example, the statement for Succesor(*x*, *y*) can be defined as Succesor(*x*, *y*) ⇔ *x* = *y* + 1.\n\nYou can make it even more complicated by using function notation:\n\n<p style=\"text-align:center\">Succesor(<i>x</i>, <i>y</i>) ⇔ = (<i>x</i>, +(<i>y</i>, 1)).</p>\n\nAnd you can go all the way to define it as an S-expression using Polish notation for it to be understood by a LISP compiler if you want:\n\n<p style=\"text-align:center\">(iff (succesor <i>x</i> <i>y</i>) (= <i>x</i> (+ <i>y</i> 1))),</p>\n\nalthough you probably do not want to do that.\n\nInstead, use the predicates provided below, plus the usual arithmetic operators (&lt;, &gt;, ≤, ≠, =, +, −, ×, /, …), biconditionals, and integer constants to **express the following statements in FOL**.\n\na) *Divisible*(*x*, *y*): an integer number *x* is *divisible* by *y* if there is some integer *z* less than *x* such that *x* = *z* × *y*.\n\nb) *Even*(*x*): a number is *even* if and only if it is divisible by 2.\n\nc) *Odd*(*x*): a number is *odd* if it is not divisible by 2.\n\nd) *Odd*(*x*): a number is *odd* if it is the result of summing 1 to an *even* number.\n\ne) *Prime*(*x*): a number is *prime* if is divisible only by itself.\n\nf) There is only one even prime number.\n\ng) Every integer number is equal to a product of prime numbers (*Hint: you can use* ∏<sub><i>i</i>=1</sub><sup><i>k</i></sup> <i>p<sub>k</sub></i> *to express a product of numbers, or use* … *to express a repeating pattern like* <i>p</i><sub>1</sub>, …, <i>p<sub>n</sub></i> *meaning* <i>p</i><sub>1</sub>, <i>p</i><sub>2</sub>, <i>p</i><sub>3</sub> *and on until* <i>p<sub>n</sub></i>).\n\n*Merknad:* Originalen er unøyaktig i a) (med z < x er ingen tall delelig med 1), e) (alle tall er delelige med 1, og 1 er ikke et primtall) og hintet i g) (p<sub>k</sub> i produktet skal være p<sub>i</sub>). Fasiten bruker de vanlige definisjonene.",
+   "f": [
+    [
+     "a) Divisible(x, y)",
+     "text"
+    ],
+    [
+     "b) Even(x)",
+     "text"
+    ],
+    [
+     "c) Odd(x), ikke delelig med 2",
+     "text"
+    ],
+    [
+     "d) Odd(x), 1 pluss et partall",
+     "text"
+    ],
+    [
+     "e) Prime(x)",
+     "text"
+    ],
+    [
+     "f) Bare ett partall er primtall",
+     "text"
+    ],
+    [
+     "g) Produkt av primtall",
+     "area"
+    ]
+   ],
+   "fasit": "- **a) ∀x, y [Divisible(x, y) ⇔ ∃z (x = z × y)]**\n- **b) ∀x [Even(x) ⇔ Divisible(x, 2)]**\n- **c) ∀x [Odd(x) ⇔ ¬Divisible(x, 2)]**\n- **d) ∀x [Odd(x) ⇔ ∃y (Even(y) ∧ x = y + 1)]**\n- **e) ∀x [Prime(x) ⇔ x > 1 ∧ ∀y ((y > 0 ∧ Divisible(x, y)) ⇒ (y = 1 ∨ y = x))]**\n- **f) ∃x [Even(x) ∧ Prime(x) ∧ ∀y ((Even(y) ∧ Prime(y)) ⇒ y = x)]**\n- **g) ∀x [x > 1 ⇒ ∃k ∃p₁ … ∃p<sub>k</sub> (Prime(p₁) ∧ … ∧ Prime(p<sub>k</sub>) ∧ x = ∏<sub>i=1</sub><sup>k</sup> p<sub>i</sub>)]**\n\nAlle variablene står for heltall.\n\n**Originalen har feil i definisjonene, og fasiten bruker de vanlige:**\n- a) «some integer z less than x» er ikke med. Med z < x er ingen tall delelig med 1 (z = x er ikke mindre enn x), og 0 og negative tall gir rare svar. Den vanlige definisjonen er bare ∃z (x = z × y).\n- e) «divisible only by itself» glemmer at alle tall er delelige med 1, og utelukker ikke 1. Et primtall er et tall x > 1 der de eneste positive divisorene er 1 og x.\n- g) Hintet skriver ∏<sub>i=1</sub><sup>k</sup> p<sub>k</sub>. Det skal være p<sub>i</sub>, ellers ganges samme tall med seg selv k ganger. «Every integer» må også begrenses til x > 1: 0, 1 og negative tall er ikke produkter av primtall. ∃k ∃p₁ … ∃p<sub>k</sub> er et formelskjema (én formel for hver k) og ikke én FOL-setning, men hintet tillater «…». Én setning får du ved å kvantifisere over en kodet endelig sekvens s: ∀x [x > 1 ⇒ ∃s (∀i ((1 ≤ i ∧ i ≤ Len(s)) ⇒ Prime(s<sub>i</sub>)) ∧ x = Prod(s))]. I aritmetikk kan Len, s<sub>i</sub> og Prod defineres med Gödels β-funksjon.\n\nf) sier at det finnes nøyaktig ett tall som er både partall og primtall (det er 2). Uten ∀y-delen sier setningen bare at det finnes minst ett.\n\nc) og d) er to definisjoner av samme predikat. For heltall er de ekvivalente.\n\n*Kilde: egen løsning, ingen offisiell fasit for A4.*"
+  },
+  {
+   "t": "Oppgave 4: Resolution in FOL",
+   "d": "A new niche market has been discovered and some of your friends had the idea of developing a girl group K-Pop recommender system. Instead of using machine learning (as they think doing so may include bias in the data), they decided that going for a rule-based system was a better approach. This is what they said about it:\n\n- All users who like *GG* are known as *Sone*, and therefore all *Sone* like *GG*\n- All users who like *RV* are known as *Reveluvs*, and therefore all *Reveluvs* like *RV*\n- All users who like *BP* are known as *Blinks*, and therefore all *Blinks* like *BP*\n- All users who identify as *Reveluvs* will always like *Ballads*\n- All users who identify as *Blinks* will always like *Dance*\n- All users who like both *Dance* and *Ballads* will always like *CH*\n- All users who like both *Drama* and *Ballads* will always like *HE*\n- For all users who identify as *Sone*, the following holds:\n  - If they like *Electro*, they will always like *DJH*\n  - If they like *Drama*, they will always like *SEO*\n  - If they like *Ballads*, they will always like *TAE*\n\nYou start to think if going with Machine Learning could result in less bias than using such rules, but you love your friends and carry on with their business idea. Your task is then to:\n\na) **Generate the knowledge base** by converting each rule to symbolic form.\n\nb) Using **resolution**, **prove or disprove** (by showing the complete process) that if a new user *u*<sub>1</sub> is a fan of *GG* and identifies as *Reveluv*, then *TAE* will be a good recommendation.\n\nc) Considering the same user *u*<sub>1</sub>, **prove or disprove** that *HE* will be a good recommendation.\n\nd) Given what you know, if another user *u*<sub>2</sub> claims to be a *Sone*, a *Reveluv*, a *Blink*, and likes *Drama*; what are the possible artists and genre recommendations the system will provide?\n\n*Hint: Consider using predicates to indicate that a user likes something (e.g. Electro(x)) instead of using likes(x, y) as a function.*",
+   "f": [
+    [
+     "a) Kunnskapsbasen på symbolsk form",
+     "area"
+    ],
+    [
+     "b) Resolution: TAE for u1",
+     "area",
+     "n  Resolve i, j, θ = {…}: resultat"
+    ],
+    [
+     "c) Resolution: HE for u1",
+     "area",
+     "n  Resolve i, j, θ = {…}: resultat"
+    ],
+    [
+     "d) Anbefalinger for u2",
+     "area"
+    ]
+   ],
+   "fasit": "**a) KB** (ett predikat per artist og sjanger, slik hintet sier, og ⇔ for «known as … and therefore»):\n\n1. ∀x GG(x) ⇔ Sone(x)\n2. ∀x RV(x) ⇔ Reveluv(x)\n3. ∀x BP(x) ⇔ Blink(x)\n4. ∀x Reveluv(x) ⇒ Ballads(x)\n5. ∀x Blink(x) ⇒ Dance(x)\n6. ∀x Dance(x) ∧ Ballads(x) ⇒ CH(x)\n7. ∀x Drama(x) ∧ Ballads(x) ⇒ HE(x)\n8. ∀x Sone(x) ∧ Electro(x) ⇒ DJH(x)\n9. ∀x Sone(x) ∧ Drama(x) ⇒ SEO(x)\n10. ∀x Sone(x) ∧ Ballads(x) ⇒ TAE(x)\n\nI CNF blir hver ⇔ to klausuler, ∀ faller bort, og hver klausul har sin egen x (standardized apart):\n\n- C1: ¬GG(x) ∨ Sone(x)\n- C2: ¬Sone(x) ∨ GG(x)\n- C3: ¬RV(x) ∨ Reveluv(x)\n- C4: ¬Reveluv(x) ∨ RV(x)\n- C5: ¬BP(x) ∨ Blink(x)\n- C6: ¬Blink(x) ∨ BP(x)\n- C7: ¬Reveluv(x) ∨ Ballads(x)\n- C8: ¬Blink(x) ∨ Dance(x)\n- C9: ¬Dance(x) ∨ ¬Ballads(x) ∨ CH(x)\n- C10: ¬Drama(x) ∨ ¬Ballads(x) ∨ HE(x)\n- C11: ¬Sone(x) ∨ ¬Electro(x) ∨ DJH(x)\n- C12: ¬Sone(x) ∨ ¬Drama(x) ∨ SEO(x)\n- C13: ¬Sone(x) ∨ ¬Ballads(x) ∨ TAE(x)\n\n**b) Bevist: TAE(U1) følger.** Fakta C14: GG(U1) og C15: Reveluv(U1). Negert mål C16: ¬TAE(U1).\n\n| n | Resolve | θ | Resultat |\n|---|---|---|---|\n| 17 | C16, C13 | {x/U1} | ¬Sone(U1) ∨ ¬Ballads(U1) |\n| 18 | 17, C1 | {x/U1} | ¬GG(U1) ∨ ¬Ballads(U1) |\n| 19 | 18, C14 | {} | ¬Ballads(U1) |\n| 20 | 19, C7 | {x/U1} | ¬Reveluv(U1) |\n| 21 | 20, C15 | {} | □ |\n\n**c) Kan ikke bevises: HE(U1) følger ikke.** Negert mål C16′: ¬HE(U1).\n\n| n | Resolve | θ | Resultat |\n|---|---|---|---|\n| 17 | C16′, C10 | {x/U1} | ¬Drama(U1) ∨ ¬Ballads(U1) |\n| 18 | C15, C7 | {x/U1} | Ballads(U1) |\n| 19 | 17, 18 | {} | ¬Drama(U1) |\n\nIngen klausul har Drama som positiv literal, så ¬Drama(U1) kan aldri resolveres bort. Resolution går tom uten □. KB ∧ ¬HE(U1) er da satisfiable: U1 kan like GG, Sone, Reveluv, RV, Ballads og TAE uten å like Drama og HE. Systemet kan altså ikke anbefale HE. Det følger heller ikke at U1 *ikke* liker HE, for KB sier ingenting om Drama.\n\n**d) For U2: artistene GG, RV, BP, CH, HE, SEO og TAE, og sjangrene Ballads og Dance** (i tillegg til Drama, som er gitt). Ikke DJH.\n\nFakta: Sone(U2), Reveluv(U2), Blink(U2), Drama(U2).\n- GG fra C2, RV fra C4 og BP fra C6\n- Ballads fra C7 og Dance fra C8\n- SEO fra C12 (Sone ∧ Drama)\n- CH fra C9 (Dance ∧ Ballads), HE fra C10 (Drama ∧ Ballads) og TAE fra C13 (Sone ∧ Ballads)\n\nDJH krever Electro(U2), og ingen setning gir det. Hver anbefaling kan bevises med resolution som i b), eller med forward chaining til et fixed point (notatet til E15, håndsporing 8).\n\nVanlig feil: å glemme den andre retningen av ⇔. Uten C2, C4 og C6 får U2 ikke GG, RV og BP.\n\n*Kilde: notatet til E15 (håndsporing 8 og Fasit Øv selv 5) og E16. Ingen offisiell fasit for A4. Kontroll: model checking over alle modeller for én bruker med eget skript.*"
+  }
+ ],
+ "fasit": "Det finnes ingen assignment-forelesning eller offisiell løsning for A4 i kursmaterialet (bare AL1–AL3 er lagt ut). Fasiten under hver oppgave er derfor egen løsning, kontrollert med sannhetstabeller og model checking i eget skript, og ingen oppgave har automatisk sjekk. Oppgave 3 og 4 står også i E14 og E16. A4 er frivillig for arbeidskravet: Canvas krever bare A1–A3."
+}

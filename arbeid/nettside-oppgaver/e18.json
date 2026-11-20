@@ -1,0 +1,114 @@
+{
+ "tasks": [
+  {
+   "t": "Eksamen 2023, oppgave 8 (5 p): julegaver i siste liten",
+   "d": "**8 Planning (5 pts total)**\n\n**8.1 Planning**\n\nYou are developing a system that helps people make a plan to buy last minute Christmas gifts.\n\nThe input of the system is a specific gift a user wants to buy, and the output is a plan of how to buy it. Since there is no time to wait for delivery from an online store, the user would actually need to go to a physical store.\n\nThe following actions are available and can be used in the plan:\n\n- *TakeBus* FROM somewhere TO somewhere else\n- *DriveCar* FROM somewhere TO somewhere else, given that a USER *Owns* a specific CAR\n- *Buy* a specific **gift** *At* a specific **store**\n\nThe system database contains two **stores**: BOOKSTORE and TOYSTORE, where a user can get either a BOOK or a TOY as **gifts**, respectively.\n\n1. Specify the problem using Planning Domain Definition Language (PDDL), considering the USER is initially At HOME, Owns a CAR and wants to get a TOY as a gift. The goal is that the USER is back *At* HOME and *Owns* the TOY (2%)\n2. Solve the problem using backwards search. Show the first 3 steps in one of the branches, including actions and states before/after each action (3%)",
+   "f": [
+    [
+     "1. Spesifiser problemet i PDDL. USER er først At HOME, Owns en CAR og vil ha en TOY som gave. Målet er at USER er tilbake At HOME og Owns TOY. (2 %)",
+     "area",
+     "Init(…)\nGoal(…)\nAction(…,\n  PRECOND: …\n  EFFECT: …)"
+    ],
+    [
+     "2. Løs problemet med backward search. Vis de 3 første stegene i én av grenene, med handlinger og tilstander før og etter hver handling. (3 %)",
+     "area",
+     "g₀ = …\nsteg 1: handling … → g₁ = …\nsteg 2: …"
+    ]
+   ],
+   "fasit": "**1. PDDL:**\n\n```\nInit(At(User, Home) ∧ Owns(User, Car) ∧ At(Car, Home)\n     ∧ At(Toy, ToyStore) ∧ At(Book, BookStore)\n     ∧ Place(Home) ∧ Place(ToyStore) ∧ Place(BookStore))\nGoal(At(User, Home) ∧ Owns(User, Toy))\n\nAction(TakeBus(from, to),\n  PRECOND: At(User, from) ∧ Place(to)\n  EFFECT:  ¬At(User, from) ∧ At(User, to))\nAction(DriveCar(from, to, car),\n  PRECOND: Owns(User, car) ∧ At(User, from) ∧ At(car, from) ∧ Place(to)\n  EFFECT:  ¬At(User, from) ∧ ¬At(car, from) ∧ At(User, to) ∧ At(car, to))\nAction(Buy(gift, store),\n  PRECOND: At(User, store) ∧ At(gift, store)\n  EFFECT:  Owns(User, gift))\n```\n\n- Init er en tilstand: bare ground, positive fluents (closed world). Goal er en konjunksjon av literaler.\n- Hver variabel i EFFECT står i PRECOND og i parameterlista. Derfor har TakeBus og DriveCar `Place(to)`.\n- DriveCar flytter både brukeren og bilen.\n\n**2. Backward search:** Start i målet og regresser over relevante handlinger. En handling er relevant når en effekt gir en del av målet og ingen effekt sletter en annen del. Målene her er positive, så g′ = (g − ADD(a)) ∪ PRECOND(a).\n\n| Steg | Handling (siste først) | Tilstand etter handlingen (målet) | Tilstand før handlingen (regressert mål) |\n|---|---|---|---|\n| 1 | DriveCar(ToyStore, Home, Car) | g₀ = At(User, Home) ∧ Owns(User, Toy) | g₁ = Owns(User, Toy) ∧ Owns(User, Car) ∧ At(User, ToyStore) ∧ At(Car, ToyStore) ∧ Place(Home) |\n| 2 | Buy(Toy, ToyStore) | g₁ | g₂ = Owns(User, Car) ∧ At(User, ToyStore) ∧ At(Car, ToyStore) ∧ Place(Home) ∧ At(Toy, ToyStore) |\n| 3 | DriveCar(Home, ToyStore, Car) | g₂ | g₃ = Owns(User, Car) ∧ Place(Home) ∧ At(Toy, ToyStore) ∧ At(User, Home) ∧ At(Car, Home) ∧ Place(ToyStore) |\n\n- Steg 1: DriveCar(ToyStore, Home, Car) gir At(User, Home) og sletter bare At(User, ToyStore) og At(Car, ToyStore), som ikke står i målet. TakeBus(ToyStore, Home) er også relevant og gir en annen gren.\n- Steg 2: Buy(Toy, ToyStore) gir Owns(User, Toy). Trekk den fra og legg til PRECOND.\n- Steg 3: g₃ ⊆ Init, så søket stopper.\n\n**Plan:** DriveCar(Home, ToyStore, Car), Buy(Toy, ToyStore), DriveCar(ToyStore, Home, Car).\n\nLøsningsforslaget har også At(Car, Home) i målet, og det gir de samme tre stegene. Skjemaene der bruker `user` uten at den er parameter, og `to` står bare i EFFECT i TakeBus. Bruk konstanten User og legg `Place(to)` i PRECOND.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 8.*"
+  },
+  {
+   "t": "Eksamen 2022, oppgave 7.1–7.2: ape og bananer",
+   "d": "**Planning - Monkey and bananas**\n\nA monkey in a laboratory wants to get some bananas which are hanging on the ceiling out of reach. However, a box that could enable the monkey to reach the bananas (if the monkey were to climb onto it) is available nearby. Consider the following:\n\n- Initially, the monkey is at *A*, the bananas at *B* and the box at *C*.\n- Both the monkey and the box have height *Low*, but if the monkey climbs onto the box he will have height *High*, which is the same as the bananas.\n- The actions available to the monkey include:\n  - *Go* from one place to another\n  - *Push* an object from one place to another\n  - *ClimbUp* onto on an object\n  - *ClimbDown* from an object *(NB! This can be ignored depending on the goal condition.)*\n  - *Grab* an object (only if the object and the monkey are in the same place and at the same height)\n  - *Release* an object *(NB! I am assuming that everything you \"let go\" falls to the ground.)*\n\n7 .1) Specify the problem using Planning Domain Definition Language (PDDL). Include initial and goal state descriptions as well as actions schemas.\n\n7.2) Solve the problem using backwards search (regression). Show the resulting plan including actions and states after each action. You don't need to show other branches.",
+   "f": [
+    [
+     "7.1 Spesifiser problemet i PDDL, med initial- og måltilstand og action schemas.",
+     "area",
+     "Init(…)\nGoal(…)\nAction(…,\n  PRECOND: …\n  EFFECT: …)"
+    ],
+    [
+     "7.2 Løs problemet med backward search (regresjon). Vis den resulterende planen med handlinger og tilstander etter hver handling. Du trenger ikke vise andre grener.",
+     "area",
+     "Mål: …\nhandling: … → tilstand: …\nPlan: […]"
+    ]
+   ],
+   "fasit": "**7.1 PDDL** (navnene Grab, Release og Holding følger oppgaveteksten):\n\n```\nInit(At(Monkey, A) ∧ At(Bananas, B) ∧ At(Box, C)\n     ∧ Height(Monkey, Low) ∧ Height(Box, Low) ∧ Height(Bananas, High)\n     ∧ Pushable(Box) ∧ Climbable(Box) ∧ Place(A) ∧ Place(B) ∧ Place(C))\nGoal(Holding(Monkey, Bananas))\n\nAction(Go(x, y),\n  PRECOND: At(Monkey, x) ∧ Height(Monkey, Low) ∧ Place(y)\n  EFFECT:  ¬At(Monkey, x) ∧ At(Monkey, y))\nAction(Push(b, x, y),\n  PRECOND: At(Monkey, x) ∧ At(b, x) ∧ Pushable(b) ∧ Height(Monkey, Low) ∧ Place(y)\n  EFFECT:  ¬At(b, x) ∧ At(b, y) ∧ ¬At(Monkey, x) ∧ At(Monkey, y))\nAction(ClimbUp(b, x),\n  PRECOND: At(Monkey, x) ∧ At(b, x) ∧ Climbable(b) ∧ Height(Monkey, Low)\n  EFFECT:  ¬Height(Monkey, Low) ∧ Height(Monkey, High) ∧ On(Monkey, b))\nAction(ClimbDown(b),\n  PRECOND: On(Monkey, b) ∧ Height(Monkey, High)\n  EFFECT:  ¬On(Monkey, b) ∧ ¬Height(Monkey, High) ∧ Height(Monkey, Low))\nAction(Grab(o, x, h),\n  PRECOND: At(Monkey, x) ∧ At(o, x) ∧ Height(Monkey, h) ∧ Height(o, h)\n  EFFECT:  Holding(Monkey, o))\nAction(Release(o, h),\n  PRECOND: Holding(Monkey, o) ∧ Height(o, h)\n  EFFECT:  ¬Holding(Monkey, o) ∧ ¬Height(o, h) ∧ Height(o, Low))\n```\n\nRelease lar objektet falle til Low, som oppgaven antar. ClimbDown trengs ikke, fordi målet bare er å holde bananene.\n\n**7.2 Regresjon** fra Holding(Monkey, Bananas), med g′ = (g − ADD(a)) ∪ PRECOND(a):\n\n| Steg | Handling (siste først) | Mål før handlingen |\n|---|---|---|\n| 1 | Grab(Bananas, B, High) | At(Monkey, B) ∧ At(Bananas, B) ∧ Height(Monkey, High) ∧ Height(Bananas, High) |\n| 2 | ClimbUp(Box, B) | At(Monkey, B) ∧ At(Bananas, B) ∧ Height(Bananas, High) ∧ At(Box, B) ∧ Climbable(Box) ∧ Height(Monkey, Low) |\n| 3 | Push(Box, C, B) | At(Bananas, B) ∧ Height(Bananas, High) ∧ Climbable(Box) ∧ Height(Monkey, Low) ∧ At(Monkey, C) ∧ At(Box, C) ∧ Pushable(Box) ∧ Place(B) |\n| 4 | Go(A, C) | At(Bananas, B) ∧ Height(Bananas, High) ∧ Climbable(Box) ∧ Height(Monkey, Low) ∧ At(Box, C) ∧ Pushable(Box) ∧ Place(B) ∧ At(Monkey, A) ∧ Place(C) |\n\nMålet etter steg 4 er ⊆ Init, så søket stopper. Hver handling er relevant: den gir en del av målet over seg og sletter ingenting i det.\n\n**Plan:** Go(A, C), Push(Box, C, B), ClimbUp(Box, B), Grab(Bananas, B, High).\n\nTilstanden etter hver handling (bare fluentene som endrer seg; Height(Box, Low), Height(Bananas, High) og At(Bananas, B) står hele tiden):\n\n1. Go(A, C): At(Monkey, C), At(Box, C), Height(Monkey, Low)\n2. Push(Box, C, B): At(Monkey, B), At(Box, B), Height(Monkey, Low)\n3. ClimbUp(Box, B): At(Monkey, B), At(Box, B), Height(Monkey, High), On(Monkey, Box)\n4. Grab(Bananas, B, High): som over + Holding(Monkey, Bananas), og målet holder.\n\nLøsningsforslaget krever at apen holder kassen når den skyver, og får 6 steg: Go(A, C), Grab(Box, C), Push(Box, C, B), Release(Box, B), ClimbUp(Box, B), Grab(Bananas). Begge modellene er gyldige så lenge skjemaene og regresjonen henger sammen. Løsningsforslaget har to slurvefeil: Init mangler `At` foran (Box, C), og `to` i Go står bare i EFFECT.\n\n*Kilde: løsningsforslaget til eksamen 2022, oppgave 7.1–7.2.*"
+  },
+  {
+   "t": "Eksamen 2022, oppgave 1.8: ignore delete lists",
+   "d": "**Task 1 : Theoretical questions**\n\n1.8) Why is the ignore-delete-list heuristic in planning admissible?",
+   "f": [
+    [
+     "1.8) Svar",
+     "area"
+    ]
+   ],
+   "fasit": "**Fordi ingen ekte plan blir ugyldig når delete lists fjernes, så den optimale relakserte planen er aldri lengre enn den optimale ekte planen.**\n\n- Ignore delete lists fjerner alle negative effekter. Preconditions og positive effekter står igjen, og ingen handling kan ødelegge fremgang.\n- Det relakserte problemet er et relaxed problem (E03): det har bare flere muligheter enn det ekte. Langs samme handlingssekvens inneholder hver relaksert tilstand minst de fluentene den ekte tilstanden har. Er målet og alle preconditions positive (som i boka), er alt som var applicable, fortsatt applicable, og hver ekte løsning er også en relaksert løsning.\n- Altså er h = lengden av den optimale relakserte planen ≤ h*. Heuristikken overvurderer aldri, og den er admissible.\n- Forbehold: den optimale relakserte lengden er NP-hard å finne. Hill climbing finner en relaksert plan i polynomisk tid, men den tilnærmingen kan bli for lang og er da ikke garantert admissible.\n\n*Kilde: løsningsforslaget til eksamen 2022, oppgave 1.8.*"
+  },
+  {
+   "t": "Eksamen 2021, oppgave 4b: ringer og hansker i PDDL",
+   "d": "**4) PLANNING (10 pts)**\n\n2\\) Assume you are going to a Christmas party tonight and you want to put on some jewellery, more specifically a gold ring on each of your pointing fingers. It is cold outside and you need to put on gloves as well, but the gloves are bulky and it would be hard to handle rings wearing them. Naturally, you need to put on both rings before the gloves. You will use a partial order planner to make a plan. You have these action: RightGlove (means put on a glove on your right hand), LeftGlove, RightRing (put on a ring on your right hand), and LeftRing. You will use partial order planning to generate a plan.\n\na. Write the required action schemas in the PDDL language.\n\n*Merknad:* Resten av oppgave 4 handler om partial order planning, som er ute av pensum.",
+   "f": [
+    [
+     "a. Action schemas",
+     "area",
+     "Action(…,\n  PRECOND: …\n  EFFECT: …)"
+    ]
+   ],
+   "fasit": "**a. Action schemas:**\n\n```\nAction(RightRing,\n  PRECOND: (ingen)\n  EFFECT:  RightRingOn)\nAction(LeftRing,\n  PRECOND: (ingen)\n  EFFECT:  LeftRingOn)\nAction(RightGlove,\n  PRECOND: RightRingOn ∧ LeftRingOn\n  EFFECT:  RightGloveOn)\nAction(LeftGlove,\n  PRECOND: RightRingOn ∧ LeftRingOn\n  EFFECT:  LeftGloveOn)\n\nInit()\nGoal(RightRingOn ∧ LeftRingOn ∧ RightGloveOn ∧ LeftGloveOn)\n```\n\n- Kravet «begge ringer før hanskene» står som precondition på begge hanskene. Ringene kan alltid tas på.\n- Init er tom: ingen ring eller hanske er på (closed world).\n- En korteste plan har 4 steg, for eksempel RightRing, LeftRing, RightGlove, LeftGlove. Rekkefølgen mellom de to ringene, og mellom de to hanskene, er fri, og det er det partial order planning utnytter (POP er ute av pensum).\n\n*Kilde: løsningsforslaget til eksamen 2021, oppgave 4 (det sier bare at handlingene skal ha precondition og effect), og notatet til E18, Fasit 4.*"
+  },
+  {
+   "t": "Eksamen 2025, oppgave 11b: klassisk del",
+   "d": "**11 Automated Planning**\n\nb) Describe briefly classical planning and sensorless planning and highlight the main differences between them. (3 pts.)\n\n*Merknad:* Her svarer du bare på den klassiske delen: hvilke antagelser gjør klassisk planlegging om miljøet? Sensorless-delen og hele oppgave 11 står i E19.",
+   "f": [
+    [
+     "b) Svar, klassisk del",
+     "area"
+    ]
+   ],
+   "fasit": "**Klassisk planlegging antar at miljøet er discrete, deterministic, static og fully observable.**\n\n- **Discrete:** handlingene skjer i adskilte steg, én om gangen.\n- **Deterministic:** hver handling har ett kjent utfall, gitt av action schema: RESULT(s, a) = (s − DEL(a)) ∪ ADD(a).\n- **Static:** bare agenten endrer verden.\n- **Fully observable:** agenten kjenner starttilstanden helt.\n\nTilstandene er factored: en konjunksjon av ground, positive fluents med closed world assumption (det som ikke står, er usant). Planen er en fast sekvens av handlinger, funnet med forward eller backward search. Til sammenligning har sensorless planning ingen observasjoner, bruker open world og søker i belief states (E19).\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 11b.*"
+  },
+  {
+   "t": "Air cargo: relevante handlinger og regresjon",
+   "d": "Skjemaene fra fig. 11.1:\n\n```\nAction(Load(c, p, a),\n  PRECOND: At(c, a) ∧ At(p, a) ∧ Cargo(c) ∧ Plane(p) ∧ Airport(a)\n  EFFECT:  ¬At(c, a) ∧ In(c, p))\nAction(Unload(c, p, a),\n  PRECOND: In(c, p) ∧ At(p, a) ∧ Cargo(c) ∧ Plane(p) ∧ Airport(a)\n  EFFECT:  At(c, a) ∧ ¬In(c, p))\nAction(Fly(p, from, to),\n  PRECOND: At(p, from) ∧ Plane(p) ∧ Airport(from) ∧ Airport(to)\n  EFFECT:  ¬At(p, from) ∧ At(p, to))\n```\n\nMålet er g = At(P1, JFK) ∧ At(P2, SFO).",
+   "f": [
+    [
+     "a) Er Fly(P1, SFO, JFK) relevant for g? (ja/nei)",
+     "text"
+    ],
+    [
+     "a) Hvorfor?",
+     "text"
+    ],
+    [
+     "b) Er Fly(P2, SFO, JFK) relevant for g? (ja/nei)",
+     "text"
+    ],
+    [
+     "b) Hvorfor?",
+     "text"
+    ],
+    [
+     "c) Regresser g over den handlingen som er relevant",
+     "text",
+     "g′ = …"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Er Fly(P1, SFO, JFK) relevant for g? (ja/nei)": [
+      "ja",
+      "yes"
+     ],
+     "b) Er Fly(P2, SFO, JFK) relevant for g? (ja/nei)": [
+      "nei",
+      "no"
+     ]
+    },
+    "merk": "a) Den gir At(P1, JFK) og sletter ingenting i målet. b) Den gir ingenting i målet og sletter At(P2, SFO).",
+    "kilde": "videoer/notater/e18-planlegging-1.md, Fasit 6"
+   },
+   "fasit": "**a) Ja.** **Hvorfor:** Fly(P1, SFO, JFK) har effekten At(P1, JFK), som er en del av målet, og den sletter bare At(P1, SFO), som ikke står i målet.\n\n**b) Nei.** **Hvorfor:** Fly(P2, SFO, JFK) gir At(P2, JFK), som ikke er i målet, og sletter At(P2, SFO), som er i målet. Brukt som siste steg ville den ødelagt målet.\n\n**c) g′ = At(P2, SFO) ∧ At(P1, SFO) ∧ Plane(P1) ∧ Airport(SFO) ∧ Airport(JFK)**\n\nMålet er positivt, så g′ = (g − ADD(a)) ∪ PRECOND(a):\n\n| Steg | Resultat |\n|---|---|\n| ADD(a) ∩ g | {At(P1, JFK)}: gir en del av målet |\n| DEL(a) ∩ g | ∅: sletter ingenting i målet, så a er relevant |\n| g − ADD(a) | At(P2, SFO) |\n| ∪ PRECOND(a) | At(P1, SFO) ∧ Plane(P1) ∧ Airport(SFO) ∧ Airport(JFK) |\n\nMed negative literaler i målet gjelder i tillegg NEG(g′) = (NEG(g) − DEL(a)) ∪ NEG(PRECOND(a)). Vanlig feil: å legge til EFFECT i stedet for PRECOND, eller å glemme å trekke fra ADD.\n\n*Kilde: notatet til E18, Fasit Øv selv 6.*"
+  }
+ ]
+}

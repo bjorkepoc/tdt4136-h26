@@ -1,0 +1,217 @@
+{
+ "id": "al2",
+ "ep": "AL2",
+ "tittel": "Assignment Lecture 2: Constraint Satisfaction Problems",
+ "kilde": "../materiale/Files/AssignmentLecture2-Fall2026.pdf",
+ "om": "TDT4137 – Introduction to Artificial Intelligence, 2026<br>\nAleksandra Jekic, Department of Computer Science\n\n*Merknad fra oss: lysbildet skriver TDT4137, men emnet er TDT4136. Topological sort (5.5), som det advares om under, er ute av pensum i år ifølge Canvas.*\n\n**Handout-filer:** [csp.py](../materiale/Files/code_handout/csp.py) · [map_coloring.py](../materiale/Files/code_handout/map_coloring.py) · [sudoku.py](../materiale/Files/code_handout/sudoku.py)\n\n### Relevant for this assignment\n\n- Lecture 4 (yesterday, 10.09.26)\n- Chapter 5 in the Russell and Norvig book (4th edition, Global).\n\n### How important is this?\n\n- Historically, there has usually been a problem covering this in exams.\n- Not the hardest topic and the algorithms are quite intuitive. However, if you are not familiar with the terminology the problem will seem like gibberish.\n- Watch out, read the book! Last year there was a problem on topological sort. I believe this was only in the book and a lot of people were confused.\n- Note: Assignment is programming only, which is different from exams. Might be a good idea to look at some old exam problems now as well.\n\n### Constraint satis-what?\n\n- What are we doing now: You want to decide the value of lots of variables given a bunch of possible values and certain constraints.\n- A lot of problems have this underlying structure such as scheduling different teachers for lectures, what order to build a car in given limited resources, deciding where to seat people at a dinner party who have very strong opinions about each other, solving Sudoku boards, etc.\n- This is an NP-complete problem. Can make a lot of money for companies who do things at a large scale by improving their schedules.\n- You need a set of variables, X={seat1, seat2, …, seat7}.\n- You need a domain for each variable, D_seat1 = {Emily, Anne, …, Charlotte}.\n- You need constraints like C(Emily, Charlotte): Not adjacent, etc.\n- Doesn’t really matter how you represent this.\n- Intuition: Probably some of these constraints immediately rule out possibilities (constraint propagation like AC-3). Then we can just try some assignments and go back if we get stuck (backtrack search). We can also update connected domains after making each move (forward checking).\n\n### Assignment 2\n\n- Basically, you’re going to run AC-3 on the constraint network (variables, domains and constraints) of several Sudoku boards.\n- Pseudocode for this constraint propagation algorithm is found on p. 171 in Norvig & Russell’s book (4th edition, Global).\n- Afterwards you run backtracking-search, pseudocode found on p. 176 in Norvig & Russell’s book (4th edition, Global).\n- AC-3 may immediately complete some of the simpler boards and that is fine!\n- You are very lucky!\n- We have already programmed almost everything for you in Python.\n- The CSP class, visualizing the Sudoku boards, etc.\n- We have also provided the simple map coloring problem that you can easily use to check if your algorithm does its job.\n- You just need to complete the code for **AC-3** and **backtrack-search**.\n- Of course, if you want to – you can represent the problem however you want in whatever language you would like to from scratch.\n- You have the files csp.py, map_coloring.py and sudoku.py.\n- Example output after implementing csp.backtracking_search():<br>`{'WA': 'red', 'NT': 'green', 'Q': 'red', 'NSW': 'green', 'V': 'red', 'SA': 'blue', 'T': 'red'}`\n- Select-Unassigned-Variable?\n  - Anything is fine. Can try minimum-remaining-values (MRV) heuristic if you want.\n- Order-Domain-Values?\n  - Anything is fine. Can try least-constraining-value (LCV) heuristic if you want.\n- Inference?\n  - This is where you would do forward-check. Just skip.\n\n*Merknad:* Lysbilde 9–12 og 16–22 viser skjermbilder av handout-koden (se lenkene over), pseudokoden for backtracking search og AC-3 fra boka, og leveransene fra A2.",
+ "intro": "Assignment lecture 2 (11.09) introduserte A2 og regnet tre små oppgaver: 8-queens med genetisk algoritme eller CSP-løser (E04 og E07), og MRV+LCV mot tilfeldige valg på en kjede A–B–C, før og etter AC-3 (E06 og E07). Svarene som står på lysbildene, ligger i fasiten og brukes i sjekken. Resten av fasiten er egen utregning og er merket slik.",
+ "tasks": [
+  {
+   "t": "Oppgave 1: 8-queens – genetisk algoritme eller CSP-løser?",
+   "d": "- The 8-queens problem was used as an example of a problem that is appropriate for genetic algorithms in a recent lecture.\n- Would genetic algorithms or a CSP solvers be more efficient? Why?",
+   "img": [
+    "nettside-figurer/al2-8queens.png"
+   ],
+   "f": [
+    [
+     "Hva er mest effektivt?",
+     "text",
+     "Genetisk algoritme eller CSP-løser"
+    ],
+    [
+     "Hvorfor?",
+     "area"
+    ]
+   ],
+   "fasit": "**En CSP-løser er mest effektiv for 8-queens.**\n\n**Hvorfor:** 8-queens har klare binære constraints: ingen to dronninger i samme rad, kolonne eller diagonal. En CSP-løser bruker den strukturen direkte. Backtracking med én dronning per kolonne, MRV og forward checking fjerner ulovlige plasseringer så snart en dronning settes, og finner raskt en løsning. Min-conflicts (lokalt søk for CSP) løser til og med en million dronninger på rundt 50 steg i snitt (AIMA 5.4). En genetisk algoritme bruker constraintene bare gjennom fitness (antall par som ikke angriper hverandre, AIMA Fig. 4.6), og bare på hele tilstander. Den kan ikke beskjære delvise tilordninger slik backtracking gjør, crossover kan ødelegge gode delplasseringer, og den kan trenge mange generasjoner uten garanti for å finne en løsning. Svaret gjelder 8-queens: hvilken metode som er raskest generelt, avhenger av problemet.\n\n*Kilde: lysbildene stiller spørsmålet (lysbilde 6), men gir ikke noe svar. Modellsvaret er egen vurdering etter notatene til E04 og E07.*"
+  },
+  {
+   "t": "Oppgave 2: MRV+LCV mot tilfeldige valg",
+   "d": "- Very simple constraint problem.\n- Assume minimum-remaining-value heuristic for variables and least-constraining-value heuristic for value assignments.\n- Break ties alphabetically.\n- Is MRV+LCV better than random choices on average for the graph on the right?\n- Don’t worry about exactly calculating expected mistakes.",
+   "img": [
+    "nettside-figurer/al2-graf-abc.png"
+   ],
+   "f": [
+    [
+     "Er MRV+LCV bedre enn tilfeldige valg i snitt? (ja/nei)",
+     "text"
+    ],
+    [
+     "Antall feil med MRV+LCV",
+     "text"
+    ],
+    [
+     "Forventet antall feil med tilfeldige valg",
+     "text",
+     "Et tall, f.eks. 0,5"
+    ],
+    [
+     "Begrunnelse",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Er MRV+LCV bedre enn tilfeldige valg i snitt? (ja/nei)": [
+      "Nei",
+      "No"
+     ],
+     "Antall feil med MRV+LCV": [
+      "1"
+     ],
+     "Forventet antall feil med tilfeldige valg": [
+      "0.704",
+      "19/27",
+      "0.7",
+      "0.70",
+      "0.7037",
+      "~0.704",
+      "≈0.704"
+     ]
+    },
+    "merk": "En «mistake» er å prøve en verdi som bryter en constraint med en nabo som allerede har fått verdi.",
+    "kilde": "AssignmentLecture2-Fall2026.pdf, lysbilde 15"
+   },
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": true,
+     "noder": [
+      {
+       "id": "A",
+       "x": 80,
+       "y": 100,
+       "domene": [
+        "B",
+        "G",
+        "R"
+       ]
+      },
+      {
+       "id": "B",
+       "x": 300,
+       "y": 100,
+       "domene": [
+        "B",
+        "G",
+        "R"
+       ]
+      },
+      {
+       "id": "C",
+       "x": 520,
+       "y": 100,
+       "domene": [
+        "B",
+        "G",
+        "R"
+       ]
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "B"
+      },
+      {
+       "fra": "B",
+       "til": "C"
+      }
+     ]
+    }
+   },
+   "fasit": "**Nei. MRV+LCV gir 1 feil, mens tilfeldige valg i snitt gir 19/27 ≈ 0,704 feil.**\n\nEn «mistake» er å prøve en verdi som bryter en constraint med en nabo som allerede har fått verdi. Uten inference krymper ikke domenene.\n\n**MRV+LCV, steg for steg:**\n\n| Steg | MRV (lovlige verdier) | LCV | Resultat |\n|---|---|---|---|\n| 1 | A 3, B 3, C 3: A (alfabetisk) | hver farge fjerner én verdi hos B: blå | A = blå |\n| 2 | B 2 (G, R), C 3: B | blå, grønn og rød fjerner hver én verdi hos C: blå først | blå bryter A ≠ B: **feil** |\n| 3 | | neste er grønn | B = grønn |\n| 4 | C | | C = blå, lovlig |\n\nMRV teller lovlige verdier, så B har to og velges. Blå ligger likevel i domenet til B, fordi ingen inference har fjernet den. LCV gir likt for alle tre, og likheten brytes alfabetisk.\n\n**Tilfeldige valg** (lysbilde 15): i 4 av 6 variabelrekkefølger kommer B først eller nest først. Da har hver av de to siste variablene én ulovlig verdi av tre, og forventet antall feil blir 1/3 + 1/3 = 2/3. Kommer B sist (2 av 6), har A og C samme farge med sannsynlighet 1/3 (én ulovlig verdi for B, 1/3 feil) og ulik farge med sannsynlighet 2/3 (to ulovlige, i snitt 1 feil). Det gir 1/9 + 2/3 = 7/9. Til sammen (4 · 2/3 + 2 · 7/9) / 6 = 19/27 ≈ 0,704.\n\n*Kilde: AssignmentLecture2-Fall2026, lysbilde 15 (svaret og utregningen). Steg-for-steg-tabellen er egen. Kontroll: backtracking i `nettside-algo/csp.js` gir samme tilordning A = blå, B = grønn, C = blå.*"
+  },
+  {
+   "t": "Oppgave 3: A er blå – AC-3 og MRV+LCV",
+   "d": "- Going back to our old friend.\n- Assume we make A blue.\n- What do the domains look like after AC-3?\n- Is MRV+LCV better than random choices now? Break ties alphabetically.\n\n*Merknad:* Lysbildet (23) viser også svaret for domenet til B. Det er flyttet til fasiten.",
+   "img": [
+    "nettside-figurer/al2-graf-abc.png"
+   ],
+   "f": [
+    [
+     "Domenet til A etter AC-3",
+     "text",
+     "{…}"
+    ],
+    [
+     "Domenet til B etter AC-3",
+     "text",
+     "{…}"
+    ],
+    [
+     "Domenet til C etter AC-3",
+     "text",
+     "{…}"
+    ],
+    [
+     "Er MRV+LCV bedre enn tilfeldige valg nå? (ja/nei)",
+     "text"
+    ],
+    [
+     "Begrunnelse",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Domenet til B etter AC-3": [
+      "{G, R}"
+     ]
+    },
+    "merk": "Bare domenet til B står på lysbildet. Resten er egen utregning i fasiten.",
+    "kilde": "AssignmentLecture2-Fall2026.pdf, lysbilde 23"
+   },
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": true,
+     "noder": [
+      {
+       "id": "A",
+       "x": 80,
+       "y": 100,
+       "domene": [
+        "B",
+        "G",
+        "R"
+       ]
+      },
+      {
+       "id": "B",
+       "x": 300,
+       "y": 100,
+       "domene": [
+        "B",
+        "G",
+        "R"
+       ]
+      },
+      {
+       "id": "C",
+       "x": 520,
+       "y": 100,
+       "domene": [
+        "B",
+        "G",
+        "R"
+       ]
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "B"
+      },
+      {
+       "fra": "B",
+       "til": "C"
+      }
+     ]
+    }
+   },
+   "fasit": "**A = {B}, B = {G, R}, C = {B, G, R}. Ja, nå er MRV+LCV bedre: 0 feil mot 1/3 i snitt med tilfeldige valg.**\n\n**AC-3:** Buen (B, A) fjerner blå fra B, fordi B = blå ikke har noen støtte i D(A) = {B}. Da legges (C, B) i køen. Hver verdi for C har støtte i B (C = blå med G eller R, C = grønn med R, C = rød med G), så C endres ikke. A = blå har støtte i B (G eller R).\n\n**MRV+LCV:** MRV velger B (to verdier mot tre for C). LCV gir likt for G og R (hver fjerner én verdi hos C), så B = G. C = blå (alfabetisk) er lovlig. Ingen feil.\n\n**Tilfeldige valg:** Settes B først (sannsynlighet 1/2), er begge verdiene lovlige, men C har én ulovlig verdi av tre: 1/3 feil. Settes C først, er alt lovlig for C. Med sannsynlighet 2/3 får C samme farge som en av Bs to verdier, og da er forventet antall feil for B 1/2. Det gir 2/3 · 1/2 = 1/3. I snitt 1/2 · 1/3 + 1/2 · 1/3 = 1/3 feil.\n\nEtter AC-3 er den ulovlige verdien borte fra B, så heuristikkene gjør ingen feil lenger.\n\n*Kilde: AssignmentLecture2-Fall2026, lysbilde 23 (B = {G, R}). Resten er egen utregning. Kontroll: AC-3 og backtracking i `nettside-algo/csp.js` gir de samme domenene og A = blå, B = grønn, C = blå.*"
+  }
+ ],
+ "fasit": "**Oppgave 1: 8-queens** (lysbilde 6)\n\nLysbildene gir ikke noe svar.\n\n*Egen vurdering:* En CSP-løser er mer effektiv. 8-queens har klare binære constraints (ingen to dronninger i samme rad, kolonne eller diagonal). Backtracking med MRV og forward checking finner raskt en løsning, og min-conflicts (lokalt søk for CSP) løser til og med million-queens på rundt 50 steg i snitt (AIMA 4e, 5.4). En genetisk algoritme bruker ikke constraint-strukturen. Crossover kan ødelegge gode delplasseringer, og den kan trenge mange generasjoner uten garanti for å finne en løsning.\n\n**Oppgave 2: MRV+LCV mot tilfeldige valg** (lysbilde 15, sitert)\n\n- Basically with the heuristics you are **guaranteed** 1 mistake.\n- With random choices, 4/6 times you will pick B first or second which gives you 1/3+1/3=2/3 expected mistakes.\n- The two other cases are more tedious, but the expected amount of mistakes is (4(2/3)+2(7/9))/6=~0.704.\n- 1/3 (A and C, same color) times 1/3 (expected mistakes)=1/9. 2/3 (A and C, different color) times 1 (expected mistakes) = 2/3. Now 1/9+2/3=7/9.\n\nSvaret er altså **nei**: heuristikkene gir 1 feil, mens tilfeldige valg i snitt gir ≈ 0,704 (= 19/27).\n\n*Egen forklaring:* En «mistake» er å prøve en verdi som bryter en constraint med en nabo som allerede har verdi. MRV teller lovlige verdier. Ved start har A, B og C tre hver, og A tas (alfabetisk). LCV gir likt for alle farger, så A = B (blå). Nå har B to lovlige verdier (G, R) og C tre, så MRV tar B. Uten inference ligger blå fortsatt i domenet til B. LCV gir likt for alle tre (hver fjerner én verdi hos C), så blå prøves først og bryter A ≠ B. Det er feilen. Deretter blir B = G og C = B. Med tilfeldige valg er forventet antall feil for én variabel 1/3 når én av tre verdier er ulovlig, og 1 når to av tre er ulovlige.\n\n**Oppgave 3: A er blå** (lysbilde 23, sitert)\n\n- B’s domain becomes {G, R}.\n\n*Egen utregning (ikke på lysbildet):* A = {B} og C = {B, G, R}. Hver verdi for C har støtte i B (C = B med G eller R, C = G med R, C = R med G), så AC-3 fjerner ingenting fra C. MRV velger B (to verdier), LCV gir likt for G og R, så B = G. C = B (alfabetisk) er lovlig, og det blir ingen feil. Tilfeldige valg gir i snitt 1/3 feil: settes B først, har C én ulovlig verdi av tre. Settes C først, har C samme farge som én av Bs to verdier med sannsynlighet 2/3, og da er forventet antall feil for B 1/2. Nå er MRV+LCV altså bedre."
+}

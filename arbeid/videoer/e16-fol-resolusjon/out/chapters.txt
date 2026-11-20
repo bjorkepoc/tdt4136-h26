@@ -1,0 +1,52 @@
+;FFMETADATA1
+title=FOL-inferens 2: CNF og resolution steg for steg
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=52400
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=52400
+END=141967
+title=Hvorfor motsigelse?
+[CHAPTER]
+TIMEBASE=1/1000
+START=141967
+END=257633
+title=CNF i sju steg
+[CHAPTER]
+TIMEBASE=1/1000
+START=257633
+END=339700
+title=Skolem: konstant eller funksjon
+[CHAPTER]
+TIMEBASE=1/1000
+START=339700
+END=458633
+title=Unification og regelen
+[CHAPTER]
+TIMEBASE=1/1000
+START=458633
+END=562933
+title=Hvem drepte katten?
+[CHAPTER]
+TIMEBASE=1/1000
+START=562933
+END=647634
+title=Hestehodet
+[CHAPTER]
+TIMEBASE=1/1000
+START=647633
+END=715200
+title=Likhet og strategier
+[CHAPTER]
+TIMEBASE=1/1000
+START=715200
+END=855633
+title=Eksamen 2025 Q9–Q10
+[CHAPTER]
+TIMEBASE=1/1000
+START=855633
+END=911333
+title=Koblinger og oppsummering

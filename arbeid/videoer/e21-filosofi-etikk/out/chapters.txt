@@ -1,0 +1,42 @@
+;FFMETADATA1
+title=Kan maskiner tenke, og hva bør de gjøre?
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=39067
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=39067
+END=187033
+title=Grensene for AI
+[CHAPTER]
+TIMEBASE=1/1000
+START=187033
+END=292100
+title=Kan maskiner tenke?
+[CHAPTER]
+TIMEBASE=1/1000
+START=292100
+END=430600
+title=Våpen og personvern
+[CHAPTER]
+TIMEBASE=1/1000
+START=430600
+END=594733
+title=Fairness og COMPAS
+[CHAPTER]
+TIMEBASE=1/1000
+START=594733
+END=687567
+title=Tillit og AI safety
+[CHAPTER]
+TIMEBASE=1/1000
+START=687567
+END=774366
+title=Eksamen 2025, oppgave 13b
+[CHAPTER]
+TIMEBASE=1/1000
+START=774367
+END=832633
+title=Koblinger og oppsummering

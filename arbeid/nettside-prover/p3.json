@@ -1,0 +1,946 @@
+{
+ "id": "p3",
+ "ep": "P3",
+ "tittel": "Prøveeksamen 3",
+ "om": "## TDT4136 Introduction to Artificial Intelligence\n\n### Practice exam P3\n\n**Time:** 4 hours<br>\n**Permitted examination support material:** D: No printed or hand-written support material is allowed. A specific basic calculator is allowed.\n\n**OTHER INFORMATION**\n\nThere are 13 questions in this exam. The first 4 are multiple choice questions. For questions about logic, there is a formula sheet at the very end of the exam.\n\nRead the questions carefully and make your own assumptions. In your answers, explain clearly what assumptions you have made and how you have understood or limited the assignment.\n\nFor question 9 (Generalized Modus Ponens) and 10 (Resolution) you can answer on handwritten sheets. Other questions are answered directly in the answer fields.\n\n**Weighting:** Weights for questions and sub-questions are given in each question. The total is 100 points.\n\n---\n\n*Laget for øving i 2025-formatet, ikke en ekte eksamen.* Settet dekker PEAS for en ny oppgave, hill climbing med platå og shoulder, konsistensbegreper i CSP (node, arc, path), blandet Nash med indifferens, UCS med tree-like search mot BFS med early goal test, dominans og relakserte problemer i A\\*, møteplanlegging som CSP med AC-3, alpha-beta og beste barnerekkefølge, to GMP-steg på rad, FOL-resolusjon med Skolem-funksjoner, sensorless planning og ignore preconditions mot ignore delete lists, naive Bayes og tvetydighet, og semantiske nett mot description logics med weak/strong AI.\n\n<details><summary>Formula sheet (appendix)</summary><img class=\"fig\" src=\"nettside-figurer/e14-2025-formelark.svg\" alt=\"Formelark\"></details>",
+ "intro": "Oppgave 1–4 er flervalg. Når settet er levert, kan alt med ett objektivt svar (flervalg, rekkefølger, stier, kostnader, heuristikkverdier, domener, antall) sjekkes med Sjekk, grafene i oppgave 5–6 og treet i oppgave 8 kan åpnes i «Tegn og sjekk», og fasiten med poengfordeling vises under hver oppgave og nederst.",
+ "tasks": [
+  {
+   "t": "Oppgave 1 (5 p): Intelligent Agents",
+   "d": "A hospital wants an *artificial pancreas* for patients with type 1 diabetes: a closed-loop insulin pump that decides by itself how much insulin to deliver. Every five minutes it receives a reading from a continuous glucose monitor (CGM) worn on the skin. The patient can press a meal button before eating, and the pump can sound a beeper and show messages on a small screen. The pump also measures how much insulin is left in its reservoir.\n\nWhich alternative gives a correct PEAS description **and** correct properties of the task environment?\n\nSelect one alternative:\n\n- A. P: number of insulin doses delivered per day (fewer is better). E: the patient's body, meals, physical activity. A: insulin infusion motor, beeper/screen. S: CGM, meal button, reservoir sensor. Properties: partially observable, stochastic, sequential, dynamic, continuous.\n- B. P: time with glucose in the target range, few hypoglycaemic episodes, little insulin used. E: the patient's body, meals, physical activity. A: insulin infusion motor, beeper/screen. S: CGM, meal button, reservoir sensor. Properties: partially observable, stochastic, sequential, dynamic, continuous.\n- C. P: time with glucose in the target range, few hypoglycaemic episodes, little insulin used. E: the patient's body, meals, physical activity. A: CGM, meal button. S: insulin infusion motor, beeper/screen. Properties: partially observable, stochastic, sequential, dynamic, continuous.\n- D. P: time with glucose in the target range, few hypoglycaemic episodes, little insulin used. E: the pump's motor, battery and reservoir. A: the insulin dose. S: the glucose level. Properties: partially observable, stochastic, sequential, dynamic, continuous.\n- E. P: time with glucose in the target range, few hypoglycaemic episodes, little insulin used. E: the patient's body, meals, physical activity. A: insulin infusion motor, beeper/screen. S: CGM, meal button, reservoir sensor. Properties: fully observable (the CGM measures the glucose level directly), stochastic, episodic (each five-minute dosing decision is a separate episode), dynamic, continuous.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "B"
+     ]
+    },
+    "merk": "B er riktig. A måler agentens oppførsel (antall doser), ikke ønsket tilstand i miljøet. C bytter om sensorer og aktuatorer. D legger agentens egne deler i miljøet og oppgir en handling og en percept i stedet for aktuatorer og sensorer. E er feil: CGM-en gir ikke hele tilstanden (partially observable), og insulin nå påvirker blodsukkeret i timer (sequential).",
+    "kilde": "Kontrollert mot boka 2.3.1–2.3.2 og E01-notatet (PEAS, miljøegenskaper, eksamensfeller)."
+   },
+   "fasit": "**Svar: B.**\n\n- **A: feil.** Performance measure skal måle det vi vil oppnå i *miljøet*, ikke hvordan agenten bør oppføre seg. «Få doser» belønner en pumpe som lar blodsukkeret bli for høyt.\n- **B: riktig.** P måler utfallet: tid i målområdet, få hypoglykemier og lite insulin. E er kroppen, måltidene og aktiviteten. A er pumpemotoren og pip/skjerm. S er CGM, måltidsknappen og reservoarsensoren. Miljøet er *partially observable* (CGM måler med forsinkelse og støy, og uannonserte måltider og insulin som fortsatt virker, sees ikke), *stochastic* (kroppen reagerer ulikt fra gang til gang), *sequential* (en dose virker i timer og påvirker senere valg), *dynamic* (blodsukkeret endrer seg mens agenten tenker) og *continuous* (doser, nivåer og tid).\n- **C: feil.** Sensorer og aktuatorer er byttet om: CGM og knappen gir percepts, motoren og skjermen virker på verden.\n- **D: feil.** Miljøet er det agenten virker i, ikke pumpens egne deler. «Insulindosen» er en handling og «glukosenivået» en percept, ikke en aktuator og en sensor.\n- **E: feil.** *Fully observable* krever at sensorene gir alt som er relevant for valget, og det gjør ikke én glukoseverdi. Dosene henger sammen over tid, så miljøet er sequential, ikke episodic.\n\n**Poeng:** 5 for B, ellers 0.\n\n*Kilde: laget for øving; boka 2.3 og notatet til E01.*"
+  },
+  {
+   "t": "Oppgave 2 (5 p): Local Search",
+   "d": "The state space consists of the integers x = 0, 1, …, 9. The neighbours of x are x − 1 and x + 1 (where they exist). We want to **maximize** f:\n\n| x | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |\n|---|---|---|---|---|---|---|---|---|---|---|\n| f(x) | 1 | 3 | 3 | 3 | 6 | 4 | 5 | 5 | 2 | 8 |\n\nSteepest-ascent hill climbing moves to the best neighbour only if it is strictly better than the current state. When sideways moves are allowed, it may also move to an equally good best neighbour, at most 10 sideways moves in a row. Tie breaking: between two equally good neighbours, the one with the smaller x is chosen.\n\nWhich of the following statements is **false**?\n\nSelect one alternative:\n\n- A. Started at x = 0, the search stops at x = 1, which lies on a shoulder.\n- B. Started at x = 5, the search stops at the local maximum x = 4.\n- C. x = 6 and x = 7 form a flat local maximum. Even with sideways moves allowed, the search started at x = 6 never reaches x = 9.\n- D. Random-restart hill climbing without sideways moves, where each start state is drawn uniformly from the ten states and the search stops when it reaches f = 8, needs 5 hill-climbing runs on average.\n- E. With sideways moves allowed, the search started at x = 1 reaches x = 4.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "E"
+     ]
+    },
+    "merk": "E er usann. Fra x = 1 går søket sidelengs til x = 2. Der er x = 1 og x = 3 like gode (3), og tie-breaken velger x = 1. Søket pendler 1 ↔ 2 til de 10 sidestegene er brukt opp, og stopper i x = 1. A–D er sanne.",
+    "kilde": "Motorens hill-climbing (landskap, sideways på/av, maks 10) fra alle startpunkter, og et eget skript."
+   },
+   "fasit": "**Svar: E** (den usanne påstanden).\n\nSteepest ascent uten sidesteg fra hver start: 0 → 1 (stopper), 1 (stopper), 2 (stopper), 3 → 4, 4, 5 → 4, 6, 7, 8 → 9, 9.\n\n- **A: sann.** 0 → 1 fordi 3 > 1. I x = 1 er beste nabo x = 2 med 3, som ikke er *strengt* bedre, så søket stopper. x = 1–3 er et platå med en utgang oppover (x = 4), altså en *shoulder*.\n- **B: sann.** 5 → 4 (6 > 4). Naboene til x = 4 har 3 og 4, så x = 4 er en local maximum.\n- **C: sann.** Platået x = 6–7 har naboene x = 5 (4) og x = 8 (2). Ingen utgang oppover: en *flat local maximum*. Med sidesteg pendler søket 6 ↔ 7 og kommer aldri forbi x = 8.\n- **D: sann.** Bare start i x = 8 eller x = 9 når x = 9, så p = 2/10. Antallet kjøringer er geometrisk fordelt, med forventning 1/p = 5.\n- **E: usann.** 1 → 2 er et sidesteg (x = 2 er beste nabo og like god). I x = 2 er x = 1 og x = 3 like gode, og tie-breaken velger minste x, altså x = 1. Søket pendler 1 ↔ 2 til grensen på 10 sidesteg på rad er nådd, og stopper i x = 1. Med tie-break mot største x ville det gått 2 → 3 → 4.\n\n**Poeng:** 5 for E, ellers 0.\n\n*Kilde: laget for øving; boka 4.1.1 og notatet til E04. Kontrollert med motorens hill-climbing og et eget skript.*"
+  },
+  {
+   "t": "Oppgave 3 (5 p): Constraint Satisfaction Problems",
+   "d": "Consider the CSP with variables X, Y and Z, domains D(X) = {1, 2, 3}, D(Y) = {1, 2} and D(Z) = {1, 2}, and the constraints X ≠ Y, X ≠ Z and Y ≠ Z.\n\nWhich of the following statements is true?\n\nSelect one alternative:\n\n- A. The CSP has no solution, and AC-3 detects this by emptying a domain.\n- B. Running AC-3 reduces D(X) to {3}.\n- C. The CSP is arc-consistent, but it is not path-consistent.\n- D. Enforcing path consistency removes nothing, because the CSP has a solution.\n- E. The CSP is strongly 3-consistent, so backtracking search finds a solution without backtracking for any variable ordering.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "C"
+     ]
+    },
+    "merk": "C: hver verdi har en partner langs hver bue (arc-consistent), men {X = 1, Y = 2} oppfyller X ≠ Y uten at noen verdi av Z passer med begge (ikke path-consistent). Løsningene er X = 3 med (Y, Z) = (1, 2) eller (2, 1). AC-3 fjerner ingenting.",
+    "kilde": "Motorens AC-3 og backtracking, og et eget skript for løsninger og path consistency."
+   },
+   "fasit": "**Svar: C.**\n\n- **A: feil.** CSP-en har to løsninger: X = 3, Y = 1, Z = 2 og X = 3, Y = 2, Z = 1. AC-3 fjerner ingen verdier.\n- **B: feil.** Langs X → Y har X = 1 partneren Y = 2, X = 2 har Y = 1 og X = 3 har begge. Det samme gjelder X → Z. Arc consistency ser på én constraint om gangen, så den ser ikke at Y og Z sammen bruker opp både 1 og 2.\n- **C: riktig.** *Arc-consistent:* hver verdi i hvert domene har en partner langs hver bue (sjekk Y → Z: Y = 1 har Z = 2, Y = 2 har Z = 1). *Ikke path-consistent:* {X, Y} er path-consistent med hensyn på Z bare hvis hver tillatt tilordning {X = a, Y = b} kan utvides med en Z som passer med begge. {X = 1, Y = 2} oppfyller X ≠ Y, men Z kan verken være 1 eller 2.\n- **D: feil.** Path consistency fjerner parene (1, 2) og (2, 1) fra X ≠ Y og fra X ≠ Z, selv om CSP-en har løsninger. Etterpå gir arc consistency D(X) = {3}.\n- **E: feil.** Siden den ikke er path-consistent (3-consistent), er den heller ikke strongly 3-consistent. Med rekkefølgen X, Y, Z og minste verdi først gir X = 1, Y = 2 en blindvei for Z, og søket må backtracke.\n\n**Poeng:** 5 for C, ellers 0.\n\n*Kilde: laget for øving; boka 5.2.1–5.2.3 og notatet til E06. Kontrollert med motorens AC-3 og backtracking (X = 1, Y = 2, X = 2, Y = 1, X = 3, …) og et eget skript.*"
+  },
+  {
+   "t": "Oppgave 4 (5 p): Game Theory",
+   "d": "Two players play the following game once. Player 1 (P1) chooses a row and Player 2 (P2) chooses a column. In each cell, the first number is P1's payoff and the second is P2's payoff.\n\n| P1 / P2 | Left | Center | Right |\n|---|---|---|---|\n| Up | 4, 1 | 1, 4 | 3, 0 |\n| Down | 2, 3 | 4, 1 | 5, 2 |\n\nWhich of the following statements is true?\n\nSelect one alternative:\n\n- A. (Down, Right) is a pure-strategy Nash equilibrium.\n- B. In the unique Nash equilibrium, P1 plays Up with probability 3/5.\n- C. P2 plays all three strategies with positive probability in equilibrium, because Right gives P2 a higher payoff than Center when P1 plays Down.\n- D. In the unique Nash equilibrium, P2 plays Left with probability 3/5, and P1's expected payoff is 14/5.\n- E. P1's pure maximin value is 2, which is higher than P1's expected payoff in the Nash equilibrium.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "D"
+     ]
+    },
+    "merk": "D: Right er strengt dominert av Left for P2 (1 > 0 og 3 > 2). I 2×2-spillet som er igjen, finnes ingen ren likevekt. P1 blander slik at P2 blir indifferent: p + 3(1 − p) = 4p + (1 − p) gir P(Up) = 2/5. P2 blander slik at P1 blir indifferent: 4q + (1 − q) = 2q + 4(1 − q) gir P(Left) = 3/5, og P1 får 14/5.",
+    "kilde": "Motorens dominans-nash (IESDS og rene likevekter) og et eget skript med eksakte brøker og support enumeration."
+   },
+   "fasit": "**Svar: D.**\n\n1. **IESDS.** For P2 er Right strengt dominert av Left: 1 > 0 mot Up og 3 > 2 mot Down. Right strykes. Ingenting mer kan strykes: Up er best mot Left (4 > 2) og Down mot Center (4 > 1), Center er best mot Up (4 > 1) og Left mot Down (3 > 1).\n2. **Ingen ren likevekt.** Beste svar går i ring: (Up, Left) → P2 bytter til Center → P1 bytter til Down → P2 bytter til Left → P1 bytter til Up.\n3. **Indifferens.** Hver spiller blander slik at *motstanderen* blir indifferent.\n   - p = P(Up), P2s nytte: Left gir 1·p + 3(1 − p) = 3 − 2p, Center gir 4p + 1·(1 − p) = 1 + 3p. Likt gir **p = 2/5**.\n   - q = P(Left), P1s nytte: Up gir 4q + 1·(1 − q) = 1 + 3q, Down gir 2q + 4(1 − q) = 4 − 2q. Likt gir **q = 3/5**.\n   - P1 får 1 + 3·3/5 = **14/5 = 2,8**, P2 får 3 − 2·2/5 = 11/5 = 2,2. Right ville gitt P2 bare 0·2/5 + 2·3/5 = 6/5, så avvik lønner seg ikke.\n\nAlternativene:\n\n- **A: feil.** Mot Down foretrekker P2 Left (3 > 2).\n- **B: feil.** 3/5 er P2s sannsynlighet for Left. P1 spiller Up med 2/5. Typisk feil: å gjøre seg selv indifferent i stedet for motstanderen.\n- **C: feil.** Right er strengt dominert og spilles aldri i en likevekt. At Right slår Center mot Down, hjelper ikke når Left slår Right mot begge rader.\n- **D: riktig** (se utregningen).\n- **E: feil.** Rent maximin: Up garanterer min(4, 1, 3) = 1 og Down min(2, 4, 5) = 2, så verdien er 2. Men 2 < 14/5.\n\n**Poeng:** 5 for D, ellers 0.\n\n*Kilde: laget for øving; L10 og notatet til E10. Kontrollert med motorens dominans-nash og et eget skript (support enumeration over alle supporter: én likevekt, (2/5, 3/5) for P1 og (3/5, 2/5, 0) for P2).*"
+  },
+  {
+   "t": "Oppgave 5 (8 p): Uninformed Search",
+   "d": "Consider the directed graph in the figure. S is the start state and G is the only goal state. The numbers are step costs.\n\nTie breaking: alphabetical order. Children are generated in alphabetical order, and when two frontier nodes have the same priority, the node whose state comes first alphabetically is chosen. Two nodes with the same state and the same priority are chosen in the order they were added.\n\nWrite expansion orders with the start node included and the goal last in parentheses, for example S, X, Y, (G).\n\na) Breadth-first search with **graph search**, where the goal test is done when a node is generated (Figure 3.9). Give the expansion order, the path found and its cost. (2 pts.)\n\nb) Uniform-cost search with **tree-like search**: there is no reached table, so the same state can be in the frontier several times. The goal test is done when a node is selected for expansion. Give the expansion order, the path found and its cost. (4 pts.)\n\nc) How many nodes does uniform-cost search expand if it uses graph search instead (the goal not counted)? Would depth-first search with tree-like search (BEST-FIRST-SEARCH with f(n) = −depth(n), the same tie breaking) find the goal? Explain both answers briefly. (2 pts.)",
+   "g": {
+    "w": 470,
+    "h": 260,
+    "dir": 1,
+    "al": "Graf for oppgave 5",
+    "n": {
+     "S": [
+      40,
+      130,
+      "",
+      0,
+      0
+     ],
+     "A": [
+      170,
+      40,
+      "",
+      0,
+      0
+     ],
+     "B": [
+      170,
+      220,
+      "",
+      0,
+      0
+     ],
+     "C": [
+      300,
+      130,
+      "",
+      0,
+      0
+     ],
+     "G": [
+      430,
+      220,
+      "",
+      0,
+      0,
+      1
+     ]
+    },
+    "e": [
+     [
+      "S",
+      "A",
+      1,
+      -1
+     ],
+     [
+      "S",
+      "B",
+      4
+     ],
+     [
+      "A",
+      "B",
+      2,
+      1
+     ],
+     [
+      "B",
+      "C",
+      1,
+      -1
+     ],
+     [
+      "C",
+      "A",
+      1,
+      -1
+     ],
+     [
+      "B",
+      "G",
+      6
+     ],
+     [
+      "C",
+      "G",
+      2,
+      -1
+     ]
+    ]
+   },
+   "f": [
+    [
+     "a) Expansion order (BFS)",
+     "text",
+     "S, …, (G)"
+    ],
+    [
+     "a) Sti (BFS)",
+     "text",
+     "S → … → G"
+    ],
+    [
+     "a) Kostnad (BFS)",
+     "text",
+     ""
+    ],
+    [
+     "b) Expansion order (UCS, tree-like)",
+     "text",
+     "S, …, (G)"
+    ],
+    [
+     "b) Sti (UCS)",
+     "text",
+     "S → … → G"
+    ],
+    [
+     "b) Kostnad (UCS)",
+     "text",
+     ""
+    ],
+    [
+     "c) Antall utvidelser med graph search",
+     "text",
+     ""
+    ],
+    [
+     "c) Finner DFS med tree-like search målet? (ja/nei)",
+     "text",
+     ""
+    ],
+    [
+     "c) Begrunnelse",
+     "area",
+     ""
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Expansion order (BFS)": [
+      "S, A, B, (G)",
+      "S A B G"
+     ],
+     "a) Sti (BFS)": [
+      "S, B, G",
+      "S B G"
+     ],
+     "a) Kostnad (BFS)": [
+      "10"
+     ],
+     "b) Expansion order (UCS, tree-like)": [
+      "S, A, B, B, C, A, C, A, (G)",
+      "S A B B C A C A G"
+     ],
+     "b) Sti (UCS)": [
+      "S, A, B, C, G",
+      "S A B C G"
+     ],
+     "b) Kostnad (UCS)": [
+      "6"
+     ],
+     "c) Antall utvidelser med graph search": [
+      "4"
+     ],
+     "c) Finner DFS med tree-like search målet? (ja/nei)": [
+      "nei",
+      "no"
+     ]
+    },
+    "merk": "BFS stopper når G genereres fra B: S → B → G med kostnad 10 (færrest kanter, ikke billigst). UCS uten reached utvider B, C og A flere ganger, fordi syklusen A → B → C → A gir nye stier, og tar ut G først med g = 6. Med graph search utvides S, A, B, C. DFS med tree-like search går rundt syklusen A, B, C for alltid, fordi C og A kommer før G alfabetisk på samme dybde.",
+    "kilde": "Motorens bfs (graph search), ucs (tree-like og graph search) og dfs (tree-like, stopper på maks), og et eget Python-søk."
+   },
+   "fasit": "**a) S, A, B, (G). Sti S → B → G, kostnad 10.**\n\n**b) S, A, B, B, C, A, C, A, (G). Sti S → A → B → C → G, kostnad 6.**\n\n**c) 4 utvidelser (S, A, B, C). Nei, DFS med tree-like search finner ikke målet.**\n\n**a) BFS (FIFO, reached, målet testes ved generering)**\n\n| Utvider | Genererer | Frontier etter | reached |\n|---|---|---|---|\n| S | A, B | A, B | S, A, B |\n| A | B (allerede i reached) | B | S, A, B |\n| B | C (ny), G er mål ved generering: stopp | – | – |\n\nBFS finner stien med færrest kanter, S → B → G med kostnad 4 + 6 = 10. Den er ikke den billigste.\n\n**b) UCS, tree-like search (frontier ordnet på g, målet testes når noden tas ut)**\n\n| Tar ut (g) | Legger til | Frontier etter |\n|---|---|---|\n| S (0) | A1, B4 | A1, B4 |\n| A (1) | B3 | B3, B4 |\n| B (3) | C4, G9 | B4, C4, G9 |\n| B (4), likt med C4, B først | C5, G10 | C4, C5, G9, G10 |\n| C (4) | A5, G6 | A5, C5, G6, G9, G10 |\n| A (5), likt med C5, A først | B7 | C5, G6, B7, G9, G10 |\n| C (5) | A6, G7 | A6, G6, B7, G7, G9, G10 |\n| A (6), likt med G6, A først | B8 | G6, B7, G7, B8, G9, G10 |\n| G (6) er mål | – | ferdig |\n\nUten reached er hver sti sin egen node, så B, C og A utvides flere ganger, og syklusen A → B → C → A gir stadig nye stier. Hver runde i syklusen koster 4, så kostnadene stiger, og G med g = 6 blir til slutt billigst. Stien er S → A → B → C → G med kostnad 1 + 2 + 1 + 2 = 6.\n\n**c)** Med graph search blir B3 erstatter for B4 og G6 for G9, og ingen tilstand utvides to ganger: S, A, B, C, (G), altså **4** utvidelser. DFS med f = −dybde og tree-like search: S, A (dybde 1, A før B), B (2), C (3, C før G), A (4, A før G), B, C, A, … Den følger syklusen A → B → C → A for alltid og tar aldri ut G. Tree-like DFS er ikke complete på grafer med sykler. UCS terminerer likevel, fordi alle stegkostnader er positive: kostnaden langs syklusen vokser, og G6 kommer først.\n\n**Poeng:** a) 2 (1 for rekkefølgen, 1 for sti og kostnad). b) 4 (3 for rekkefølgen med duplikater og tie-breaks, 1 for sti og kostnad). c) 2 (1 per svar med begrunnelse).\n\n**Vanlige feil:** å hoppe over de dupliserte B-, C- og A-nodene i b) som om det var graph search, eller å teste målet ved generering i UCS (da kommer S → A → B → G med kostnad 9 ut).\n\n*Kilde: laget for øving; boka 3.3–3.4 og notatet til E02. Kontrollert med motorens bfs, ucs og dfs og et eget søk i Python.*"
+  },
+  {
+   "t": "Oppgave 6 (12 p): Informed Search",
+   "d": "A warehouse robot must get from S to G in the directed graph in the figure. Every arrow is a one-way corridor, and the numbers are step costs. (There is no way into F: its corridors only lead out of it.)\n\nTwo heuristics are made from relaxed versions of the problem:\n\n- **R1:** the one-way restrictions are removed, so every corridor can be used in both directions with the same cost. h1(n) is the cost of an optimal path from n to G in R1.\n- **R2:** the robot may also use a service elevator that is closed today. It goes directly from B to G with cost 1. h2(n) is the cost of an optimal path from n to G in R2 (the one-way restrictions still hold).\n\na) Compute h1(n) and h2(n) for all nodes S, A, B, C, D, E, F, G. (3 pts.)\n\nb) Explain, without checking every node, why h1 and h2 are admissible and consistent. Does one of them dominate the other? Is h1 + h2 admissible? (2 pts.)\n\nc) Run A\\* with h1 and **graph search** (a state is added to the frontier again only if a cheaper path to it is found; the new node then replaces the old one in the frontier). Tie breaking: alphabetical order. Show the frontier after each expansion, and give the expansion order, the path found and its cost. (4 pts.)\n\nd) Let h3(n) = max(h1(n), h2(n)). Is h3 admissible, and does it dominate h1 and h2? Give the expansion order of A\\* with h3 (graph search, same tie breaking). Would the optimal cost in a relaxed problem R12 that removes both restrictions at once be a better heuristic than h3? (3 pts.)",
+   "g": {
+    "w": 500,
+    "h": 290,
+    "dir": 1,
+    "al": "Graf for oppgave 6",
+    "n": {
+     "S": [
+      40,
+      150,
+      "",
+      0,
+      0
+     ],
+     "A": [
+      160,
+      60,
+      "",
+      0,
+      0
+     ],
+     "B": [
+      160,
+      240,
+      "",
+      0,
+      0
+     ],
+     "C": [
+      300,
+      240,
+      "",
+      0,
+      0
+     ],
+     "D": [
+      300,
+      60,
+      "",
+      0,
+      0
+     ],
+     "E": [
+      420,
+      60,
+      "",
+      0,
+      0
+     ],
+     "F": [
+      300,
+      150,
+      "",
+      0,
+      0
+     ],
+     "G": [
+      460,
+      180,
+      "",
+      0,
+      0,
+      1
+     ]
+    },
+    "e": [
+     [
+      "S",
+      "A",
+      1,
+      -1
+     ],
+     [
+      "S",
+      "B",
+      4
+     ],
+     [
+      "A",
+      "C",
+      6
+     ],
+     [
+      "B",
+      "C",
+      1
+     ],
+     [
+      "C",
+      "G",
+      4,
+      1
+     ],
+     [
+      "A",
+      "D",
+      2,
+      -1
+     ],
+     [
+      "D",
+      "E",
+      3,
+      -1
+     ],
+     [
+      "E",
+      "G",
+      5
+     ],
+     [
+      "F",
+      "A",
+      1,
+      1
+     ],
+     [
+      "F",
+      "G",
+      2,
+      -1
+     ]
+    ]
+   },
+   "f": [
+    [
+     "a) h1 for S, A, B, C, D, E, F, G",
+     "text",
+     "8 tall"
+    ],
+    [
+     "a) h2 for S, A, B, C, D, E, F, G",
+     "text",
+     "8 tall"
+    ],
+    [
+     "b) Dominerer h1 eller h2 den andre? (ja/nei)",
+     "text",
+     ""
+    ],
+    [
+     "b) Er h1 + h2 admissible? (ja/nei)",
+     "text",
+     ""
+    ],
+    [
+     "b) Begrunnelse",
+     "area",
+     ""
+    ],
+    [
+     "c) Expansion order (A*, h1)",
+     "text",
+     "S, …, (G)"
+    ],
+    [
+     "c) Sti",
+     "text",
+     "S → … → G"
+    ],
+    [
+     "c) Kostnad",
+     "text",
+     ""
+    ],
+    [
+     "c) Frontier etter hver utvidelse",
+     "area",
+     "Ta ut S: frontier = …"
+    ],
+    [
+     "d) Expansion order (A*, h3)",
+     "text",
+     "S, …, (G)"
+    ],
+    [
+     "d) Begrunnelse",
+     "area",
+     ""
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) h1 for S, A, B, C, D, E, F, G": [
+      "4 3 5 4 5 5 2 0"
+     ],
+     "a) h2 for S, A, B, C, D, E, F, G": [
+      "5 10 1 4 8 5 2 0"
+     ],
+     "b) Dominerer h1 eller h2 den andre? (ja/nei)": [
+      "nei",
+      "no"
+     ],
+     "b) Er h1 + h2 admissible? (ja/nei)": [
+      "nei",
+      "no"
+     ],
+     "c) Expansion order (A*, h1)": [
+      "S, A, D, B, C, (G)",
+      "S A D B C G"
+     ],
+     "c) Sti": [
+      "S, B, C, G",
+      "S B C G"
+     ],
+     "c) Kostnad": [
+      "9"
+     ],
+     "d) Expansion order (A*, h3)": [
+      "S, B, C, (G)",
+      "S B C G"
+     ]
+    },
+    "merk": "h1 bruker korridorene begge veier, så A når G via F (1 + 2 = 3). h2 får heisen fra B (1). Ingen dominerer: h1(A) = 3 < 10 = h2(A), men h1(B) = 5 > 1 = h2(B). h1 + h2 gir 13 > h*(A) = 10. A* med h1: S, A, D, B, C, (G), der C får billigere vei via B (g = 5 i stedet for 7). Med h3 = max blir det bare S, B, C, (G).",
+    "kilde": "Motorens astar (graph search) med h1, h2 og h3 og et eget skript (Dijkstra baklengs i R1, R2 og originalen, og et eget A*)."
+   },
+   "fasit": "**a) h1 = 4, 3, 5, 4, 5, 5, 2, 0 og h2 = 5, 10, 1, 4, 8, 5, 2, 0 (for S, A, B, C, D, E, F, G).**\n\n**b) Nei, ingen av dem dominerer den andre. Nei, h1 + h2 er ikke admissible.**\n\n**c) S, A, D, B, C, (G). Sti S → B → C → G, kostnad 9.**\n\n**d) h3 er admissible (og consistent) og dominerer begge. A\\* med h3: S, B, C, (G). Nei, R12 gir en svakere heuristikk.**\n\n**a)** Optimal kostnad til G i hvert relakserte problem (h\\* i originalen til sammenligning):\n\n| n | h1 (R1) | vei i R1 | h2 (R2) | vei i R2 | h\\* |\n|---|---|---|---|---|---|\n| S | 4 | S–A–F–G | 5 | S→B⇢G (heis) | 9 |\n| A | 3 | A–F–G (mot pila F→A) | 10 | A→C→G eller A→D→E→G | 10 |\n| B | 5 | B→C→G | 1 | B⇢G (heis) | 5 |\n| C | 4 | C→G | 4 | C→G | 4 |\n| D | 5 | D–A–F–G | 8 | D→E→G | 8 |\n| E | 5 | E→G | 5 | E→G | 5 |\n| F | 2 | F→G | 2 | F→G | 2 |\n| G | 0 | – | 0 | – | 0 |\n\n**b)** Begge relakserte problemer er *supergrafer* av det ekte tilstandsrommet: R1 legger til kantene i motsatt retning, R2 legger til heiskanten. Hver ekte sti finnes også i det relakserte problemet, så den optimale relakserte kostnaden er aldri større enn h\\*: *admissible*. Fordi h er eksakt kostnad i en graf som inneholder alle de ekte kantene, gjelder trekantulikheten h(n) ≤ c(n, n′) + h(n′) for hver ekte kant: *consistent*. Ingen dominerer: h1(A) = 3 < 10 = h2(A), men h1(B) = 5 > 1 = h2(B). Summen er ikke admissible: h1(A) + h2(A) = 13 > h\\*(A) = 10.\n\n**c)** A\\* med h1, f = g + h1:\n\n| Tar ut (f) | Nye eller oppdaterte noder | Frontier etter |\n|---|---|---|\n| S (0 + 4 = 4) | A (1 + 3 = 4), B (4 + 5 = 9) | A4, B9 |\n| A (4) | C (7 + 4 = 11), D (3 + 5 = 8) | D8, B9, C11 |\n| D (8) | E (6 + 5 = 11) | B9, C11, E11 |\n| B (9) | C: g = 5 < 7, billigere vei, erstatter C11 med C (5 + 4 = 9) | C9, E11 |\n| C (9) | G (9 + 0 = 9) | G9, E11 |\n| G (9) er mål | – | ferdig |\n\nUtvidelsesrekkefølgen er S, A, D, B, C, (G). Stien er S → B → C → G med kostnad 4 + 1 + 4 = 9. h1(A) = 3 er altfor optimistisk, så A\\* kaster bort to utvidelser (A og D) på en gren som koster 10 videre.\n\n**d)** h3 = max(h1, h2) = 5, 10, 5, 4, 8, 5, 2, 0. Maksimum av admissible heuristikker er admissible (begge er ≤ h\\*), maksimum av consistent heuristikker er consistent, og h3 ≥ h1 og h3 ≥ h2 overalt, så h3 dominerer begge. Her er h3 = h\\* i alle noder unntatt S. A\\* med h3: S (5) gir A (1 + 10 = 11) og B (4 + 5 = 9); B (9) gir C (5 + 4 = 9); C (9) gir G (9); G er mål. Rekkefølgen er **S, B, C, (G)**, tre utvidelser mot fem med h1. R12 fjerner begge restriksjonene og har enda flere kanter, så h12(n) ≤ min(h1(n), h2(n)) (for eksempel h12(A) = 3 og h12(B) = 1). Den er dominert av begge og dermed svakere enn h3. Vil man ha en bedre heuristikk, tar man maksimum av flere relaksasjoner, eller en mindre relaksert variant.\n\n**Poeng:** a) 3 (1,5 per heuristikk, −0,5 per feil verdi). b) 2. c) 4 (2 for frontier og erstatningen av C, 1 for rekkefølgen, 1 for sti og kostnad). d) 3.\n\n**Vanlige feil:** å følge pilene også i R1 (gir h1(A) = 10), å glemme at F kan brukes i R1, og i c) å la C11 stå igjen i frontier eller å stoppe når G genereres.\n\n*Kilde: laget for øving; boka 3.5–3.6 og notatet til E03. Kontrollert med motorens astar og ucs og et eget skript.*"
+  },
+  {
+   "t": "Oppgave 7 (10 p): Constraint Satisfaction Problems",
+   "d": "A research group must schedule five meetings on the same day. There are four one-hour time slots, 9, 10, 11 and 12, written 1, 2, 3 and 4. Each meeting takes exactly one slot.\n\n| Meeting | Participants |\n|---|---|\n| M1 Planning | Ada, Bo |\n| M2 Budget | Bo, Cy |\n| M3 Design review | Cy, Di |\n| M4 Lab safety | Ada, Di, Eli |\n| M5 Hiring | Bo, Eli |\n\n- A person cannot attend two meetings in the same slot.\n- Di is only available at 11 and 12 (slots 3 and 4).\n- Eli must leave before 12 (Eli cannot attend in slot 4).\n- Planning must take place before the design review (M1 < M3).\n- Hiring must take place before the budget meeting (M5 < M2).\n\na) Formulate the problem as a CSP: variables, domains after enforcing node consistency, and all binary constraints. Treat all constraints on the same pair of variables as one binary constraint. How many arcs are in the initial queue of AC-3? (3 pts.)\n\nb) Run AC-3 (Figure 5.3) on the result of a). The initial queue contains all arcs, sorted first by the first variable and then by the second: (M1, M2), (M1, M3), (M1, M4), (M1, M5), (M2, M1), (M2, M3), (M2, M5), (M3, M1), …, (M5, M4). When REVISE(Xi, Xj) removes a value, every arc (Xk, Xi) with Xk ≠ Xj that is not already in the queue is added at the end, in increasing order of Xk. For every revision that removes values, give the arc, the removed values and the arcs added. Give all domains after AC-3. (4 pts.)\n\nc) How many solutions does the CSP have? AC-3 leaves 2 in D(M2), but no solution has M2 = 2. Explain why AC-3 cannot remove it, and which kind of consistency would. (3 pts.)",
+   "f": [
+    [
+     "a) Antall buer i startkøen",
+     "text",
+     ""
+    ],
+    [
+     "a) D(M4) etter node consistency",
+     "text",
+     "{…}"
+    ],
+    [
+     "a) Modellen",
+     "area",
+     "Variabler, domener, constraints"
+    ],
+    [
+     "b) D(M1) etter AC-3",
+     "text",
+     "{…}"
+    ],
+    [
+     "b) D(M2) etter AC-3",
+     "text",
+     "{…}"
+    ],
+    [
+     "b) D(M3) etter AC-3",
+     "text",
+     "{…}"
+    ],
+    [
+     "b) D(M5) etter AC-3",
+     "text",
+     "{…}"
+    ],
+    [
+     "b) Revisjonene som fjerner verdier",
+     "area",
+     "(Xi, Xj): fjerner …, legger til …"
+    ],
+    [
+     "c) Antall løsninger",
+     "text",
+     ""
+    ],
+    [
+     "c) Begrunnelse",
+     "area",
+     ""
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Antall buer i startkøen": [
+      "16"
+     ],
+     "a) D(M4) etter node consistency": [
+      "{3}"
+     ],
+     "b) D(M1) etter AC-3": [
+      "{1, 2}"
+     ],
+     "b) D(M2) etter AC-3": [
+      "{2, 3}"
+     ],
+     "b) D(M3) etter AC-3": [
+      "{4}"
+     ],
+     "b) D(M5) etter AC-3": [
+      "{1, 2}"
+     ],
+     "c) Antall løsninger": [
+      "2"
+     ]
+    },
+    "merk": "Unære constraints: M3 ∈ {3, 4}, M4 ∈ {3, 4} ∩ {1, 2, 3} = {3}, M5 ∈ {1, 2, 3}. Sju ≠ fra felles deltakere og to <, men M5 < M2 og M2 ≠ M5 gjelder samme par: 8 binære constraints, 16 buer. AC-3 fjerner M1: 4 og 3, M2: 1 og 4, M3: 3, M5: 3. Løsningene er (M1, M2, M3, M4, M5) = (1, 3, 4, 3, 2) og (2, 3, 4, 3, 1).",
+    "kilde": "Motorens ac-3 (≠ og <, samme startkø: 23 buer tatt ut) og en egen AC-3 og brute force i Python."
+   },
+   "fasit": "**a) 16 buer. D(M4) = {3}.**\n\n**b) D(M1) = {1, 2}, D(M2) = {2, 3}, D(M3) = {4}, D(M4) = {3}, D(M5) = {1, 2}.**\n\n**c) 2 løsninger.**\n\n**a)** Variabler M1–M5 med domene {1, 2, 3, 4}. Node consistency (de unære constraints): Di gir M3, M4 ∈ {3, 4}, og Eli gir M4, M5 ∈ {1, 2, 3}. Altså D(M1) = D(M2) = {1, 2, 3, 4}, D(M3) = {3, 4}, D(M4) = {3} og D(M5) = {1, 2, 3}.\n\nBinære constraints: felles deltaker gir ≠: M1 ≠ M2 (Bo), M1 ≠ M4 (Ada), M1 ≠ M5 (Bo), M2 ≠ M3 (Cy), M2 ≠ M5 (Bo), M3 ≠ M4 (Di), M4 ≠ M5 (Eli). Rekkefølgen gir M1 < M3 og M5 < M2. Paret {M2, M5} har både ≠ og <, og M5 < M2 medfører M5 ≠ M2, så det er én constraint, M5 < M2. Det gir 8 binære constraints og **2 · 8 = 16 buer**.\n\n**b)** AC-3 tar ut 23 buer. Bare disse fjerner verdier:\n\n| Nr. | Bue | Fjernes | Nytt domene | Legges til bakerst |\n|---|---|---|---|---|\n| 2 | (M1, M3) | 4 (ingen M3 > 4) | D(M1) = {1, 2, 3} | ingenting: (M2, M1), (M4, M1), (M5, M1) står i køen |\n| 3 | (M1, M4) | 3 (M4 = 3) | D(M1) = {1, 2} | ingenting: (M2, M1), (M3, M1), (M5, M1) står i køen |\n| 7 | (M2, M5) | 1 (krever M5 < 1) | D(M2) = {2, 3, 4} | (M1, M2); (M3, M2) står i køen |\n| 10 | (M3, M4) | 3 | D(M3) = {4} | (M1, M3), (M2, M3) |\n| 16 | (M5, M4) | 3 | D(M5) = {1, 2} | (M1, M5), (M2, M5) |\n| 19 | (M2, M3) | 4 | D(M2) = {2, 3} | (M1, M2), (M5, M2) |\n\nResten av køen (bue 17, 18 og 20–23) fjerner ingenting, og AC-3 svarer true med domenene over.\n\n**c)** M3 = 4 og M4 = 3. M1 og M5 ligger i {1, 2} og er ulike, så (M1, M5) = (1, 2) eller (2, 1). M2 må være ulik begge og større enn M5, altså M2 = 3 i begge tilfeller. M2 = M4 = 3 er lov, siden de ikke har felles deltaker. Løsningene er (M1, M2, M3, M4, M5) = **(1, 3, 4, 3, 2) og (2, 3, 4, 3, 1)**.\n\nAC-3 ser på én bue om gangen. M2 = 2 har partneren M5 = 1 langs (M2, M5) og partneren M1 = 1 langs (M2, M1), men de to partnerne er i konflikt med hverandre (M1 ≠ M5). Det ser bare en sjekk av tre variabler samtidig: *path consistency* (3-consistency) for {M2, M5} med hensyn på M1 fjerner paret (M2 = 2, M5 = 1), og da mister M2 = 2 sin siste partner, slik at arc consistency fjerner den.\n\n**Poeng:** a) 3 (1 for variabler og domener, 1 for constraints med sammenslått par, 1 for antall buer). b) 4 (3 for revisjonene i riktig rekkefølge, 1 for domenene). c) 3 (1 for antallet, 2 for forklaringen).\n\n**Vanlige feil:** å telle 18 buer (to constraints mellom M2 og M5), å glemme at M4 allerede er {3} etter de unære constraints, og å tro at arc-consistent betyr at det finnes nøyaktig én løsning.\n\n*Kilde: laget for øving; boka 5.1–5.2 og notatet til E06. Kontrollert med motorens ac-3 og en egen AC-3 og brute force i Python.*"
+  },
+  {
+   "t": "Oppgave 8 (10 p): Minimax and Alpha-Beta Pruning",
+   "d": "Consider the game tree in the figure. A is a MAX node, B, C and D are MIN nodes, E–J are MAX nodes, and K–V are leaves with their utilities.\n\na) What is the minimax value of A, and which move (child of A) should MAX choose? (2 pts.)\n\nb) Run alpha-beta pruning (Figure 6.7), visiting the children of each node from left to right. Which leaves are not evaluated? For each cut, explain it with the α and β values that cause it. (5 pts.)\n\nc) The children of every node may be reordered (each subtree keeps its values). Give an ordering for which alpha-beta evaluates as few leaves as possible, and the number of leaves it evaluates. (3 pts.)",
+   "tre": {
+    "id": "A",
+    "type": "max",
+    "tekst": "A",
+    "barn": [
+     {
+      "id": "B",
+      "type": "min",
+      "tekst": "B",
+      "barn": [
+       {
+        "id": "E",
+        "type": "max",
+        "tekst": "E",
+        "barn": [
+         {
+          "id": "K",
+          "type": "blad",
+          "tekst": "K",
+          "verdi": 15
+         },
+         {
+          "id": "L",
+          "type": "blad",
+          "tekst": "L",
+          "verdi": 3
+         }
+        ]
+       },
+       {
+        "id": "F",
+        "type": "max",
+        "tekst": "F",
+        "barn": [
+         {
+          "id": "M",
+          "type": "blad",
+          "tekst": "M",
+          "verdi": 16
+         },
+         {
+          "id": "N",
+          "type": "blad",
+          "tekst": "N",
+          "verdi": 8
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "id": "C",
+      "type": "min",
+      "tekst": "C",
+      "barn": [
+       {
+        "id": "G",
+        "type": "max",
+        "tekst": "G",
+        "barn": [
+         {
+          "id": "O",
+          "type": "blad",
+          "tekst": "O",
+          "verdi": 6
+         },
+         {
+          "id": "P",
+          "type": "blad",
+          "tekst": "P",
+          "verdi": 13
+         }
+        ]
+       },
+       {
+        "id": "H",
+        "type": "max",
+        "tekst": "H",
+        "barn": [
+         {
+          "id": "Q",
+          "type": "blad",
+          "tekst": "Q",
+          "verdi": 7
+         },
+         {
+          "id": "R",
+          "type": "blad",
+          "tekst": "R",
+          "verdi": 14
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "id": "D",
+      "type": "min",
+      "tekst": "D",
+      "barn": [
+       {
+        "id": "I",
+        "type": "max",
+        "tekst": "I",
+        "barn": [
+         {
+          "id": "S",
+          "type": "blad",
+          "tekst": "S",
+          "verdi": 4
+         },
+         {
+          "id": "T",
+          "type": "blad",
+          "tekst": "T",
+          "verdi": 18
+         }
+        ]
+       },
+       {
+        "id": "J",
+        "type": "max",
+        "tekst": "J",
+        "barn": [
+         {
+          "id": "U",
+          "type": "blad",
+          "tekst": "U",
+          "verdi": 19
+         },
+         {
+          "id": "V",
+          "type": "blad",
+          "tekst": "V",
+          "verdi": 9
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "f": [
+    [
+     "a) Minimax-verdien til A",
+     "text",
+     ""
+    ],
+    [
+     "a) Beste trekk",
+     "text",
+     ""
+    ],
+    [
+     "b) Bladene som ikke evalueres",
+     "text",
+     "{…}"
+    ],
+    [
+     "b) Forklaring med α og β",
+     "area",
+     ""
+    ],
+    [
+     "c) Minste antall evaluerte blader",
+     "text",
+     ""
+    ],
+    [
+     "c) Rekkefølgen",
+     "area",
+     ""
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Minimax-verdien til A": [
+      "18"
+     ],
+     "a) Beste trekk": [
+      "D"
+     ],
+     "b) Bladene som ikke evalueres": [
+      "{N, Q, R, V}"
+     ],
+     "c) Minste antall evaluerte blader": [
+      "7"
+     ]
+    },
+    "merk": "Minimax: E = 15, F = 16, G = 13, H = 14, I = 18, J = 19, så B = 15, C = 13, D = 18 og A = 18. Alpha-beta: N kuttes i F (16 ≥ β = 15), hele H (Q, R) kuttes i C (13 ≤ α = 15), og V kuttes i J (19 ≥ β = 18). Med D først, I før J og U før V evalueres bare S, T, U, K, L, O og P: 7 blader.",
+    "kilde": "Motorens minimax og alfa-beta (også på det omordnede treet) og et eget skript med brute force over alle 3072 rekkefølger."
+   },
+   "fasit": "**a) Minimax-verdien til A er 18, og beste trekk er D.**\n\n**b) N, Q, R og V evalueres ikke (den indre noden H besøkes ikke).**\n\n**c) 7 blader, for eksempel med A: D, B, C; D: I, J; J: U, V.**\n\n**a)** MAX-nodene: E = max(15, 3) = 15, F = 16, G = 13, H = 14, I = 18, J = 19. MIN-nodene: B = min(15, 16) = 15, C = min(13, 14) = 13, D = min(18, 19) = 18. A = max(15, 13, 18) = 18, via D.\n\n**b)** α og β arves nedover, verdiene går opp:\n\n| Node [α, β] inn | Hva skjer |\n|---|---|\n| E [−∞, ∞] | K = 15, L = 3, E = 15. B: v = 15, β = 15. |\n| F [−∞, 15] | M = 16: v = 16 ≥ β = 15, **kutt: N**. F ≥ 16, B = 15. A: α = 15. |\n| G [15, ∞] | O = 6, P = 13, G = 13 (ingen kutt i MAX, β = ∞). |\n| C [15, ∞] | v = 13 ≤ α = 15, **kutt: H med Q og R**. C ≤ 13. |\n| I [15, ∞] | S = 4, T = 18, I = 18. D: v = 18 > α, β = 18. |\n| J [15, 18] | U = 19: v = 19 ≥ β = 18, **kutt: V**. J ≥ 19, D = 18. |\n| A | max(15, ≤ 13, 18) = 18. |\n\nBladene **N, Q, R og V** evalueres ikke, og 8 av 12 blader evalueres.\n\n**c)** Best mulig rekkefølge setter det beste barnet først overalt. D (verdi 18) først under A, I først under D, og U (19) først under J:\n\n- D: I evaluerer S og T (begge trengs, I er på hovedvarianten), J kuttes etter U = 19 ≥ β = 18. 3 blader.\n- B: E (K, L) gir 15 ≤ α = 18, F kuttes. 2 blader. (F først gir også 2 blader.)\n- C: G (O, P) gir 13 ≤ 18, H kuttes. 2 blader.\n\nTotalt **7** blader: S, T, U, K, L, O, P. Færre går ikke: hver av B og C trenger et fullt evaluert MAX-barn (2 blader) for å vise at de er ≤ 18, og D trenger I fullt (2 blader) pluss ett blad som tilbakeviser J. Det er det *minimale treet* (3 + 2 + 2), tilsvarende b^⌈d/2⌉ + b^⌊d/2⌋ − 1 for uniforme trær. Et skript som prøver alle 3072 rekkefølger, finner også minimum 7, og den verste rekkefølgen evaluerer alle 12.\n\n**Poeng:** a) 2. b) 5 (3 for de riktige kuttene, 2 for α/β-begrunnelsen). c) 3 (2 for rekkefølgen, 1 for antallet).\n\n**Vanlige feil:** å sammenligne med feil grense (MAX kutter mot β, MIN mot α), å glemme at et kutt i C fjerner hele undertreet H, og å oppdatere α i A før B er ferdig.\n\n*Kilde: laget for øving; boka 6.2 og notatet til E08. Kontrollert med motorens minimax og alfa-beta (kuttet N, H, V; på det omordnede treet F, H, V) og et eget skript.*"
+  },
+  {
+   "t": "Oppgave 9 (5 p): Generalized Modus Ponens",
+   "d": "Hub is a function: Hub(x) is the regional hub of city x. Given the knowledge base\n\n1. ∀x Connected(x, Hub(x))\n2. Connected(Hub(Molde), Oslo)\n3. Connected(Hub(Molde), Bergen)\n4. Capital(Oslo)\n5. ∀x ∀y ∀z Connected(y, x) ∧ Connected(x, z) ⇒ Reachable(y, z)\n6. ∀x ∀w Reachable(x, w) ∧ Capital(w) ⇒ WellConnected(x)\n\nShow that WellConnected(Molde) follows, using Generalized Modus Ponens. The answer must show all the steps, including standardizing apart, unification(s) and substitution(s).\n\nYou can answer this question on handwritten sheets.",
+   "f": [
+    [
+     "Steg 1: konklusjon",
+     "text",
+     ""
+    ],
+    [
+     "Steg 2: konklusjon",
+     "text",
+     ""
+    ],
+    [
+     "Alle steg med θ",
+     "area",
+     "Premisser, standardisering, θ, konklusjon"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Steg 1: konklusjon": [
+      "Reachable(Molde, Oslo)"
+     ],
+     "Steg 2: konklusjon": [
+      "WellConnected(Molde)"
+     ]
+    },
+    "merk": "Standardiser 1 til Connected(x1, Hub(x1)). Uten det feiler UNIFY(Connected(y, x), Connected(x, Hub(x))) på occur check. Steg 1: regel 5 med θ = {y/Molde, x/Hub(Molde), z/Oslo, x1/Molde} gir Reachable(Molde, Oslo). Steg 2: regel 6 med θ = {x/Molde, w/Oslo} gir WellConnected(Molde).",
+    "kilde": "Motorens unifikasjon (failure uten standardisering, MGU med) og fol-forward-chaining på KB-en med setning 1 standardisert, og for hånd."
+   },
+   "fasit": "**Steg 1: Reachable(Molde, Oslo). Steg 2: WellConnected(Molde).**\n\n**Standardisering.** Setning 1 og regel 5 bruker begge variabelen x. Gi setning 1 en ny variabel: Connected(x1, Hub(x1)). Uten dette blir UNIFY(Connected(y, x), Connected(x, Hub(x))) først {y/x} og så x mot Hub(x), som feiler på *occur check*.\n\n**Steg 1: GMP med regel 5.** p1 = Connected(y, x), p2 = Connected(x, z), q = Reachable(y, z). p1′ = Connected(x1, Hub(x1)) (setning 1), p2′ = Connected(Hub(Molde), Oslo) (setning 2).\n\n- UNIFY(Connected(y, x), Connected(x1, Hub(x1))) = {y/x1, x/Hub(x1)}.\n- Da er p2 = Connected(Hub(x1), z). UNIFY med Connected(Hub(Molde), Oslo) gir {x1/Molde, z/Oslo}.\n- Samlet θ = {y/Molde, x/Hub(Molde), z/Oslo, x1/Molde}. Sjekk: SUBST(θ, p1) = SUBST(θ, p1′) = Connected(Molde, Hub(Molde)) og SUBST(θ, p2) = p2′.\n- SUBST(θ, q) = **Reachable(Molde, Oslo)**.\n\n**Steg 2: GMP med regel 6.** p1′ = Reachable(Molde, Oslo), p2′ = Capital(Oslo). θ = {x/Molde, w/Oslo}. SUBST(θ, WellConnected(x)) = **WellConnected(Molde)**.\n\nSetning 3 gir på samme måte Reachable(Molde, Bergen), men Capital(Bergen) står ikke i KB-en, så den fører ikke til målet.\n\n**Poeng:** standardisering 1, steg 1 med θ og konklusjon 2,5, steg 2 med θ og konklusjon 1,5.\n\n**Vanlig feil:** å unifisere uten å standardisere og ikke se occur check-feilen, eller å oppgi bare konklusjonene uten θ.\n\n*Kilde: laget for øving; boka 9.2 og notatet til E15. Kontrollert med motorens unifikasjon og fol-forward-chaining.*"
+  },
+  {
+   "t": "Oppgave 10 (20 p): Resolution",
+   "d": "Given the knowledge base\n\n1. ∃r [Robot(r) ∧ ∀y (Has(r, y) ⇒ In(y, Basement))]\n2. ∀x [(Robot(x) ∧ ∀y (Has(x, y) ⇒ ¬Charged(y))) ⇒ Stuck(x)]\n3. ¬∃z [In(z, Basement) ∧ Charged(z)]\n\n(There is a robot whose belongings are all in the basement. A robot that has nothing charged is stuck. Nothing in the basement is charged.)\n\nUse the resolution inference algorithm, with proof by contradiction/refutation, to show that ∃w Stuck(w).\n\na) Convert the three sentences and the negated goal to conjunctive normal form. Show the steps, including Skolemization. How many clauses do you get in total? (8 pts.)\n\nb) Give the resolution proof. For each resolution step, it is sufficient to show which two clauses are used, with which substitution, and the result. Which w does the proof find? (12 pts.)\n\nYou can answer this question on handwritten sheets.",
+   "f": [
+    [
+     "a) Antall klausuler (med negert mål)",
+     "text",
+     ""
+    ],
+    [
+     "a) CNF",
+     "area",
+     "Stegene for hver setning og klausulene"
+    ],
+    [
+     "b) Resolusjonsbeviset",
+     "area",
+     "Klausuler, θ, resolvent"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Antall klausuler (med negert mål)": [
+      "6"
+     ]
+    },
+    "merk": "Setning 1 gir Robot(R1) og ¬Has(R1, y) ∨ In(y, Basement) (Skolem-konstant). Setning 2 gir ¬Robot(x) ∨ Has(x, F(x)) ∨ Stuck(x) og ¬Robot(x) ∨ Charged(F(x)) ∨ Stuck(x) (∀y i premisset blir ∃y, altså en Skolem-funksjon). Setning 3 gir ¬In(z, Basement) ∨ ¬Charged(z), og det negerte målet ¬Stuck(w). Seks klausuler; beviset gir w = R1.",
+    "kilde": "Motorens fol-resolusjon (alle sju stegene, svar w = R1), motorens DPLL på grunninstansene (unsatisfiable) og et eget skript som sjekker at KB ⊨ ∃w Stuck(w) i alle modeller med 1–3 objekter."
+   },
+   "fasit": "**a) 6 klausuler:** (1) Robot(R1), (2) ¬Has(R1, y) ∨ In(y, Basement), (3) ¬Robot(x) ∨ Has(x, F(x)) ∨ Stuck(x), (4) ¬Robot(x) ∨ Charged(F(x)) ∨ Stuck(x), (5) ¬In(z, Basement) ∨ ¬Charged(z), (6) ¬Stuck(w).\n**b) □ etter sju resolusjonssteg, med w = R1** (roboten som setning 1 sier finnes).\n\n**a) CNF** (stegene i 9.5.1: fjern ⇒, flytt ¬ inn, standardiser, Skolemiser, dropp ∀, distribuer ∨ over ∧)\n\n*Setning 1.* Fjern ⇒: ∃r [Robot(r) ∧ ∀y (¬Has(r, y) ∨ In(y, Basement))]. ∃r står ikke inne i noen ∀, så r blir en Skolem-*konstant* R1. Dropp ∀y: Robot(R1) ∧ (¬Has(R1, y) ∨ In(y, Basement)). Klausul (1) og (2).\n\n*Setning 2.* Fjern begge ⇒: ∀x [¬(Robot(x) ∧ ∀y (¬Has(x, y) ∨ ¬Charged(y))) ∨ Stuck(x)]. Flytt ¬ inn: ¬(α ∧ β) ≡ ¬α ∨ ¬β, og ¬∀y φ ≡ ∃y ¬φ: ∀x [¬Robot(x) ∨ ∃y (Has(x, y) ∧ Charged(y)) ∨ Stuck(x)]. ∃y står inne i ∀x, så y blir en Skolem-*funksjon* F(x): ¬Robot(x) ∨ (Has(x, F(x)) ∧ Charged(F(x))) ∨ Stuck(x). Distribuer ∨ over ∧: klausul (3) og (4).\n\n*Setning 3.* ¬∃z φ ≡ ∀z ¬φ og De Morgan: ∀z (¬In(z, Basement) ∨ ¬Charged(z)). Klausul (5).\n\n*Negert mål.* ¬∃w Stuck(w) ≡ ∀w ¬Stuck(w). Klausul (6).\n\n**b) Resolusjon** (variablene er standardisert fra hverandre mellom klausulene)\n\n| Steg | Klausuler | θ | Resolvent |\n|---|---|---|---|\n| 7 | (6) og (3) | {w/x} | ¬Robot(x) ∨ Has(x, F(x)) |\n| 8 | 7 og (1) | {x/R1} | Has(R1, F(R1)) |\n| 9 | 8 og (2) | {y/F(R1)} | In(F(R1), Basement) |\n| 10 | 9 og (5) | {z/F(R1)} | ¬Charged(F(R1)) |\n| 11 | (6) og (4) | {w/x} | ¬Robot(x) ∨ Charged(F(x)) |\n| 12 | 11 og (1) | {x/R1} | Charged(F(R1)) |\n| 13 | 10 og 12 | {} | □ |\n\nDen tomme klausulen viser at KB ∧ ¬mål er unsatisfiable, så KB ⊨ ∃w Stuck(w). Bindingene fra det negerte målet gir **w = R1**: roboten fra setning 1. Tanken bak: R1 har bare ting i kjelleren, og ingenting i kjelleren er ladet, så R1 har ingenting ladet og står fast.\n\n**Poeng:** a) 8 (setning 1: 2, setning 2: 4, setning 3: 1, negert mål: 1). b) 12 (9 for riktige steg med θ, 2 for □ og konklusjonen, 1 for w).\n\n**Vanlige feil:** å Skolemisere ∀y i premisset til setning 2 (den blir en ∃ først når ¬ flyttes inn), å bruke en Skolem-konstant der det må være F(x), og å negere målet til ¬Stuck(C) med en konstant i stedet for ∀w ¬Stuck(w).\n\n*Kilde: laget for øving; boka 9.5 og notatet til E16. Kontrollert med motorens fol-resolusjon og DPLL og et eget modellsjekk-skript.*"
+  },
+  {
+   "t": "Oppgave 11 (5 p): Automated Planning",
+   "d": "a) A garden robot has no sensors. Three beds B1, B2, B3 lie in a row. The robot has the actions Left and Right (move to the neighbouring bed; at the end of the row the action has no effect) and Water (the bed the robot is at becomes wet). Initially the robot does not know which bed it is at, nor which beds are wet. The goal is Wet(B1) ∧ Wet(B2) ∧ Wet(B3). What is the belief state after [Left, Left]? How long is the shortest plan that is guaranteed to reach the goal, and why does [Water, Left, Water, Left, Water] not work? (2 pts.)\n\nb) A delivery robot R works in the rooms Lab, Hall and Office:\n\n```\nInit(At(R, Hall) ∧ At(P1, Lab) ∧ At(P2, Office) ∧ HandEmpty ∧ Parcel(P1) ∧ Parcel(P2)\n     ∧ Adjacent(Hall, Lab) ∧ Adjacent(Lab, Hall) ∧ Adjacent(Hall, Office) ∧ Adjacent(Office, Hall))\nGoal(At(P1, Office) ∧ At(P2, Lab))\nAction(Move(from, to),\n  PRECOND: At(R, from) ∧ Adjacent(from, to)\n  EFFECT: ¬At(R, from) ∧ At(R, to))\nAction(Pick(p, room),\n  PRECOND: At(R, room) ∧ At(p, room) ∧ HandEmpty ∧ Parcel(p)\n  EFFECT: Holding(p) ∧ ¬At(p, room) ∧ ¬HandEmpty)\nAction(Drop(p, room),\n  PRECOND: Holding(p) ∧ At(R, room)\n  EFFECT: At(p, room) ∧ HandEmpty ∧ ¬Holding(p))\n```\n\nGive the value in the initial state of the ignore-preconditions heuristic (number of unsatisfied goals) and of the ignore-delete-lists heuristic (length of an optimal relaxed plan), and the length h\\* of an optimal real plan. Are both heuristics admissible, and which one is more informed? (3 pts.)",
+   "f": [
+    [
+     "a) Lengden på korteste sikre plan",
+     "text",
+     ""
+    ],
+    [
+     "a) Belief state og begrunnelse",
+     "area",
+     ""
+    ],
+    [
+     "b) h, ignore preconditions",
+     "text",
+     ""
+    ],
+    [
+     "b) h, ignore delete lists",
+     "text",
+     ""
+    ],
+    [
+     "b) h*",
+     "text",
+     ""
+    ],
+    [
+     "b) Begrunnelse",
+     "area",
+     ""
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Lengden på korteste sikre plan": [
+      "7"
+     ],
+     "b) h, ignore preconditions": [
+      "2"
+     ],
+     "b) h, ignore delete lists": [
+      "6"
+     ],
+     "b) h*": [
+      "9"
+     ]
+    },
+    "merk": "a) Etter [Left, Left] står roboten sikkert i B1, og fuktigheten er ukjent. Korteste sikre plan er 7: [Left, Left, Water, Right, Water, Right, Water] eller speilvendt. b) To mål mangler, og ingen handling gir begge: 2. Uten delete lists er roboten i alle rom den har vært i, og HandEmpty forsvinner aldri: Move(Hall, Lab), Pick(P1, Lab), Move(Hall, Office), Drop(P1, Office), Pick(P2, Office), Drop(P2, Lab) = 6. Ekte plan: 9.",
+    "kilde": "a) Et eget skript som kjører alle planer opp til lengde 7 på mengden av fysiske tilstander. b) Motorens relaksert-h (hpre, hplus og hstar med BFS) og for hånd."
+   },
+   "fasit": "**a) Belief state etter [Left, Left]: roboten står i B1, fuktigheten er ukjent. Korteste sikre plan har 7 handlinger.**\n\n**b) h(ignore preconditions) = 2, h(ignore delete lists) = 6, h\\* = 9.**\n\n**a)** I starten er belief state alle 3 · 2³ = 24 fysiske tilstander. Left fra B3 gir B2 og fra B2 gir B1, og i B1 skjer ingenting. Etter to Left står roboten i B1 uansett hvor den startet: b = At(B1) ∧ ¬At(B2) ∧ ¬At(B3), med Wet ukjent (8 tilstander, og fortsatt en 1-CNF belief state). Deretter virker Water, Right, Water, Right, Water med kjent posisjon. Planen [Left, Left, Water, Right, Water, Right, Water] (eller speilvendt med Right først) har 7 handlinger. Kortere går ikke: med start i B1 må planen ha minst to Right for å nå B3, med start i B3 minst to Left for å nå B1, og den trenger minst tre Water. [Water, Left, Water, Left, Water] feiler med start i B2: den vanner B2, B1 og B1 igjen, og B3 blir aldri vannet. Water før roboten vet hvor den er, gir belief state (¬At(B1) ∨ Wet(B1)) ∧ (¬At(B2) ∨ Wet(B2)) ∧ (¬At(B3) ∨ Wet(B3)), som ikke er 1-CNF. Derfor lønner det seg å lokalisere seg først.\n\n**b)** *Ignore preconditions:* alle handlinger kan brukes overalt, og hvert manglende mållitteral nås med én Drop. To mål mangler, At(P1, Office) og At(P2, Lab), og ingen handling gir begge, så h = **2** (set cover over målene). *Ignore delete lists:* ingen effekt fjerner noe, så roboten «er» i alle rom den har besøkt, og HandEmpty blir aldri usann. Optimal relaksert plan: Move(Hall, Lab), Pick(P1, Lab), Move(Hall, Office), Drop(P1, Office), Pick(P2, Office), Drop(P2, Lab), altså h = **6**. Den kan ikke bli kortere: én Move inn i hvert av Lab og Office, to Pick og to Drop. *Ekte plan:* Move(Hall, Lab), Pick(P1, Lab), Move(Lab, Hall), Move(Hall, Office), Drop(P1, Office), Pick(P2, Office), Move(Office, Hall), Move(Hall, Lab), Drop(P2, Lab), altså h\\* = **9**.\n\nBegge er admissible, fordi hver ekte plan også er en gyldig plan i det relakserte problemet, så den optimale relakserte planen er aldri lengre: 2 ≤ 6 ≤ 9. Ignore delete lists ligger nærmest h\\* og er mest informert. Ulempen er at optimal h⁺ er NP-hard å regne ut; planleggere tilnærmer den med hill climbing, og da er den ikke lenger garantert admissible. Å telle manglende mål er heller ikke admissible når én handling kan gi flere mål.\n\n**Poeng:** a) 2 (1 for belief state og lengden, 1 for hvorfor den andre planen feiler). b) 3 (1 per tall med kort begrunnelse, der sammenligningen inngår).\n\n**Vanlige feil:** å tro at roboten i a) kan vanne «alle bed den kan stå i» med én Water, og å la HandEmpty bli slettet i den relakserte planen i b).\n\n*Kilde: laget for øving; boka 11.3 og 11.5.1 og notatene til E18 og E19. Kontrollert med motorens relaksert-h og et eget skript for a).*"
+  },
+  {
+   "t": "Oppgave 12 (5 p): Natural Language Processing",
+   "d": "a) A naive Bayes classifier with a bag-of-words model sorts short news messages into Sports or Politics. The training set has 10 messages: 6 Sports and 4 Politics. The vocabulary has |V| = 6 words; words outside the vocabulary are ignored. The word counts in the training set are:\n\n| | goal | match | team | vote | election | win | total |\n|---|---|---|---|---|---|---|---|\n| Sports | 4 | 3 | 4 | 0 | 0 | 3 | 14 |\n| Politics | 0 | 1 | 1 | 5 | 4 | 3 | 14 |\n\nWith add-one (Laplace) smoothing, P(w | c) = (count(w, c) + 1) / (N_c + |V|), where N_c is the total for class c. Compute P(Politics | \"win the vote\"). What would the answer be without smoothing, and why is that a problem? (2 pts.)\n\nb) The sentence \"the robot hit the man with the umbrella\" has two readings: (A) the robot used the umbrella to hit the man, and (B) the man who had the umbrella was hit. A PCFG contains, among others, these rules:\n\n| Rule | Probability |\n|---|---|\n| S → NP VP | 1.0 |\n| VP → Verb NP | 0.6 |\n| VP → VP PP | 0.2 |\n| VP → Verb | 0.2 |\n| NP → Article Noun | 0.7 |\n| NP → NP PP | 0.1 |\n| NP → Name | 0.2 |\n| PP → Prep NP | 1.0 |\n\nDescribe the parse tree for each reading. Why can the classifier from a) not tell the two readings apart? Which reading does the PCFG prefer, and why? (3 pts.)",
+   "f": [
+    [
+     "a) P(Politics | win the vote)",
+     "text",
+     "desimaltall eller brøk"
+    ],
+    [
+     "a) Uten smoothing",
+     "area",
+     ""
+    ],
+    [
+     "b) Hvilken leseart foretrekker PCFG-en? (A eller B)",
+     "text",
+     ""
+    ],
+    [
+     "b) Parsetrærne og begrunnelse",
+     "area",
+     ""
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) P(Politics | win the vote)": [
+      "0.8",
+      "0.80",
+      "4/5"
+     ],
+     "b) Hvilken leseart foretrekker PCFG-en? (A eller B)": [
+      "A"
+     ]
+    },
+    "merk": "a) «the» er ikke i vokabularet. Sports: 0,6 · 4/20 · 1/20 = 0,006. Politics: 0,4 · 4/20 · 6/20 = 0,024. Normalisert: 0,024 / 0,030 = 0,8. Uten smoothing er P(vote | Sports) = 0, så Politics får 1. b) Trærne har de samme reglene bortsett fra VP → VP PP (0,2) i A og NP → NP PP (0,1) i B, så A er dobbelt så sannsynlig.",
+    "kilde": "Regnet med eksakte brøker i et eget skript og for hånd (begge trær multiplisert ut: 0,04116 mot 0,02058 uten de felles leksikalske reglene)."
+   },
+   "fasit": "**a) P(Politics | \"win the vote\") = 0,8 (4/5).**\n\n**b) PCFG-en foretrekker leseart A.**\n\n**a)** «the» står ikke i vokabularet og ignoreres, så bag-of-words er {win, vote}. Nevneren er N_c + |V| = 14 + 6 = 20 for begge klasser.\n\n- Sports: P(S) · P(win | S) · P(vote | S) = 0,6 · (3 + 1)/20 · (0 + 1)/20 = 0,6 · 0,2 · 0,05 = 0,006.\n- Politics: 0,4 · (3 + 1)/20 · (5 + 1)/20 = 0,4 · 0,2 · 0,3 = 0,024.\n- Normaliser (α): P(Politics | d) = 0,024 / (0,006 + 0,024) = **0,8**.\n\nUten smoothing (MLE) er P(vote | Sports) = 0/14 = 0, så produktet for Sports blir 0 og P(Politics | d) = 1. Ett ord som aldri ble sett i en klasse, utelukker klassen helt, uansett hva resten av teksten sier. Smoothing gir usette ord en liten sannsynlighet større enn 0.\n\n**b)** Lesearten A knytter PP-en til verbfrasen: [S [NP the robot] [VP [VP [Verb hit] [NP the man]] [PP with the umbrella]]]. Lesearten B knytter den til substantivfrasen: [S [NP the robot] [VP [Verb hit] [NP [NP the man] [PP with the umbrella]]]]. Bag-of-words ser bare hvilke ord som forekommer og hvor ofte, ikke rekkefølge eller struktur. Begge leseartene har nøyaktig den samme setningen og dermed den samme posen, så klassifikatoren gir dem samme sannsynlighet. En PCFG gir hvert tre sannsynligheten lik produktet av reglene i treet og velger det mest sannsynlige. Begge trærne bruker S → NP VP, VP → Verb NP, PP → Prep NP, NP → Article Noun tre ganger og de samme ordreglene. Forskjellen er VP → VP PP (0,2) i A mot NP → NP PP (0,1) i B: 0,04116 mot 0,02058 før ordreglene. A er dobbelt så sannsynlig og blir valgt. En PCFG ser ikke ordene når den knytter til PP-en, så den velger A også for «the robot hit the man with the hat», der B er riktig.\n\n**Poeng:** a) 2 (1 for 0,8 med utregning, 1 for MLE-problemet). b) 3 (1 for trærne, 1 for bag-of-words, 1 for PCFG-valget med begrunnelse).\n\n**Vanlige feil:** å ta med «the» med telling 0, å glemme å normalisere, og å sammenligne hele trærne uten å se at bare én regel skiller dem.\n\n*Kilde: laget for øving; boka 23.1–23.2, L9 og notatet til E20. Tallene er regnet med eksakte brøker i et eget skript.*"
+  },
+  {
+   "t": "Oppgave 13 (5 p): Knowledge Representation and Philosophy",
+   "d": "a) Compare semantic networks and description logics as ways of representing categories. What does each of them do well, and what are their limitations? (2 pts.)\n\nb) Explain the difference between the weak AI and the strong AI hypotheses. Describe Searle's Chinese room argument, which of the two hypotheses it is directed against, and why it is not generally considered decisive. (3 pts.)",
+   "f": [
+    [
+     "a) Semantiske nett og description logics",
+     "area",
+     ""
+    ],
+    [
+     "b) Weak/strong AI og Chinese room",
+     "area",
+     ""
+    ]
+   ],
+   "fasit": "**a) Semantiske nett: grafer med arv og default-verdier, effektive, men uten negasjon, disjunksjon og ∃. Description logics: definerer kategorier presist og legger vekt på tractable inferens. Begrensede språk som CLASSIC gir subsumption i polynomisk tid, blant annet fordi de mangler negasjon og generell disjunksjon.**\n\n**b) Weak AI: maskiner kan oppføre seg som om de er intelligente. Strong AI: de tenker faktisk. Chinese room angriper strong AI og er ikke avgjørende.**\n\n**a)** I et *semantisk nett* er noder objekter og kategorier, og lenker er binære relasjoner som MemberOf og SubsetOf. Hovedmekanismen er *arv*: følg MemberOf og så SubsetOf oppover til første kategori som har verdien. Det er raskt og lett å lese, og en verdi på et mer spesifikt nivå overstyrer default-verdien (Legs(John, 1) overstyrer 2 for Persons). Grensene: nettet mangler negasjon, disjunksjon, nøstede funksjonssymboler og eksistenskvantifisering, og multiple inheritance kan gi motstridende verdier. *Description logics* (for eksempel CLASSIC) gjør det lett å *definere* kategorier ut fra egenskaper, for eksempel Bachelor = And(Unmarried, Adult, Male), med presis semantikk. Hovedoppgavene er *subsumption* (er én kategori en delmengde av en annen ut fra definisjonene?) og *classification* (hører et objekt til en kategori?). Vekten ligger på tractability: målet er at subsumption-testing skal gå i polynomisk tid i størrelsen på beskrivelsene. Det gjelder begrensede språk som CLASSIC, ikke alle description logics. Prisen er at de vanligvis mangler negasjon og disjunksjon (CLASSIC tillater bare en begrenset disjunksjon over oppramsede individer, i Fills og OneOf), og at vanskelige problemer enten ikke kan uttrykkes eller krever eksponentielt store beskrivelser.\n\n**b)** *Weak AI* er påstanden at maskiner kan oppføre seg *som om* de er intelligente. *Strong AI* er påstanden at maskiner som gjør det, *faktisk tenker* og har bevissthet, ikke bare simulerer tenkning. *Chinese room* (Searle 1980): en mann som bare kan engelsk, sitter i et rom med en regelbok på engelsk. Han får kinesiske lapper inn, følger reglene og sender kinesiske svar ut. Utenfra ser det ut som flytende kinesisk, men mannen forstår ingenting, og boka er bare papir. En datamaskin som kjører et program, er i samme situasjon, så å kjøre riktig program er ikke nok for forståelse: argumentet angriper *strong AI*, ikke weak AI. Det er ikke avgjørende fordi det bygger på intuisjon om hvilke systemer som kan forstå. Etter *systems reply* er det hele systemet (mann, bok og rom) som forstår. Searle svarer at mannen kan pugge boka og fortsatt ikke forstå. Boka svarer at ingen enkelt nervecelle i hjernen din forstår norsk heller, uten at vi konkluderer med at du ikke forstår. Spørsmålet er ikke avgjort, og for å bygge intelligente agenter er weak AI nok.\n\n**Poeng:** a) 2 (1 for hver side med styrke og begrensning). b) 3 (1 for weak og strong, 1 for argumentet og hvilken påstand det angriper, 1 for innvendingen).\n\n**Vanlig feil:** å si at Chinese room viser at maskiner ikke kan oppføre seg intelligent (det er weak AI, som argumentet ikke angriper).\n\n*Kilde: laget for øving; boka 10.5 og 28.2 og notatene til E17 og E21.*"
+  }
+ ],
+ "fasit": "**Fasit og sensorveiledning for Prøveeksamen 3.** Settet er laget for øving og har ingen offisiell fasit. Alle objektive svar er regnet ut to ganger: med motoren i `nettside-algo/` (Node) og med egne skript eller for hånd. Konvensjonene er kursets: BFS etter Fig. 3.9 med early goal test, UCS og A\\* som BEST-FIRST-SEARCH (Fig. 3.7) med late goal test, alpha-beta etter Fig. 6.7 og AC-3 etter Fig. 5.3.\n\n| Oppgave | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | Sum |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| Poeng | 5 | 5 | 5 | 5 | 8 | 12 | 10 | 10 | 5 | 20 | 5 | 5 | 5 | 100 |\n| Svar | B | E | C | D | 10 / 6 | S, A, D, B, C, (G) | 2 løsninger | 18 | WellConnected(Molde) | w = R1 | 7; 2, 6, 9 | 0,8; A | tekst |\n\n\n### Oppgave 1 (5 p): Intelligent Agents\n\n**Svar: B.**\n\n- **A: feil.** Performance measure skal måle det vi vil oppnå i *miljøet*, ikke hvordan agenten bør oppføre seg. «Få doser» belønner en pumpe som lar blodsukkeret bli for høyt.\n- **B: riktig.** P måler utfallet: tid i målområdet, få hypoglykemier og lite insulin. E er kroppen, måltidene og aktiviteten. A er pumpemotoren og pip/skjerm. S er CGM, måltidsknappen og reservoarsensoren. Miljøet er *partially observable* (CGM måler med forsinkelse og støy, og uannonserte måltider og insulin som fortsatt virker, sees ikke), *stochastic* (kroppen reagerer ulikt fra gang til gang), *sequential* (en dose virker i timer og påvirker senere valg), *dynamic* (blodsukkeret endrer seg mens agenten tenker) og *continuous* (doser, nivåer og tid).\n- **C: feil.** Sensorer og aktuatorer er byttet om: CGM og knappen gir percepts, motoren og skjermen virker på verden.\n- **D: feil.** Miljøet er det agenten virker i, ikke pumpens egne deler. «Insulindosen» er en handling og «glukosenivået» en percept, ikke en aktuator og en sensor.\n- **E: feil.** *Fully observable* krever at sensorene gir alt som er relevant for valget, og det gjør ikke én glukoseverdi. Dosene henger sammen over tid, så miljøet er sequential, ikke episodic.\n\n**Poeng:** 5 for B, ellers 0.\n\n*Kilde: laget for øving; boka 2.3 og notatet til E01.*\n\n### Oppgave 2 (5 p): Local Search\n\n**Svar: E** (den usanne påstanden).\n\nSteepest ascent uten sidesteg fra hver start: 0 → 1 (stopper), 1 (stopper), 2 (stopper), 3 → 4, 4, 5 → 4, 6, 7, 8 → 9, 9.\n\n- **A: sann.** 0 → 1 fordi 3 > 1. I x = 1 er beste nabo x = 2 med 3, som ikke er *strengt* bedre, så søket stopper. x = 1–3 er et platå med en utgang oppover (x = 4), altså en *shoulder*.\n- **B: sann.** 5 → 4 (6 > 4). Naboene til x = 4 har 3 og 4, så x = 4 er en local maximum.\n- **C: sann.** Platået x = 6–7 har naboene x = 5 (4) og x = 8 (2). Ingen utgang oppover: en *flat local maximum*. Med sidesteg pendler søket 6 ↔ 7 og kommer aldri forbi x = 8.\n- **D: sann.** Bare start i x = 8 eller x = 9 når x = 9, så p = 2/10. Antallet kjøringer er geometrisk fordelt, med forventning 1/p = 5.\n- **E: usann.** 1 → 2 er et sidesteg (x = 2 er beste nabo og like god). I x = 2 er x = 1 og x = 3 like gode, og tie-breaken velger minste x, altså x = 1. Søket pendler 1 ↔ 2 til grensen på 10 sidesteg på rad er nådd, og stopper i x = 1. Med tie-break mot største x ville det gått 2 → 3 → 4.\n\n**Poeng:** 5 for E, ellers 0.\n\n*Kilde: laget for øving; boka 4.1.1 og notatet til E04. Kontrollert med motorens hill-climbing og et eget skript.*\n\n### Oppgave 3 (5 p): Constraint Satisfaction Problems\n\n**Svar: C.**\n\n- **A: feil.** CSP-en har to løsninger: X = 3, Y = 1, Z = 2 og X = 3, Y = 2, Z = 1. AC-3 fjerner ingen verdier.\n- **B: feil.** Langs X → Y har X = 1 partneren Y = 2, X = 2 har Y = 1 og X = 3 har begge. Det samme gjelder X → Z. Arc consistency ser på én constraint om gangen, så den ser ikke at Y og Z sammen bruker opp både 1 og 2.\n- **C: riktig.** *Arc-consistent:* hver verdi i hvert domene har en partner langs hver bue (sjekk Y → Z: Y = 1 har Z = 2, Y = 2 har Z = 1). *Ikke path-consistent:* {X, Y} er path-consistent med hensyn på Z bare hvis hver tillatt tilordning {X = a, Y = b} kan utvides med en Z som passer med begge. {X = 1, Y = 2} oppfyller X ≠ Y, men Z kan verken være 1 eller 2.\n- **D: feil.** Path consistency fjerner parene (1, 2) og (2, 1) fra X ≠ Y og fra X ≠ Z, selv om CSP-en har løsninger. Etterpå gir arc consistency D(X) = {3}.\n- **E: feil.** Siden den ikke er path-consistent (3-consistent), er den heller ikke strongly 3-consistent. Med rekkefølgen X, Y, Z og minste verdi først gir X = 1, Y = 2 en blindvei for Z, og søket må backtracke.\n\n**Poeng:** 5 for C, ellers 0.\n\n*Kilde: laget for øving; boka 5.2.1–5.2.3 og notatet til E06. Kontrollert med motorens AC-3 og backtracking (X = 1, Y = 2, X = 2, Y = 1, X = 3, …) og et eget skript.*\n\n### Oppgave 4 (5 p): Game Theory\n\n**Svar: D.**\n\n1. **IESDS.** For P2 er Right strengt dominert av Left: 1 > 0 mot Up og 3 > 2 mot Down. Right strykes. Ingenting mer kan strykes: Up er best mot Left (4 > 2) og Down mot Center (4 > 1), Center er best mot Up (4 > 1) og Left mot Down (3 > 1).\n2. **Ingen ren likevekt.** Beste svar går i ring: (Up, Left) → P2 bytter til Center → P1 bytter til Down → P2 bytter til Left → P1 bytter til Up.\n3. **Indifferens.** Hver spiller blander slik at *motstanderen* blir indifferent.\n   - p = P(Up), P2s nytte: Left gir 1·p + 3(1 − p) = 3 − 2p, Center gir 4p + 1·(1 − p) = 1 + 3p. Likt gir **p = 2/5**.\n   - q = P(Left), P1s nytte: Up gir 4q + 1·(1 − q) = 1 + 3q, Down gir 2q + 4(1 − q) = 4 − 2q. Likt gir **q = 3/5**.\n   - P1 får 1 + 3·3/5 = **14/5 = 2,8**, P2 får 3 − 2·2/5 = 11/5 = 2,2. Right ville gitt P2 bare 0·2/5 + 2·3/5 = 6/5, så avvik lønner seg ikke.\n\nAlternativene:\n\n- **A: feil.** Mot Down foretrekker P2 Left (3 > 2).\n- **B: feil.** 3/5 er P2s sannsynlighet for Left. P1 spiller Up med 2/5. Typisk feil: å gjøre seg selv indifferent i stedet for motstanderen.\n- **C: feil.** Right er strengt dominert og spilles aldri i en likevekt. At Right slår Center mot Down, hjelper ikke når Left slår Right mot begge rader.\n- **D: riktig** (se utregningen).\n- **E: feil.** Rent maximin: Up garanterer min(4, 1, 3) = 1 og Down min(2, 4, 5) = 2, så verdien er 2. Men 2 < 14/5.\n\n**Poeng:** 5 for D, ellers 0.\n\n*Kilde: laget for øving; L10 og notatet til E10. Kontrollert med motorens dominans-nash og et eget skript (support enumeration over alle supporter: én likevekt, (2/5, 3/5) for P1 og (3/5, 2/5, 0) for P2).*\n\n### Oppgave 5 (8 p): Uninformed Search\n\n**a) S, A, B, (G). Sti S → B → G, kostnad 10.**\n\n**b) S, A, B, B, C, A, C, A, (G). Sti S → A → B → C → G, kostnad 6.**\n\n**c) 4 utvidelser (S, A, B, C). Nei, DFS med tree-like search finner ikke målet.**\n\n**a) BFS (FIFO, reached, målet testes ved generering)**\n\n| Utvider | Genererer | Frontier etter | reached |\n|---|---|---|---|\n| S | A, B | A, B | S, A, B |\n| A | B (allerede i reached) | B | S, A, B |\n| B | C (ny), G er mål ved generering: stopp | – | – |\n\nBFS finner stien med færrest kanter, S → B → G med kostnad 4 + 6 = 10. Den er ikke den billigste.\n\n**b) UCS, tree-like search (frontier ordnet på g, målet testes når noden tas ut)**\n\n| Tar ut (g) | Legger til | Frontier etter |\n|---|---|---|\n| S (0) | A1, B4 | A1, B4 |\n| A (1) | B3 | B3, B4 |\n| B (3) | C4, G9 | B4, C4, G9 |\n| B (4), likt med C4, B først | C5, G10 | C4, C5, G9, G10 |\n| C (4) | A5, G6 | A5, C5, G6, G9, G10 |\n| A (5), likt med C5, A først | B7 | C5, G6, B7, G9, G10 |\n| C (5) | A6, G7 | A6, G6, B7, G7, G9, G10 |\n| A (6), likt med G6, A først | B8 | G6, B7, G7, B8, G9, G10 |\n| G (6) er mål | – | ferdig |\n\nUten reached er hver sti sin egen node, så B, C og A utvides flere ganger, og syklusen A → B → C → A gir stadig nye stier. Hver runde i syklusen koster 4, så kostnadene stiger, og G med g = 6 blir til slutt billigst. Stien er S → A → B → C → G med kostnad 1 + 2 + 1 + 2 = 6.\n\n**c)** Med graph search blir B3 erstatter for B4 og G6 for G9, og ingen tilstand utvides to ganger: S, A, B, C, (G), altså **4** utvidelser. DFS med f = −dybde og tree-like search: S, A (dybde 1, A før B), B (2), C (3, C før G), A (4, A før G), B, C, A, … Den følger syklusen A → B → C → A for alltid og tar aldri ut G. Tree-like DFS er ikke complete på grafer med sykler. UCS terminerer likevel, fordi alle stegkostnader er positive: kostnaden langs syklusen vokser, og G6 kommer først.\n\n**Poeng:** a) 2 (1 for rekkefølgen, 1 for sti og kostnad). b) 4 (3 for rekkefølgen med duplikater og tie-breaks, 1 for sti og kostnad). c) 2 (1 per svar med begrunnelse).\n\n**Vanlige feil:** å hoppe over de dupliserte B-, C- og A-nodene i b) som om det var graph search, eller å teste målet ved generering i UCS (da kommer S → A → B → G med kostnad 9 ut).\n\n*Kilde: laget for øving; boka 3.3–3.4 og notatet til E02. Kontrollert med motorens bfs, ucs og dfs og et eget søk i Python.*\n\n### Oppgave 6 (12 p): Informed Search\n\n**a) h1 = 4, 3, 5, 4, 5, 5, 2, 0 og h2 = 5, 10, 1, 4, 8, 5, 2, 0 (for S, A, B, C, D, E, F, G).**\n\n**b) Nei, ingen av dem dominerer den andre. Nei, h1 + h2 er ikke admissible.**\n\n**c) S, A, D, B, C, (G). Sti S → B → C → G, kostnad 9.**\n\n**d) h3 er admissible (og consistent) og dominerer begge. A\\* med h3: S, B, C, (G). Nei, R12 gir en svakere heuristikk.**\n\n**a)** Optimal kostnad til G i hvert relakserte problem (h\\* i originalen til sammenligning):\n\n| n | h1 (R1) | vei i R1 | h2 (R2) | vei i R2 | h\\* |\n|---|---|---|---|---|---|\n| S | 4 | S–A–F–G | 5 | S→B⇢G (heis) | 9 |\n| A | 3 | A–F–G (mot pila F→A) | 10 | A→C→G eller A→D→E→G | 10 |\n| B | 5 | B→C→G | 1 | B⇢G (heis) | 5 |\n| C | 4 | C→G | 4 | C→G | 4 |\n| D | 5 | D–A–F–G | 8 | D→E→G | 8 |\n| E | 5 | E→G | 5 | E→G | 5 |\n| F | 2 | F→G | 2 | F→G | 2 |\n| G | 0 | – | 0 | – | 0 |\n\n**b)** Begge relakserte problemer er *supergrafer* av det ekte tilstandsrommet: R1 legger til kantene i motsatt retning, R2 legger til heiskanten. Hver ekte sti finnes også i det relakserte problemet, så den optimale relakserte kostnaden er aldri større enn h\\*: *admissible*. Fordi h er eksakt kostnad i en graf som inneholder alle de ekte kantene, gjelder trekantulikheten h(n) ≤ c(n, n′) + h(n′) for hver ekte kant: *consistent*. Ingen dominerer: h1(A) = 3 < 10 = h2(A), men h1(B) = 5 > 1 = h2(B). Summen er ikke admissible: h1(A) + h2(A) = 13 > h\\*(A) = 10.\n\n**c)** A\\* med h1, f = g + h1:\n\n| Tar ut (f) | Nye eller oppdaterte noder | Frontier etter |\n|---|---|---|\n| S (0 + 4 = 4) | A (1 + 3 = 4), B (4 + 5 = 9) | A4, B9 |\n| A (4) | C (7 + 4 = 11), D (3 + 5 = 8) | D8, B9, C11 |\n| D (8) | E (6 + 5 = 11) | B9, C11, E11 |\n| B (9) | C: g = 5 < 7, billigere vei, erstatter C11 med C (5 + 4 = 9) | C9, E11 |\n| C (9) | G (9 + 0 = 9) | G9, E11 |\n| G (9) er mål | – | ferdig |\n\nUtvidelsesrekkefølgen er S, A, D, B, C, (G). Stien er S → B → C → G med kostnad 4 + 1 + 4 = 9. h1(A) = 3 er altfor optimistisk, så A\\* kaster bort to utvidelser (A og D) på en gren som koster 10 videre.\n\n**d)** h3 = max(h1, h2) = 5, 10, 5, 4, 8, 5, 2, 0. Maksimum av admissible heuristikker er admissible (begge er ≤ h\\*), maksimum av consistent heuristikker er consistent, og h3 ≥ h1 og h3 ≥ h2 overalt, så h3 dominerer begge. Her er h3 = h\\* i alle noder unntatt S. A\\* med h3: S (5) gir A (1 + 10 = 11) og B (4 + 5 = 9); B (9) gir C (5 + 4 = 9); C (9) gir G (9); G er mål. Rekkefølgen er **S, B, C, (G)**, tre utvidelser mot fem med h1. R12 fjerner begge restriksjonene og har enda flere kanter, så h12(n) ≤ min(h1(n), h2(n)) (for eksempel h12(A) = 3 og h12(B) = 1). Den er dominert av begge og dermed svakere enn h3. Vil man ha en bedre heuristikk, tar man maksimum av flere relaksasjoner, eller en mindre relaksert variant.\n\n**Poeng:** a) 3 (1,5 per heuristikk, −0,5 per feil verdi). b) 2. c) 4 (2 for frontier og erstatningen av C, 1 for rekkefølgen, 1 for sti og kostnad). d) 3.\n\n**Vanlige feil:** å følge pilene også i R1 (gir h1(A) = 10), å glemme at F kan brukes i R1, og i c) å la C11 stå igjen i frontier eller å stoppe når G genereres.\n\n*Kilde: laget for øving; boka 3.5–3.6 og notatet til E03. Kontrollert med motorens astar og ucs og et eget skript.*\n\n### Oppgave 7 (10 p): Constraint Satisfaction Problems\n\n**a) 16 buer. D(M4) = {3}.**\n\n**b) D(M1) = {1, 2}, D(M2) = {2, 3}, D(M3) = {4}, D(M4) = {3}, D(M5) = {1, 2}.**\n\n**c) 2 løsninger.**\n\n**a)** Variabler M1–M5 med domene {1, 2, 3, 4}. Node consistency (de unære constraints): Di gir M3, M4 ∈ {3, 4}, og Eli gir M4, M5 ∈ {1, 2, 3}. Altså D(M1) = D(M2) = {1, 2, 3, 4}, D(M3) = {3, 4}, D(M4) = {3} og D(M5) = {1, 2, 3}.\n\nBinære constraints: felles deltaker gir ≠: M1 ≠ M2 (Bo), M1 ≠ M4 (Ada), M1 ≠ M5 (Bo), M2 ≠ M3 (Cy), M2 ≠ M5 (Bo), M3 ≠ M4 (Di), M4 ≠ M5 (Eli). Rekkefølgen gir M1 < M3 og M5 < M2. Paret {M2, M5} har både ≠ og <, og M5 < M2 medfører M5 ≠ M2, så det er én constraint, M5 < M2. Det gir 8 binære constraints og **2 · 8 = 16 buer**.\n\n**b)** AC-3 tar ut 23 buer. Bare disse fjerner verdier:\n\n| Nr. | Bue | Fjernes | Nytt domene | Legges til bakerst |\n|---|---|---|---|---|\n| 2 | (M1, M3) | 4 (ingen M3 > 4) | D(M1) = {1, 2, 3} | ingenting: (M2, M1), (M4, M1), (M5, M1) står i køen |\n| 3 | (M1, M4) | 3 (M4 = 3) | D(M1) = {1, 2} | ingenting: (M2, M1), (M3, M1), (M5, M1) står i køen |\n| 7 | (M2, M5) | 1 (krever M5 < 1) | D(M2) = {2, 3, 4} | (M1, M2); (M3, M2) står i køen |\n| 10 | (M3, M4) | 3 | D(M3) = {4} | (M1, M3), (M2, M3) |\n| 16 | (M5, M4) | 3 | D(M5) = {1, 2} | (M1, M5), (M2, M5) |\n| 19 | (M2, M3) | 4 | D(M2) = {2, 3} | (M1, M2), (M5, M2) |\n\nResten av køen (bue 17, 18 og 20–23) fjerner ingenting, og AC-3 svarer true med domenene over.\n\n**c)** M3 = 4 og M4 = 3. M1 og M5 ligger i {1, 2} og er ulike, så (M1, M5) = (1, 2) eller (2, 1). M2 må være ulik begge og større enn M5, altså M2 = 3 i begge tilfeller. M2 = M4 = 3 er lov, siden de ikke har felles deltaker. Løsningene er (M1, M2, M3, M4, M5) = **(1, 3, 4, 3, 2) og (2, 3, 4, 3, 1)**.\n\nAC-3 ser på én bue om gangen. M2 = 2 har partneren M5 = 1 langs (M2, M5) og partneren M1 = 1 langs (M2, M1), men de to partnerne er i konflikt med hverandre (M1 ≠ M5). Det ser bare en sjekk av tre variabler samtidig: *path consistency* (3-consistency) for {M2, M5} med hensyn på M1 fjerner paret (M2 = 2, M5 = 1), og da mister M2 = 2 sin siste partner, slik at arc consistency fjerner den.\n\n**Poeng:** a) 3 (1 for variabler og domener, 1 for constraints med sammenslått par, 1 for antall buer). b) 4 (3 for revisjonene i riktig rekkefølge, 1 for domenene). c) 3 (1 for antallet, 2 for forklaringen).\n\n**Vanlige feil:** å telle 18 buer (to constraints mellom M2 og M5), å glemme at M4 allerede er {3} etter de unære constraints, og å tro at arc-consistent betyr at det finnes nøyaktig én løsning.\n\n*Kilde: laget for øving; boka 5.1–5.2 og notatet til E06. Kontrollert med motorens ac-3 og en egen AC-3 og brute force i Python.*\n\n### Oppgave 8 (10 p): Minimax and Alpha-Beta Pruning\n\n**a) Minimax-verdien til A er 18, og beste trekk er D.**\n\n**b) N, Q, R og V evalueres ikke (den indre noden H besøkes ikke).**\n\n**c) 7 blader, for eksempel med A: D, B, C; D: I, J; J: U, V.**\n\n**a)** MAX-nodene: E = max(15, 3) = 15, F = 16, G = 13, H = 14, I = 18, J = 19. MIN-nodene: B = min(15, 16) = 15, C = min(13, 14) = 13, D = min(18, 19) = 18. A = max(15, 13, 18) = 18, via D.\n\n**b)** α og β arves nedover, verdiene går opp:\n\n| Node [α, β] inn | Hva skjer |\n|---|---|\n| E [−∞, ∞] | K = 15, L = 3, E = 15. B: v = 15, β = 15. |\n| F [−∞, 15] | M = 16: v = 16 ≥ β = 15, **kutt: N**. F ≥ 16, B = 15. A: α = 15. |\n| G [15, ∞] | O = 6, P = 13, G = 13 (ingen kutt i MAX, β = ∞). |\n| C [15, ∞] | v = 13 ≤ α = 15, **kutt: H med Q og R**. C ≤ 13. |\n| I [15, ∞] | S = 4, T = 18, I = 18. D: v = 18 > α, β = 18. |\n| J [15, 18] | U = 19: v = 19 ≥ β = 18, **kutt: V**. J ≥ 19, D = 18. |\n| A | max(15, ≤ 13, 18) = 18. |\n\nBladene **N, Q, R og V** evalueres ikke, og 8 av 12 blader evalueres.\n\n**c)** Best mulig rekkefølge setter det beste barnet først overalt. D (verdi 18) først under A, I først under D, og U (19) først under J:\n\n- D: I evaluerer S og T (begge trengs, I er på hovedvarianten), J kuttes etter U = 19 ≥ β = 18. 3 blader.\n- B: E (K, L) gir 15 ≤ α = 18, F kuttes. 2 blader. (F først gir også 2 blader.)\n- C: G (O, P) gir 13 ≤ 18, H kuttes. 2 blader.\n\nTotalt **7** blader: S, T, U, K, L, O, P. Færre går ikke: hver av B og C trenger et fullt evaluert MAX-barn (2 blader) for å vise at de er ≤ 18, og D trenger I fullt (2 blader) pluss ett blad som tilbakeviser J. Det er det *minimale treet* (3 + 2 + 2), tilsvarende b^⌈d/2⌉ + b^⌊d/2⌋ − 1 for uniforme trær. Et skript som prøver alle 3072 rekkefølger, finner også minimum 7, og den verste rekkefølgen evaluerer alle 12.\n\n**Poeng:** a) 2. b) 5 (3 for de riktige kuttene, 2 for α/β-begrunnelsen). c) 3 (2 for rekkefølgen, 1 for antallet).\n\n**Vanlige feil:** å sammenligne med feil grense (MAX kutter mot β, MIN mot α), å glemme at et kutt i C fjerner hele undertreet H, og å oppdatere α i A før B er ferdig.\n\n*Kilde: laget for øving; boka 6.2 og notatet til E08. Kontrollert med motorens minimax og alfa-beta (kuttet N, H, V; på det omordnede treet F, H, V) og et eget skript.*\n\n### Oppgave 9 (5 p): Generalized Modus Ponens\n\n**Steg 1: Reachable(Molde, Oslo). Steg 2: WellConnected(Molde).**\n\n**Standardisering.** Setning 1 og regel 5 bruker begge variabelen x. Gi setning 1 en ny variabel: Connected(x1, Hub(x1)). Uten dette blir UNIFY(Connected(y, x), Connected(x, Hub(x))) først {y/x} og så x mot Hub(x), som feiler på *occur check*.\n\n**Steg 1: GMP med regel 5.** p1 = Connected(y, x), p2 = Connected(x, z), q = Reachable(y, z). p1′ = Connected(x1, Hub(x1)) (setning 1), p2′ = Connected(Hub(Molde), Oslo) (setning 2).\n\n- UNIFY(Connected(y, x), Connected(x1, Hub(x1))) = {y/x1, x/Hub(x1)}.\n- Da er p2 = Connected(Hub(x1), z). UNIFY med Connected(Hub(Molde), Oslo) gir {x1/Molde, z/Oslo}.\n- Samlet θ = {y/Molde, x/Hub(Molde), z/Oslo, x1/Molde}. Sjekk: SUBST(θ, p1) = SUBST(θ, p1′) = Connected(Molde, Hub(Molde)) og SUBST(θ, p2) = p2′.\n- SUBST(θ, q) = **Reachable(Molde, Oslo)**.\n\n**Steg 2: GMP med regel 6.** p1′ = Reachable(Molde, Oslo), p2′ = Capital(Oslo). θ = {x/Molde, w/Oslo}. SUBST(θ, WellConnected(x)) = **WellConnected(Molde)**.\n\nSetning 3 gir på samme måte Reachable(Molde, Bergen), men Capital(Bergen) står ikke i KB-en, så den fører ikke til målet.\n\n**Poeng:** standardisering 1, steg 1 med θ og konklusjon 2,5, steg 2 med θ og konklusjon 1,5.\n\n**Vanlig feil:** å unifisere uten å standardisere og ikke se occur check-feilen, eller å oppgi bare konklusjonene uten θ.\n\n*Kilde: laget for øving; boka 9.2 og notatet til E15. Kontrollert med motorens unifikasjon og fol-forward-chaining.*\n\n### Oppgave 10 (20 p): Resolution\n\n**a) 6 klausuler:** (1) Robot(R1), (2) ¬Has(R1, y) ∨ In(y, Basement), (3) ¬Robot(x) ∨ Has(x, F(x)) ∨ Stuck(x), (4) ¬Robot(x) ∨ Charged(F(x)) ∨ Stuck(x), (5) ¬In(z, Basement) ∨ ¬Charged(z), (6) ¬Stuck(w).\n**b) □ etter sju resolusjonssteg, med w = R1** (roboten som setning 1 sier finnes).\n\n**a) CNF** (stegene i 9.5.1: fjern ⇒, flytt ¬ inn, standardiser, Skolemiser, dropp ∀, distribuer ∨ over ∧)\n\n*Setning 1.* Fjern ⇒: ∃r [Robot(r) ∧ ∀y (¬Has(r, y) ∨ In(y, Basement))]. ∃r står ikke inne i noen ∀, så r blir en Skolem-*konstant* R1. Dropp ∀y: Robot(R1) ∧ (¬Has(R1, y) ∨ In(y, Basement)). Klausul (1) og (2).\n\n*Setning 2.* Fjern begge ⇒: ∀x [¬(Robot(x) ∧ ∀y (¬Has(x, y) ∨ ¬Charged(y))) ∨ Stuck(x)]. Flytt ¬ inn: ¬(α ∧ β) ≡ ¬α ∨ ¬β, og ¬∀y φ ≡ ∃y ¬φ: ∀x [¬Robot(x) ∨ ∃y (Has(x, y) ∧ Charged(y)) ∨ Stuck(x)]. ∃y står inne i ∀x, så y blir en Skolem-*funksjon* F(x): ¬Robot(x) ∨ (Has(x, F(x)) ∧ Charged(F(x))) ∨ Stuck(x). Distribuer ∨ over ∧: klausul (3) og (4).\n\n*Setning 3.* ¬∃z φ ≡ ∀z ¬φ og De Morgan: ∀z (¬In(z, Basement) ∨ ¬Charged(z)). Klausul (5).\n\n*Negert mål.* ¬∃w Stuck(w) ≡ ∀w ¬Stuck(w). Klausul (6).\n\n**b) Resolusjon** (variablene er standardisert fra hverandre mellom klausulene)\n\n| Steg | Klausuler | θ | Resolvent |\n|---|---|---|---|\n| 7 | (6) og (3) | {w/x} | ¬Robot(x) ∨ Has(x, F(x)) |\n| 8 | 7 og (1) | {x/R1} | Has(R1, F(R1)) |\n| 9 | 8 og (2) | {y/F(R1)} | In(F(R1), Basement) |\n| 10 | 9 og (5) | {z/F(R1)} | ¬Charged(F(R1)) |\n| 11 | (6) og (4) | {w/x} | ¬Robot(x) ∨ Charged(F(x)) |\n| 12 | 11 og (1) | {x/R1} | Charged(F(R1)) |\n| 13 | 10 og 12 | {} | □ |\n\nDen tomme klausulen viser at KB ∧ ¬mål er unsatisfiable, så KB ⊨ ∃w Stuck(w). Bindingene fra det negerte målet gir **w = R1**: roboten fra setning 1. Tanken bak: R1 har bare ting i kjelleren, og ingenting i kjelleren er ladet, så R1 har ingenting ladet og står fast.\n\n**Poeng:** a) 8 (setning 1: 2, setning 2: 4, setning 3: 1, negert mål: 1). b) 12 (9 for riktige steg med θ, 2 for □ og konklusjonen, 1 for w).\n\n**Vanlige feil:** å Skolemisere ∀y i premisset til setning 2 (den blir en ∃ først når ¬ flyttes inn), å bruke en Skolem-konstant der det må være F(x), og å negere målet til ¬Stuck(C) med en konstant i stedet for ∀w ¬Stuck(w).\n\n*Kilde: laget for øving; boka 9.5 og notatet til E16. Kontrollert med motorens fol-resolusjon og DPLL og et eget modellsjekk-skript.*\n\n### Oppgave 11 (5 p): Automated Planning\n\n**a) Belief state etter [Left, Left]: roboten står i B1, fuktigheten er ukjent. Korteste sikre plan har 7 handlinger.**\n\n**b) h(ignore preconditions) = 2, h(ignore delete lists) = 6, h\\* = 9.**\n\n**a)** I starten er belief state alle 3 · 2³ = 24 fysiske tilstander. Left fra B3 gir B2 og fra B2 gir B1, og i B1 skjer ingenting. Etter to Left står roboten i B1 uansett hvor den startet: b = At(B1) ∧ ¬At(B2) ∧ ¬At(B3), med Wet ukjent (8 tilstander, og fortsatt en 1-CNF belief state). Deretter virker Water, Right, Water, Right, Water med kjent posisjon. Planen [Left, Left, Water, Right, Water, Right, Water] (eller speilvendt med Right først) har 7 handlinger. Kortere går ikke: med start i B1 må planen ha minst to Right for å nå B3, med start i B3 minst to Left for å nå B1, og den trenger minst tre Water. [Water, Left, Water, Left, Water] feiler med start i B2: den vanner B2, B1 og B1 igjen, og B3 blir aldri vannet. Water før roboten vet hvor den er, gir belief state (¬At(B1) ∨ Wet(B1)) ∧ (¬At(B2) ∨ Wet(B2)) ∧ (¬At(B3) ∨ Wet(B3)), som ikke er 1-CNF. Derfor lønner det seg å lokalisere seg først.\n\n**b)** *Ignore preconditions:* alle handlinger kan brukes overalt, og hvert manglende mållitteral nås med én Drop. To mål mangler, At(P1, Office) og At(P2, Lab), og ingen handling gir begge, så h = **2** (set cover over målene). *Ignore delete lists:* ingen effekt fjerner noe, så roboten «er» i alle rom den har besøkt, og HandEmpty blir aldri usann. Optimal relaksert plan: Move(Hall, Lab), Pick(P1, Lab), Move(Hall, Office), Drop(P1, Office), Pick(P2, Office), Drop(P2, Lab), altså h = **6**. Den kan ikke bli kortere: én Move inn i hvert av Lab og Office, to Pick og to Drop. *Ekte plan:* Move(Hall, Lab), Pick(P1, Lab), Move(Lab, Hall), Move(Hall, Office), Drop(P1, Office), Pick(P2, Office), Move(Office, Hall), Move(Hall, Lab), Drop(P2, Lab), altså h\\* = **9**.\n\nBegge er admissible, fordi hver ekte plan også er en gyldig plan i det relakserte problemet, så den optimale relakserte planen er aldri lengre: 2 ≤ 6 ≤ 9. Ignore delete lists ligger nærmest h\\* og er mest informert. Ulempen er at optimal h⁺ er NP-hard å regne ut; planleggere tilnærmer den med hill climbing, og da er den ikke lenger garantert admissible. Å telle manglende mål er heller ikke admissible når én handling kan gi flere mål.\n\n**Poeng:** a) 2 (1 for belief state og lengden, 1 for hvorfor den andre planen feiler). b) 3 (1 per tall med kort begrunnelse, der sammenligningen inngår).\n\n**Vanlige feil:** å tro at roboten i a) kan vanne «alle bed den kan stå i» med én Water, og å la HandEmpty bli slettet i den relakserte planen i b).\n\n*Kilde: laget for øving; boka 11.3 og 11.5.1 og notatene til E18 og E19. Kontrollert med motorens relaksert-h og et eget skript for a).*\n\n### Oppgave 12 (5 p): Natural Language Processing\n\n**a) P(Politics | \"win the vote\") = 0,8 (4/5).**\n\n**b) PCFG-en foretrekker leseart A.**\n\n**a)** «the» står ikke i vokabularet og ignoreres, så bag-of-words er {win, vote}. Nevneren er N_c + |V| = 14 + 6 = 20 for begge klasser.\n\n- Sports: P(S) · P(win | S) · P(vote | S) = 0,6 · (3 + 1)/20 · (0 + 1)/20 = 0,6 · 0,2 · 0,05 = 0,006.\n- Politics: 0,4 · (3 + 1)/20 · (5 + 1)/20 = 0,4 · 0,2 · 0,3 = 0,024.\n- Normaliser (α): P(Politics | d) = 0,024 / (0,006 + 0,024) = **0,8**.\n\nUten smoothing (MLE) er P(vote | Sports) = 0/14 = 0, så produktet for Sports blir 0 og P(Politics | d) = 1. Ett ord som aldri ble sett i en klasse, utelukker klassen helt, uansett hva resten av teksten sier. Smoothing gir usette ord en liten sannsynlighet større enn 0.\n\n**b)** Lesearten A knytter PP-en til verbfrasen: [S [NP the robot] [VP [VP [Verb hit] [NP the man]] [PP with the umbrella]]]. Lesearten B knytter den til substantivfrasen: [S [NP the robot] [VP [Verb hit] [NP [NP the man] [PP with the umbrella]]]]. Bag-of-words ser bare hvilke ord som forekommer og hvor ofte, ikke rekkefølge eller struktur. Begge leseartene har nøyaktig den samme setningen og dermed den samme posen, så klassifikatoren gir dem samme sannsynlighet. En PCFG gir hvert tre sannsynligheten lik produktet av reglene i treet og velger det mest sannsynlige. Begge trærne bruker S → NP VP, VP → Verb NP, PP → Prep NP, NP → Article Noun tre ganger og de samme ordreglene. Forskjellen er VP → VP PP (0,2) i A mot NP → NP PP (0,1) i B: 0,04116 mot 0,02058 før ordreglene. A er dobbelt så sannsynlig og blir valgt. En PCFG ser ikke ordene når den knytter til PP-en, så den velger A også for «the robot hit the man with the hat», der B er riktig.\n\n**Poeng:** a) 2 (1 for 0,8 med utregning, 1 for MLE-problemet). b) 3 (1 for trærne, 1 for bag-of-words, 1 for PCFG-valget med begrunnelse).\n\n**Vanlige feil:** å ta med «the» med telling 0, å glemme å normalisere, og å sammenligne hele trærne uten å se at bare én regel skiller dem.\n\n*Kilde: laget for øving; boka 23.1–23.2, L9 og notatet til E20. Tallene er regnet med eksakte brøker i et eget skript.*\n\n### Oppgave 13 (5 p): Knowledge Representation and Philosophy\n\n**a) Semantiske nett: grafer med arv og default-verdier, effektive, men uten negasjon, disjunksjon og ∃. Description logics: definerer kategorier presist og legger vekt på tractable inferens. Begrensede språk som CLASSIC gir subsumption i polynomisk tid, blant annet fordi de mangler negasjon og generell disjunksjon.**\n\n**b) Weak AI: maskiner kan oppføre seg som om de er intelligente. Strong AI: de tenker faktisk. Chinese room angriper strong AI og er ikke avgjørende.**\n\n**a)** I et *semantisk nett* er noder objekter og kategorier, og lenker er binære relasjoner som MemberOf og SubsetOf. Hovedmekanismen er *arv*: følg MemberOf og så SubsetOf oppover til første kategori som har verdien. Det er raskt og lett å lese, og en verdi på et mer spesifikt nivå overstyrer default-verdien (Legs(John, 1) overstyrer 2 for Persons). Grensene: nettet mangler negasjon, disjunksjon, nøstede funksjonssymboler og eksistenskvantifisering, og multiple inheritance kan gi motstridende verdier. *Description logics* (for eksempel CLASSIC) gjør det lett å *definere* kategorier ut fra egenskaper, for eksempel Bachelor = And(Unmarried, Adult, Male), med presis semantikk. Hovedoppgavene er *subsumption* (er én kategori en delmengde av en annen ut fra definisjonene?) og *classification* (hører et objekt til en kategori?). Vekten ligger på tractability: målet er at subsumption-testing skal gå i polynomisk tid i størrelsen på beskrivelsene. Det gjelder begrensede språk som CLASSIC, ikke alle description logics. Prisen er at de vanligvis mangler negasjon og disjunksjon (CLASSIC tillater bare en begrenset disjunksjon over oppramsede individer, i Fills og OneOf), og at vanskelige problemer enten ikke kan uttrykkes eller krever eksponentielt store beskrivelser.\n\n**b)** *Weak AI* er påstanden at maskiner kan oppføre seg *som om* de er intelligente. *Strong AI* er påstanden at maskiner som gjør det, *faktisk tenker* og har bevissthet, ikke bare simulerer tenkning. *Chinese room* (Searle 1980): en mann som bare kan engelsk, sitter i et rom med en regelbok på engelsk. Han får kinesiske lapper inn, følger reglene og sender kinesiske svar ut. Utenfra ser det ut som flytende kinesisk, men mannen forstår ingenting, og boka er bare papir. En datamaskin som kjører et program, er i samme situasjon, så å kjøre riktig program er ikke nok for forståelse: argumentet angriper *strong AI*, ikke weak AI. Det er ikke avgjørende fordi det bygger på intuisjon om hvilke systemer som kan forstå. Etter *systems reply* er det hele systemet (mann, bok og rom) som forstår. Searle svarer at mannen kan pugge boka og fortsatt ikke forstå. Boka svarer at ingen enkelt nervecelle i hjernen din forstår norsk heller, uten at vi konkluderer med at du ikke forstår. Spørsmålet er ikke avgjort, og for å bygge intelligente agenter er weak AI nok.\n\n**Poeng:** a) 2 (1 for hver side med styrke og begrensning). b) 3 (1 for weak og strong, 1 for argumentet og hvilken påstand det angriper, 1 for innvendingen).\n\n**Vanlig feil:** å si at Chinese room viser at maskiner ikke kan oppføre seg intelligent (det er weak AI, som argumentet ikke angriper).\n\n*Kilde: laget for øving; boka 10.5 og 28.2 og notatene til E17 og E21.*"
+}

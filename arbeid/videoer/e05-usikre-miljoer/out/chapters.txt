@@ -1,0 +1,42 @@
+;FFMETADATA1
+title=Når verden ikke adlyder: AND-OR, belief states og online søk
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=37766
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=37767
+END=106966
+title=Flere utfall
+[CHAPTER]
+TIMEBASE=1/1000
+START=106967
+END=247367
+title=AND-OR-søk
+[CHAPTER]
+TIMEBASE=1/1000
+START=247367
+END=358433
+title=Blind agent: belief states
+[CHAPTER]
+TIMEBASE=1/1000
+START=358433
+END=463367
+title=Agent som ser litt
+[CHAPTER]
+TIMEBASE=1/1000
+START=463367
+END=646133
+title=Online søk
+[CHAPTER]
+TIMEBASE=1/1000
+START=646133
+END=726034
+title=Eksamen 2023, oppgave 7
+[CHAPTER]
+TIMEBASE=1/1000
+START=726033
+END=781066
+title=Koblinger og oppsummering

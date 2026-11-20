@@ -1,0 +1,130 @@
+{
+ "intro": "2019 oppgave 7 er spart til fullprøven 01.12. Derfor står ikke Øv selv punkt 2 her.",
+ "tasks": [
+  {
+   "t": "Eksamen 2016, Task 2, deloppgave (2 p): «Every Russian school boy knows a game»",
+   "d": "**TASK 2: Propositional and first-order logic (20p)**\n\ne) The statement “Every Russian school boy knows a game” has two interpretations:\n\nA. There exists a game such that every Russian school boy knows this game.\\\nB. For each Russian school boy, there exists a game so that the boy knows this game.\n\nQuestions:\n\n1. (2p) Formulate each of these two interpretations in first order logic.\n\n*Merknad:* Avgjør også om A medfører B, om B medfører A, om begge gjør det, eller om ingen gjør det.",
+   "f": [
+    [
+     "e) 1. A i FOL",
+     "text"
+    ],
+    [
+     "e) 1. B i FOL",
+     "text"
+    ],
+    [
+     "Hvilken medfører den andre? Begrunn",
+     "area"
+    ]
+   ],
+   "fasit": "Med R(x): x er en russisk skolegutt, G(y): y er et spill og K(x, y): x kan y:\n\n**e) 1. A: `∃y [G(y) ∧ ∀x (R(x) ⇒ K(x, y))]`**\n\n**e) 1. B: `∀x [R(x) ⇒ ∃y (G(y) ∧ K(x, y))]`**\n\nYtterst i A står ∃ med ∧, og inni står ∀ med ⇒. I B er det omvendt.\n\n**A medfører B, men B medfører ikke A.**\n- A ⊨ B: finnes det ett spill g som alle guttene kan, har hver gutt et spill han kan, nemlig g. ∃y ∀x medfører ∀x ∃y.\n- B ⊭ A: ta to gutter r1 og r2 og to spill g1 og g2, der r1 bare kan g1 og r2 bare kan g2. B er sann, men ingen spill kan begge, så A er usann.\n\nLøsningsforslaget viser A ⊨ B med resolution (Task 2 e3):\n\n| Nr | Klausul | Begrunnelse |\n|---|---|---|\n| P1 | G(S1) | CNF av A, Skolem-konstant S1 |\n| P2 | ¬R(x) ∨ K(x, S1) | CNF av A |\n| P3 | R(S2) | CNF av ¬B: ∃x [R(x) ∧ ∀y (¬G(y) ∨ ¬K(x, y))] |\n| P4 | ¬G(y) ∨ ¬K(S2, y) | CNF av ¬B |\n| P5 | ¬K(S2, S1) | Resolve P1, P4, θ = {y/S1} |\n| P6 | K(S2, S1) | Resolve P3, P2, θ = {x/S2} |\n| P7 | □ | Resolve P5, P6, θ = {} |\n\nVanligste feil: å bytte om kvantorene og tro at de to tolkningene er like.\n\n*Kilde: løsningsforslaget til eksamen 2016, Task 2 e.*"
+  },
+  {
+   "t": "Eksamen 2017, problem 5 (3 p): «Men and women are welcome to apply»",
+   "d": "**Problem 5 (15 points. Division: 3-2-2-3-2-3, and -1 for each wrong answer. Sum of the points will not be negative for the whole problem.)**\n\nThis is a combination of multiple-choice and True/False types of task. Choose the correct answer for each question.\n\n*Merknad:* Avgjør om påstanden i a) er sann eller usann, og begrunn svaret. Skriv så en FOL-setning med M(x), W(x) og Apply(x) som sier det den engelske setningen mener.",
+   "f": [
+    [
+     "a) Begrunnelse",
+     "area"
+    ],
+    [
+     "a) FOL-setning som sier det den engelske setningen mener",
+     "text"
+    ]
+   ],
+   "tf": [
+    "a) \"Men and women are welcome to apply.\" is equivalent to ∀(x) [(M(x) ∧ W(x)) ⟹ Apply(x)]"
+   ],
+   "sjekk": {
+    "tf": [
+     "usant"
+    ],
+    "kilde": "2017Q&A.docx, Problem 5 a"
+   },
+   "fasit": "**a) Usant.**\n\n**Begrunnelse:** `∀x [(M(x) ∧ W(x)) ⇒ Apply(x)]` sier bare noe om objekter som er både mann og kvinne. For alle andre er premisset usant, og implikasjonen er sann uansett. Setningen sier altså ingenting om vanlige menn og kvinner. Løsningsforslaget: «obviously not what is meant. The disjunction would give a correct one.» «Men and women» betyr her «alle som er mann eller kvinne», så premisset skal ha ∨.\n\n**FOL: `∀x (M(x) ∨ W(x)) ⇒ Apply(x)`**, eller ekvivalent `∀x (M(x) ⇒ Apply(x)) ∧ ∀x (W(x) ⇒ Apply(x))`.\n\n*Kilde: løsningsforslaget til eksamen 2017, problem 5 a.*"
+  },
+  {
+   "t": "Øving 4 (A4), oppgave 3.1 a–e: oversett til FOL",
+   "d": "Vokabular:\n\n1. `Occupation(p, o)`: person p har yrket o\n2. `Customer(p1, p2)`: person p1 er kunde hos person p2\n3. `Boss(p1, p2)`: person p1 er sjefen til person p2\n4. `Doctor`, `Surgeon`, `Lawyer`, `Actor`: konstanter for yrker\n5. `Emily`, `Joe`: konstanter for personer\n\nBruk bare disse symbolene og skriv setningene i FOL:\n\n- a) «Emily is either a surgeon or a lawyer»\n- b) «Joe is an actor, but he also holds another job»\n- c) «All surgeons are doctors»\n- d) «Joe does not have a lawyer (i.e. he's not a customer of any lawyer)»\n- e) «Emily has a boss who is a lawyer»",
+   "f": [
+    [
+     "a) Emily is either a surgeon or a lawyer",
+     "text"
+    ],
+    [
+     "b) Joe is an actor, but he also holds another job",
+     "text"
+    ],
+    [
+     "c) All surgeons are doctors",
+     "text"
+    ],
+    [
+     "d) Joe does not have a lawyer",
+     "text"
+    ],
+    [
+     "e) Emily has a boss who is a lawyer",
+     "text"
+    ]
+   ],
+   "fasit": "**a) `Occupation(Emily, Surgeon) ∨ Occupation(Emily, Lawyer)`.** Leser du «either … or» som eksklusivt, legger du til `∧ ¬(Occupation(Emily, Surgeon) ∧ Occupation(Emily, Lawyer))`.\n\n**b) `Occupation(Joe, Actor) ∧ ∃o (Occupation(Joe, o) ∧ ¬(o = Actor))`.** «Another job» krever ulikheten. Uten den kan o være Actor.\n\n**c) `∀p Occupation(p, Surgeon) ⇒ Occupation(p, Doctor)`.** Under ∀ står ⇒.\n\n**d) `¬∃p (Customer(Joe, p) ∧ Occupation(p, Lawyer))`**, eller ekvivalent `∀p Customer(Joe, p) ⇒ ¬Occupation(p, Lawyer)` (De Morgan for kvantorer).\n\n**e) `∃p Boss(p, Emily) ∧ Occupation(p, Lawyer)`.** Boss(p1, p2) betyr at p1 er sjefen til p2, så sjefen står først. Under ∃ står ∧.\n\nVanligste feil: ∧ under ∀ i c), som gjør alle til kirurger, eller ⇒ under ∃ i e), som blir sann så snart noen ikke er sjefen til Emily.\n\n*Kilde: notatet til E14, forslaget til A4 3.1. Øvingen har ingen offisiell fasit.*"
+  },
+  {
+   "t": "Modellen i fig. 8.2: sant eller usant?",
+   "d": "Modellen i bokas fig. 8.2 (AIMA 8.2.1) har fem objekter: Richard Løvehjerte (R), kong John (J), Richards venstre bein, Johns venstre bein og en krone.\n\n- Konstantene: `Richard` peker på R, `John` peker på J.\n- `Brother` = {⟨R, J⟩, ⟨J, R⟩}\n- `OnHead` = {⟨krone, J⟩}\n- `Person` = {R, J}, `King` = {J}, `Crown` = {krone}\n- Funksjonen `LeftLeg`: R ↦ Richards venstre bein, J ↦ Johns venstre bein. Funksjoner i FOL er totale, så også kronen og beina må ha et venstre bein. Boka løser det med et ekstra «usynlig» objekt i domenet, som er venstre bein for alt som ikke har et venstre bein, også seg selv. Det står ikke i noen av relasjonene over.\n\nAvgjør om hver setning er sann i denne modellen.",
+   "tf": [
+    "a) ∀x Person(x) ⇒ ∃y Brother(x, y)",
+    "b) ∀x ∃y Brother(x, y)",
+    "c) ∃x Person(x) ∧ ¬King(x)",
+    "d) ∃x OnHead(x, LeftLeg(John))"
+   ],
+   "f": [
+    [
+     "Begrunnelse for hver setning",
+     "area",
+     "a) …\nb) …\nc) …\nd) …"
+    ]
+   ],
+   "sjekk": {
+    "tf": [
+     "sant",
+     "usant",
+     "sant",
+     "usant"
+    ],
+    "kilde": "videoer/notater/e14-forsteordens-logikk.md, Fasit Øv selv 5"
+   },
+   "fasit": "**a) Sant.** De eneste personene er R og J, og de er hverandres brødre. For de andre objektene er Person(x) usann, så implikasjonen er sann.\n\n**b) Usant.** For x = kronen finnes ingen y med Brother(krone, y). Brother inneholder bare ⟨R, J⟩ og ⟨J, R⟩. Det samme gjelder beina og det usynlige objektet.\n\n**c) Sant.** x = Richard: Person(R) er sann, og King(R) er usann, fordi bare J er konge.\n\n**d) Usant.** LeftLeg(John) peker på Johns venstre bein. OnHead inneholder bare ⟨krone, J⟩, så ingenting står på beinet.\n\nForskjellen på a) og b) er ⇒: i a) sier setningen bare noe om personene, i b) om alle objektene.\n\n*Kilde: notatet til E14, Fasit Øv selv 5.*"
+  },
+  {
+   "t": "Antall modeller med database semantics",
+   "d": "Et språk har tre konstantsymboler og ett unært predikat, og ingen andre symboler. Hvor mange modeller finnes med database semantics? Hvorfor er antallet uendelig med standard semantics?",
+   "f": [
+    [
+     "Antall modeller med database semantics",
+     "text"
+    ],
+    [
+     "Utregning",
+     "text"
+    ],
+    [
+     "Hvorfor uendelig med standard semantics?",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Antall modeller med database semantics": [
+      "8"
+     ]
+    },
+    "merk": "Tre konstanter gir tre ulike objekter og ingen flere. Hvert objekt har predikatet eller ikke: 2³ = 8.",
+    "kilde": "videoer/notater/e14-forsteordens-logikk.md, Fasit Øv selv 6"
+   },
+   "fasit": "**Antall modeller med database semantics: 8.**\n\n**Utregning: 2³ = 8.** Unique-names assumption gir tre ulike objekter, én per konstant, og domain closure gir ingen flere. Hvert av de tre objektene har predikatet eller ikke, og closed world betyr at predikatet er nøyaktig mengden av objekter der det er sagt sant. Til sammenligning gir to konstanter og én binær relasjon 2⁴ = 16 modeller (fig. 8.5).\n\n**Uendelig med standard semantics:** Ingen av de tre antakelsene gjelder. Domenet kan ha 1, 2, 3, … objekter uten øvre grense, også objekter uten navn, og konstantene kan peke på samme objekt. For et domene med n objekter finnes n³ måter å tolke konstantene på og 2ⁿ mulige predikater. Hver domenestørrelse gir altså nye modeller, og det er uendelig mange domenestørrelser.\n\n*Kilde: notatet til E14, Fasit Øv selv 6.*"
+  }
+ ]
+}

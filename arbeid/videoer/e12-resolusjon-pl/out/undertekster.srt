@@ -1,0 +1,580 @@
+1
+00:00:00,450 --> 00:00:05,890
+Agenten står i rute én-én i wumpus-verdenen. Der er det ingen breeze, men i
+
+2
+00:00:05,890 --> 00:00:10,910
+to-én er det breeze. Er det en grop i én-to? Forrige gang sjekket vi hundre og
+
+3
+00:00:10,910 --> 00:00:15,970
+tjueåtte modeller. I dag holder fem linjer, og så én regel som en maskin kan
+
+4
+00:00:15,970 --> 00:00:17,170
+kjøre på alt.
+
+5
+00:00:18,550 --> 00:00:24,070
+Etter episoden kan du føre bevis med regelnavn, gjøre om til CNF, kjøre
+
+6
+00:00:24,070 --> 00:00:29,750
+resolution og forward chaining for hånd, og løse en ekte eksamensoppgave. Fra
+
+7
+00:00:29,750 --> 00:00:34,550
+omskrivning, via bevis og resolution, til Horn og eksamen.
+
+8
+00:00:35,917 --> 00:00:39,517
+Når er to setninger egentlig like?
+
+9
+00:00:41,283 --> 00:00:48,083
+«P og Q» og «Q og P» er sanne i nøyaktig de samme modellene. Da er de logically
+
+10
+00:00:48,083 --> 00:00:53,683
+equivalent, skrevet med tre streker. Og da kan du bytte dem hvor som helst, også
+
+11
+00:00:53,683 --> 00:00:55,923
+inni en større setning, som i algebra.
+
+12
+00:00:57,283 --> 00:01:03,843
+Her er verktøykassa, figur sju punkt elleve. Bytt rekkefølge og parenteser. To
+
+13
+00:01:03,843 --> 00:01:09,923
+negasjoner forsvinner. Implication elimination: pila blir «ikke alfa, eller
+
+14
+00:01:09,923 --> 00:01:16,563
+beta». Contraposition snur og negerer. Biconditional elimination: dobbeltpila
+
+15
+00:01:16,563 --> 00:01:23,683
+blir to piler. De Morgan bytter «og» med «eller». Og distributivitet ganger inn.
+
+16
+00:01:25,050 --> 00:01:34,410
+Din tur. Hvilken er ikke ekvivalent med P medfører Q?
+
+17
+00:01:34,410 --> 00:01:41,730
+C: pila er snudd uten negasjoner. Med P usann og Q sann skiller de seg. Ta med
+
+18
+00:01:41,730 --> 00:01:45,690
+deg: en ekvivalens er et bytte, begge veier.
+
+19
+00:01:47,050 --> 00:01:51,770
+Hva er egentlig forskjellen på ⊨ og ⇒?
+
+20
+00:01:53,550 --> 00:02:01,150
+Tre setninger i fire modeller. «P eller ikke P» er sann i alle: valid, gyldig,
+
+21
+00:02:01,150 --> 00:02:08,910
+en tautologi. «P og Q» er sann i én: satisfiable, oppfyllbar. «P og ikke P» er
+
+22
+00:02:08,910 --> 00:02:15,310
+sann i ingen: unsatisfiable. Og en setning er valid nøyaktig når negasjonen er
+
+23
+00:02:15,310 --> 00:02:16,750
+unsatisfiable.
+
+24
+00:02:18,117 --> 00:02:24,517
+Så forvekslingen som koster poeng. Pila er en del av setningen, sann eller usann
+
+25
+00:02:24,517 --> 00:02:30,557
+i én modell. Entails gjelder alle modellene: venstresidens modeller ligger inni
+
+26
+00:02:30,557 --> 00:02:37,477
+høyresidens. Deduction theorem: alfa entails beta når «alfa medfører beta» er
+
+27
+00:02:37,477 --> 00:02:42,117
+valid. Og ekvivalens er entails begge veier.
+
+28
+00:02:43,483 --> 00:02:51,083
+Nå trikset resten bygger på. Hvis KB entails alfa, ligger KB inni alfa. Der alfa
+
+29
+00:02:51,083 --> 00:02:58,603
+er usann, har KB ingen modeller. Så KB entails alfa hvis og bare hvis «KB og
+
+30
+00:02:58,603 --> 00:03:04,723
+ikke alfa» er unsatisfiable. Det heter proof by refutation: vis at det motsatte
+
+31
+00:03:04,723 --> 00:03:05,803
+er umulig.
+
+32
+00:03:07,083 --> 00:03:14,763
+Din tur, eksamen tjue tjueen. Er «ikke A medfører at B medfører C» valid,
+
+33
+00:03:14,763 --> 00:03:22,883
+satisfiable eller unsatisfiable?
+
+34
+00:03:22,883 --> 00:03:30,483
+B: satisfiable, ikke valid. Én rad feiler. Ta med deg: pila gjelder én modell,
+
+35
+00:03:30,483 --> 00:03:31,923
+entails alle.
+
+36
+00:03:33,283 --> 00:03:36,243
+Hvordan fører du et bevis uten sannhetstabell?
+
+37
+00:03:38,017 --> 00:03:45,457
+Bokas kunnskapsbase: ingen grop i én-én, breeze hvis og bare hvis grop ved siden
+
+38
+00:03:45,457 --> 00:03:53,617
+av, ingen breeze i én-én, men i to-én. Modus Ponens: fra «alfa medfører beta» og
+
+39
+00:03:53,617 --> 00:04:00,737
+alfa får du beta. And-elimination: fra «alfa og beta» får du hver av dem. Begge
+
+40
+00:04:00,737 --> 00:04:02,257
+går bare én vei.
+
+41
+00:04:03,617 --> 00:04:10,537
+Målet er «ikke P én-to». Biconditional elimination på R to. And-elimination tar
+
+42
+00:04:10,537 --> 00:04:16,817
+den ene pila. Contraposition: uten breeze er det ingen grop rundt. Modus Ponens
+
+43
+00:04:16,817 --> 00:04:23,377
+med R fire. De Morgan dytter negasjonen inn. And-elimination, og vi er i mål. R
+
+44
+00:04:23,377 --> 00:04:28,817
+én, tre og fem ble aldri brukt. Et bevis hopper over det irrelevante, en
+
+45
+00:04:28,817 --> 00:04:30,737
+sannhetstabell gjør ikke det.
+
+46
+00:04:32,117 --> 00:04:38,837
+Steg tre og fire kan slås sammen. Fra «alfa medfører beta» og «ikke beta» får du
+
+47
+00:04:38,837 --> 00:04:45,717
+«ikke alfa»: Modus tollens. R sju og R fire gir R ni. Boka og forelesningene
+
+48
+00:04:45,717 --> 00:04:51,317
+navngir den ikke, men eksamen tjue tjuetre krevde den. Usikker? Skriv to steg.
+
+49
+00:04:52,683 --> 00:04:59,963
+Dette står bare i boka, foreleser tok det ikke. KB ligger inni «ikke P én-to».
+
+50
+00:04:59,963 --> 00:05:05,043
+Lær noe nytt, for eksempel at det er nøyaktig åtte groper. Mengden kan bare
+
+51
+00:05:05,043 --> 00:05:11,403
+krympe. Det heter monotonicity: det du har vist, forsvinner aldri. Så en regel
+
+52
+00:05:11,403 --> 00:05:13,963
+kan brukes uansett resten av KB.
+
+53
+00:05:15,317 --> 00:05:22,650
+Din tur, eksamen tjue tjuetre. «A medfører K» og «ikke K». Hva følger, med
+
+54
+00:05:22,650 --> 00:05:28,277
+hvilken regel?
+
+55
+00:05:28,277 --> 00:05:36,277
+B: Modus tollens gir «ikke A». Modus Ponens krever A. Ta med deg: regelnavn og
+
+56
+00:05:36,277 --> 00:05:38,197
+linjenumre i hvert steg.
+
+57
+00:05:39,550 --> 00:05:42,670
+Finnes det én regel som alltid holder?
+
+58
+00:05:44,450 --> 00:05:53,010
+Bokas agent vet: grop i én-én, to-to eller tre-én. Og ingen grop i to-to. De to
+
+59
+00:05:53,010 --> 00:05:58,050
+er komplementære og kansellerer hverandre, og resten blir stående. Én gang til
+
+60
+00:05:58,050 --> 00:06:04,770
+med R én, og bare tre-én er igjen. Det er unit resolution: en klausul, altså en
+
+61
+00:06:04,770 --> 00:06:07,970
+eller-kjede av literaler, mot én literal.
+
+62
+00:06:09,250 --> 00:06:15,930
+Det virker også med lange klausuler. P én-én står på hver sin side. Kutt paret,
+
+63
+00:06:15,930 --> 00:06:22,610
+og slå sammen resten. Det er full resolution, og resultatet heter en resolvent.
+
+64
+00:06:22,610 --> 00:06:30,450
+Bare i boka: «A eller B» mot «A eller ikke B» gir A to ganger. Den ene fjernes.
+
+65
+00:06:30,450 --> 00:06:32,130
+Det heter factoring.
+
+66
+00:06:33,417 --> 00:06:39,177
+Her går mange i fella. Disse to har to komplementære par. Kutter du begge, får
+
+67
+00:06:39,177 --> 00:06:46,857
+du R. Feil! Ett par om gangen: kutt P, så står Q og «ikke Q» igjen, en tautologi,
+
+68
+00:06:46,857 --> 00:06:52,937
+som ikke hjelper. Modus Ponens er et spesialtilfelle: Rain mot «ikke Rain eller
+
+69
+00:06:52,937 --> 00:06:54,937
+Wet» gir Wet.
+
+70
+00:06:56,317 --> 00:07:02,717
+Hvorfor er resolventen sann? Se på P én-én. Er den sann, må resten av høyre
+
+71
+00:07:02,717 --> 00:07:08,637
+klausul holde. Er den usann, må resten av venstre holde. Én rest holder uansett,
+
+72
+00:07:08,637 --> 00:07:13,197
+og resolventen er nettopp begge restene. Regelen er sound.
+
+73
+00:07:14,550 --> 00:07:25,110
+Din tur. Resolver «A eller B eller C» med «ikke B eller C».
+
+74
+00:07:25,110 --> 00:07:32,230
+A: «A eller C». Kutt B, og factoring slår sammen de to C-ene. Ta med deg: kutt
+
+75
+00:07:32,230 --> 00:07:34,470
+ett par, og slå sammen resten.
+
+76
+00:07:35,850 --> 00:07:40,650
+Resolution vil bare ha klausuler. Hva gjør du med en dobbeltpil?
+
+77
+00:07:42,417 --> 00:07:51,697
+CNF, conjunctive normal form, er en og-kjede av klausuler. Vi tar R to. Steg én:
+
+78
+00:07:51,697 --> 00:07:57,377
+fjern dobbeltpila med biconditional elimination. Steg to: fjern pilene med
+
+79
+00:07:57,377 --> 00:08:03,830
+implication elimination. Steg tre: flytt negasjonen inn med De Morgan. Steg fire:
+
+80
+00:08:03,830 --> 00:08:09,537
+distribuer «eller» over «og». Tre klausuler, klare for resolution.
+
+81
+00:08:10,817 --> 00:08:18,017
+To feil går igjen. De Morgan uten å bytte «eller» med «og». Det skal bli «og».
+
+82
+00:08:18,017 --> 00:08:24,497
+Og å distribuere før negasjonen er inne. Da står en negasjon foran en parentes.
+
+83
+00:08:24,497 --> 00:08:31,057
+Rekkefølgen er fast: dobbeltpil, pil, negasjon, distribusjon, med regelnavn ved
+
+84
+00:08:31,057 --> 00:08:32,017
+hvert steg.
+
+85
+00:08:33,383 --> 00:08:39,623
+Algoritmen setter alt sammen. Legg negasjonen av målet til KB, og gjør alt om
+
+86
+00:08:39,623 --> 00:08:45,783
+til klausuler. Resolver alle par, og legg nye klausuler i haugen. Kommer den
+
+87
+00:08:45,783 --> 00:08:52,663
+tomme klausulen, entails KB alfa. Kommer ingenting nytt, gjør den ikke det.
+
+88
+00:08:52,663 --> 00:08:58,983
+Bokas eksempel: R to og R fire, og det negerte målet, P én-to.
+
+89
+00:09:00,350 --> 00:09:08,670
+Runde én. C én med C to gir bare tautologier. C én med C tre likeså. C to og C
+
+90
+00:09:08,670 --> 00:09:18,430
+fire: «ikke P én-to». C to og C fem: B én-én. C tre og C fire: «ikke P to-én».
+
+91
+00:09:18,430 --> 00:09:26,190
+Resten har ingen par. Runde to: «ikke P én-to» mot P én-to. Den tomme klausulen.
+
+92
+00:09:26,190 --> 00:09:29,310
+KB entails «ikke P én-to».
+
+93
+00:09:30,683 --> 00:09:35,843
+Virker det alltid? Med factoring finnes bare endelig mange klausuler, så den
+
+94
+00:09:35,843 --> 00:09:41,723
+stopper. Og ground resolution theorem sier: er klausulene unsatisfiable, kommer
+
+95
+00:09:41,723 --> 00:09:46,603
+den tomme klausulen. Ellers kan du bygge en modell. Men fra Rain lager
+
+96
+00:09:46,603 --> 00:09:51,483
+resolution aldri «Rain eller Wind». Med negasjonen lagt til kommer motsigelsen
+
+97
+00:09:51,483 --> 00:09:56,363
+straks. Den er refutation-complete, men kan bruke eksponentiell tid.
+
+98
+00:09:57,717 --> 00:10:13,637
+Din tur, eksamen tjue tjuefire, spørsmål femten. Hvilket alternativ er CNF?
+
+99
+00:10:13,637 --> 00:10:21,357
+A. Den siste gir to klausuler med «ikke U eller T». B har feil fortegn på S og
+
+100
+00:10:21,357 --> 00:10:26,197
+mangler «ikke U». Ta med deg: alltid samme rekkefølge.
+
+101
+00:10:27,550 --> 00:10:30,510
+Går det fortere når reglene er enkle?
+
+102
+00:10:32,283 --> 00:10:40,683
+Mange regler ser slik ut: L én-én og Breeze gir B én-én. Som klausul: nøyaktig
+
+103
+00:10:40,683 --> 00:10:46,283
+én positiv literal. Det er en definite clause, med body og head. Høyst én
+
+104
+00:10:46,283 --> 00:10:52,603
+positiv er en Horn clause, ingen positive en goal clause. R to har to positive,
+
+105
+00:10:52,603 --> 00:10:57,003
+og er ikke Horn. Med definite clauses er Modus Ponens nok.
+
+106
+00:10:58,283 --> 00:11:04,523
+Bokas figur sju punkt seksten. Detaljene her gikk foreleser ikke gjennom. Count
+
+107
+00:11:04,523 --> 00:11:10,843
+er hvor mange premisser hver regel mangler, og agenda er køen. Ta ut A. To
+
+108
+00:11:10,843 --> 00:11:19,083
+tellere går ned. Ta ut B. «A og B» når null, så L går i køen. Ta ut L. «B og L»
+
+109
+00:11:19,083 --> 00:11:26,883
+når null, og M går inn. Ta ut M. «L og M» når null, og P går inn. Ta ut P. To
+
+110
+00:11:26,883 --> 00:11:33,963
+regler når null: Q og L går inn. Ta ut Q. Det er spørsmålet, så svaret er ja. L
+
+111
+00:11:33,963 --> 00:11:36,683
+er alt behandlet, så den hoppes over.
+
+112
+00:11:38,050 --> 00:11:44,130
+Hvorfor lineært? Hvert symbol behandles én gang. Hver count-verdi går ned én
+
+113
+00:11:44,130 --> 00:11:49,890
+gang per premiss: ni premisser, ni nedtellinger. Arbeidet vokser med størrelsen
+
+114
+00:11:49,890 --> 00:11:55,930
+på KB. Hvert steg er Modus Ponens: sound. Og når ingenting mer kommer, er
+
+115
+00:11:55,930 --> 00:12:01,570
+inferred en modell, så alt er funnet: complete. Data-driven reasoning.
+
+116
+00:12:02,950 --> 00:12:10,710
+Backward chaining starter i spørsmålet. Q krever P. P krever L og M. L via A og
+
+117
+00:12:10,710 --> 00:12:18,870
+P? P prøver vi alt å vise: en løkke, som droppes. L via A og B: begge fakta. M
+
+118
+00:12:18,870 --> 00:12:25,630
+via B og L. Da holder P, og så Q. Goal-directed reasoning: den rører bare det
+
+119
+00:12:25,630 --> 00:12:26,950
+relevante.
+
+120
+00:12:28,317 --> 00:12:35,917
+Din tur. Hvilken er en definite clause?
+
+121
+00:12:35,917 --> 00:12:44,637
+A: nøyaktig én positiv, «A og B medfører C». C har ingen: en goal clause. B og D
+
+122
+00:12:44,637 --> 00:12:51,197
+har to: ikke Horn. Ta med deg: definite clauses gir chaining i lineær tid.
+
+123
+00:12:52,550 --> 00:12:55,190
+Klarer du en ekte eksamensoppgave?
+
+124
+00:12:56,950 --> 00:13:04,070
+Eksamen tjue atten, problem seks, ti poeng. Fire kaniner er brune eller hvite.
+
+125
+00:13:04,070 --> 00:13:11,830
+Kanin én: av to og tre er én brun og én hvit. Kanin to: det samme om tre og fire.
+
+126
+00:13:11,830 --> 00:13:19,217
+Kanin tre: fire er brun. Kanin fire: ikke både én og fire er brune. Er kanin én
+
+127
+00:13:19,217 --> 00:13:28,310
+hvit? Pause, og prøv med resolution.
+
+128
+00:13:29,683 --> 00:13:38,923
+Steg én: oversett. «Én brun og én hvit» blir: B to og ikke B tre, eller omvendt.
+
+129
+00:13:38,923 --> 00:13:45,843
+«B to eller B tre» gir trekk i fasiten: det betyr bare minst én brun. Kanin tre
+
+130
+00:13:45,843 --> 00:13:54,323
+gir B fire, kanin fire «ikke, B én og B fire». Steg to: distribuer. Stryk de to
+
+131
+00:13:54,323 --> 00:14:00,003
+tautologiene. De Morgan gir «ikke B én eller ikke B fire».
+
+132
+00:14:01,383 --> 00:14:09,383
+Steg tre: spørsmålet er «ikke B én». Legg til negasjonen, B én, og nummerer. Fem
+
+133
+00:14:09,383 --> 00:14:16,663
+og seks gir «ikke B én». Den mot sju gir den tomme klausulen. Kanin én er hvit.
+
+134
+00:14:16,663 --> 00:14:22,023
+Fasiten vil se nummererte klausuler, hvilket par, og resultatet. Ubrukte
+
+135
+00:14:22,023 --> 00:14:23,863
+klausuler er greit.
+
+136
+00:14:25,217 --> 00:14:27,377
+Hvor møter du disse ideene igjen?
+
+137
+00:14:29,150 --> 00:14:33,950
+Resolution kommer tilbake i førsteordens logikk, episode seksten, med flere
+
+138
+00:14:33,950 --> 00:14:40,190
+CNF-steg. Chaining kommer i episode femten. Refutation gjør entailment til et
+
+139
+00:14:40,190 --> 00:14:45,870
+SAT-spørsmål for DPLL og WalkSAT i episode tretten. Og i planlegging går
+
+140
+00:14:45,870 --> 00:14:49,230
+regresjon bakover fra målet, som backward chaining.
+
+141
+00:14:50,583 --> 00:14:57,703
+Hele kjeden: ekvivalenser skriver om. Entails betyr at «KB og ikke alfa» er
+
+142
+00:14:57,703 --> 00:15:03,543
+umulig. Regler som Modus Ponens bygger bevis, resolution gjør det med én regel
+
+143
+00:15:03,543 --> 00:15:10,943
+på CNF, og Horn-klausuler gir chaining i lineær tid. Gropa i én-to: fem linjer,
+
+144
+00:15:10,943 --> 00:15:17,143
+ikke hundre og tjueåtte rader. Hvis du bare husker én ting: å vise at KB entails
+
+145
+00:15:17,143 --> 00:15:21,623
+alfa, er å vise at «KB og ikke alfa» er umulig.
+

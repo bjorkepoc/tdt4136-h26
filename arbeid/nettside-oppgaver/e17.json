@@ -1,0 +1,259 @@
+{
+ "intro": "Eksamen 2019, oppgave 1 (sant/usant-påstanden om «mammal» og «non-mammal») er spart til fullprøven 01.12. Eksamen 2020 ordinær («Translation from Semantic Networks to Logic») er spart til fullprøven 03.12. Oppgaven med bokas fig. 10.4 øver det samme.",
+ "tasks": [
+  {
+   "t": "Eksamen 2025, oppgave 13a (2 p): ontologi og arv",
+   "d": "**13 Knowledge Representation and Ethics**\n\na) Define briefly what an ontology is in AI and describe how categories support reasoning by inheritance. Give one example where inheritance allows an agent to infer a property of an individual object. (2 pts.)\n\n*Merknad:* b) står i E21.",
+   "f": [
+    [
+     "a) Hva er en ontologi?",
+     "area"
+    ],
+    [
+     "a) Hvordan støtter kategorier resonnering med arv?",
+     "area"
+    ],
+    [
+     "a) Eksempel: en egenskap ved ett objekt som utledes med arv",
+     "area"
+    ]
+   ],
+   "fasit": "**Ontologi:** En ontologi i AI er en strukturert beskrivelse av hvilke slags entiteter som finnes i et domene (objekter, kategorier, egenskaper, hendelser, tid) og hvilke relasjoner som finnes mellom dem. Den gir et felles vokabular og rammeverk for å organisere kunnskap, slik at den kan brukes på tvers av domener. Øverst ligger en upper ontology med de generelle begrepene (fig. 10.1), og domenespesifikke begreper henges på under.\n\n**Kategorier og arv:** Objekter organiseres i kategorier, og kategoriene kobles med subclass-relasjoner (Subset, ⊂) til en taxonomy. En egenskap som gjelder alle medlemmene av en kategori, gjelder dermed også medlemmene av hver underkategori. Agenten kan derfor utlede egenskapene til et objekt fra kategoriene det tilhører (Member, ∈), uten at egenskapen er lagret på selve objektet.\n\n**Eksempel:** `∀x x ∈ Food ⇒ Edible(x)`, `Fruit ⊂ Food`, `Apples ⊂ Fruit` og `Apple₁ ∈ Apples` gir `Edible(Apple₁)`. Et annet eksempel fra fig. 10.4: `Mary ∈ FemalePersons`, `FemalePersons ⊂ Persons` og `∀x x ∈ Persons ⇒ Legs(x, 2)` gir `Legs(Mary, 2)`.\n\nVanlig feil: å blande Member og Subset. «Apple₁ er et eple» er ∈, mens «epler er frukt» er ⊂.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 13a. Løsningsforslaget har ikke noe eksempel; eksemplene er bokas (10.2).*"
+  },
+  {
+   "t": "Eksamen 2021, oppgave 6: Knowledge Representation",
+   "d": "**6) SHORT-QUESTIONS (20 pts)**\n\n2\\) Knowledge Representation\n\na. What are the three ways to represent states and transitions between them? Describe each of them very briefly and describe what kinds of tasks (e.g., planning, or classical search task) we used each of them in this course.\n\nb. What are semantic networks capable of representing? What kind of reasoning mechanism/methods do they rely on?",
+   "f": [
+    [
+     "a) Hva er de tre måtene å representere tilstander og overganger mellom dem på? Beskriv hver svært kort, og si hva slags oppgaver (for eksempel planlegging eller klassisk søk) vi brukte hver av dem til i emnet.",
+     "area"
+    ],
+    [
+     "b) Hva kan semantiske nett representere? Hva slags resonneringsmekanisme eller metoder bygger de på?",
+     "area"
+    ]
+   ],
+   "fasit": "**a) Atomic, factored og structured representation** (boka 2.4.7):\n\n- **Atomic:** tilstanden er en udelelig boks uten indre struktur. Algoritmen ser bare om to tilstander er like eller ulike. Brukt i klassisk søk (uninformed og informed search, kap. 3–4) og i spill (adversarial search, kap. 5).\n- **Factored:** tilstanden er en fast mengde variabler (attributter) med verdier, og to tilstander kan dele noen av verdiene. Brukt i CSP, proposisjonslogikk og planlegging (en PDDL-tilstand er en mengde fluents).\n- **Structured:** tilstanden består av objekter med egenskaper og relasjoner mellom objektene. Brukt i first-order logic, kunnskapsrepresentasjon (ontologier, semantiske nett) og naturlig språk.\n\nUttrykkskraften øker fra atomic til structured, men det gjør også kostnaden ved resonnering og læring.\n\n**b) Hva de kan representere:** Semantiske nett representerer objekter og kategorier som noder og binære relasjoner som lenker: MemberOf, SubsetOf og andre relasjoner som SisterOf. Innrammede lenker sier noe om alle medlemmene av en kategori (Legs = 2 for Persons), og verdiene er defaults som kan overstyres lenger ned (Legs(John, 1)). Med reifikasjon (Fly17 ∈ FlyEvents med lenkene Agent, Origin, Destination og During) kan de uttrykke alle grunne, funksjonsfrie atomære fakta. De kan ikke uttrykke negasjon, disjunksjon, eksistenskvantifisering eller nøstede funksjonssymboler.\n\n**Resonnering:** De bygger på **arv (inheritance)**: følg MemberOf og deretter SubsetOf oppover til første kategori som har verdien. Den mest spesifikke verdien vinner, så det er default reasoning. Oppslaget er raskt og forutsigbart. I tillegg brukes **procedural attachment**: et spørsmål om en relasjon kan kalle en egen prosedyre i stedet for vanlig inferens.\n\n*Kilde: løsningsforslaget til eksamen 2021, oppgave 6.2 (a: «Atomic, factored and structured representation. See R&N textbook»). Løsningsforslaget har ikke svar på b); svaret er bokas (10.5.1).*"
+  },
+  {
+   "t": "Eksamen 2018, problem 3: sant eller usant",
+   "d": "**PROBLEM 3 True/False Questions** (2 points for each correct answer, -1 point for each wrong answer, 0 for each unanswered question. Total score between 0-20 points)\n\n*Merknad:* Påstand 8 og 9 av 10.",
+   "tf": [
+    "8. “Frames” as knowledge representation language combines declarative and procedural knowledge through their resolution mechanism.",
+    "9. Semantic networks allow multiple inheritance on the basis of specificity in the hierarchy."
+   ],
+   "sjekk": {
+    "tf": [
+     "usant",
+     "sant"
+    ],
+    "merk": "Fasiten til påstand 8: «Frame does not have resolution mechanism».",
+    "kilde": "2018Q&A.docx, Problem 3 (svarrekka F F F T F T F F T F, påstand 8 og 9)"
+   },
+   "fasit": "- **8. Usant.** Frames har ingen resolution-mekanisme. De kombinerer deklarativ og prosedural kunnskap gjennom slots med defaults og procedural attachment, og resonnerer med arv, ikke med resolution.\n- **9. Sant.** Et objekt eller en kategori kan arve fra flere foreldre (multiple inheritance), og ved oppslag vinner verdien fra den mest spesifikke kategorien i hierarkiet, slik `Legs(John, 1)` overstyrer default-verdien 2 fra Persons.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 3 (svarrekka F F F T F T F F T F, påstand 8 og 9).*"
+  },
+  {
+   "t": "Eksamen 2017, problem 6: sant eller usant",
+   "d": "**Problem 6** (20 points. Each question is 2 points. -1 for each wrong answer but the total points will not be negative.)\n\nTrue/False type of questions. Answer with either True(T) or False(F)\n\n*Merknad:* Påstand h av a–j.",
+   "tf": [
+    "h) \"Multiple inheritance\" is one of the reasons that leads to undecidability problem in first order logic. True or False?"
+   ],
+   "sjekk": {
+    "tf": [
+     "usant"
+    ],
+    "merk": "Fasiten: «It is not in logic but semantic networks».",
+    "kilde": "2017Q&A.docx, Problem 6 h"
+   },
+   "fasit": "**h) Usant.** Multiple inheritance er et problem i semantiske nett: to foreldrekategorier kan gi motstridende verdier, og oppslaget vet ikke hvilken som skal vinne. I FOL er det ikke noe eget problem, for to motstridende regler gir bare en inkonsistent kunnskapsbase. At inferens i FOL bare er semidecidable, skyldes uttrykkskraften (kvantorer og funksjonssymboler gir uendelig mange termer), ikke arv.\n\n*Kilde: løsningsforslaget til eksamen 2017, problem 6 h («It is not in logic but semantic networks»).*"
+  },
+  {
+   "t": "Eksamen 2015, problem 1: sant eller usant",
+   "d": "**Problem 1** (20 pts, 2pts each question)\n\nAnswer the following questions with TRUE or FALSE.\n\n*Merknad:* Påstand b og c av a–j.",
+   "tf": [
+    "b) Procedural attachment is used in semantic networks.",
+    "c) Ontology is not a key component in simple-reflex agents."
+   ],
+   "sjekk": {
+    "tf": [
+     "sant",
+     "sant"
+    ],
+    "kilde": "2015Q&A.docx, Problem 1 b og c"
+   },
+   "fasit": "- **b) Sant.** Semantiske nett bruker procedural attachment: et spørsmål om en relasjon kan kalle en egen prosedyre laget for den relasjonen, i stedet for den generelle inferensalgoritmen.\n- **c) Sant.** En simple-reflex agent velger handling med condition–action-regler rett fra den nåværende percepten. Den har ingen modell av verden og ingen kunnskapsbase, så en ontologi (hvilke objekter, kategorier og relasjoner som finnes) er ikke en nøkkelkomponent. Ontologier hører til kunnskapsbaserte agenter.\n\n*Kilde: løsningsforslaget til eksamen 2015, problem 1 b og c.*"
+  },
+  {
+   "t": "Eksamen 2015, problem 6d (2 p): flervalg",
+   "d": "**Problem 6** (10 pts, 2 pts each question)\n\nChoose the correct answers (one for each question) to the questions below.\n\nd) Which of the following is the main inference mechanism in semantic networks?\n\n- A. Resolution refutation\n- B. Generalized modus ponens\n- C. Inheritance\n- D. Skolemization\n- E. De Morgan’s law",
+   "f": [
+    [
+     "d) Svar (bokstav)",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "d) Svar (bokstav)": [
+      "C"
+     ]
+    },
+    "kilde": "2015Q&A.docx, Problem 6 d"
+   },
+   "fasit": "**d) C, inheritance.** Semantiske nett resonnerer ved å følge MemberOf- og SubsetOf-lenkene oppover til første kategori som har verdien. Resolution refutation og generalized modus ponens er inferensregler for logikk (E12, E15, E16), Skolemization er et steg i konverteringen til CNF, og De Morgans lov er en logisk ekvivalens.\n\n*Kilde: løsningsforslaget til eksamen 2015, problem 6 d.*"
+  },
+  {
+   "t": "Semantisk nett til FOL (bokas fig. 10.4)",
+   "d": "Figuren er bokas fig. 10.4: et semantisk nett med fire objekter (John, Mary, 1 og 2) og fire kategorier. Oversett alle lenkene til first-order logic, også de to innrammede lenkene (HasMother og Legs ved Persons). Oppgaven er i samme stil som eksamen 2020 ordinær, som er spart til fullprøven.",
+   "img": [
+    "nettside-figurer/e17-fig10-4.png"
+   ],
+   "f": [
+    [
+     "FOL for alle lenkene",
+     "area",
+     "én setning per linje"
+    ]
+   ],
+   "fasit": "**FOL for alle lenkene:**\n\n```\nPersons ⊂ Mammals\nFemalePersons ⊂ Persons\nMalePersons ⊂ Persons\nMary ∈ FemalePersons\nJohn ∈ MalePersons\nSisterOf(Mary, John)\n∀x x ∈ Persons ⇒ [∀y HasMother(x, y) ⇒ y ∈ FemalePersons]\n∀x x ∈ Persons ⇒ Legs(x, 2)\nLegs(John, 1)\n```\n\n- SubsetOf blir ⊂, og MemberOf blir ∈. SisterOf er en vanlig binær relasjon mellom to objekter, i pilens retning.\n- **Dobbel ramme** (HasMother) sier noe om hvert medlem av Persons: moren til en person er en kvinne. Det er ikke `HasMother(Persons, FemalePersons)`, for kategorien Persons har ingen mor.\n- **Enkel ramme** (Legs ved Persons) gir en verdi til hvert medlem: `∀x x ∈ Persons ⇒ Legs(x, 2)`.\n- `Legs(John, 1)` står direkte på John. I nettet er 2 en default som overstyres. I FOL gir regelen også `Legs(John, 2)`, og med et aksiom om at hver person bare har ett antall bein, blir kunnskapsbasen selvmotsigende. Skriv derfor unntaket inn: `∀x x ∈ Persons ∧ x ≠ John ⇒ Legs(x, 2)`.\n\n*Kilde: notatet til E17, Fasit Øv selv 7.*"
+  },
+  {
+   "t": "Disjoint, Exhaustive eller Partition?",
+   "d": "Bruk bokas definisjoner av Disjoint, ExhaustiveDecomposition og Partition. Avgjør for hver mengde av kategorier om den er Disjoint, en ExhaustiveDecomposition og/eller en Partition av Integers.",
+   "f": [
+    [
+     "a) {Primes, EvenNumbers}",
+     "text",
+     "Disjoint: … · Exhaustive: … · Partition: …, fordi …"
+    ],
+    [
+     "b) {EvenNumbers, OddNumbers}",
+     "text",
+     "Disjoint: … · Exhaustive: … · Partition: …, fordi …"
+    ]
+   ],
+   "fasit": "**a) {Primes, EvenNumbers}: Disjoint: nei · Exhaustive: nei · Partition: nei**, fordi 2 er både primtall og partall (snittet er {2}, ikke tomt), og 9 er verken primtall eller partall.\n\n**b) {EvenNumbers, OddNumbers}: Disjoint: ja · Exhaustive: ja · Partition: ja**, fordi ingen heltall er både partall og oddetall, og hvert heltall (også 0 og de negative) er det ene eller det andre.\n\nDefinisjonene:\n\n- `Disjoint(s) ⇔ (∀c₁, c₂ c₁ ∈ s ∧ c₂ ∈ s ∧ c₁ ≠ c₂ ⇒ Intersection(c₁, c₂) = { })`\n- `ExhaustiveDecomposition(s, c) ⇔ (∀i i ∈ c ⇔ ∃c₂ c₂ ∈ s ∧ i ∈ c₂)`\n- `Partition(s, c) ⇔ Disjoint(s) ∧ ExhaustiveDecomposition(s, c)`\n\nPartition krever begge, og ett moteksempel er nok til å felle hver egenskap.\n\n*Kilde: notatet til E17, Fasit Øv selv 8.*"
+  },
+  {
+   "t": "Allens intervallrelasjoner",
+   "d": "La j = [4, 10]. Bruk bokas definisjoner av Meet, Before, After, During, Overlap, Starts, Finishes og Equals. I a–c: hvilken relasjon holder mellom intervallet i og j?",
+   "f": [
+    [
+     "a) i = [3, 5]",
+     "text",
+     "Relasjon(…, …)"
+    ],
+    [
+     "b) i = [10, 12]",
+     "text",
+     "Relasjon(…, …)"
+    ],
+    [
+     "c) i = [6, 10]",
+     "text",
+     "Relasjon(…, …)"
+    ],
+    [
+     "d) Hvilken relasjon har j til i = [2, 12]?",
+     "text",
+     "Relasjon(…, …)"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) i = [3, 5]": [
+      "Overlap(i, j)"
+     ],
+     "b) i = [10, 12]": [
+      "Meet(j, i)"
+     ],
+     "c) i = [6, 10]": [
+      "Finishes(i, j)",
+      "Finishes(j, i)"
+     ],
+     "d) Hvilken relasjon har j til i = [2, 12]?": [
+      "During(j, i)"
+     ]
+    },
+    "merk": "Skriv relasjonen med argumenter, for eksempel Overlap(i, j): rekkefølgen betyr noe. b) Meet(j, i) fordi End(j) = 10 = Begin(i). c) Etter bokas definisjon (bare End(i) = End(j)) er også Finishes(j, i) sann. d) During(j, i) fordi 2 < 4 < 10 < 12.",
+    "kilde": "videoer/notater/e17-kunnskapsrepresentasjon.md, Fasit Øv selv 9"
+   },
+   "fasit": "**a) Overlap(i, j) · b) Meet(j, i) · c) Finishes(i, j) (etter boka også Finishes(j, i)) · d) During(j, i)**\n\nSammenlign endepunktene med j = [4, 10]:\n\n| | i | Sjekk | Relasjon |\n|---|---|---|---|\n| a | [3, 5] | Begin(i) 3 < Begin(j) 4 < End(i) 5 < End(j) 10 | Overlap(i, j) |\n| b | [10, 12] | End(j) = 10 = Begin(i) | Meet(j, i) |\n| c | [6, 10] | End(i) = 10 = End(j) | Finishes(i, j) |\n| d | [2, 12] | Begin(i) 2 < Begin(j) 4 < End(j) 10 < End(i) 12 | During(j, i) |\n\n- a) er ikke Overlap(j, i). Overlap er ikke symmetrisk.\n- b) er ikke Before(j, i), fordi Before krever End(j) < Begin(i) strengt. Meet(i, j) er heller ikke sann (End(i) = 12 ≠ 4).\n- c) er ikke During(i, j), fordi During krever End(i) < End(j) strengt. Bokas Finishes krever bare like sluttider, så etter boka er også Finishes(j, i) sann. Klassisk Allen krever i tillegg Begin(j) < Begin(i), altså at i starter senere. Det holder her (4 < 6), så Finishes(i, j) er riktig etter begge definisjonene.\n\nVanlig feil: å glemme at rekkefølgen på argumentene betyr noe.\n\n*Kilde: notatet til E17, Fasit Øv selv 9.*"
+  },
+  {
+   "t": "Event calculus på en tidslinje",
+   "d": "Tidslinjen fra videoen (S = Shankar):\n\n- Start: `Happens(Start, 0, 0)` og `Initiates(Start, At(S, SF), 0)`.\n- E₁ = Flyings(S, SF, DC) med `Happens(E₁, 2, 4)`.\n- E₂ = Flyings(S, DC, SF) med `Happens(E₂, 8, 10)`.\n- Start, E₁ og E₂ er alle hendelsene på tidslinjen, og Start terminerer ingen fluent: `¬Terminates(Start, f, t)` for alle f og t.\n\nAksiomene fra boka:\n\n```\nE = Flyings(a, here, there) ∧ Happens(E, t₁, t₂) ⇒ Terminates(E, At(a, here), t₁) ∧ Initiates(E, At(a, there), t₂)\nHappens(e, t₁, t₃) ∧ Initiates(e, f, t₂) ∧ ¬Terminated(f, t₂, t₄) ∧ t₁ ≤ t₂ ≤ t₃ ≤ t₄ ⇒ T(f, t₂, t₄)\nTerminated(f, t₁, t₅) ⇔ ∃e, t₂, t₃, t₄ Happens(e, t₂, t₄) ∧ Terminates(e, f, t₃) ∧ t₁ ≤ t₂ ≤ t₃ ≤ t₄ ≤ t₅\n```\n\nFølger formlene under? Begrunn med aksiomene.",
+   "f": [
+    [
+     "a) Følger T(At(S, SF), 0, 1)? (ja/nei)",
+     "text"
+    ],
+    [
+     "a) Begrunnelse",
+     "text"
+    ],
+    [
+     "b) Følger T(At(S, SF), 0, 5)? (ja/nei)",
+     "text"
+    ],
+    [
+     "b) Begrunnelse",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Følger T(At(S, SF), 0, 1)? (ja/nei)": [
+      "ja",
+      "yes"
+     ],
+     "b) Følger T(At(S, SF), 0, 5)? (ja/nei)": [
+      "nei",
+      "no"
+     ]
+    },
+    "merk": "a) Start initierer SF ved 0 og terminerer ingenting, og ingen annen hendelse ligger inne i [0, 1]. b) Terminated(At(S, SF), 0, 5) er sann via E₁, fordi 0 ≤ 2 ≤ 2 ≤ 4 ≤ 5.",
+    "kilde": "videoer/notater/e17-kunnskapsrepresentasjon.md, Fasit Øv selv 10"
+   },
+   "fasit": "**a) Ja.** **b) Nei.**\n\n**a) Begrunnelse:** Bruk persistensaksiomet med e = Start, t₁ = t₂ = t₃ = 0 og t₄ = 1.\n\n- `Happens(Start, 0, 0)` og `Initiates(Start, At(S, SF), 0)` er gitt, og 0 ≤ 0 ≤ 0 ≤ 1.\n- `Terminated(At(S, SF), 0, 1)` krever en hendelse e med `Happens(e, t₂, t₄)` og `Terminates(e, At(S, SF), t₃)`, der 0 ≤ t₂ ≤ t₃ ≤ t₄ ≤ 1. Flyaksiomet med here = SF gir `Terminates(E₁, At(S, SF), 2)`, men E₁ skjer i [2, 4], utenfor [0, 1]. E₂ terminerer At(S, DC), ikke At(S, SF). Siden Start, E₁ og E₂ er alle hendelsene, er Start den eneste hendelsen inne i [0, 1], og Start terminerer ingenting (`¬Terminates(Start, f, t)` er gitt). Dermed er `¬Terminated(At(S, SF), 0, 1)` sann. Uten det siste premisset følger ikke T: en modell med `Terminates(Start, At(S, SF), 0)` oppfyller alle aksiomene og gjør Terminated sann.\n- Alle premissene holder, så persistensaksiomet gir `T(At(S, SF), 0, 1)`.\n\n**b) Begrunnelse:** Flyaksiomet gir `Terminates(E₁, At(S, SF), 2)`, og `Happens(E₁, 2, 4)` med 0 ≤ 2 ≤ 2 ≤ 4 ≤ 5. Dermed er `Terminated(At(S, SF), 0, 5)` sann, premisset ¬Terminated i persistensaksiomet holder ikke, og `T(At(S, SF), 0, 5)` følger ikke. Shankar forlater SF ved tid 2.\n\nVanlig feil: å lese T(f, t₁, t₂) som et tidspunkt. Det betyr at f er sann *hele* intervallet fra t₁ til t₂.\n\n*Kilde: notatet til E17, Fasit Øv selv 10.*"
+  },
+  {
+   "t": "Description logic: CLASSIC",
+   "d": "Skriv i CLASSIC-syntaks (And, All, AtLeast, AtMost, Fills, …): «menn med minst to sønner, som alle er leger».",
+   "f": [
+    [
+     "CLASSIC-beskrivelse",
+     "text",
+     "And(…)"
+    ],
+    [
+     "Subsumerer And(Man, AtLeast(2, Son)) beskrivelsen din? (ja/nei)",
+     "text"
+    ],
+    [
+     "Hvorfor?",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "CLASSIC-beskrivelse": [
+      "And(Man, AtLeast(2, Son), All(Son, Doctor))",
+      "And(Man, All(Son, Doctor), AtLeast(2, Son))",
+      "And(AtLeast(2, Son), Man, All(Son, Doctor))",
+      "And(AtLeast(2, Son), All(Son, Doctor), Man)",
+      "And(All(Son, Doctor), Man, AtLeast(2, Son))",
+      "And(All(Son, Doctor), AtLeast(2, Son), Man)"
+     ],
+     "Subsumerer And(Man, AtLeast(2, Son)) beskrivelsen din? (ja/nei)": [
+      "ja",
+      "yes"
+     ]
+    },
+    "merk": "And(Man, AtLeast(2, Son), All(Son, Doctor)). Rekkefølgen inne i And er fri. Den subsumeres av And(Man, AtLeast(2, Son)) fordi den har alle de kravene og ett til.",
+    "kilde": "videoer/notater/e17-kunnskapsrepresentasjon.md, Fasit Øv selv 11"
+   },
+   "fasit": "**`And(Man, AtLeast(2, Son), All(Son, Doctor))`** · **Ja**, `And(Man, AtLeast(2, Son))` subsumerer den.\n\n**Hvorfor:** Subsumption sjekkes strukturelt. D subsumerer C hvis alle krav i D følger av kravene i C. Kravene i `And(Man, AtLeast(2, Son))` er {Man, AtLeast(2, Son)}, og begge står i beskrivelsen min, som i tillegg har `All(Son, Doctor)`. Flere krav gir en mindre kategori: hver mann med minst to sønner som alle er leger, er også en mann med minst to sønner.\n\n- Man gir kategorien, `AtLeast(2, Son)` sier minst to sønner, og `All(Son, Doctor)` sier at alle sønnene er leger. Rekkefølgen inne i And er fri.\n- Vanlig feil: retningen. Det er den generelle beskrivelsen (færre krav) som subsumerer den spesielle.\n\n*Kilde: notatet til E17, Fasit Øv selv 11.*"
+  }
+ ]
+}

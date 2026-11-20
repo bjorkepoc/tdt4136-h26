@@ -1,0 +1,504 @@
+1
+00:00:00,450 --> 00:00:05,410
+Sytten par dronninger angriper hverandre. Flytt én dronning i kolonnen sin, og
+
+2
+00:00:05,410 --> 00:00:12,930
+ta alltid trekket som fjerner flest angrep. Tolv. Sju. Fire. Tre. Én. Ett par
+
+3
+00:00:12,930 --> 00:00:18,610
+igjen, men nå gjør hvert eneste trekk det verre. Du står fast, rett ved målet.
+
+4
+00:00:18,610 --> 00:00:22,290
+Fra et tilfeldig brett skjer det i åttiseks prosent av forsøkene.
+
+5
+00:00:23,650 --> 00:00:28,410
+Etterpå kan du kjøre hill climbing og variantene, regne sannsynligheten i
+
+6
+00:00:28,410 --> 00:00:33,410
+simulated annealing og kjøre en generasjon av en genetisk algoritme. Så
+
+7
+00:00:33,410 --> 00:00:39,130
+kontinuerlige rom og en ekte eksamensoppgave. Dette er seksjon fire punkt én og
+
+8
+00:00:39,130 --> 00:00:42,770
+fire punkt to, samme nummer i den amerikanske utgaven.
+
+9
+00:00:44,050 --> 00:00:46,930
+Hva gjør du når veien dit ikke betyr noe?
+
+10
+00:00:48,683 --> 00:00:54,403
+I kapittel tre husket søket frontier, alt det hadde nådd og veien tilbake. For
+
+11
+00:00:54,403 --> 00:01:00,003
+åtte dronninger teller bare sluttbrettet. Lokalt søk husker derfor én tilstand
+
+12
+00:01:00,003 --> 00:01:04,843
+og flytter til en nabo. Det bruker nesten ikke minne. Men søket er ikke
+
+13
+00:01:04,843 --> 00:01:07,883
+systematisk, og kan gå glipp av løsningen.
+
+14
+00:01:09,183 --> 00:01:16,063
+Gi hver tilstand en høyde: verdien av objective function. Målet er høyeste topp,
+
+15
+00:01:16,063 --> 00:01:21,743
+global maximum. Er høyden en kostnad, leter du etter dypeste dal: gradient
+
+16
+00:01:21,743 --> 00:01:27,183
+descent. Hill climbing går alltid til beste nabo, og stopper her på en local
+
+17
+00:01:27,183 --> 00:01:32,903
+maximum. Et flatt område er et plateau, og går det opp videre, en shoulder. En
+
+18
+00:01:32,903 --> 00:01:36,543
+ridge er en rad av topper der hvert steg går nedover.
+
+19
+00:01:37,917 --> 00:01:43,757
+Din tur. Prikken står på en shoulder, og høyre nabo er like høy. Hva gjør hill
+
+20
+00:01:43,757 --> 00:01:48,797
+climbing?
+
+21
+00:01:48,797 --> 00:01:54,397
+Den stopper, fordi koden krever en strengt bedre nabo. Ta med deg: hill climbing
+
+22
+00:01:54,397 --> 00:01:56,477
+stopper på alt som er flatt.
+
+23
+00:01:57,850 --> 00:02:03,570
+Alle åtte dronningene står på brettet, én per kolonne. Det er complete-state
+
+24
+00:02:03,570 --> 00:02:09,530
+formulation. Et trekk flytter én dronning i kolonnen: åtte ganger sju, femtiseks
+
+25
+00:02:09,530 --> 00:02:15,450
+naboer. h er antall par som angriper hverandre, også med en dronning imellom.
+
+26
+00:02:15,450 --> 00:02:21,010
+Tallene er h etter hvert trekk. Lavest er tolv, for åtte trekk. Du tar det
+
+27
+00:02:21,010 --> 00:02:24,890
+bratteste steget i minus h: steepest ascent.
+
+28
+00:02:26,183 --> 00:02:31,543
+Fem slike steg tar deg fra sytten til én. Der gjør alle femtiseks trekk det
+
+29
+00:02:31,543 --> 00:02:37,703
+verre: en local minimum for h. Fra et tilfeldig brett løses bare fjorten prosent.
+
+30
+00:02:37,703 --> 00:02:43,303
+Resten setter seg fast. Men det går fort: fire steg ved treff, tre ved bom,
+
+31
+00:02:43,303 --> 00:02:46,183
+blant nesten sytten millioner tilstander.
+
+32
+00:02:47,483 --> 00:02:51,163
+Hvordan kommer du videre fra en topp som ikke er den høyeste?
+
+33
+00:02:52,917 --> 00:02:59,237
+Første idé: sideways moves, like gode trekk. Da kommer du over en shoulder. På
+
+34
+00:02:59,237 --> 00:03:03,797
+en flat topp går du i ring, så du stopper etter for eksempel hundre sidesteg på
+
+35
+00:03:03,797 --> 00:03:10,037
+rad. Da løses nittifire prosent, ikke fjorten, men treff koster tjueen steg og
+
+36
+00:03:10,037 --> 00:03:16,197
+bom sekstifire. Stochastic hill climbing velger tilfeldig blant trekk oppover.
+
+37
+00:03:16,197 --> 00:03:19,717
+First-choice tar første tilfeldige nabo som er bedre.
+
+38
+00:03:21,017 --> 00:03:26,617
+Eller start på nytt fra et tilfeldig brett: random-restart hill climbing. Til
+
+39
+00:03:26,617 --> 00:03:31,897
+slutt er startbrettet en løsning, så den er complete med sannsynlighet én.
+
+40
+00:03:31,897 --> 00:03:37,764
+Lykkes hver klatring med sannsynlighet p, trenger du i snitt én delt på p forsøk.
+
+41
+00:03:37,764 --> 00:03:43,097
+Med null komma fjorten blir det rundt sju, og rundt tjueto steg i alt. Sideways,
+
+42
+00:03:43,097 --> 00:03:46,137
+first-choice og restart står bare i boka.
+
+43
+00:03:47,417 --> 00:03:53,377
+Din tur. Med sideways moves lykkes nittifire prosent. Hvor mange forsøk trenger
+
+44
+00:03:53,377 --> 00:03:58,697
+du i snitt?
+
+45
+00:03:58,697 --> 00:04:04,457
+Én delt på null komma nittifire, rundt én komma null seks. Og fra eksamen tjue
+
+46
+00:04:04,457 --> 00:04:11,257
+tjuefire: admissible heuristikk hjelper ikke ut av en lokal topp. Ta med deg: én
+
+47
+00:04:11,257 --> 00:04:12,377
+delt på p.
+
+48
+00:04:13,750 --> 00:04:17,190
+Hva om du går nedover med vilje, av og til?
+
+49
+00:04:18,950 --> 00:04:24,310
+Tenk på en pingpongball på en humpete flate. Rister du hardt, spretter den ut av
+
+50
+00:04:24,310 --> 00:04:30,390
+små groper. Rister du gradvis mildere, blir den liggende i den dypeste. Det er
+
+51
+00:04:30,390 --> 00:04:36,843
+simulated annealing. Velg en tilfeldig nabo. Er den bedre, gå dit. Er den verre,
+
+52
+00:04:36,843 --> 00:04:41,350
+gå dit med en sannsynlighet som synker jo verre den er, og jo lavere
+
+53
+00:04:41,350 --> 00:04:43,190
+temperaturen T er.
+
+54
+00:04:44,483 --> 00:04:50,883
+Sannsynligheten er e opphøyd i minus forverringen delt på T. Ved T lik ti
+
+55
+00:04:50,883 --> 00:04:56,163
+slipper nesten alt gjennom: null komma nitti og null komma sekstisju. Ved T lik
+
+56
+00:04:56,163 --> 00:05:01,803
+én: null komma trettisju og null komma null to. Én delt på én er som fire delt
+
+57
+00:05:01,803 --> 00:05:06,483
+på fire. Høy T utforsker. Lav T klatrer.
+
+58
+00:05:07,850 --> 00:05:14,170
+Temperaturen følger en schedule. Når T er null, stopper søket. Synker T sakte
+
+59
+00:05:14,170 --> 00:05:20,290
+nok, finner det globale optimum med sannsynlighet nær én. Pass på fortegnet.
+
+60
+00:05:20,290 --> 00:05:25,770
+Fasitene skriver e opphøyd i delta E over T, med delta E negativ for et dårlig
+
+61
+00:05:25,770 --> 00:05:32,170
+trekk. Foreleser skrev minus delta E, med delta E som økt kostnad. Samme ting.
+
+62
+00:05:32,170 --> 00:05:34,730
+Over én betyr snudd fortegn.
+
+63
+00:05:36,083 --> 00:05:42,163
+Din tur, fra eksamen totusen og nitten. Du står på et platå, og naboen er like
+
+64
+00:05:42,163 --> 00:05:49,843
+god. Flytter simulated annealing dit?
+
+65
+00:05:49,843 --> 00:05:56,283
+Ja, med sannsynlighet én: e opphøyd i null er én. Ta med deg: dårlige trekk av
+
+66
+00:05:56,283 --> 00:05:58,643
+og til, gode alltid.
+
+67
+00:06:00,017 --> 00:06:02,737
+Hva om du klatrer med mange på en gang?
+
+68
+00:06:04,517 --> 00:06:09,957
+Local beam search holder k tilstander. Hvert steg lager den alle naboene til
+
+69
+00:06:09,957 --> 00:06:16,037
+alle k og beholder de k beste av alle. Restarter klatrer hver for seg, men beam
+
+70
+00:06:16,037 --> 00:06:21,157
+search flytter innsatsen dit det går best. Faren er at alle klumper seg på én
+
+71
+00:06:21,157 --> 00:06:26,797
+topp. Stochastic beam search velger derfor naboer med sannsynlighet etter verdi.
+
+72
+00:06:26,797 --> 00:06:28,757
+Dette står bare i boka.
+
+73
+00:06:30,050 --> 00:06:35,690
+En genetisk algoritme er stochastic beam search med to foreldre. Brettet blir
+
+74
+00:06:35,690 --> 00:06:43,130
+åtte sifre: siffer c er raden i kolonne c, rad én nederst. Fitness er antall par
+
+75
+00:06:43,130 --> 00:06:49,810
+som ikke angriper, høyst tjueåtte. Bokas fire individer har tjuefire, tjuetre,
+
+76
+00:06:49,810 --> 00:06:56,237
+tjue og elleve, sum syttiåtte. Delt på summen: trettien, tjueni, tjueseks og
+
+77
+00:06:56,237 --> 00:06:59,250
+fjorten prosent. Ikke del på tjueåtte.
+
+78
+00:07:00,550 --> 00:07:07,030
+Så trekkes foreldre. Den nest beste ble trukket to ganger, den svakeste aldri.
+
+79
+00:07:07,030 --> 00:07:12,550
+Et tilfeldig crossover-punkt deler paret, her etter tredje siffer. Barn én tar
+
+80
+00:07:12,550 --> 00:07:18,737
+starten fra den ene og resten fra den andre, barn to det motsatte. Så mutation:
+
+81
+00:07:18,737 --> 00:07:23,870
+et siffer endres med liten sannsynlighet, her femmeren til en ener. Slidene
+
+82
+00:07:23,870 --> 00:07:26,630
+hoppet over mutation, men boka har den.
+
+83
+00:07:27,983 --> 00:07:38,703
+Din tur. Det andre paret krysses etter femte siffer. Hva blir første barn?
+
+84
+00:07:38,703 --> 00:07:45,303
+Tre to sju fem to fra den første, en to fire fra den andre. En schema er en
+
+85
+00:07:45,303 --> 00:07:50,903
+streng med åpne plasser. Strenger som passer, er instances. Er snittet deres
+
+86
+00:07:50,903 --> 00:07:56,783
+over gjennomsnittet, blir de flere. Ta med deg: crossover hjelper når nabosifre
+
+87
+00:07:56,783 --> 00:07:57,943
+hører sammen.
+
+88
+00:07:59,317 --> 00:08:02,517
+Hva gjør du når naboene er uendelig mange?
+
+89
+00:08:04,283 --> 00:08:10,683
+Bokas eksempel: tre nye flyplasser i Romania. Summen av kvadrerte avstander fra
+
+90
+00:08:10,683 --> 00:08:16,443
+hver by til nærmeste flyplass skal bli minst mulig. Tilstanden er seks tall.
+
+91
+00:08:16,443 --> 00:08:22,950
+Diskretiser: flytt én koordinat pluss eller minus delta, og du får tolv naboer.
+
+92
+00:08:22,950 --> 00:08:28,483
+Å måle endringen mellom nære punkter heter empirical gradient, steepest ascent i
+
+93
+00:08:28,483 --> 00:08:29,963
+det diskrete rommet.
+
+94
+00:08:31,250 --> 00:08:36,930
+Kan du derivere, peker gradienten dit det stiger brattest. Legg til alfa ganger
+
+95
+00:08:36,930 --> 00:08:43,330
+gradienten. Alfa er step size. For liten, og du kryper. For stor, og du hopper
+
+96
+00:08:43,330 --> 00:08:48,690
+fram og tilbake over toppen. Line search dobler alfa til verdien synker.
+
+97
+00:08:48,690 --> 00:08:53,370
+Newton-Raphson bruker også andrederiverte, Hessian, og hopper rett til toppen av
+
+98
+00:08:53,370 --> 00:08:57,250
+en parabel. Flyplassene havner da midt i byene sine.
+
+99
+00:08:58,617 --> 00:09:04,217
+Constrained optimization har harde krav, som tørt land i Romania. Er kravene
+
+100
+00:09:04,217 --> 00:09:09,417
+lineære ulikheter og målet lineært, er det linear programming, løsbart i
+
+101
+00:09:09,417 --> 00:09:15,337
+polynomisk tid. Foreleser tok bare gradient-ideen, resten står i boka.
+
+102
+00:09:16,617 --> 00:09:28,177
+Din tur, eksamen tjue tjuefem, oppgave to. Hvilket utsagn er usant?
+
+103
+00:09:28,177 --> 00:09:33,857
+C. Gradient descent er hill climbing nedover og setter seg fast på samme måte.
+
+104
+00:09:33,857 --> 00:09:38,257
+Ta med deg: gradienten viser veien, men fellene er de samme.
+
+105
+00:09:39,550 --> 00:09:42,110
+Klarer du en ekte eksamensoppgave nå?
+
+106
+00:09:43,883 --> 00:09:50,963
+Eksamen tjue tjue, kortspørsmål om lokalt søk. Seks dronninger, og Eval er én
+
+107
+00:09:50,963 --> 00:09:57,083
+minus antall angripende par. Brett a er nå-tilstanden. I b er én dronning
+
+108
+00:09:57,083 --> 00:10:03,243
+flyttet ett felt til høyre. T er fire. Finn Eval for a og b, og sannsynligheten
+
+109
+00:10:03,243 --> 00:10:15,723
+for at simulated annealing går til b.
+
+110
+00:10:15,723 --> 00:10:16,683
+Klar?
+
+111
+00:10:17,983 --> 00:10:24,943
+I a står to dronninger på samme rad: ett par. Tre på én diagonal: tre par. Ett
+
+112
+00:10:24,943 --> 00:10:31,863
+par på den andre diagonalen. Fem par, så Eval av a er minus fire. I b er raden
+
+113
+00:10:31,863 --> 00:10:37,743
+og den andre diagonalen som før. Diagonalen blir fire lang: seks par. Pluss ett
+
+114
+00:10:37,743 --> 00:10:44,783
+i kolonnen. Ni par, Eval minus åtte. Delta E blir minus fire. e opphøyd i minus
+
+115
+00:10:44,783 --> 00:10:49,423
+fire delt på fire er omtrent null komma trettisju, én delt på e.
+
+116
+00:10:50,717 --> 00:10:52,317
+Hvor dukker dette opp igjen?
+
+117
+00:10:54,083 --> 00:11:00,483
+Min-conflicts i kapittel fem er hill climbing med konflikter som h, episode sju.
+
+118
+00:11:00,483 --> 00:11:06,483
+WalkSAT i kapittel sju blander min-conflicts og tilfeldige steg, episode tretten.
+
+119
+00:11:06,483 --> 00:11:12,323
+Systematisk søk i episode to og tre husker stien. Monte Carlo tree search
+
+120
+00:11:12,323 --> 00:11:19,043
+utforsker med tilfeldighet, episode ni. Neste episode: AND-OR-søk, belief states
+
+121
+00:11:19,043 --> 00:11:20,163
+og online søk.
+
+122
+00:11:21,517 --> 00:11:27,797
+Hele kjeden: lokalt søk husker bare der du står. Hill climbing stopper på første
+
+123
+00:11:27,797 --> 00:11:34,477
+topp. Sideways og restart gir nye sjanser. Simulated annealing går ned med vilje,
+
+124
+00:11:34,477 --> 00:11:40,557
+sjeldnere jo kaldere. Beam og GA klatrer med mange. Brettet fra starten satt
+
+125
+00:11:40,557 --> 00:11:46,797
+fast på én. Restart trenger rundt sju forsøk. Husker du bare én ting: en lokal
+
+126
+00:11:46,797 --> 00:11:51,117
+topp ser ut som målet, til du tør å gå ned eller starte på nytt.
+

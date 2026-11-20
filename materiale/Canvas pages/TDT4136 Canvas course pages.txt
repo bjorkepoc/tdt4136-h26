@@ -1,0 +1,760 @@
+TDT4136-26H :: Introduction to Artificial Intelligence
+Canvas pages exported 2026-08-20
+
+===== Important information =====
+Source: https://canvas.ntnu.no/courses/24540/pages/welcome-read-this-important-information-about-the-course?module_item_id=196651
+
+Welcome. READ THIS. Important Information about the course
+
+Textbook: 
+
+Artificial Intelligence, A modern approach. Stuart Russell & Peter Norvig, 4th edition, Global Edition. It can be purchased from AKADEMIKA at Gløshaugen.
+
+ 
+
+Main Lectures: 
+
+Attendance to lectures is not mandatory.
+
+Time: Thursdays at 14:15-16:00.
+
+Place: GL-VE VE1
+Links to an external site.
+
+First lecture: 20.08.2026
+
+Lectures: Physical, but the lectures will also be streamed and video recordings will be available here at Canvas. 
+
+Slides: Lecture slides will be available on Canvas before the class.
+
+ 
+
+Assignments:
+
+There will be 3 mandatory assignments, all of which must be delivered and passed (“godkjent”) in order to be able to take the exam. Two of these require programming.
+
+ 
+
+Assignments will be given out on Wednesdays at 9 AM and will be delivered on Fridays at 23:59. The dates for the three assignments will be:
+
+Assignment 1: Search
+Will be given out: 26th August
+Delivery deadline: 11th September
+Assignment 2: Constraint Satisfaction Problem
+Will be given out: 9th September
+Delivery deadline: 25th September
+Assignment 3: Adversarial Search
+Will be given out: 7th October
+Delivery date: 23rd October
+
+ 
+
+Assignment Lectures:
+
+Attending to Assignment lectures is not mandatory.
+
+Time: Fridays at 10:15-12:00. 
+
+There will be three assignment lectures during the semester, 28th August, 11th September and 9th October.
+
+Assignment lectures will be recorded and uploaded to Canvas.
+
+Place: GL-RFB R8
+Links to an external site.
+Links to an external site.
+
+ 
+
+Labs: 
+
+We will have "lab hours" related to each of the three mandatory assignments.
+
+Note that it is not mandatory to attend the lab hours. They are scheduled in case you need help/have some questions about the assignment - freely choose which one to attend.
+
+
+Time: Lab hours will be arranged for the period between the assignment lecture and the submission deadline: 28.08, 31.08, 01.09, 02.09, 04.09, 07.09, 08.09, 09.09, 11.09, 14.09, 15.09, 16.09, 18.09, 21.09, 22.09, 23.09, 25.09, 09.10, 12.10, 13.10, 14.10, 16.10, 19.10, 20.10, 21.10 and 23.10. 
+
+During lab hour periods, lab hours will be arranged:
+
+- Monday - 16:15-18:00. Place: GL-AO U35
+Links to an external site.
+
+- Tuesday at 14:15 to 16:00. Place: GL-AO U36
+Links to an external site.
+
+- Wednesday at 08:15 to 10:00. Place: GL-AO U35
+Links to an external site.
+
+- Fridays at 14:15 to 16:00. Place: GL-AO U36
+Links to an external site.
+
+ 
+
+Exam: Written exam, 4 hours.
+
+Learning outcomes: Please see the course description
+Links to an external site.
+.
+Contact:
+Course leader: Pinar Øzturk ([e-post: se Canvas])
+
+Research Assistant/Canvas responsible: Espen Uri Høgstedt ([e-post: se Canvas])
+
+Institute: [e-post: se Canvas]
+
+ 
+
+Canvas support guides
+
+Canvas has a useful support guide for students :
+
+Canvas Student Guiden
+Links to an external site.
+ (norsk)
+Canvas Student Guide
+Links to an external site.
+ (English)
+Next
+
+===== Lecture schedule =====
+Source: https://canvas.ntnu.no/courses/24540/pages/lecture-schedule?module_item_id=196672
+
+Lecture Schedule
+
+ 
+
+Sln.	Date	Time
+	Lecture	Description	Chapter
+1	20.08.2026	
+14:15-16:00
+	Lecture 1	
+
+Introduction,  and Intelligent agents (Massimiliano Ruocco)
+
+	Chapter 2
+2	27.08.2026	
+14:15-16:00
+	Lecture 2	Uninformed and informed Search (Massimiliano Ruocco)	Chapter 3
+A1	 28.08.2026	
+10:15-12:00
+	Assignment lecture 1	Introduction to assignment 1 - Search (Aleksandra Jekic)	 
+3	03.09.2026	
+14:15-16:00
+	Lecture 3	
+
+Search in complex environments (Aleksandra Jekic)
+
+	Chapter 4
+4	10.09.2026	
+14:15-16:00
+	Lecture 4	Constraint satisfaction problem  (Ole Christian Eidheim)	Chapter 5
+A2	 11.09.2026	10:15-12:00	Assignment lecture 2	Introduction to assignment 2 - Constraint satisfaction problem (Aleksandra Jekic)	 
+5	17.09.2026	
+14:15-16:00
+	Lecture 5	Propositional Logic (Ole Christian Eidheim)	Chapter 7
+6	24.09.2026	
+14:15-16:00
+	Lecture 6	First order logic  (Ole Christian Eidheim)	Chapter 8
+7	01.10.2026	
+14:15-16:00
+	Lecture 7	Inference in First order logic (Ole Christian Eidheim)	Chapter 9
+8	08.10.2026	
+14:15-16:00
+	Lecture 8	Adverserial search  (Ole Christian Eidheim)	Chapter 6
+A3	09.10.2026 	10:15-12:00	Assignment Lecture 3	Introduction to assignment 3 - Adversarial search (Aleksandra Jekic)	 
+9	15.10.2026	
+14:15-16:00
+	Lecture 9	Natural language processing (Massimiliano Ruocco )	Chapter 24
+10	22.10.2026	
+14:15-16:00
+	Lecture 10	Game theory and multiagent systems (Ole Christian Eidheim)	Not in book, a chapter from another book- see syllabus
+11	29.10.2026	
+14:15-16:00
+	Lecture 11	Planning   (Massimiliano Ruocco )	Chapter 11
+12	05.11.2026	
+14:15-16:00
+	Lecture 12	Knowledge Representation, and AI and Ethics. (Massimiliano Ruocco )	Chapter 10 and 28
+13	12.11.2026	
+14:15-16:00
+	Lecture 13	Summary (Ole and Massimiliano)	-----------------------
+
+ 
+
+Previous
+Next
+
+===== Assignment schedule =====
+Source: https://canvas.ntnu.no/courses/24540/pages/assignment-schedule?module_item_id=196694
+
+Assignment Schedule
+
+General information
+
+
+There will be 3 assignments which must be delivered and passed (“godkjent”) in order to be able to take the exam. This is a strict rule.
+
+If you are re-taking the course and you passed the assignments in 2024 or in 2025, then you do not need to pass the assignments in 2026 to be eligible for the exam.
+
+
+Schedule
+
+ 	
+Assignment Title
+	
+Chapter
+	
+Type
+	
+Publish Date
+	
+Assignment Lecture Date
+
+	
+Submission Deadline
+	
+Grading Deadline
+
+
+1
+	
+Search
+	
+3
+
+	
+Theory
+	
+26.08.2026
+	
+28.08.2026
+	
+11.09.2026
+	
+27.09.2026
+
+
+2
+	Constraint Satisfaction Problems	5	
+Programming
+	
+09.09.2026
+	
+11.09.2026
+	
+25.09.2026
+	
+11.10.2026
+
+3	Adversarial search	6	Programming	07.10.2026	09.10.2026	23.10.2026	08.11.2026
+
+ 
+
+File format
+
+
+Do not deliver assignments as zip files, but instead upload files individually. Uploading zip files makes the grading process more difficult, and might cause your submission to recieve a failed grade.
+
+
+ 
+
+Groups
+
+You may submit assignments in groups of 1 or 2. To sign up for a group, first click "Assignment X Group Sign-Up Sheet", and then click the group you want to join. It is not possible to leave a group once you have joined, so please be careful when joining. After joining a group, the group assignment delivery should be visible.
+
+Each group is only used for a single assignment. If you want to do another assignment with the same person, you both need to sign up for a new group associated with the new assignment.
+
+IMPORTANT: Both members must be in the group before submitting. Only group members that are in the group at the time of submission will recieve a grade. If you are unsure whether both members were in the group when you submitted, please resubmit.
+
+ 
+
+FAQ
+
+Are assignments mandatory?
+Yes, you need to pass all three assignments to be eligible for the exam
+I have a question about an assignment
+Search the forum to see if it has been asked before
+If not, post your question on the forum
+I signed up for the wrong group
+
+Send an email to Espen ( [e-post: se Canvas]  )
+I didn't get a grade for an assignment even though the grading deadline has passed
+Send an email to Espen ( [e-post: se Canvas]  )
+I need an extension to the deadline
+
+Explain why in an email to Espen ( [e-post: se Canvas] )
+Previous
+Next
+
+===== Week schedule =====
+Source: https://canvas.ntnu.no/courses/24540/pages/week-schedule?module_item_id=196670
+
+Week schedule
+ 	Monday	Tuesday	Wednesday	Thursday	Friday
+Week 34 (17.08 - 23.08)	
+
+ 
+
+ 
+
+	 	 	 Lecture 1	 
+Week 35 (24.08 - 30.08)	
+
+ 
+
+	
+
+ 
+
+	Assignment 1 out	
+
+Lecture 2
+
+	
+
+Assignment lecture 1
+
+Lab
+
+
+Week 36 (31.08 - 06.09)	
+
+Lab
+
+	 Lab	
+
+Lab
+
+	
+
+Lecture 3
+
+	
+
+Lab
+
+
+Week 37 (07.09 - 13.09)	
+
+Lab
+
+	 Lab	
+
+ Assignment 2 out
+
+Lab
+
+	Lecture 4	
+
+Assignment 1 delivery
+
+Assignment lecture 2 
+
+Lab
+
+
+Week 38 (14.09 - 20.09)	
+
+Lab
+
+	Lab	Lab	
+
+ 
+
+Lecture 5
+
+	
+
+Lab
+
+
+Week 39 (21.09 - 27.09)	
+
+Lab
+
+	Lab	Lab	Lecture 6 	
+
+Assignment 2 delivery
+
+Lab 
+
+
+Week 40 (28.09 - 04.10)	
+
+ 
+
+			 Lecture 7	
+
+ 
+
+ 
+
+
+Week 41 (05.10 - 11.10)	
+
+ 
+
+ 
+
+		Assignment 3 out	
+
+Lecture 8
+
+	
+
+Assignment lecture 3
+
+Lab
+
+
+Week 42 (12.10 - 18.10)	Lab	Lab	
+
+Lab
+
+	Lecture 9	Lab
+Week 43 (19.10 - 25.10)	Lab	 Lab	 Lab	
+
+Lecture 10 
+
+	
+
+Assignment 3 delivery
+
+Lab
+
+
+Week 44 (26.10 - 01.11)	
+
+ 
+
+ 
+
+	 	 	 Lecture 11	 
+Week 45 (02.11 - 08.11)	
+
+ 
+
+ 
+
+	 	 	Lecture 12 	 
+Week 46 (09.11 - 15.11)	
+
+ 
+
+ 
+
+	 	 	Lecture 13 	 
+Previous
+Next
+
+===== Exam info =====
+Source: https://canvas.ntnu.no/courses/24540/pages/exam-info?module_item_id=196707
+
+Exam Info
+
+General information
+
+
+Information about the time and location of the exam can be found on StudWeb and the "about page"
+Links to an external site.
+, but we also provide information here for your convenience. In the case of conflicting information, the information on this page should be considered out of date.
+
+
+ 
+
+Exams at NTNU are organized centrally, this means that as course administrators we cannot change the date or location of the exam.
+
+ 
+
+Note that there may be multiple exam locations, you need to check StudWeb to find the location assigned to you.
+
+
+ 
+
+Please see NTNU's help page regarding exams and NTNU's FAQ page regarding exams for more general information.
+
+ 
+
+Details
+
+Examination arrangement:   School exam, 4 hours, written. 
+Date:  07.12.2026
+Exam language: Questions only in English, you can answer in English or Norwegian
+Examination aids:  D. None.
+Grade: Letter grades based 100% on final exam. 3 mandatory assignments must be delivered and passed ("godkjent") in order to take the exam. We will use the percentage grading scale.
+
+
+ 
+
+FAQ
+
+ I have two exams at the same time, what should I do?
+
+See NTNU's FAQ page regarding exams
+Previous
+Next
+
+===== Lab hours =====
+Source: https://canvas.ntnu.no/courses/24540/pages/lab-hours?module_item_id=196692
+
+Lab Hours
+
+Lab Hours
+
+"Lab Hours" is your opportunity to ask questions and get help from Student Assistants. If you have a question or a problem related to an assignment, this is the place to go.
+
+ 
+
+We have the following rooms booked for lab hours:
+
+- Monday - 16:15-18:00. Place: GL-AO U35
+Links to an external site.
+
+- Tuesday at 14:15 to 16:00. Place: GL-AO U36
+Links to an external site.
+
+- Wednesday at 08:15 to 10:00. Place: GL-AO U35
+Links to an external site.
+
+- Fridays at 14:15 to 16:00. Place: GL-AO U36
+Links to an external site.
+
+
+
+Important: The lab hours will start on Friday in week 35 (28.08.26). Lab hours will be arranged for the period between the assignment lecture and the submission deadline.
+
+ 
+
+FAQ
+
+Are lab hours mandatory?
+No, lab hours are not mandatory. They are simply an additional resource for students.
+Why are there 4 different time slots?
+There are different time slots so that you can pick the time that is most convenient for you :)
+Previous
+Next
+
+===== Frequently asked questions =====
+Source: https://canvas.ntnu.no/courses/24540/pages/frequently-asked-questions?module_item_id=196669
+
+Frequently Asked Questions
+
+
+
+
+ 
+
+NOTE: PLEASE PREFIX THE TOPIC OF ANY EMAIL WITH "TDT4136" (NO QUOTES)
+
+ 
+
+ 
+
+FAQ
+
+Assignments
+
+Are assignments mandatory?
+Yes, you need to pass all 3 mandatory assignments to be eligible for the exam
+I have a question about an assignment
+Search the forum to see if it has been asked before
+If not, post your question on the forum
+I signed up for the wrong group
+
+Send an email to Espen ( [e-post: se Canvas] )
+I didn't get a grade for an assignment even though the grading deadline has passed
+Send an email to Espen ( [e-post: se Canvas] )
+I need an extension to the deadline
+
+Explain why in an email to Espen ( [e-post: se Canvas] )
+
+Lectures
+
+Is lecture attendance mandatory?
+No, lecture attendance is not mandatory. If you prefer not to go to lectures, or to just watch lecture recordings, you are free to do so.
+The "Lecture Recording" page does not work
+This is likely due to some issue related to cookies. To fix the issue, login to Canvas in a private window or in a different browser.
+
+Lab Hours
+
+Are lab hours mandatory?
+No, lab hours are not mandatory. They are simply an additional resource for students.
+Why is there 4 different time slots?
+There are different time slots so that you can pick the time that is most convenient for you :)
+
+Assignment Lectures
+
+
+Are assignment lectures mandatory?
+No, assignment lectures are not mandatory. They are simply an additional resource for students.
+Will assignment lectures be recorded?
+
+Yes, assignment lectures will recorded the same way as regular lectures.
+
+Exam
+
+ I have two exams at the same time, what should I do?
+
+See NTNU's FAQ page regarding exams
+Are previous exams representative of the current syllabus?
+Mostly, but some topics such as the GraphPlan algorithm are no longer in the current syllabus. The exam will only cover topics within the current syllabus.
+
+
+
+
+
+Previous
+Next
+
+===== Assignment lectures =====
+Source: https://canvas.ntnu.no/courses/24540/pages/assignment-lectures?module_item_id=196690
+
+Assignment Lectures
+
+Assignment Lectures
+
+"Assignment Lectures" are lectures covering the details of the assignments, which will be held by the teaching assistant Aleksandra Jekic. These lectures are typically not very long, and after the lecture is finished, you will have the opportunity to ask clarifying questions.
+
+
+ 
+
+We will have a single lecture for each of the mandatory assignments. This means that for some weeks no assignment lecture will be held, even though the lecture hall is booked for the whole semester.
+
+
+ 
+
+Assignment lectures will be held at the following dates:
+Assignment 1: 28.08.2026 10:15-12:00 @ GL-RFB R8
+Links to an external site.
+
+
+Assignment 2: 11.09.2026 10:15-12:00 @ GL-RFB R8
+Links to an external site.
+
+
+Assignment 3: 09.10.2026 10:15-12:00 @ GL-RFB R8
+Links to an external site.
+
+
+
+ 
+
+FAQ
+
+Are assignment lectures mandatory?
+No, assignment lectures are not mandatory. They are simply an additional resource for students.
+Will assignment lectures be recorded?
+
+Yes, assignment lectures will recorded the same way as regular lectures.
+Previous
+Next
+
+===== Syllabus 2026 =====
+Source: https://canvas.ntnu.no/courses/24540/pages/syllabus-2026-subject-to-change?module_item_id=196652
+
+Syllabus 2026 (subject to change)
+
+1. Lectures, lecture slides, assignment lectures material
+
+2. Textbook. Russel and Norvig. Artificial Intelligence - A modern approach. 4th ed.
+
+     Chapters 1- 11, Sections from Chapter 24-25*,  and Chapter 28
+
+The following sections are NOT included in the syllabus:
+ 5.3.3 Intelligent backtracking: Looking backward
+5.3.4 Constraint learning
+5.5 The Structure of Problems
+ 7.7 Agents Based on Propositional Logic
+
+9.4.2 Logic programming
+
+9.4.3 Redundant inference and infinite loops
+
+9.4.4 Database semantics of Prolog
+
+9.4.5 Constraint logic programming
+
+9.5.4 Completeness of resolution
+
+10.2.3 Objects: Things and stuﬀ
+
+10.4 Mental Objects and Modal Logic
+
+10.6 Reasoning with Default Information
+
+11.1.2 Example domain: The spare tire problem
+
+11.1.3 Example domain: The blocks world
+
+11.2.3 Planning as Boolean satisfiability
+
+11.2.4 Other classical planning approaches
+
+11.3.1 Domain-independent pruning
+
+11.3.2 State abstraction in planning
+
+11.4.3 Searching for abstract solutions
+
+11.6 Time, Schedules, and Resources
+
+24.2.1 The Lexicon of E0
+
+24.3.1 Dependency Parsing
+
+24.3.2 Learning a parser from Examples
+
+24.4 Augmented Grammar
+
+24.5 Complications of Real Natural Language
+
+28.3.5 The future of work
+
+28.3.6 Robot rights
+
+Support material - for game theory and multiagent systems: 
+ from chapter 17:   Sections 17.2.1, 17.2.2 og 17.2.3.
+Previous
+Next
+
+===== Teaching staff =====
+Source: https://canvas.ntnu.no/courses/24540/pages/teaching-staff?module_item_id=196663
+
+Teaching staff
+
+Course coordinator: 
+
+Pinar Øzturk ([e-post: se Canvas])
+
+Lecturers:
+
+Ole Christian Eidheim ([e-post: se Canvas])
+
+Massimiliano Ruocco ([e-post: se Canvas])
+
+
+Research Assistants (PhD students):
+
+Espen Uri Høgstedt ([e-post: se Canvas]), responsible for administrative tasks and general questions.
+
+Aleksandra Jekic ([e-post: se Canvas]), responsible for assignments and questions related to assignments.
+
+ 
+
+Student Assistants:
+
+Comes soon...
+
+ 
+
+
+
+
+ 
+
+NOTE: PLEASE PREFIX THE TOPIC OF ANY EMAIL WITH "TDT4136" (NO QUOTES)
+
+
+ 
+
+Previous
+

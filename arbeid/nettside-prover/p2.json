@@ -1,0 +1,1438 @@
+{
+ "id": "p2",
+ "ep": "P2",
+ "tittel": "Prøveeksamen 2",
+ "om": "**Cover Page**\n\nExamination paper for TDT4136 Introduction to Artificial Intelligence. **Practice exam P2.**\n\nTime: 4 hours\n\nPermitted examination support material: D: No printed or hand-written support material is allowed. A specific basic calculator is allowed.\n\n**OTHER INFORMATION**\n\nThere are 13 questions in this exam. The first 4 are multiple choice questions. For questions about logic, there is a 'Formula Sheet' at the very end of the exam, after all the questions.\n\nRead the questions carefully and make your own assumptions. In your answers, explain clearly what assumptions you have made and how you have understood or limited the assignment.\n\n**Paper drawings:** For question 9 (Unification) and 10 (Resolution) you can answer on handwritten sheets. Other questions are answered in the boxes.\n\n**Weighting:** Weights for questions and sub-questions are given in each question.\n\n---\n\n*Dette er ikke en ekte eksamen. Settet er laget for øving i formatet fra eksamen 2025 (13 oppgaver, 100 poeng, 4 timer). Temaer: agenttyper, genetisk algoritme, MRV/degree/LCV, IESDS, DLS og IDS, A\\* med inkonsistent heuristikk og weighted A\\*, backtracking med forward checking, expectiminimax og alpha-beta, unifikasjon, CNF og resolusjon i proposisjonslogikk, PDDL og regresjon, PCFG og parsing, kategorier og fairness.*\n\n<details><summary>Formula sheet (appendix)</summary><img class=\"fig\" src=\"nettside-figurer/e14-2025-formelark.svg\" alt=\"Formelark\"></details>",
+ "intro": "Flervalg, rekkefølger, stier, tall og mengder sjekkes med «Sjekk». Forklaringer og bevis rettes mot fasiten nederst.",
+ "tasks": [
+  {
+   "t": "Oppgave 1 (5 p): Intelligent Agents",
+   "d": "Consider the four agent programs below.\n\n1. A robot vacuum cleaner chooses each action only from its current dirt sensor: if the current square is dirty it sucks, otherwise it moves in a random direction. It stores nothing between time steps.\n2. A lane-change module in a car keeps an internal estimate of where nearby cars are, updated from earlier camera images and a model of how cars move. It then applies condition–action rules such as \"if a car is believed to be in the blind spot, do not change lanes\".\n3. A warehouse robot searches over sequences of moves that reach a target shelf. When the target shelf changes, only the goal given to the search changes; the program itself is unchanged.\n4. An automated taxi weighs travel time, fuel use and the risk of an accident, and chooses the action with the highest expected score.\n\nWhich alternative gives the best-fitting agent type for each program?\n\nSelect one alternative:\n\n- A. 1: simple reflex; 2: goal-based; 3: goal-based; 4: utility-based\n- B. 1: simple reflex; 2: model-based reflex; 3: goal-based; 4: utility-based\n- C. 1: model-based reflex; 2: model-based reflex; 3: goal-based; 4: goal-based\n- D. 1: simple reflex; 2: model-based reflex; 3: utility-based; 4: goal-based\n- E. 1: simple reflex; 2: model-based reflex; 3: goal-based; 4: learning agent",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "B"
+     ]
+    },
+    "merk": "1 bruker bare nåværende percept (randomized simple reflex). 2 har intern tilstand, men velger med condition–action-regler. 3 søker mot et eksplisitt mål. 4 maksimerer forventet nytte.",
+    "kilde": "Bokas agenttyper (kap. 2.4) og E01-notatet; hvert alternativ begrunnet i fasiten."
+   },
+   "fasit": "**Svar: B.**\n\n- Program 1 er en **simple reflex agent**: handlingen avhenger bare av nåværende percept, og ingenting lagres. Den tilfeldige bevegelsen gjør den til bokas *randomized* simple reflex agent, som unngår evige løkker.\n- Program 2 er en **model-based reflex agent**: den har intern tilstand (hvor bilene er), oppdatert med percept-historikken og en modell av hvordan verden endrer seg. Handlingen velges likevel med condition–action-regler, ikke med søk. Boka bruker filskifte som eksempel.\n- Program 3 er **goal-based**: den søker etter handlingssekvenser mot et eksplisitt mål, og et nytt mål krever bare at målet byttes.\n- Program 4 er **utility-based**: den avveier flere mål (tid, drivstoff, risiko) og velger handlingen med høyest forventet nytte.\n\nAlternativene:\n\n- A er feil: 2 velger med regler på en intern tilstand, ikke ved å søke mot et mål.\n- B er riktig.\n- C er feil: 1 lagrer ingenting og har dermed ingen modell, og 4 avveier flere mål med forventet nytte, som er utility-based.\n- D er feil: 3 og 4 er byttet om.\n- E er feil: ingenting i 4 handler om læring. En learning agent (learning element, critic, problem generator) er en måte å bygge hvilken som helst av typene på.\n\nVanlig feil: å tro at intern tilstand gjør agenten goal-based. Det avgjørende er om handlingen velges med regler eller ved å se fremover mot et mål."
+  },
+  {
+   "t": "Oppgave 2 (5 p): Genetic Algorithms",
+   "d": "A genetic algorithm uses a population of four 6-bit individuals with the fitness values below.\n\n| Individual | Bits | Fitness |\n|---|---|---|\n| x1 | 110100 | 9 |\n| x2 | 011011 | 6 |\n| x3 | 100111 | 3 |\n| x4 | 001000 | 2 |\n\nWhich of the following statements is **false**?\n\nSelect one alternative:\n\n- A. With fitness-proportionate (roulette-wheel) selection, x1 is selected with probability 0.45 in each draw.\n- B. One-point crossover of x1 and x2 with the crossover point after the third bit gives the children 110011 and 011100.\n- C. With tournament selection where n = 3 distinct individuals are drawn at random and the ρ = 2 fittest of them become parents, x4 can never become a parent.\n- D. If two parents are drawn independently with fitness-proportionate selection (with replacement), the probability that x4 is drawn at least once is 0.20.\n- E. With elitism, where the fittest individuals of a generation are copied unchanged into the next generation, the fitness of the best individual can never decrease from one generation to the next.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "D"
+     ]
+    },
+    "merk": "P(x4 minst én gang) = 1 − (1 − 2/20)² = 1 − 0,81 = 0,19, ikke 0,20. 2 · 0,1 teller tilfellet der x4 trekkes begge gangene to ganger.",
+    "kilde": "Regnet for hånd og med eget Python-skript (sannsynligheter, crossover og alle 4 mulige turneringer). Elitism: boka kap. 4.1.4."
+   },
+   "fasit": "**Svar: D** (den usanne påstanden).\n\nTotal fitness er 9 + 6 + 3 + 2 = 20.\n\n- A er sann: P(x1) = 9/20 = 0,45.\n- B er sann: 110|100 og 011|011 gir 110 + 011 = **110011** og 011 + 100 = **011100**.\n- C er sann: x4 har lavest fitness, så blant tre ulike individer er x4 alltid den dårligste og kommer aldri blant de to beste.\n- D er **usann**: P(x4) = 2/20 = 0,1 per trekk, så P(minst én gang) = 1 − 0,9² = **0,19**. Regnestykket 2 · 0,1 = 0,20 teller tilfellet «x4 begge gangene» (0,01) to ganger.\n- E er sann: boka sier at elitism garanterer at fitness aldri synker over tid. De beste kopieres uendret, så beste fitness kan ikke bli lavere.\n\nVanlig feil: å legge sammen sannsynligheter for hendelser som ikke er disjunkte."
+  },
+  {
+   "t": "Oppgave 3 (5 p): Constraint Satisfaction Problems",
+   "d": "A map-colouring CSP has the variables P, Q, R, S, T, U, V, W and Z, each with the domain {red, green, blue}. Variables connected by an edge in the constraint graph below must get different colours.\n\nBacktracking search with forward checking has so far assigned **P = red, Q = red, R = red and Z = blue** (forward checking was run after each assignment). The next variable is chosen with MRV; ties are broken with the degree heuristic (the number of constraints on other *unassigned* variables), and remaining ties alphabetically. The values of the chosen variable are ordered with LCV; ties are broken in the order red, green, blue.\n\nWhich assignment is made next?\n\nSelect one alternative:\n\n- A. S = green\n- B. T = green\n- C. V = red\n- D. U = red\n- E. T = blue",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "E"
+     ]
+    },
+    "merk": "FC-domener: S {green, blue}, T {green, blue}, U {red, green}, V og W {red, green, blue}. MRV: S, T, U. Degree blant utilordnede: S 1, T 2, U 1, så T. LCV: green fjerner 2 verdier (U, V), blue 1 (V), så T = blue.",
+    "kilde": "Regnet for hånd og med motoren (backtracking med MRV, degree, LCV og forward checking) på grafen i «Tegn og sjekk»: femte tilordning er T = blue."
+   },
+   "g": {
+    "w": 520,
+    "h": 300,
+    "mw": 560,
+    "dir": 0,
+    "al": "Constraint graph for question 3",
+    "n": {
+     "P": [
+      60,
+      60,
+      "red",
+      -36,
+      0
+     ],
+     "Q": [
+      60,
+      160,
+      "red",
+      -36,
+      0
+     ],
+     "R": [
+      60,
+      260,
+      "red",
+      -36,
+      0
+     ],
+     "S": [
+      190,
+      210
+     ],
+     "T": [
+      220,
+      70
+     ],
+     "U": [
+      360,
+      50
+     ],
+     "V": [
+      330,
+      170
+     ],
+     "W": [
+      460,
+      230
+     ],
+     "Z": [
+      480,
+      50,
+      "blue",
+      0,
+      -24
+     ]
+    },
+    "e": [
+     [
+      "P",
+      "S",
+      ""
+     ],
+     [
+      "Q",
+      "S",
+      ""
+     ],
+     [
+      "R",
+      "S",
+      ""
+     ],
+     [
+      "S",
+      "V",
+      ""
+     ],
+     [
+      "P",
+      "T",
+      ""
+     ],
+     [
+      "T",
+      "U",
+      ""
+     ],
+     [
+      "T",
+      "V",
+      ""
+     ],
+     [
+      "Z",
+      "U",
+      ""
+     ],
+     [
+      "V",
+      "W",
+      ""
+     ]
+    ]
+   },
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "P",
+       "x": 60,
+       "y": 60,
+       "domene": [
+        "red"
+       ]
+      },
+      {
+       "id": "Q",
+       "x": 60,
+       "y": 160,
+       "domene": [
+        "red"
+       ]
+      },
+      {
+       "id": "R",
+       "x": 60,
+       "y": 260,
+       "domene": [
+        "red"
+       ]
+      },
+      {
+       "id": "S",
+       "x": 190,
+       "y": 210,
+       "domene": [
+        "red",
+        "green",
+        "blue"
+       ]
+      },
+      {
+       "id": "T",
+       "x": 220,
+       "y": 70,
+       "domene": [
+        "red",
+        "green",
+        "blue"
+       ]
+      },
+      {
+       "id": "U",
+       "x": 360,
+       "y": 50,
+       "domene": [
+        "red",
+        "green",
+        "blue"
+       ]
+      },
+      {
+       "id": "V",
+       "x": 330,
+       "y": 170,
+       "domene": [
+        "red",
+        "green",
+        "blue"
+       ]
+      },
+      {
+       "id": "W",
+       "x": 460,
+       "y": 230,
+       "domene": [
+        "red",
+        "green",
+        "blue"
+       ]
+      },
+      {
+       "id": "Z",
+       "x": 480,
+       "y": 50,
+       "domene": [
+        "blue"
+       ]
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "P",
+       "til": "S"
+      },
+      {
+       "fra": "Q",
+       "til": "S"
+      },
+      {
+       "fra": "R",
+       "til": "S"
+      },
+      {
+       "fra": "S",
+       "til": "V"
+      },
+      {
+       "fra": "P",
+       "til": "T"
+      },
+      {
+       "fra": "T",
+       "til": "U"
+      },
+      {
+       "fra": "T",
+       "til": "V"
+      },
+      {
+       "fra": "Z",
+       "til": "U"
+      },
+      {
+       "fra": "V",
+       "til": "W"
+      }
+     ]
+    }
+   },
+   "fasit": "**Svar: E (T = blue).**\n\n1. Forward checking etter P = Q = R = red og Z = blue:\n\n| Variabel | Domene | Utilordnede naboer |\n|---|---|---|\n| S | {green, blue} | V |\n| T | {green, blue} | U, V |\n| U | {red, green} | T |\n| V | {red, green, blue} | S, T, W |\n| W | {red, green, blue} | V |\n\n2. MRV: S, T og U har 2 verdier. Degree teller bare constraints mot utilordnede variabler: S 1, T 2, U 1. **T** velges.\n3. LCV for T: green fjerner green fra U og V (2 verdier). Blue fjerner bare blue fra V, siden U ikke har blue (1 verdi). **Blue** prøves først.\n\nAlternativene:\n\n- A (S = green) er feil: S har flest naboer totalt (4), men tre av dem er tilordnet. Degree teller bare utilordnede.\n- B (T = green) er feil: riktig variabel, men LCV er hoppet over.\n- C (V = red) er feil: V har høyest degree (3), men har 3 verdier. Degree brukes bare til å bryte likhet i MRV.\n- D (U = red) er feil: U = red begrenser ingen naboer, men LCV ordner verdiene til den valgte variabelen. LCV velger ikke variabel.\n- E er riktig."
+  },
+  {
+   "t": "Oppgave 4 (5 p): Game Theory",
+   "d": "Consider the two-player game below. P1 chooses a row and P2 chooses a column. Each cell gives (utility of P1, utility of P2).\n\n| | Left | Center | Right |\n|---|---|---|---|\n| **Up** | 1, 6 | 3, 8 | 2, 9 |\n| **Middle** | 3, 3 | 7, 9 | 6, 5 |\n| **Down** | 6, 5 | 9, 4 | 1, 3 |\n\nApply iterated elimination of strictly dominated strategies (IESDS). Which statement is correct?\n\nSelect one alternative:\n\n- A. IESDS stops after removing Up, so six strategy profiles remain.\n- B. IESDS leaves only (Middle, Center), the profile with the highest social welfare.\n- C. IESDS leaves only (Down, Left), and (Down, Left) is the only pure-strategy Nash equilibrium of the game.\n- D. IESDS leaves both (Down, Left) and (Middle, Center), and both are pure-strategy Nash equilibria.\n- E. No strategy is strictly dominated in the original game, so IESDS removes nothing.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "C"
+     ]
+    },
+    "merk": "Up < Middle (1, 3, 2 mot 3, 7, 6). Uten Up: Right < Center for P2 (5, 3 mot 9, 4). Så Middle < Down (3, 7 mot 6, 9), og til slutt Center < Left (4 mot 5). Igjen: (Down, Left), den eneste rene Nash-likevekten.",
+    "kilde": "Regnet for hånd, med motoren (dominans-nash) og med eget Python-skript: samme IESDS-rekkefølge og samme likevekt."
+   },
+   "fasit": "**Svar: C.**\n\nIESDS steg for steg (strict dominance, én strategi om gangen):\n\n1. P1: **Up** er dominert av Middle: (3, 7, 6) mot (1, 3, 2). Ingenting annet er dominert i det opprinnelige spillet. For P2 er Right bedre enn Center i raden Up (9 mot 8).\n2. P2: uten Up er **Right** dominert av Center: (9, 4) mot (5, 3).\n3. P1: uten Right er **Middle** dominert av Down: (6, 9) mot (3, 7).\n4. P2: i raden Down er **Center** dominert av Left: 5 mot 4.\n\nIgjen står **(Down, Left) = (6, 5)**.\n\nRene Nash-likevekter:\n\n- P1s beste svar er Down mot Left, Down mot Center og Middle mot Right.\n- P2s beste svar er Right mot Up, Center mot Middle og Left mot Down.\n- Bare (Down, Left) er beste svar for begge.\n\nIESDS med strict dominance fjerner aldri en Nash-likevekt, så resultatene stemmer med hverandre.\n\nAlternativene:\n\n- A er feil: etter at Up er borte, blir Right dominert, og elimineringen fortsetter.\n- B er feil: (Middle, Center) har høyest social welfare (16), men Middle strykes i steg 3. Profilen er heller ikke en likevekt, for P1 tjener på å bytte til Down (9 mot 7).\n- C er riktig.\n- D er feil: (Middle, Center) er ikke en Nash-likevekt, og IESDS ender i én profil.\n- E er feil: Up er strictly dominert av Middle allerede i det opprinnelige spillet.\n\nVanlig feil: å se etter dominans bare i det opprinnelige spillet. Right blir dominert først når Up er strøket."
+  },
+  {
+   "t": "Oppgave 5 (8 p): Uninformed Search",
+   "d": "Consider the undirected graph below, where S is the start state and G is the goal state. The numbers on the edges are step costs.\n\nDepth-limited search (DLS) is run as **tree-like search with a cycle check**: a child that already appears on the current path from S is not generated. DLS uses a LIFO frontier, applies the goal test when a node is popped, and tests nodes at depth ℓ without expanding them. Tie breaking: children are pushed so that they are popped in alphabetical order. Iterative deepening search (IDS) runs DLS with ℓ = 0, 1, 2, … and stops at the first ℓ where DLS does not return *cutoff*.\n\na) Run IDS. For each ℓ, list the nodes in the order they are popped (goal-tested). Give the path IDS returns and its cost. (4 pts.)\n\nb) Run DLS with ℓ = 4 directly (no iterative deepening). List the popped nodes, and give the path returned and its cost. (2 pts.)\n\nc) What is the cheapest path from S to G and its cost? Explain briefly why neither IDS nor DLS with ℓ = 4 returns it, and name an uninformed algorithm that would. (2 pts.)",
+   "g": {
+    "w": 470,
+    "h": 260,
+    "mw": 520,
+    "dir": 0,
+    "al": "Graph for question 5",
+    "n": {
+     "S": [
+      40,
+      130
+     ],
+     "A": [
+      150,
+      50
+     ],
+     "B": [
+      150,
+      210
+     ],
+     "C": [
+      280,
+      50
+     ],
+     "D": [
+      280,
+      210
+     ],
+     "E": [
+      400,
+      50
+     ],
+     "G": [
+      420,
+      200,
+      "",
+      0,
+      0,
+      1
+     ]
+    },
+    "e": [
+     [
+      "S",
+      "A",
+      1
+     ],
+     [
+      "S",
+      "B",
+      4,
+      -1
+     ],
+     [
+      "A",
+      "B",
+      2,
+      -1
+     ],
+     [
+      "A",
+      "C",
+      3
+     ],
+     [
+      "B",
+      "D",
+      3,
+      -1
+     ],
+     [
+      "C",
+      "D",
+      1,
+      -1
+     ],
+     [
+      "C",
+      "E",
+      4
+     ],
+     [
+      "D",
+      "G",
+      6,
+      -1
+     ],
+     [
+      "E",
+      "G",
+      1,
+      -1
+     ]
+    ]
+   },
+   "f": [
+    [
+     "a) ℓ = 0: popped nodes",
+     "text",
+     "S, …"
+    ],
+    [
+     "a) ℓ = 1: popped nodes",
+     "text"
+    ],
+    [
+     "a) ℓ = 2: popped nodes",
+     "text"
+    ],
+    [
+     "a) ℓ = 3: popped nodes",
+     "text"
+    ],
+    [
+     "a) Path returned by IDS",
+     "text",
+     "S, …, G"
+    ],
+    [
+     "a) Cost of the IDS path",
+     "text"
+    ],
+    [
+     "b) DLS ℓ = 4: popped nodes",
+     "text"
+    ],
+    [
+     "b) Path returned by DLS ℓ = 4",
+     "text"
+    ],
+    [
+     "b) Cost",
+     "text"
+    ],
+    [
+     "c) Cheapest path",
+     "text"
+    ],
+    [
+     "c) Cheapest cost",
+     "text"
+    ],
+    [
+     "c) Why not IDS/DLS, and which algorithm?",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) ℓ = 0: popped nodes": [
+      "S"
+     ],
+     "a) ℓ = 1: popped nodes": [
+      "S, A, B"
+     ],
+     "a) ℓ = 2: popped nodes": [
+      "S, A, B, C, B, A, D"
+     ],
+     "a) ℓ = 3: popped nodes": [
+      "S, A, B, D, C, D, E, B, A, C, D, C, (G)"
+     ],
+     "a) Path returned by IDS": [
+      "S, B, D, G"
+     ],
+     "a) Cost of the IDS path": [
+      "13"
+     ],
+     "b) DLS ℓ = 4: popped nodes": [
+      "S, A, B, D, C, (G)"
+     ],
+     "b) Path returned by DLS ℓ = 4": [
+      "S, A, B, D, G"
+     ],
+     "b) Cost": [
+      "12"
+     ],
+     "c) Cheapest path": [
+      "S, A, C, E, G"
+     ],
+     "c) Cheapest cost": [
+      "9"
+     ]
+    },
+    "merk": "IDS finner den grunneste løsningen (3 kanter), ikke den billigste. Nodene på dybde ℓ testes, men ekspanderes ikke, og bare noder på stien blokkeres, så D og C kan dukke opp flere ganger i samme iterasjon.",
+    "kilde": "Regnet for hånd, med motoren (dls med grense 0–5, ids og ucs) og med eget Python-skript."
+   },
+   "fasit": "**a) ℓ = 0: S** (cutoff). **ℓ = 1: S, A, B** (cutoff). **ℓ = 2: S, A, B, C, B, A, D** (cutoff). **ℓ = 3: S, A, B, D, C, D, E, B, A, C, D, C, (G).** IDS returnerer **S, B, D, G** med kostnad **13**.\n\n**b) S, A, B, D, C, (G).** Stien er **S, A, B, D, G** med kostnad **12**.\n\n**c) S, A, C, E, G** med kostnad **9**.\n\nSporing for ℓ = 3 (dybden står i parentes; et barn som allerede står på stien, genereres ikke):\n\n| Tatt ut | Sti | Barn som legges på stakken |\n|---|---|---|\n| S (0) | S | A, B |\n| A (1) | S A | B, C |\n| B (2) | S A B | D |\n| D (3) | S A B D | testes, ekspanderes ikke |\n| C (2) | S A C | D, E |\n| D (3) | S A C D | – |\n| E (3) | S A C E | – |\n| B (1) | S B | A, D |\n| A (2) | S B A | C |\n| C (3) | S B A C | – |\n| D (2) | S B D | C, G |\n| C (3) | S B D C | – |\n| G (3) | S B D G | mål |\n\nKostnaden er 4 + 3 + 6 = 13.\n\nb) Med ℓ = 4 går søket S, A, B, D. Under S-A-B-D er barna C og G, fordi B står på stien. C tas ut først (dybde 4, testes, men ekspanderes ikke), så G. Stien S-A-B-D-G koster 1 + 2 + 3 + 6 = 12.\n\nc) S-A-C-E-G koster 1 + 3 + 4 + 1 = 9.\n\n- IDS returnerer den grunneste løsningen (færrest kanter, her 3). Den er bare optimal når alle stegkostnadene er like.\n- DLS returnerer det første målet den finner i dybde-først-rekkefølge innenfor grensen.\n- **Uniform-cost search** finner den billigste stien.\n\nPoeng:\n\n- a) 1 p for ℓ = 0 og 1, 1 p for ℓ = 2, 1 p for ℓ = 3 og 1 p for sti og kostnad.\n- b) 1 p for rekkefølgen og 1 p for sti og kostnad.\n- c) 1 p for sti og kostnad og 1 p for forklaringen.\n\nVanlig feil: å blokkere noder som er besøkt tidligere i samme iterasjon. Sykelsjekken ser bare på stien, så D og C kan tas ut flere ganger."
+  },
+  {
+   "t": "Oppgave 6 (12 p): Informed Search",
+   "d": "Consider the undirected graph below, where S is the start state, G is the goal state, the numbers on the edges are step costs and each node is labelled with its heuristic value h.\n\na) Is h admissible? Is h consistent? Justify both answers. (2 pts.)\n\nb) Run A\\* as **graph search** (f = g + h). When a cheaper path to an already reached node is found, the node is updated and put back on the frontier, even if it has already been expanded (reopening). The goal test is applied when a node is popped. Tie breaking: alphabetical order. Give the nodes in the order they are expanded, which node(s) are reopened, and the path found with its cost. (6 pts.)\n\nc) Run weighted A\\* with W = 2, that is f(n) = g(n) + 2·h(n), with the same rules as in b). Give the expansion order and the path found with its cost. Is the cost within the bound that weighted A\\* guarantees? (4 pts.)",
+   "g": {
+    "w": 500,
+    "h": 300,
+    "mw": 540,
+    "dir": 0,
+    "al": "Graph for question 6",
+    "n": {
+     "S": [
+      40,
+      150,
+      "h=6",
+      0,
+      -24
+     ],
+     "A": [
+      150,
+      60,
+      "h=6",
+      0,
+      -24
+     ],
+     "B": [
+      150,
+      240,
+      "h=5",
+      0,
+      28
+     ],
+     "C": [
+      270,
+      150,
+      "h=1",
+      0,
+      -24
+     ],
+     "D": [
+      390,
+      60,
+      "h=3",
+      0,
+      -24
+     ],
+     "E": [
+      380,
+      260,
+      "h=2",
+      0,
+      28
+     ],
+     "G": [
+      460,
+      160,
+      "h=0",
+      0,
+      30,
+      1
+     ]
+    },
+    "e": [
+     [
+      "S",
+      "A",
+      2
+     ],
+     [
+      "S",
+      "B",
+      1,
+      -1
+     ],
+     [
+      "A",
+      "C",
+      1
+     ],
+     [
+      "B",
+      "C",
+      3,
+      -1
+     ],
+     [
+      "C",
+      "D",
+      2
+     ],
+     [
+      "D",
+      "G",
+      3
+     ],
+     [
+      "C",
+      "E",
+      4,
+      -1
+     ],
+     [
+      "E",
+      "G",
+      2,
+      -1
+     ],
+     [
+      "B",
+      "E",
+      6,
+      -1
+     ]
+    ]
+   },
+   "f": [
+    [
+     "a) Admissible? (yes/no)",
+     "text"
+    ],
+    [
+     "a) Consistent? (yes/no)",
+     "text"
+    ],
+    [
+     "a) Justification",
+     "area"
+    ],
+    [
+     "b) Expansion order",
+     "text",
+     "S, …, (G)"
+    ],
+    [
+     "b) Reopened node(s)",
+     "text"
+    ],
+    [
+     "b) Path found",
+     "text"
+    ],
+    [
+     "b) Cost",
+     "text"
+    ],
+    [
+     "b) Steps (frontier with g and f)",
+     "area"
+    ],
+    [
+     "c) Expansion order",
+     "text"
+    ],
+    [
+     "c) Path found",
+     "text"
+    ],
+    [
+     "c) Cost",
+     "text"
+    ],
+    [
+     "c) Within the bound? Why?",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Admissible? (yes/no)": [
+      "yes",
+      "ja"
+     ],
+     "a) Consistent? (yes/no)": [
+      "no",
+      "nei"
+     ],
+     "b) Expansion order": [
+      "S, B, C, A, C, D, (G)",
+      "S, B, C, A, C, D"
+     ],
+     "b) Reopened node(s)": [
+      "C"
+     ],
+     "b) Path found": [
+      "S, A, C, D, G"
+     ],
+     "b) Cost": [
+      "8"
+     ],
+     "c) Expansion order": [
+      "S, B, C, E, (G)",
+      "S, B, C, E"
+     ],
+     "c) Path found": [
+      "S, B, E, G"
+     ],
+     "c) Cost": [
+      "9"
+     ]
+    },
+    "merk": "h er admissible (h* = 8, 6, 8, 5, 3, 2, 0), men ikke consistent: h(A) = 6 > 1 + h(C) og h(B) = 5 > 3 + h(C). Uten reopening blir svaret S B C D G med kostnad 9. Weighted A*: 9 ≤ 2 · 8 = 16.",
+    "kilde": "Regnet for hånd, med motoren (astar med graph search og reopening, astar uten reopening, wastar med W = 2) og med eget Python-skript."
+   },
+   "fasit": "**a) Admissible: ja. Consistent: nei.**\n\n**b) Ekspansjon: S, B, C, A, C, D, (G). C gjenåpnes. Stien er S, A, C, D, G med kostnad 8.**\n\n**c) Ekspansjon: S, B, C, E, (G). Stien er S, B, E, G med kostnad 9. Det er innenfor grensen: 9 ≤ 2 · 8 = 16.**\n\na) De sanne kostnadene h\\* er S 8, A 6, B 8, C 5, D 3, E 2 og G 0. Siden h ≤ h\\* overalt, er h admissible.\n\nConsistency krever h(n) ≤ c(n, n′) + h(n′) for hver kant. Kravet brytes i to kanter:\n\n- A→C: 6 > 1 + 1.\n- B→C: 5 > 3 + 1.\n\nAltså er h ikke consistent. (1 p for hvert svar, med begrunnelse.)\n\nb) A\\* med reopening, skrevet node(g, f):\n\n| Steg | Ekspanderer | Frontier etterpå |\n|---|---|---|\n| 1 | S(0, 6) | B(1, 6), A(2, 8) |\n| 2 | B(1, 6) | C(4, 5), A(2, 8), E(7, 9) |\n| 3 | C(4, 5) | A(2, 8), D(6, 9), E(7, 9) |\n| 4 | A(2, 8) | C(3, 4) gjenåpnet, D(6, 9), E(7, 9) |\n| 5 | C(3, 4) | D(5, 8) oppdatert, E(7, 9) |\n| 6 | D(5, 8) | G(8, 8), E(7, 9) |\n| 7 | G(8, 8) tas ut: mål | |\n\n- I steg 3 gir C ingen bedre vei til A (5 > 2) eller E (8 > 7).\n- I steg 4 finner A en billigere vei til C (g = 3 < 4), så C legges inn igjen selv om den er ekspandert.\n- I steg 5 gir det D en billigere vei (5 < 6).\n\nStien S-A-C-D-G koster 2 + 1 + 2 + 3 = 8, som er optimalt.\n\nPoeng: 3 p for rekkefølgen med frontier, 1 p for gjenåpningen av C og 2 p for sti og kostnad.\n\nVanlig feil: å ikke gjenåpne C. Da blir rekkefølgen S, B, C, A, D, E, (G), og stien S-B-C-D-G koster 9. Med inkonsistent h er første ekspansjon av en node ikke nødvendigvis via den billigste veien.\n\nc) Weighted A\\*, f = g + 2h:\n\n| Steg | Ekspanderer | Frontier etterpå |\n|---|---|---|\n| 1 | S(0, 12) | B(1, 11), A(2, 14) |\n| 2 | B(1, 11) | C(4, 6), E(7, 11), A(2, 14) |\n| 3 | C(4, 6) | E(7, 11), D(6, 12), A(2, 14) |\n| 4 | E(7, 11) | G(9, 9), D(6, 12), A(2, 14) |\n| 5 | G(9, 9) tas ut: mål | |\n\nStien S-B-E-G koster 1 + 6 + 2 = 9. Med admissible h finner weighted A\\* en løsning som koster mellom C\\* og W · C\\* = 2 · 8 = 16, og 9 ligger innenfor.\n\nSøket ekspanderer 4 noder mot 6 for A\\*, men stien er 1 dyrere enn den optimale.\n\nPoeng: 2 p for rekkefølgen, 1 p for sti og kostnad og 1 p for grensen."
+  },
+  {
+   "t": "Oppgave 7 (10 p): Constraint Satisfaction Problems",
+   "d": "Six exams A–F must each be given one of the time slots 1, 2 or 3. Two exams connected by an edge in the graph below share students and must be in **different** time slots. Unary constraints have already been applied, so the domains are as shown next to each variable: A {1, 3}, B {1, 2, 3}, C {1, 2}, D {1, 3}, E {1, 2}, F {1, 2, 3}.\n\nThe problem is solved with backtracking search (Fig. 5.5 in the textbook) with **forward checking**. Variables are chosen with MRV; ties are broken with the degree heuristic (number of constraints on other unassigned variables), and remaining ties alphabetically. Values are ordered with LCV (fewest values removed from the domains of unassigned neighbours); remaining ties are broken by choosing the lowest value.\n\na) Which variable is assigned first, and with which value? Justify with the numbers for MRV, the degree heuristic and LCV. (2 pts.)\n\nb) Show the whole search: list every assignment var = value in the order it is made, including assignments that are undone, and the domains after each forward-checking step. Mark where the search backtracks. (6 pts.)\n\nc) Give the solution returned. (2 pts.)",
+   "g": {
+    "w": 500,
+    "h": 330,
+    "mw": 540,
+    "dir": 0,
+    "al": "Constraint graph for question 7",
+    "n": {
+     "A": [
+      440,
+      60,
+      "{1, 3}",
+      0,
+      -26
+     ],
+     "B": [
+      50,
+      150,
+      "{1, 2, 3}",
+      0,
+      -26
+     ],
+     "C": [
+      170,
+      150,
+      "{1, 2}",
+      -34,
+      -22
+     ],
+     "D": [
+      300,
+      60,
+      "{1, 3}",
+      0,
+      -26
+     ],
+     "E": [
+      300,
+      230,
+      "{1, 2}",
+      44,
+      12
+     ],
+     "F": [
+      170,
+      290,
+      "{1, 2, 3}",
+      -60,
+      0
+     ]
+    },
+    "e": [
+     [
+      "A",
+      "D",
+      ""
+     ],
+     [
+      "A",
+      "E",
+      ""
+     ],
+     [
+      "B",
+      "C",
+      ""
+     ],
+     [
+      "C",
+      "D",
+      ""
+     ],
+     [
+      "C",
+      "E",
+      ""
+     ],
+     [
+      "C",
+      "F",
+      ""
+     ],
+     [
+      "D",
+      "E",
+      ""
+     ],
+     [
+      "E",
+      "F",
+      ""
+     ]
+    ]
+   },
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "A",
+       "x": 440,
+       "y": 60,
+       "domene": [
+        "1",
+        "3"
+       ]
+      },
+      {
+       "id": "B",
+       "x": 50,
+       "y": 150,
+       "domene": [
+        "1",
+        "2",
+        "3"
+       ]
+      },
+      {
+       "id": "C",
+       "x": 170,
+       "y": 150,
+       "domene": [
+        "1",
+        "2"
+       ]
+      },
+      {
+       "id": "D",
+       "x": 300,
+       "y": 60,
+       "domene": [
+        "1",
+        "3"
+       ]
+      },
+      {
+       "id": "E",
+       "x": 300,
+       "y": 230,
+       "domene": [
+        "1",
+        "2"
+       ]
+      },
+      {
+       "id": "F",
+       "x": 170,
+       "y": 290,
+       "domene": [
+        "1",
+        "2",
+        "3"
+       ]
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "D"
+      },
+      {
+       "fra": "A",
+       "til": "E"
+      },
+      {
+       "fra": "B",
+       "til": "C"
+      },
+      {
+       "fra": "C",
+       "til": "D"
+      },
+      {
+       "fra": "C",
+       "til": "E"
+      },
+      {
+       "fra": "C",
+       "til": "F"
+      },
+      {
+       "fra": "D",
+       "til": "E"
+      },
+      {
+       "fra": "E",
+       "til": "F"
+      }
+     ]
+    }
+   },
+   "f": [
+    [
+     "a) First assignment",
+     "text",
+     "X = v"
+    ],
+    [
+     "a) Justification",
+     "area"
+    ],
+    [
+     "b) All assignments in order",
+     "text",
+     "X = v, Y = w, …"
+    ],
+    [
+     "b) Domains and backtracking",
+     "area"
+    ],
+    [
+     "c) Solution",
+     "text",
+     "A = …, B = …, C = …, D = …, E = …, F = … (alphabetical)"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) First assignment": [
+      "C = 2",
+      "C=2"
+     ],
+     "b) All assignments in order": [
+      "C = 2, E = 1, A = 3, C = 1, E = 2, D = 3, A = 1, F = 3, B = 2",
+      "C=2, E=1, A=3, C=1, E=2, D=3, A=1, F=3, B=2"
+     ],
+     "c) Solution": [
+      "A = 1, B = 2, C = 1, D = 3, E = 2, F = 3",
+      "A=1, B=2, C=1, D=3, E=2, F=3"
+     ]
+    },
+    "merk": "MRV: A, C, D, E (2 verdier). Degree: C og E har 4, så C (alfabetisk). LCV: C = 1 fjerner 4, C = 2 fjerner 3. C = 2 gir E = 1, og A = 3 tømmer D, så søket går tilbake til C = 1.",
+    "kilde": "Regnet for hånd, med motoren (backtracking: MRV, degree, LCV, forward checking, lavest først) og med eget Python-skript; samme rekkefølge."
+   },
+   "fasit": "**a) C = 2.**\n\n**b) C = 2, E = 1, A = 3, C = 1, E = 2, D = 3, A = 1, F = 3, B = 2.**\n\n**c) A = 1, B = 2, C = 1, D = 3, E = 2, F = 3.**\n\na) MRV: A, C, D og E har 2 verdier, mens B og F har 3.\n\nDegree er antall utilordnede naboer: A 2, C 4, D 3, E 4. C og E står likt, så den alfabetiske regelen gir **C**.\n\nLCV for C:\n\n- C = 1 fjerner 1 fra B, D, E og F, altså 4 verdier.\n- C = 2 fjerner 2 fra B, E og F, altså 3 verdier, siden D ikke har 2.\n\n**C = 2** prøves derfor først. (1 p for variabelen og 1 p for verdien, med tall.)\n\nb) Sporing, med domenene etter forward checking:\n\n| Steg | Tilordning | Domener etterpå | Kommentar |\n|---|---|---|---|\n| 1 | C = 2 | A {1,3}, B {1,3}, D {1,3}, E {1}, F {1,3} | |\n| 2 | E = 1 | A {3}, B {1,3}, D {3}, F {3} | MRV: E har 1 verdi |\n| 3 | A = 3 | D {} | MRV: A, D og F har 1 verdi. Degree: A 1, D 1, F 0, så A (alfabetisk). D tømmes: feil |\n| – | backtrack | | A og E har ingen flere verdier, så søket går tilbake til C |\n| 4 | C = 1 | A {1,3}, B {2,3}, D {3}, E {2}, F {2,3} | |\n| 5 | E = 2 | A {1,3}, B {2,3}, D {3}, F {3} | MRV: D og E har 1 verdi. Degree: D 2, E 3 |\n| 6 | D = 3 | A {1}, B {2,3}, F {3} | MRV: D og F. Degree: D 1, F 0 |\n| 7 | A = 1 | B {2,3}, F {3} | MRV: A og F. Begge har degree 0, så A (alfabetisk) |\n| 8 | F = 3 | B {2,3} | MRV |\n| 9 | B = 2 | | LCV gir likt (ingen utilordnede naboer), så laveste verdi |\n\nPoeng: 2 p for første gren med feilen og backtrackingen, 3 p for resten av rekkefølgen med begrunnelse og 1 p for domenene.\n\nc) A = 1, B = 2, C = 1, D = 3, E = 2, F = 3. Alle de åtte kantene har ulike verdier i endene.\n\nVanlige feil:\n\n- Å telle tilordnede naboer i degree.\n- Å la forward checking fjerne verdier hos naboenes naboer. Det er MAC/AC-3, ikke forward checking.\n- Å utelate A = 3 i steg 3. Det er en ekte tilordning som angres når D tømmes, så den skal stå med i lista."
+  },
+  {
+   "t": "Oppgave 8 (10 p): Adversarial Search",
+   "d": "**Tree 1** is a game tree with chance nodes. △ is a MAX node, ▽ a MIN node and ○ a chance node. The numbers on the edges below a chance node are probabilities, and the leaves show the utility for MAX.\n\n<div class=\"algo algo-fig\"><svg class=\"algo-g\" viewBox=\"-26 -29 852 404\" style=\"max-width:1022px\" role=\"img\" aria-label=\"Spilltreet i oppgaven\"><g class=\"e t-ny\" data-k=\"e0\"><path class=\"hit\" d=\"M33.2 238.8L5.5 315\"/><path class=\"l\" d=\"M33.2 238.8L5.5 315\"/><text class=\"el\" x=\"11.4\" y=\"274\"></text></g><g class=\"e t-ny\" data-k=\"e1\"><path class=\"hit\" d=\"M46.8 238.8L74.5 315\"/><path class=\"l\" d=\"M46.8 238.8L74.5 315\"/><text class=\"el\" x=\"68.6\" y=\"274\"></text></g><g class=\"e t-ny\" data-k=\"e2\"><path class=\"hit\" d=\"M110 123.7L51.8 203.8\"/><path class=\"l\" d=\"M110 123.7L51.8 203.8\"/><text class=\"el\" x=\"65.6\" y=\"152.7\">0.6</text></g><g class=\"e t-ny\" data-k=\"e3\"><path class=\"hit\" d=\"M193.2 238.8L165.5 315\"/><path class=\"l\" d=\"M193.2 238.8L165.5 315\"/><text class=\"el\" x=\"171.4\" y=\"274\"></text></g><g class=\"e t-ny\" data-k=\"e4\"><path class=\"hit\" d=\"M206.8 238.8L234.5 315\"/><path class=\"l\" d=\"M206.8 238.8L234.5 315\"/><text class=\"el\" x=\"228.6\" y=\"274\"></text></g><g class=\"e t-ny\" data-k=\"e5\"><path class=\"hit\" d=\"M130 123.7L188.2 203.8\"/><path class=\"l\" d=\"M130 123.7L188.2 203.8\"/><text class=\"el\" x=\"174.4\" y=\"152.7\">0.4</text></g><g class=\"e t-ny\" data-k=\"e6\"><path class=\"hit\" d=\"M381.4 7.3L135.8 103.8\"/><path class=\"l\" d=\"M381.4 7.3L135.8 103.8\"/><text class=\"el\" x=\"254\" y=\"43.9\"></text></g><g class=\"e t-ny\" data-k=\"e7\"><path class=\"hit\" d=\"M388.2 126.2L330.9 205\"/><path class=\"l\" d=\"M388.2 126.2L330.9 205\"/><text class=\"el\" x=\"351.4\" y=\"159.6\"></text></g><g class=\"e t-ny\" data-k=\"e8\"><path class=\"hit\" d=\"M400 130L400 205\"/><path class=\"l\" d=\"M400 130L400 205\"/><text class=\"el\" x=\"406\" y=\"167.5\"></text></g><g class=\"e t-ny\" data-k=\"e9\"><path class=\"hit\" d=\"M411.8 126.2L469.1 205\"/><path class=\"l\" d=\"M411.8 126.2L469.1 205\"/><text class=\"el\" x=\"448.6\" y=\"159.6\"></text></g><g class=\"e t-ny\" data-k=\"e10\"><path class=\"hit\" d=\"M400 20L400 90\"/><path class=\"l\" d=\"M400 20L400 90\"/><text class=\"el\" x=\"406\" y=\"55\"></text></g><g class=\"e t-ny\" data-k=\"e11\"><path class=\"hit\" d=\"M593.2 238.8L565.5 315\"/><path class=\"l\" d=\"M593.2 238.8L565.5 315\"/><text class=\"el\" x=\"571.4\" y=\"274\"></text></g><g class=\"e t-ny\" data-k=\"e12\"><path class=\"hit\" d=\"M606.8 238.8L634.5 315\"/><path class=\"l\" d=\"M606.8 238.8L634.5 315\"/><text class=\"el\" x=\"628.6\" y=\"274\"></text></g><g class=\"e t-ny\" data-k=\"e13\"><path class=\"hit\" d=\"M670 123.7L611.8 203.8\"/><path class=\"l\" d=\"M670 123.7L611.8 203.8\"/><text class=\"el\" x=\"625.6\" y=\"152.7\">0.7</text></g><g class=\"e t-ny\" data-k=\"e14\"><path class=\"hit\" d=\"M753.2 238.8L725.5 315\"/><path class=\"l\" d=\"M753.2 238.8L725.5 315\"/><text class=\"el\" x=\"731.4\" y=\"274\"></text></g><g class=\"e t-ny\" data-k=\"e15\"><path class=\"hit\" d=\"M766.8 238.8L794.5 315\"/><path class=\"l\" d=\"M766.8 238.8L794.5 315\"/><text class=\"el\" x=\"788.6\" y=\"274\"></text></g><g class=\"e t-ny\" data-k=\"e16\"><path class=\"hit\" d=\"M690 123.7L748.2 203.8\"/><path class=\"l\" d=\"M690 123.7L748.2 203.8\"/><text class=\"el\" x=\"734.4\" y=\"152.7\">0.3</text></g><g class=\"e t-ny\" data-k=\"e17\"><path class=\"hit\" d=\"M418.6 7.3L664.2 103.8\"/><path class=\"l\" d=\"M418.6 7.3L664.2 103.8\"/><text class=\"el\" x=\"546\" y=\"43.9\"></text></g><g class=\"n t-ny f-blad\" data-k=\"ne1\"><rect class=\"s\" x=\"-15\" y=\"315\" width=\"30\" height=\"30\" rx=\"2\"/><text class=\"nt\" x=\"0\" y=\"330\"></text><text class=\"no\" x=\"0\" y=\"305\"></text><text class=\"nu\" x=\"0\" y=\"358\">3</text></g><g class=\"n t-ny f-blad\" data-k=\"ne2\"><rect class=\"s\" x=\"65\" y=\"315\" width=\"30\" height=\"30\" rx=\"2\"/><text class=\"nt\" x=\"80\" y=\"330\"></text><text class=\"no\" x=\"80\" y=\"305\"></text><text class=\"nu\" x=\"80\" y=\"358\">7</text></g><g class=\"n t-ny f-min\" data-k=\"nE\"><path class=\"s\" d=\"M40 241L60 207L20.1 207Z\"/><text class=\"nt\" x=\"40\" y=\"216\">E</text><text class=\"no\" x=\"40\" y=\"192\"></text><text class=\"nu\" x=\"40\" y=\"251\"></text></g><g class=\"n t-ny f-blad\" data-k=\"nf1\"><rect class=\"s\" x=\"145\" y=\"315\" width=\"30\" height=\"30\" rx=\"2\"/><text class=\"nt\" x=\"160\" y=\"330\"></text><text class=\"no\" x=\"160\" y=\"305\"></text><text class=\"nu\" x=\"160\" y=\"358\">9</text></g><g class=\"n t-ny f-blad\" data-k=\"nf2\"><rect class=\"s\" x=\"225\" y=\"315\" width=\"30\" height=\"30\" rx=\"2\"/><text class=\"nt\" x=\"240\" y=\"330\"></text><text class=\"no\" x=\"240\" y=\"305\"></text><text class=\"nu\" x=\"240\" y=\"358\">5</text></g><g class=\"n t-ny f-min\" data-k=\"nF\"><path class=\"s\" d=\"M200 241L220 207L180.1 207Z\"/><text class=\"nt\" x=\"200\" y=\"216\">F</text><text class=\"no\" x=\"200\" y=\"192\"></text><text class=\"nu\" x=\"200\" y=\"251\"></text></g><g class=\"n t-ny f-sjanse\" data-k=\"nB\"><circle class=\"s\" cx=\"120\" cy=\"110\" r=\"17\"/><text class=\"nt\" x=\"120\" y=\"110\">B</text><text class=\"no\" x=\"120\" y=\"83\"></text><text class=\"nu\" x=\"120\" y=\"140\"></text></g><g class=\"n t-ny f-blad\" data-k=\"nc1\"><rect class=\"s\" x=\"305\" y=\"205\" width=\"30\" height=\"30\" rx=\"2\"/><text class=\"nt\" x=\"320\" y=\"220\"></text><text class=\"no\" x=\"320\" y=\"195\"></text><text class=\"nu\" x=\"320\" y=\"248\">4</text></g><g class=\"n t-ny f-blad\" data-k=\"nc2\"><rect class=\"s\" x=\"385\" y=\"205\" width=\"30\" height=\"30\" rx=\"2\"/><text class=\"nt\" x=\"400\" y=\"220\"></text><text class=\"no\" x=\"400\" y=\"195\"></text><text class=\"nu\" x=\"400\" y=\"248\">6</text></g><g class=\"n t-ny f-blad\" data-k=\"nc3\"><rect class=\"s\" x=\"465\" y=\"205\" width=\"30\" height=\"30\" rx=\"2\"/><text class=\"nt\" x=\"480\" y=\"220\"></text><text class=\"no\" x=\"480\" y=\"195\"></text><text class=\"nu\" x=\"480\" y=\"248\">5</text></g><g class=\"n t-ny f-min\" data-k=\"nC\"><path class=\"s\" d=\"M400 131L420 97L380.1 97Z\"/><text class=\"nt\" x=\"400\" y=\"106\">C</text><text class=\"no\" x=\"400\" y=\"82\"></text><text class=\"nu\" x=\"400\" y=\"141\"></text></g><g class=\"n t-ny f-blad\" data-k=\"ng1\"><rect class=\"s\" x=\"545\" y=\"315\" width=\"30\" height=\"30\" rx=\"2\"/><text class=\"nt\" x=\"560\" y=\"330\"></text><text class=\"no\" x=\"560\" y=\"305\"></text><text class=\"nu\" x=\"560\" y=\"358\">2</text></g><g class=\"n t-ny f-blad\" data-k=\"ng2\"><rect class=\"s\" x=\"625\" y=\"315\" width=\"30\" height=\"30\" rx=\"2\"/><text class=\"nt\" x=\"640\" y=\"330\"></text><text class=\"no\" x=\"640\" y=\"305\"></text><text class=\"nu\" x=\"640\" y=\"358\">8</text></g><g class=\"n t-ny f-min\" data-k=\"nG\"><path class=\"s\" d=\"M600 241L620 207L580.1 207Z\"/><text class=\"nt\" x=\"600\" y=\"216\">G</text><text class=\"no\" x=\"600\" y=\"192\"></text><text class=\"nu\" x=\"600\" y=\"251\"></text></g><g class=\"n t-ny f-blad\" data-k=\"nh1\"><rect class=\"s\" x=\"705\" y=\"315\" width=\"30\" height=\"30\" rx=\"2\"/><text class=\"nt\" x=\"720\" y=\"330\"></text><text class=\"no\" x=\"720\" y=\"305\"></text><text class=\"nu\" x=\"720\" y=\"358\">9</text></g><g class=\"n t-ny f-blad\" data-k=\"nh2\"><rect class=\"s\" x=\"785\" y=\"315\" width=\"30\" height=\"30\" rx=\"2\"/><text class=\"nt\" x=\"800\" y=\"330\"></text><text class=\"no\" x=\"800\" y=\"305\"></text><text class=\"nu\" x=\"800\" y=\"358\">7</text></g><g class=\"n t-ny f-min\" data-k=\"nH\"><path class=\"s\" d=\"M760 241L780 207L740.1 207Z\"/><text class=\"nt\" x=\"760\" y=\"216\">H</text><text class=\"no\" x=\"760\" y=\"192\"></text><text class=\"nu\" x=\"760\" y=\"251\"></text></g><g class=\"n t-ny f-sjanse\" data-k=\"nD\"><circle class=\"s\" cx=\"680\" cy=\"110\" r=\"17\"/><text class=\"nt\" x=\"680\" y=\"110\">D</text><text class=\"no\" x=\"680\" y=\"83\"></text><text class=\"nu\" x=\"680\" y=\"140\"></text></g><g class=\"n t-ny f-max\" data-k=\"nA\"><path class=\"s\" d=\"M400 -21L420 13L380.1 13Z\"/><text class=\"nt\" x=\"400\" y=\"4\">A</text><text class=\"no\" x=\"400\" y=\"-28\"></text><text class=\"nu\" x=\"400\" y=\"31\"></text></g></svg></div>\n\na) Compute the expectiminimax value of the nodes B, C, D and A, and give MAX's best move at the root. (4 pts.)\n\nb) Suppose every leaf value x in Tree 1 is replaced by x². All leaves are positive, so the order of the leaf values is unchanged. Which move does MAX choose now? What does this tell you about evaluation functions in games with chance nodes? (2 pts.)\n\nc) **Tree 2** (below) is a deterministic game tree with MAX at the root. Run alpha-beta pruning, visiting the children of each node from left to right (alphabetical order), and prune when v ≥ β at a MAX node and when v ≤ α at a MIN node. Which leaves are never evaluated? Explain each pruning with the responsible α or β value. Give the value of the root, MAX's best move, and what alpha-beta has established about the values of R, T and P when the search ends: an exact value if all children of the node were evaluated, otherwise a bound (≥ x or ≤ x). (4 pts.)\n\n**Tree 2:**",
+   "tre": {
+    "id": "M",
+    "type": "max",
+    "tekst": "M",
+    "barn": [
+     {
+      "id": "N",
+      "type": "min",
+      "tekst": "N",
+      "barn": [
+       {
+        "id": "Q",
+        "type": "max",
+        "tekst": "Q",
+        "barn": [
+         {
+          "id": "a",
+          "type": "blad",
+          "tekst": "a",
+          "verdi": 3
+         },
+         {
+          "id": "b",
+          "type": "blad",
+          "tekst": "b",
+          "verdi": 5
+         }
+        ]
+       },
+       {
+        "id": "R",
+        "type": "max",
+        "tekst": "R",
+        "barn": [
+         {
+          "id": "c",
+          "type": "blad",
+          "tekst": "c",
+          "verdi": 6
+         },
+         {
+          "id": "d",
+          "type": "blad",
+          "tekst": "d",
+          "verdi": 2
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "id": "O",
+      "type": "min",
+      "tekst": "O",
+      "barn": [
+       {
+        "id": "S",
+        "type": "max",
+        "tekst": "S",
+        "barn": [
+         {
+          "id": "e",
+          "type": "blad",
+          "tekst": "e",
+          "verdi": 6
+         },
+         {
+          "id": "f",
+          "type": "blad",
+          "tekst": "f",
+          "verdi": 1
+         }
+        ]
+       },
+       {
+        "id": "T",
+        "type": "max",
+        "tekst": "T",
+        "barn": [
+         {
+          "id": "g",
+          "type": "blad",
+          "tekst": "g",
+          "verdi": 9
+         },
+         {
+          "id": "h",
+          "type": "blad",
+          "tekst": "h",
+          "verdi": 0
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "id": "P",
+      "type": "min",
+      "tekst": "P",
+      "barn": [
+       {
+        "id": "U",
+        "type": "max",
+        "tekst": "U",
+        "barn": [
+         {
+          "id": "i",
+          "type": "blad",
+          "tekst": "i",
+          "verdi": 3
+         },
+         {
+          "id": "j",
+          "type": "blad",
+          "tekst": "j",
+          "verdi": 4
+         }
+        ]
+       },
+       {
+        "id": "V",
+        "type": "max",
+        "tekst": "V",
+        "barn": [
+         {
+          "id": "k",
+          "type": "blad",
+          "tekst": "k",
+          "verdi": 8
+         },
+         {
+          "id": "l",
+          "type": "blad",
+          "tekst": "l",
+          "verdi": 2
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "f": [
+    [
+     "a) B",
+     "text"
+    ],
+    [
+     "a) C",
+     "text"
+    ],
+    [
+     "a) D",
+     "text"
+    ],
+    [
+     "a) A (root)",
+     "text"
+    ],
+    [
+     "a) Best move",
+     "text"
+    ],
+    [
+     "b) Best move with x²",
+     "text"
+    ],
+    [
+     "b) What does it tell you?",
+     "area"
+    ],
+    [
+     "c) Leaves never evaluated",
+     "text",
+     "{…}"
+    ],
+    [
+     "c) Root value",
+     "text"
+    ],
+    [
+     "c) Best move",
+     "text"
+    ],
+    [
+     "c) Values/bounds of R, T, P",
+     "text",
+     "R ≥ …, T …, P …"
+    ],
+    [
+     "c) Explanation of each pruning",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) B": [
+      "3.8"
+     ],
+     "a) C": [
+      "4"
+     ],
+     "a) D": [
+      "3.5"
+     ],
+     "a) A (root)": [
+      "4"
+     ],
+     "a) Best move": [
+      "C"
+     ],
+     "b) Best move with x²": [
+      "D"
+     ],
+     "c) Leaves never evaluated": [
+      "{d, h, k, l}"
+     ],
+     "c) Root value": [
+      "6"
+     ],
+     "c) Best move": [
+      "O"
+     ],
+     "c) Values/bounds of R, T, P": [
+      "R ≥ 6, T ≥ 9, P ≤ 4",
+      "R≥6, T≥9, P≤4",
+      "≥ 6, ≥ 9, ≤ 4",
+      "≥6, ≥9, ≤4",
+      "R >= 6, T >= 9, P <= 4",
+      "R>=6, T>=9, P<=4"
+     ]
+    },
+    "merk": "Tre 1: B = 0,6·3 + 0,4·5 = 3,8, C = 4, D = 0,7·2 + 0,3·7 = 3,5, så C. Med x²: 15,4, 16 og 17,5, så D. Tre 2: d kuttes i R (6 ≥ β = 5), h i T (9 ≥ β = 6), V (k, l) i P (4 ≤ α = 6). U er MAX og kutter ikke etter i = 3.",
+    "kilde": "Regnet for hånd, med motoren (expectiminimax på tre 1 og tre 1 med x², alfa-beta og minimax på tre 2) og med eget Python-skript."
+   },
+   "fasit": "**a) B = 3,8, C = 4, D = 3,5 og A = 4. Beste trekk er C.**\n\n**b) Beste trekk blir D (B = 15,4, C = 16, D = 17,5).**\n\n**c) Bladene d, h, k og l evalueres aldri. Rotverdien er 6, og beste trekk er O. R ≥ 6, T ≥ 9, P ≤ 4.**\n\na) MIN-nodene først: E = min(3, 7) = 3, F = min(9, 5) = 5, G = min(2, 8) = 2 og H = min(9, 7) = 7.\n\n- B = 0,6 · 3 + 0,4 · 5 = 3,8\n- C = min(4, 6, 5) = 4\n- D = 0,7 · 2 + 0,3 · 7 = 3,5\n- A = max(3,8, 4, 3,5) = 4, så MAX velger C.\n\n(1 p for B, 1 p for D, 1 p for C og A og 1 p for trekket.)\n\nb) Med x² blir E = 9 og F = 25, så B = 0,6 · 9 + 0,4 · 25 = 15,4. C = 16. G = 4 og H = 49, så D = 0,7 · 4 + 0,3 · 49 = 17,5.\n\nMAX velger nå **D**, selv om rekkefølgen på bladene er den samme. I minimax betyr bare rekkefølgen noe, men med sjansenoder betyr størrelsene også noe. Evalueringsfunksjonen må derfor være en positiv lineær transformasjon av sannsynligheten for å vinne, eller av forventet nytte (Fig. 6.14). (1 p for D med tall og 1 p for forklaringen.)\n\nc) Alpha-beta på tre 2:\n\n| Node | Vindu inn (α, β) | Hva skjer | Verdi |\n|---|---|---|---|\n| Q (MAX) | (−∞, ∞) | a = 3, b = 5 | 5 |\n| N (MIN) | (−∞, ∞) | β = 5 etter Q | |\n| R (MAX) | (−∞, 5) | c = 6 ≥ β = 5: **d kuttes** | ≥ 6 |\n| N | | min(5, ≥ 6) = 5 | 5, roten får α = 5 |\n| S (MAX) | (5, ∞) | e = 6, f = 1 | 6 |\n| O (MIN) | (5, ∞) | β = 6 etter S | |\n| T (MAX) | (5, 6) | g = 9 ≥ β = 6: **h kuttes** | ≥ 9 |\n| O | | min(6, ≥ 9) = 6 | 6, roten får α = 6 |\n| U (MAX) | (6, ∞) | i = 3, j = 4. Ingen kutt, for U sammenligner med β = ∞ | 4 |\n| P (MIN) | (6, ∞) | 4 ≤ α = 6: **V kuttes (k og l)** | ≤ 4 |\n| M (MAX) | | max(5, 6, ≤ 4) = 6 | 6 |\n\nRotverdien er 6 via O, den samme som minimax gir (N = 5, O = 6, P = 4). De fulle minimax-verdiene er R = 6, T = 9 og P = 4, men søket har ikke sett d, h og V, så det alpha-beta har fastslått, er bare grensene R ≥ 6, T ≥ 9 og P ≤ 4.\n\nPoeng: 2 p for de tre kuttene med α og β, 1 p for rotverdi og trekk og 1 p for grensene.\n\nVanlige feil:\n\n- I c): å kutte j i U fordi i = 3 ≤ α = 6. U er en MAX-node og kutter bare når v ≥ β.\n- I a): å ta snittet av bladene direkte og hoppe over MIN-laget."
+  },
+  {
+   "t": "Oppgave 9 (5 p): Unification",
+   "d": "For each pair of atomic sentences, give the most general unifier (MGU), or write *failure* and explain why unification fails. Lowercase letters x, y, z are variables, A and B are constants, F, G and H are function symbols, and P, Q and R are predicates. Write substitutions as {x/F(A), …}.\n\na) P(x, G(x, y), H(z)) and P(F(A), G(z, B), H(F(A))) (1 pt.)\n\nb) R(x, F(y), y) and R(z, F(G(z)), G(A)) (2 pts.)\n\nc) Q(x, F(x)) and Q(G(y), y) (2 pts.)\n\nYou can answer this question on handwritten sheets.",
+   "f": [
+    [
+     "a) MGU",
+     "text",
+     "{x/…, …} or failure"
+    ],
+    [
+     "b) MGU",
+     "text"
+    ],
+    [
+     "c) MGU",
+     "text"
+    ],
+    [
+     "Steps and explanation",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) MGU": [
+      "{x/F(A), y/B, z/F(A)}"
+     ],
+     "b) MGU": [
+      "{x/A, y/G(A), z/A}",
+      "{x/z, y/G(z), z/A}"
+     ],
+     "c) MGU": [
+      "failure",
+      "fail",
+      "none",
+      "not unifiable",
+      "no MGU",
+      "no unifier"
+     ]
+    },
+    "merk": "b): x/z, så y/G(z), og y = G(A) gir z/A. Satt helt inn: {x/A, y/G(A), z/A}. c): x/G(y) gjør det andre argumentet til F(G(y)) mot y, og occur check stopper y/F(G(y)).",
+    "kilde": "Regnet for hånd og med motoren (unifikasjon, med occur check); samme θ."
+   },
+   "fasit": "**a) {x/F(A), y/B, z/F(A)}**\n\n**b) {x/A, y/G(A), z/A}.** Formen {x/z, y/G(z), z/A}, som UNIFY bygger, godtas også.\n\n**c) Failure (occur check).**\n\na)\n\n- Argument 1 gir x/F(A).\n- Argument 2: G(F(A), y) mot G(z, B) gir z/F(A) og y/B.\n- Argument 3: H(z) = H(F(A)) mot H(F(A)) stemmer.\n\nBegge blir P(F(A), G(F(A), B), H(F(A))).\n\nb)\n\n- Argument 1 gir x/z.\n- Argument 2: F(y) mot F(G(z)) gir y/G(z).\n- Argument 3: y er allerede bundet til G(z), så G(z) unifiseres med G(A). Det gir z/A.\n\nSatt helt inn blir det {x/A, y/G(A), z/A}, og begge blir R(A, F(G(A)), G(A)). (1 p for bindingene og 1 p for å følge bindingen av y.)\n\nc)\n\n- Argument 1 gir x/G(y).\n- Argument 2: F(x) blir F(G(y)), som skal unifiseres med y.\n\nVariabelen y forekommer i F(G(y)), så occur check feiler. y = F(G(y)) ville gitt et uendelig term, og ingen unifier finnes. (1 p for failure og 1 p for occur check-begrunnelsen.)\n\nVanlige feil:\n\n- Å binde y/F(G(y)) uten occur check.\n- I b): å binde y/G(A) uten å se at y allerede er bundet."
+  },
+  {
+   "t": "Oppgave 10 (20 p): Resolution",
+   "d": "A home alarm system is described with the propositional symbols A (the alarm sounds), W (a window is open), M (the motion sensor is triggered), C (the cat is inside) and I (there is an intruder). The knowledge base KB consists of:\n\n- S1: A ⇔ (W ∨ M)\n- S2: (M ∧ ¬C) ⇒ I\n- S3: ¬(W ∧ ¬I)\n- S4: ¬(C ∧ A)\n\na) Convert S1–S4 to conjunctive normal form (CNF). Show every step and name the equivalence from the formula sheet that you use in each step. List the resulting clauses. (10 pts.)\n\nb) Use the resolution inference algorithm, with proof by contradiction (refutation), to show that KB ⊨ A ⇒ I. Convert the negated goal to CNF in the same way. For each resolution step, show which two clauses are used and the resolvent. (10 pts.)\n\nYou can answer this question on handwritten sheets.",
+   "f": [
+    [
+     "a) CNF steps and clauses",
+     "area"
+    ],
+    [
+     "a) Number of clauses in CNF(KB)",
+     "text"
+    ],
+    [
+     "b) Clauses from the negated goal",
+     "text",
+     "{…}"
+    ],
+    [
+     "b) Resolution steps",
+     "area"
+    ],
+    [
+     "b) Does KB entail A ⇒ I? (yes/no)",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Number of clauses in CNF(KB)": [
+      "6"
+     ],
+     "b) Clauses from the negated goal": [
+      "{A, ¬I}",
+      "{A ∧ ¬I}"
+     ],
+     "b) Does KB entail A ⇒ I? (yes/no)": [
+      "yes",
+      "ja"
+     ]
+    },
+    "merk": "CNF(KB): ¬A ∨ W ∨ M, A ∨ ¬W, A ∨ ¬M, ¬M ∨ C ∨ I, ¬W ∨ I, ¬C ∨ ¬A. Negert mål: A og ¬I. Ett bevis: W ∨ M, M ∨ I, M, C ∨ I, C, ¬A, □.",
+    "kilde": "Regnet for hånd; CNF og resolusjon med motoren (cnf, pl-resolusjon) og sannhetstabell i eget Python-skript (alle fire setningene trengs)."
+   },
+   "fasit": "**a) CNF(KB) har 6 klausuler:** C1: ¬A ∨ W ∨ M, C2: A ∨ ¬W, C3: A ∨ ¬M, C4: ¬M ∨ C ∨ I, C5: ¬W ∨ I og C6: ¬C ∨ ¬A.\n\n**b) Det negerte målet gir C7: A og C8: ¬I. Resolusjonen gir □, så KB ⊨ A ⇒ I (ja).**\n\na) S1: A ⇔ (W ∨ M)\n\n1. ≡ (A ⇒ (W ∨ M)) ∧ ((W ∨ M) ⇒ A) (biconditional elimination)\n2. ≡ (¬A ∨ (W ∨ M)) ∧ (¬(W ∨ M) ∨ A) (implication elimination, to ganger)\n3. ≡ (¬A ∨ W ∨ M) ∧ ((¬W ∧ ¬M) ∨ A) (associativity of ∨ og De Morgan)\n4. ≡ (¬A ∨ W ∨ M) ∧ (A ∨ (¬W ∧ ¬M)) (commutativity of ∨)\n5. ≡ (¬A ∨ W ∨ M) ∧ ((A ∨ ¬W) ∧ (A ∨ ¬M)) (distributivity of ∨ over ∧)\n6. Associativity of ∧ gir C1, C2 og C3.\n\nS2: (M ∧ ¬C) ⇒ I\n\n1. ≡ ¬(M ∧ ¬C) ∨ I (implication elimination)\n2. ≡ (¬M ∨ ¬¬C) ∨ I (De Morgan)\n3. ≡ (¬M ∨ C) ∨ I (double-negation elimination)\n4. ≡ ¬M ∨ C ∨ I (associativity of ∨), som er C4.\n\nS3: ¬(W ∧ ¬I) ≡ ¬W ∨ ¬¬I (De Morgan) ≡ ¬W ∨ I (double-negation elimination). Det er C5.\n\nS4: ¬(C ∧ A) ≡ ¬C ∨ ¬A (De Morgan). Det er C6.\n\nPoeng: S1 4 p, S2 3 p, S3 1,5 p og S4 1,5 p. Trekk for steg uten navngitt ekvivalens og for feil rekkefølge. Rekkefølgen er ⇔ først, så ⇒, så ¬ innover og til slutt distribusjon.\n\nb) Negert mål: ¬(A ⇒ I) ≡ ¬(¬A ∨ I) (implication elimination) ≡ ¬¬A ∧ ¬I (De Morgan) ≡ A ∧ ¬I (double-negation elimination). Det gir C7: A og C8: ¬I.\n\n| Steg | Klausuler (literal) | Resolvent |\n|---|---|---|\n| R1 | C1 og C7 (A) | W ∨ M |\n| R2 | R1 og C5 (W) | M ∨ I |\n| R3 | R2 og C8 (I) | M |\n| R4 | R3 og C4 (M) | C ∨ I |\n| R5 | R4 og C8 (I) | C |\n| R6 | R5 og C6 (C) | ¬A |\n| R7 | R6 og C7 (A) | □ |\n\nDen tomme klausulen viser at KB ∧ ¬(A ⇒ I) er unsatisfiable, så KB ⊨ A ⇒ I.\n\n- Andre rekkefølger er like gode når hvert steg resolverer på nøyaktig ett komplementært par.\n- C2 og C3 trengs ikke i beviset.\n- Alle fire setningene trengs: uten én av dem følger ikke målet.\n\nPoeng: 2 p for det negerte målet i CNF, 7 p for resolusjonen (1 p per steg) og 1 p for konklusjonen.\n\nVanlige feil:\n\n- Å glemme den ene retningen av ⇔.\n- Å distribuere feil i A ∨ (¬W ∧ ¬M).\n- Å resolvere på to literaler samtidig."
+  },
+  {
+   "t": "Oppgave 11 (5 p): Automated Planning",
+   "d": "A delivery drone is described in PDDL:\n\n```\nAction(Fly(d, from, to),\n  PRECOND: At(d, from) ∧ Drone(d) ∧ Location(from) ∧ Location(to)\n  EFFECT:  ¬At(d, from) ∧ At(d, to))\n\nAction(Drop(d, p, l),\n  PRECOND: At(d, l) ∧ Holding(d, p) ∧ Drone(d) ∧ Package(p) ∧ Location(l)\n  EFFECT:  At(p, l) ∧ ¬Holding(d, p) ∧ Empty(d))\n\nInit(At(D1, Depot) ∧ At(P1, Depot) ∧ Empty(D1) ∧ Drone(D1) ∧ Package(P1)\n     ∧ Location(Depot) ∧ Location(Shop))\nGoal(At(P1, Shop) ∧ At(D1, Depot))\n```\n\na) Write the action schema PickUp(d, p, l): an empty drone picks up a package at the drone's location. Afterwards the drone holds the package, the package is no longer at the location, and the drone is no longer empty. (2 pts.)\n\nb) Backward (regression) search starts from g = At(P1, Shop) ∧ At(D1, Depot). Which of the ground actions (1) Drop(D1, P1, Shop), (2) Fly(D1, Depot, Shop), (3) Fly(D1, Shop, Depot) and (4) PickUp(D1, P1, Shop) are relevant for g? Give g′ = REGRESS(g, Fly(D1, Shop, Depot)) and say whether g′ is satisfied in the initial state. (3 pts.)",
+   "f": [
+    [
+     "a) PickUp(d, p, l)",
+     "area",
+     "Action(PickUp(d, p, l),\n  PRECOND: …\n  EFFECT: …)"
+    ],
+    [
+     "b) Relevant actions (numbers)",
+     "text",
+     "{…}"
+    ],
+    [
+     "b) g′ and justification",
+     "area"
+    ],
+    [
+     "b) Is g′ satisfied in Init? (yes/no)",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "b) Relevant actions (numbers)": [
+      "{1, 3}"
+     ],
+     "b) Is g′ satisfied in Init? (yes/no)": [
+      "no",
+      "nei"
+     ]
+    },
+    "merk": "Relevant: gir minst én del av målet og sletter ingen. (2) sletter At(D1, Depot), (4) sletter At(P1, Shop). g′ = At(P1, Shop) ∧ At(D1, Shop) ∧ Drone(D1) ∧ Location(Shop) ∧ Location(Depot), som ikke holder i Init.",
+    "kilde": "Regnet for hånd og med motoren (regresjon per handling og hele kjeden, progresjon av planen)."
+   },
+   "fasit": "**a)**\n\n```\nAction(PickUp(d, p, l),\n  PRECOND: At(d, l) ∧ At(p, l) ∧ Empty(d) ∧ Drone(d) ∧ Package(p) ∧ Location(l)\n  EFFECT:  ¬At(p, l) ∧ Holding(d, p) ∧ ¬Empty(d))\n```\n\n**b) Relevante handlinger: 1 og 3. g′ = At(P1, Shop) ∧ At(D1, Shop) ∧ Drone(D1) ∧ Location(Shop) ∧ Location(Depot). g′ holder ikke i Init (nei).**\n\na) Preconditions: dronen og pakken er på samme sted, og dronen er tom. Effekten legger til Holding(d, p) og sletter At(p, l) og Empty(d). Typepredikatene følger stilen i Fly og Drop. (1 p for precondition og 1 p for effect.)\n\nb) En handling er relevant når den gir minst én del av målet og ingen av effektene sletter en annen del.\n\n- (1) Drop(D1, P1, Shop) er **relevant**: den gir At(P1, Shop) og sletter bare Holding(D1, P1), som ikke står i g.\n- (2) Fly(D1, Depot, Shop) er ikke relevant: den sletter At(D1, Depot).\n- (3) Fly(D1, Shop, Depot) er **relevant**: den gir At(D1, Depot) og sletter bare At(D1, Shop).\n- (4) PickUp(D1, P1, Shop) er ikke relevant: den gir ingenting i g og sletter At(P1, Shop).\n\ng′ = (g − ADD(a)) ∪ PRECOND(a). Her er ADD(a) = At(D1, Depot), så g′ = At(P1, Shop) ∧ At(D1, Shop) ∧ Drone(D1) ∧ Location(Shop) ∧ Location(Depot).\n\ng′ holder ikke i Init, fordi At(P1, Shop) og At(D1, Shop) er usanne, så søket fortsetter. Regresjon videre over Drop(D1, P1, Shop), Fly(D1, Depot, Shop) og PickUp(D1, P1, Depot) når Init. Planen blir PickUp(D1, P1, Depot), Fly(D1, Depot, Shop), Drop(D1, P1, Shop), Fly(D1, Shop, Depot).\n\nPoeng: 1 p for relevansen, 1,5 p for g′ og 0,5 p for Init.\n\nMerk: regresjon over (1) først gir både At(D1, Depot) og At(D1, Shop) i g′, som er en umulig tilstand. Relevanstesten fanger ikke opp det."
+  },
+  {
+   "t": "Oppgave 12 (5 p): Natural Language Processing",
+   "d": "Consider the probabilistic context-free grammar (PCFG) below.\n\n```\nS    → NP VP     [1.0]\nNP   → Det N     [0.5]  |  NP PP  [0.2]  |  Name  [0.3]\nVP   → V NP      [0.7]  |  VP PP  [0.3]\nPP   → Prep NP   [1.0]\nDet  → the       [1.0]\nN    → robot     [0.5]  |  lamp   [0.5]\nName → Ada       [1.0]\nV    → sees      [1.0]\nPrep → with      [1.0]\n```\n\nThe sentence \"Ada sees the robot with the lamp\" has exactly two parse trees: in T1 the PP \"with the lamp\" is attached to the verb phrase (VP → VP PP), and in T2 it is attached to the noun phrase (NP → NP PP).\n\na) Compute P(T1) and P(T2). Which parse does the PCFG prefer? (2 pts.)\n\nb) Describe how a top-down parser and a bottom-up parser would start on this sentence with this grammar (one or two concrete steps each), and give one drawback of each strategy, illustrated with this sentence. How does a chart parser avoid redoing work when the parser has to try both attachments of \"with the lamp\"? (3 pts.)",
+   "f": [
+    [
+     "a) P(T1)",
+     "text"
+    ],
+    [
+     "a) P(T2)",
+     "text"
+    ],
+    [
+     "a) Preferred parse (T1 or T2)",
+     "text"
+    ],
+    [
+     "a) Calculation",
+     "area"
+    ],
+    [
+     "b) Top-down, bottom-up and chart",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) P(T1)": [
+      "0.0039375",
+      "63/16000",
+      "3.9375e-3"
+     ],
+     "a) P(T2)": [
+      "0.002625",
+      "21/8000",
+      "2.625e-3"
+     ],
+     "a) Preferred parse (T1 or T2)": [
+      "T1"
+     ]
+    },
+    "merk": "Begge trærne bruker S → NP VP, NP → Name, VP → V NP og fire NP/N-regler. T1 har i tillegg VP → VP PP (0,3), T2 NP → NP PP (0,2), så T1 er 1,5 ganger så sannsynlig. Husk ordreglene.",
+    "kilde": "Regnet for hånd, med motoren (CYK med PCFG gir 0,0039375 for beste tre og 0,002625 via NP-tilknytningen) og med eget Python-skript."
+   },
+   "fasit": "**a) P(T1) = 0,0039375 og P(T2) = 0,002625. PCFG-en foretrekker T1 (PP-en henger på VP).**\n\n**b)** Se modellsvaret under.\n\na) Sannsynligheten for et tre er produktet av alle reglene i treet, også ordreglene. Begge trærne har 14 regler.\n\nFelles for begge:\n\n- S → NP VP (1,0)\n- NP → Name (0,3) og Name → Ada (1,0)\n- VP → V NP (0,7) og V → sees (1,0)\n- NP → Det N (0,5), Det → the (1,0) og N → robot (0,5)\n- PP → Prep NP (1,0) og Prep → with (1,0)\n- NP → Det N (0,5), Det → the (1,0) og N → lamp (0,5)\n\nT1 har i tillegg VP → VP PP (0,3):\n\nP(T1) = 0,3 · 0,3 · 0,7 · 0,5⁴ = 0,0039375\n\nT2 har i stedet NP → NP PP (0,2):\n\nP(T2) = 0,3 · 0,7 · 0,2 · 0,5⁴ = 0,002625\n\nT1 er altså 0,3/0,2 = 1,5 ganger så sannsynlig. (1 p per tre. Trekk for å glemme ordreglene eller en NP → Det N.)\n\nb) Modellsvar:\n\n- **Top-down** starter i S og utvider mot ordene: S → NP VP, og så prøves reglene for NP. NP → Det N feiler på «Ada», som ikke er en Det. NP → Name → Ada passer, og søket går videre til VP. Ulempen er at den bruker tid på utvidelser som aldri kan passe ordene, som NP → Det N for «Ada».\n- **Bottom-up** starter i ordene og slår dem sammen oppover. Ada → Name → NP, sees → V, the → Det og robot → N. Så gir Det N en NP, V NP en VP og NP VP en S over «Ada sees the robot». Ulempen er at den bygger fraser som aldri blir del av en hel parse. S over de fire første ordene er en slik blindvei.\n- Begge kan måtte bygge de samme delfrasene på nytt når de prøver den andre tilknytningen av «with the lamp». En **chart parser** (dynamic programming, for eksempel CYK) lagrer hver frase over hvert spenn én gang. NP «the robot», PP «with the lamp» og NP «the lamp» bygges én gang og gjenbrukes av begge trærne. I PCFG-versjonen lagres den mest sannsynlige analysen per kategori og spenn.\n\nPoeng: 1 p for top-down, 1 p for bottom-up og 1 p for chart."
+  },
+  {
+   "t": "Oppgave 13 (5 p): Knowledge Representation and Ethics",
+   "d": "a) A car-sharing company has the fleet Cars = {c1, c2, c3, c4, c5, c6} and the categories Electric = {c1, c2}, Hybrid = {c3}, Petrol = {c4, c5, c6} and Vans = {c2, c3, c5}. For each set of categories, state whether it is disjoint, whether it is an exhaustive decomposition of Cars, and whether it is a partition of Cars: (i) {Electric, Hybrid, Petrol}, (ii) {Electric, Petrol, Vans}, (iii) {Electric, Petrol}. (2 pts.)\n\nb) A hiring model screens 100 applicants from group X and 100 from group Y. \"Qualified\" is the ground truth.\n\n| Group | Applicants | Qualified | Accepted and qualified | Accepted but not qualified |\n|---|---|---|---|---|\n| X | 100 | 50 | 35 | 5 |\n| Y | 100 | 20 | 14 | 6 |\n\nFor each criterion, state whether the model satisfies it and show the numbers: demographic parity (equal outcome), equal opportunity, and calibration (here: the share of qualified applicants among the accepted, and among the rejected, is the same in both groups). (2 pts.) The company argues that the model is fair because the group attribute is not an input to the model. Explain why this argument fails. (1 pt.)",
+   "f": [
+    [
+     "a) (i) properties that hold",
+     "text",
+     "e.g. {disjoint, exhaustive}, or none"
+    ],
+    [
+     "a) (ii) properties that hold",
+     "text"
+    ],
+    [
+     "a) (iii) properties that hold",
+     "text"
+    ],
+    [
+     "b) Demographic parity? (yes/no)",
+     "text"
+    ],
+    [
+     "b) Equal opportunity? (yes/no)",
+     "text"
+    ],
+    [
+     "b) Calibration? (yes/no)",
+     "text"
+    ],
+    [
+     "b) Numbers, and why the argument fails",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) (i) properties that hold": [
+      "{disjoint, exhaustive, partition}",
+      "{disjoint, exhaustive decomposition, partition}"
+     ],
+     "a) (ii) properties that hold": [
+      "{exhaustive}",
+      "{exhaustive decomposition}"
+     ],
+     "a) (iii) properties that hold": [
+      "{disjoint}"
+     ],
+     "b) Demographic parity? (yes/no)": [
+      "no",
+      "nei"
+     ],
+     "b) Equal opportunity? (yes/no)": [
+      "yes",
+      "ja"
+     ],
+     "b) Calibration? (yes/no)": [
+      "no",
+      "nei"
+     ]
+    },
+    "merk": "(ii): Vans overlapper Electric (c2) og Petrol (c5), men alle bilene er dekket. (iii): c3 mangler. Godtatt andel 40 % mot 20 %, TPR 35/50 = 14/20 = 70 %, andel kvalifiserte blant godtatte 87,5 % mot 70 %.",
+    "kilde": "Definisjonene i boka 10.2 og E17/E21-notatene; mengdene og ratene regnet med eget Python-skript og for hånd."
+   },
+   "fasit": "**a) (i) Disjoint, exhaustive decomposition og partition. (ii) Bare exhaustive decomposition. (iii) Bare disjoint.**\n\n**b) Demographic parity: nei. Equal opportunity: ja. Calibration: nei.**\n\na) Definisjonene (boka 10.2):\n\n- Kategoriene er **disjoint** når de ikke har felles medlemmer.\n- De er en **exhaustive decomposition** av Cars når hver bil hører til minst én av dem.\n- En **partition** er en disjoint exhaustive decomposition.\n\nDe tre settene:\n\n- (i) Electric, Hybrid og Petrol deler opp {c1, …, c6} uten overlapp, så alle tre egenskapene holder.\n- (ii) Unionen er alle seks bilene, men Vans overlapper Electric (c2) og Petrol (c5). Settet er exhaustive, men ikke disjoint og dermed ingen partition.\n- (iii) Electric og Petrol er disjoint, men c3 mangler, så settet er ikke exhaustive.\n\nPoeng: omtrent 2/3 p per sett, med begrunnelse.\n\nb) Tallene:\n\n| Gruppe | Godtatt | TPR (godtatt blant kvalifiserte) | Kvalifisert blant godtatte | Kvalifisert blant avviste |\n|---|---|---|---|---|\n| X | 40/100 = 40 % | 35/50 = 70 % | 35/40 = 87,5 % | 15/60 = 25 % |\n| Y | 20/100 = 20 % | 14/20 = 70 % | 14/20 = 70 % | 6/80 = 7,5 % |\n\n- **Demographic parity** krever lik andel godtatte. Her er det 40 % mot 20 %, så **nei**.\n- **Equal opportunity** krever lik TPR. Den er 70 % i begge gruppene, så **ja**.\n- **Calibration** krever at et ja og et nei betyr det samme i begge gruppene. Her er det 87,5 % mot 70 % og 25 % mot 7,5 %, så **nei**.\n\n(2 p for de tre kriteriene med tall.)\n\nFairness through unawareness holder ikke. Andre variabler korrelerer med gruppen. Slike proxies kan være postnummer, skole eller hull i CV-en, og gjennom dem kan modellen lære gruppeforskjellen likevel. Historisk skjevhet i treningsdataene følger også med. Når attributtet er fjernet, blir skjevheten dessuten vanskeligere å måle og rette. (1 p.)"
+  }
+ ],
+ "fasit": "Poeng: oppgave 1–4 gir 5 p hver, 5 gir 8 p, 6 gir 12 p, 7 og 8 gir 10 p hver, 9 gir 5 p, 10 gir 20 p og 11–13 gir 5 p hver, til sammen 100 p. Fasiten under er den samme som under hver oppgave.\n\n### Oppgave 1 (5 p): Intelligent Agents\n\n**Svar: B.**\n\n- Program 1 er en **simple reflex agent**: handlingen avhenger bare av nåværende percept, og ingenting lagres. Den tilfeldige bevegelsen gjør den til bokas *randomized* simple reflex agent, som unngår evige løkker.\n- Program 2 er en **model-based reflex agent**: den har intern tilstand (hvor bilene er), oppdatert med percept-historikken og en modell av hvordan verden endrer seg. Handlingen velges likevel med condition–action-regler, ikke med søk. Boka bruker filskifte som eksempel.\n- Program 3 er **goal-based**: den søker etter handlingssekvenser mot et eksplisitt mål, og et nytt mål krever bare at målet byttes.\n- Program 4 er **utility-based**: den avveier flere mål (tid, drivstoff, risiko) og velger handlingen med høyest forventet nytte.\n\nAlternativene:\n\n- A er feil: 2 velger med regler på en intern tilstand, ikke ved å søke mot et mål.\n- B er riktig.\n- C er feil: 1 lagrer ingenting og har dermed ingen modell, og 4 avveier flere mål med forventet nytte, som er utility-based.\n- D er feil: 3 og 4 er byttet om.\n- E er feil: ingenting i 4 handler om læring. En learning agent (learning element, critic, problem generator) er en måte å bygge hvilken som helst av typene på.\n\nVanlig feil: å tro at intern tilstand gjør agenten goal-based. Det avgjørende er om handlingen velges med regler eller ved å se fremover mot et mål.\n\n### Oppgave 2 (5 p): Genetic Algorithms\n\n**Svar: D** (den usanne påstanden).\n\nTotal fitness er 9 + 6 + 3 + 2 = 20.\n\n- A er sann: P(x1) = 9/20 = 0,45.\n- B er sann: 110|100 og 011|011 gir 110 + 011 = **110011** og 011 + 100 = **011100**.\n- C er sann: x4 har lavest fitness, så blant tre ulike individer er x4 alltid den dårligste og kommer aldri blant de to beste.\n- D er **usann**: P(x4) = 2/20 = 0,1 per trekk, så P(minst én gang) = 1 − 0,9² = **0,19**. Regnestykket 2 · 0,1 = 0,20 teller tilfellet «x4 begge gangene» (0,01) to ganger.\n- E er sann: boka sier at elitism garanterer at fitness aldri synker over tid. De beste kopieres uendret, så beste fitness kan ikke bli lavere.\n\nVanlig feil: å legge sammen sannsynligheter for hendelser som ikke er disjunkte.\n\n### Oppgave 3 (5 p): Constraint Satisfaction Problems\n\n**Svar: E (T = blue).**\n\n1. Forward checking etter P = Q = R = red og Z = blue:\n\n| Variabel | Domene | Utilordnede naboer |\n|---|---|---|\n| S | {green, blue} | V |\n| T | {green, blue} | U, V |\n| U | {red, green} | T |\n| V | {red, green, blue} | S, T, W |\n| W | {red, green, blue} | V |\n\n2. MRV: S, T og U har 2 verdier. Degree teller bare constraints mot utilordnede variabler: S 1, T 2, U 1. **T** velges.\n3. LCV for T: green fjerner green fra U og V (2 verdier). Blue fjerner bare blue fra V, siden U ikke har blue (1 verdi). **Blue** prøves først.\n\nAlternativene:\n\n- A (S = green) er feil: S har flest naboer totalt (4), men tre av dem er tilordnet. Degree teller bare utilordnede.\n- B (T = green) er feil: riktig variabel, men LCV er hoppet over.\n- C (V = red) er feil: V har høyest degree (3), men har 3 verdier. Degree brukes bare til å bryte likhet i MRV.\n- D (U = red) er feil: U = red begrenser ingen naboer, men LCV ordner verdiene til den valgte variabelen. LCV velger ikke variabel.\n- E er riktig.\n\n### Oppgave 4 (5 p): Game Theory\n\n**Svar: C.**\n\nIESDS steg for steg (strict dominance, én strategi om gangen):\n\n1. P1: **Up** er dominert av Middle: (3, 7, 6) mot (1, 3, 2). Ingenting annet er dominert i det opprinnelige spillet. For P2 er Right bedre enn Center i raden Up (9 mot 8).\n2. P2: uten Up er **Right** dominert av Center: (9, 4) mot (5, 3).\n3. P1: uten Right er **Middle** dominert av Down: (6, 9) mot (3, 7).\n4. P2: i raden Down er **Center** dominert av Left: 5 mot 4.\n\nIgjen står **(Down, Left) = (6, 5)**.\n\nRene Nash-likevekter:\n\n- P1s beste svar er Down mot Left, Down mot Center og Middle mot Right.\n- P2s beste svar er Right mot Up, Center mot Middle og Left mot Down.\n- Bare (Down, Left) er beste svar for begge.\n\nIESDS med strict dominance fjerner aldri en Nash-likevekt, så resultatene stemmer med hverandre.\n\nAlternativene:\n\n- A er feil: etter at Up er borte, blir Right dominert, og elimineringen fortsetter.\n- B er feil: (Middle, Center) har høyest social welfare (16), men Middle strykes i steg 3. Profilen er heller ikke en likevekt, for P1 tjener på å bytte til Down (9 mot 7).\n- C er riktig.\n- D er feil: (Middle, Center) er ikke en Nash-likevekt, og IESDS ender i én profil.\n- E er feil: Up er strictly dominert av Middle allerede i det opprinnelige spillet.\n\nVanlig feil: å se etter dominans bare i det opprinnelige spillet. Right blir dominert først når Up er strøket.\n\n### Oppgave 5 (8 p): Uninformed Search\n\n**a) ℓ = 0: S** (cutoff). **ℓ = 1: S, A, B** (cutoff). **ℓ = 2: S, A, B, C, B, A, D** (cutoff). **ℓ = 3: S, A, B, D, C, D, E, B, A, C, D, C, (G).** IDS returnerer **S, B, D, G** med kostnad **13**.\n\n**b) S, A, B, D, C, (G).** Stien er **S, A, B, D, G** med kostnad **12**.\n\n**c) S, A, C, E, G** med kostnad **9**.\n\nSporing for ℓ = 3 (dybden står i parentes; et barn som allerede står på stien, genereres ikke):\n\n| Tatt ut | Sti | Barn som legges på stakken |\n|---|---|---|\n| S (0) | S | A, B |\n| A (1) | S A | B, C |\n| B (2) | S A B | D |\n| D (3) | S A B D | testes, ekspanderes ikke |\n| C (2) | S A C | D, E |\n| D (3) | S A C D | – |\n| E (3) | S A C E | – |\n| B (1) | S B | A, D |\n| A (2) | S B A | C |\n| C (3) | S B A C | – |\n| D (2) | S B D | C, G |\n| C (3) | S B D C | – |\n| G (3) | S B D G | mål |\n\nKostnaden er 4 + 3 + 6 = 13.\n\nb) Med ℓ = 4 går søket S, A, B, D. Under S-A-B-D er barna C og G, fordi B står på stien. C tas ut først (dybde 4, testes, men ekspanderes ikke), så G. Stien S-A-B-D-G koster 1 + 2 + 3 + 6 = 12.\n\nc) S-A-C-E-G koster 1 + 3 + 4 + 1 = 9.\n\n- IDS returnerer den grunneste løsningen (færrest kanter, her 3). Den er bare optimal når alle stegkostnadene er like.\n- DLS returnerer det første målet den finner i dybde-først-rekkefølge innenfor grensen.\n- **Uniform-cost search** finner den billigste stien.\n\nPoeng:\n\n- a) 1 p for ℓ = 0 og 1, 1 p for ℓ = 2, 1 p for ℓ = 3 og 1 p for sti og kostnad.\n- b) 1 p for rekkefølgen og 1 p for sti og kostnad.\n- c) 1 p for sti og kostnad og 1 p for forklaringen.\n\nVanlig feil: å blokkere noder som er besøkt tidligere i samme iterasjon. Sykelsjekken ser bare på stien, så D og C kan tas ut flere ganger.\n\n### Oppgave 6 (12 p): Informed Search\n\n**a) Admissible: ja. Consistent: nei.**\n\n**b) Ekspansjon: S, B, C, A, C, D, (G). C gjenåpnes. Stien er S, A, C, D, G med kostnad 8.**\n\n**c) Ekspansjon: S, B, C, E, (G). Stien er S, B, E, G med kostnad 9. Det er innenfor grensen: 9 ≤ 2 · 8 = 16.**\n\na) De sanne kostnadene h\\* er S 8, A 6, B 8, C 5, D 3, E 2 og G 0. Siden h ≤ h\\* overalt, er h admissible.\n\nConsistency krever h(n) ≤ c(n, n′) + h(n′) for hver kant. Kravet brytes i to kanter:\n\n- A→C: 6 > 1 + 1.\n- B→C: 5 > 3 + 1.\n\nAltså er h ikke consistent. (1 p for hvert svar, med begrunnelse.)\n\nb) A\\* med reopening, skrevet node(g, f):\n\n| Steg | Ekspanderer | Frontier etterpå |\n|---|---|---|\n| 1 | S(0, 6) | B(1, 6), A(2, 8) |\n| 2 | B(1, 6) | C(4, 5), A(2, 8), E(7, 9) |\n| 3 | C(4, 5) | A(2, 8), D(6, 9), E(7, 9) |\n| 4 | A(2, 8) | C(3, 4) gjenåpnet, D(6, 9), E(7, 9) |\n| 5 | C(3, 4) | D(5, 8) oppdatert, E(7, 9) |\n| 6 | D(5, 8) | G(8, 8), E(7, 9) |\n| 7 | G(8, 8) tas ut: mål | |\n\n- I steg 3 gir C ingen bedre vei til A (5 > 2) eller E (8 > 7).\n- I steg 4 finner A en billigere vei til C (g = 3 < 4), så C legges inn igjen selv om den er ekspandert.\n- I steg 5 gir det D en billigere vei (5 < 6).\n\nStien S-A-C-D-G koster 2 + 1 + 2 + 3 = 8, som er optimalt.\n\nPoeng: 3 p for rekkefølgen med frontier, 1 p for gjenåpningen av C og 2 p for sti og kostnad.\n\nVanlig feil: å ikke gjenåpne C. Da blir rekkefølgen S, B, C, A, D, E, (G), og stien S-B-C-D-G koster 9. Med inkonsistent h er første ekspansjon av en node ikke nødvendigvis via den billigste veien.\n\nc) Weighted A\\*, f = g + 2h:\n\n| Steg | Ekspanderer | Frontier etterpå |\n|---|---|---|\n| 1 | S(0, 12) | B(1, 11), A(2, 14) |\n| 2 | B(1, 11) | C(4, 6), E(7, 11), A(2, 14) |\n| 3 | C(4, 6) | E(7, 11), D(6, 12), A(2, 14) |\n| 4 | E(7, 11) | G(9, 9), D(6, 12), A(2, 14) |\n| 5 | G(9, 9) tas ut: mål | |\n\nStien S-B-E-G koster 1 + 6 + 2 = 9. Med admissible h finner weighted A\\* en løsning som koster mellom C\\* og W · C\\* = 2 · 8 = 16, og 9 ligger innenfor.\n\nSøket ekspanderer 4 noder mot 6 for A\\*, men stien er 1 dyrere enn den optimale.\n\nPoeng: 2 p for rekkefølgen, 1 p for sti og kostnad og 1 p for grensen.\n\n### Oppgave 7 (10 p): Constraint Satisfaction Problems\n\n**a) C = 2.**\n\n**b) C = 2, E = 1, A = 3, C = 1, E = 2, D = 3, A = 1, F = 3, B = 2.**\n\n**c) A = 1, B = 2, C = 1, D = 3, E = 2, F = 3.**\n\na) MRV: A, C, D og E har 2 verdier, mens B og F har 3.\n\nDegree er antall utilordnede naboer: A 2, C 4, D 3, E 4. C og E står likt, så den alfabetiske regelen gir **C**.\n\nLCV for C:\n\n- C = 1 fjerner 1 fra B, D, E og F, altså 4 verdier.\n- C = 2 fjerner 2 fra B, E og F, altså 3 verdier, siden D ikke har 2.\n\n**C = 2** prøves derfor først. (1 p for variabelen og 1 p for verdien, med tall.)\n\nb) Sporing, med domenene etter forward checking:\n\n| Steg | Tilordning | Domener etterpå | Kommentar |\n|---|---|---|---|\n| 1 | C = 2 | A {1,3}, B {1,3}, D {1,3}, E {1}, F {1,3} | |\n| 2 | E = 1 | A {3}, B {1,3}, D {3}, F {3} | MRV: E har 1 verdi |\n| 3 | A = 3 | D {} | MRV: A, D og F har 1 verdi. Degree: A 1, D 1, F 0, så A (alfabetisk). D tømmes: feil |\n| – | backtrack | | A og E har ingen flere verdier, så søket går tilbake til C |\n| 4 | C = 1 | A {1,3}, B {2,3}, D {3}, E {2}, F {2,3} | |\n| 5 | E = 2 | A {1,3}, B {2,3}, D {3}, F {3} | MRV: D og E har 1 verdi. Degree: D 2, E 3 |\n| 6 | D = 3 | A {1}, B {2,3}, F {3} | MRV: D og F. Degree: D 1, F 0 |\n| 7 | A = 1 | B {2,3}, F {3} | MRV: A og F. Begge har degree 0, så A (alfabetisk) |\n| 8 | F = 3 | B {2,3} | MRV |\n| 9 | B = 2 | | LCV gir likt (ingen utilordnede naboer), så laveste verdi |\n\nPoeng: 2 p for første gren med feilen og backtrackingen, 3 p for resten av rekkefølgen med begrunnelse og 1 p for domenene.\n\nc) A = 1, B = 2, C = 1, D = 3, E = 2, F = 3. Alle de åtte kantene har ulike verdier i endene.\n\nVanlige feil:\n\n- Å telle tilordnede naboer i degree.\n- Å la forward checking fjerne verdier hos naboenes naboer. Det er MAC/AC-3, ikke forward checking.\n- Å utelate A = 3 i steg 3. Det er en ekte tilordning som angres når D tømmes, så den skal stå med i lista.\n\n### Oppgave 8 (10 p): Adversarial Search\n\n**a) B = 3,8, C = 4, D = 3,5 og A = 4. Beste trekk er C.**\n\n**b) Beste trekk blir D (B = 15,4, C = 16, D = 17,5).**\n\n**c) Bladene d, h, k og l evalueres aldri. Rotverdien er 6, og beste trekk er O. R ≥ 6, T ≥ 9, P ≤ 4.**\n\na) MIN-nodene først: E = min(3, 7) = 3, F = min(9, 5) = 5, G = min(2, 8) = 2 og H = min(9, 7) = 7.\n\n- B = 0,6 · 3 + 0,4 · 5 = 3,8\n- C = min(4, 6, 5) = 4\n- D = 0,7 · 2 + 0,3 · 7 = 3,5\n- A = max(3,8, 4, 3,5) = 4, så MAX velger C.\n\n(1 p for B, 1 p for D, 1 p for C og A og 1 p for trekket.)\n\nb) Med x² blir E = 9 og F = 25, så B = 0,6 · 9 + 0,4 · 25 = 15,4. C = 16. G = 4 og H = 49, så D = 0,7 · 4 + 0,3 · 49 = 17,5.\n\nMAX velger nå **D**, selv om rekkefølgen på bladene er den samme. I minimax betyr bare rekkefølgen noe, men med sjansenoder betyr størrelsene også noe. Evalueringsfunksjonen må derfor være en positiv lineær transformasjon av sannsynligheten for å vinne, eller av forventet nytte (Fig. 6.14). (1 p for D med tall og 1 p for forklaringen.)\n\nc) Alpha-beta på tre 2:\n\n| Node | Vindu inn (α, β) | Hva skjer | Verdi |\n|---|---|---|---|\n| Q (MAX) | (−∞, ∞) | a = 3, b = 5 | 5 |\n| N (MIN) | (−∞, ∞) | β = 5 etter Q | |\n| R (MAX) | (−∞, 5) | c = 6 ≥ β = 5: **d kuttes** | ≥ 6 |\n| N | | min(5, ≥ 6) = 5 | 5, roten får α = 5 |\n| S (MAX) | (5, ∞) | e = 6, f = 1 | 6 |\n| O (MIN) | (5, ∞) | β = 6 etter S | |\n| T (MAX) | (5, 6) | g = 9 ≥ β = 6: **h kuttes** | ≥ 9 |\n| O | | min(6, ≥ 9) = 6 | 6, roten får α = 6 |\n| U (MAX) | (6, ∞) | i = 3, j = 4. Ingen kutt, for U sammenligner med β = ∞ | 4 |\n| P (MIN) | (6, ∞) | 4 ≤ α = 6: **V kuttes (k og l)** | ≤ 4 |\n| M (MAX) | | max(5, 6, ≤ 4) = 6 | 6 |\n\nRotverdien er 6 via O, den samme som minimax gir (N = 5, O = 6, P = 4). De fulle minimax-verdiene er R = 6, T = 9 og P = 4, men søket har ikke sett d, h og V, så det alpha-beta har fastslått, er bare grensene R ≥ 6, T ≥ 9 og P ≤ 4.\n\nPoeng: 2 p for de tre kuttene med α og β, 1 p for rotverdi og trekk og 1 p for grensene.\n\nVanlige feil:\n\n- I c): å kutte j i U fordi i = 3 ≤ α = 6. U er en MAX-node og kutter bare når v ≥ β.\n- I a): å ta snittet av bladene direkte og hoppe over MIN-laget.\n\n### Oppgave 9 (5 p): Unification\n\n**a) {x/F(A), y/B, z/F(A)}**\n\n**b) {x/A, y/G(A), z/A}.** Formen {x/z, y/G(z), z/A}, som UNIFY bygger, godtas også.\n\n**c) Failure (occur check).**\n\na)\n\n- Argument 1 gir x/F(A).\n- Argument 2: G(F(A), y) mot G(z, B) gir z/F(A) og y/B.\n- Argument 3: H(z) = H(F(A)) mot H(F(A)) stemmer.\n\nBegge blir P(F(A), G(F(A), B), H(F(A))).\n\nb)\n\n- Argument 1 gir x/z.\n- Argument 2: F(y) mot F(G(z)) gir y/G(z).\n- Argument 3: y er allerede bundet til G(z), så G(z) unifiseres med G(A). Det gir z/A.\n\nSatt helt inn blir det {x/A, y/G(A), z/A}, og begge blir R(A, F(G(A)), G(A)). (1 p for bindingene og 1 p for å følge bindingen av y.)\n\nc)\n\n- Argument 1 gir x/G(y).\n- Argument 2: F(x) blir F(G(y)), som skal unifiseres med y.\n\nVariabelen y forekommer i F(G(y)), så occur check feiler. y = F(G(y)) ville gitt et uendelig term, og ingen unifier finnes. (1 p for failure og 1 p for occur check-begrunnelsen.)\n\nVanlige feil:\n\n- Å binde y/F(G(y)) uten occur check.\n- I b): å binde y/G(A) uten å se at y allerede er bundet.\n\n### Oppgave 10 (20 p): Resolution\n\n**a) CNF(KB) har 6 klausuler:** C1: ¬A ∨ W ∨ M, C2: A ∨ ¬W, C3: A ∨ ¬M, C4: ¬M ∨ C ∨ I, C5: ¬W ∨ I og C6: ¬C ∨ ¬A.\n\n**b) Det negerte målet gir C7: A og C8: ¬I. Resolusjonen gir □, så KB ⊨ A ⇒ I (ja).**\n\na) S1: A ⇔ (W ∨ M)\n\n1. ≡ (A ⇒ (W ∨ M)) ∧ ((W ∨ M) ⇒ A) (biconditional elimination)\n2. ≡ (¬A ∨ (W ∨ M)) ∧ (¬(W ∨ M) ∨ A) (implication elimination, to ganger)\n3. ≡ (¬A ∨ W ∨ M) ∧ ((¬W ∧ ¬M) ∨ A) (associativity of ∨ og De Morgan)\n4. ≡ (¬A ∨ W ∨ M) ∧ (A ∨ (¬W ∧ ¬M)) (commutativity of ∨)\n5. ≡ (¬A ∨ W ∨ M) ∧ ((A ∨ ¬W) ∧ (A ∨ ¬M)) (distributivity of ∨ over ∧)\n6. Associativity of ∧ gir C1, C2 og C3.\n\nS2: (M ∧ ¬C) ⇒ I\n\n1. ≡ ¬(M ∧ ¬C) ∨ I (implication elimination)\n2. ≡ (¬M ∨ ¬¬C) ∨ I (De Morgan)\n3. ≡ (¬M ∨ C) ∨ I (double-negation elimination)\n4. ≡ ¬M ∨ C ∨ I (associativity of ∨), som er C4.\n\nS3: ¬(W ∧ ¬I) ≡ ¬W ∨ ¬¬I (De Morgan) ≡ ¬W ∨ I (double-negation elimination). Det er C5.\n\nS4: ¬(C ∧ A) ≡ ¬C ∨ ¬A (De Morgan). Det er C6.\n\nPoeng: S1 4 p, S2 3 p, S3 1,5 p og S4 1,5 p. Trekk for steg uten navngitt ekvivalens og for feil rekkefølge. Rekkefølgen er ⇔ først, så ⇒, så ¬ innover og til slutt distribusjon.\n\nb) Negert mål: ¬(A ⇒ I) ≡ ¬(¬A ∨ I) (implication elimination) ≡ ¬¬A ∧ ¬I (De Morgan) ≡ A ∧ ¬I (double-negation elimination). Det gir C7: A og C8: ¬I.\n\n| Steg | Klausuler (literal) | Resolvent |\n|---|---|---|\n| R1 | C1 og C7 (A) | W ∨ M |\n| R2 | R1 og C5 (W) | M ∨ I |\n| R3 | R2 og C8 (I) | M |\n| R4 | R3 og C4 (M) | C ∨ I |\n| R5 | R4 og C8 (I) | C |\n| R6 | R5 og C6 (C) | ¬A |\n| R7 | R6 og C7 (A) | □ |\n\nDen tomme klausulen viser at KB ∧ ¬(A ⇒ I) er unsatisfiable, så KB ⊨ A ⇒ I.\n\n- Andre rekkefølger er like gode når hvert steg resolverer på nøyaktig ett komplementært par.\n- C2 og C3 trengs ikke i beviset.\n- Alle fire setningene trengs: uten én av dem følger ikke målet.\n\nPoeng: 2 p for det negerte målet i CNF, 7 p for resolusjonen (1 p per steg) og 1 p for konklusjonen.\n\nVanlige feil:\n\n- Å glemme den ene retningen av ⇔.\n- Å distribuere feil i A ∨ (¬W ∧ ¬M).\n- Å resolvere på to literaler samtidig.\n\n### Oppgave 11 (5 p): Automated Planning\n\n**a)**\n\n```\nAction(PickUp(d, p, l),\n  PRECOND: At(d, l) ∧ At(p, l) ∧ Empty(d) ∧ Drone(d) ∧ Package(p) ∧ Location(l)\n  EFFECT:  ¬At(p, l) ∧ Holding(d, p) ∧ ¬Empty(d))\n```\n\n**b) Relevante handlinger: 1 og 3. g′ = At(P1, Shop) ∧ At(D1, Shop) ∧ Drone(D1) ∧ Location(Shop) ∧ Location(Depot). g′ holder ikke i Init (nei).**\n\na) Preconditions: dronen og pakken er på samme sted, og dronen er tom. Effekten legger til Holding(d, p) og sletter At(p, l) og Empty(d). Typepredikatene følger stilen i Fly og Drop. (1 p for precondition og 1 p for effect.)\n\nb) En handling er relevant når den gir minst én del av målet og ingen av effektene sletter en annen del.\n\n- (1) Drop(D1, P1, Shop) er **relevant**: den gir At(P1, Shop) og sletter bare Holding(D1, P1), som ikke står i g.\n- (2) Fly(D1, Depot, Shop) er ikke relevant: den sletter At(D1, Depot).\n- (3) Fly(D1, Shop, Depot) er **relevant**: den gir At(D1, Depot) og sletter bare At(D1, Shop).\n- (4) PickUp(D1, P1, Shop) er ikke relevant: den gir ingenting i g og sletter At(P1, Shop).\n\ng′ = (g − ADD(a)) ∪ PRECOND(a). Her er ADD(a) = At(D1, Depot), så g′ = At(P1, Shop) ∧ At(D1, Shop) ∧ Drone(D1) ∧ Location(Shop) ∧ Location(Depot).\n\ng′ holder ikke i Init, fordi At(P1, Shop) og At(D1, Shop) er usanne, så søket fortsetter. Regresjon videre over Drop(D1, P1, Shop), Fly(D1, Depot, Shop) og PickUp(D1, P1, Depot) når Init. Planen blir PickUp(D1, P1, Depot), Fly(D1, Depot, Shop), Drop(D1, P1, Shop), Fly(D1, Shop, Depot).\n\nPoeng: 1 p for relevansen, 1,5 p for g′ og 0,5 p for Init.\n\nMerk: regresjon over (1) først gir både At(D1, Depot) og At(D1, Shop) i g′, som er en umulig tilstand. Relevanstesten fanger ikke opp det.\n\n### Oppgave 12 (5 p): Natural Language Processing\n\n**a) P(T1) = 0,0039375 og P(T2) = 0,002625. PCFG-en foretrekker T1 (PP-en henger på VP).**\n\n**b)** Se modellsvaret under.\n\na) Sannsynligheten for et tre er produktet av alle reglene i treet, også ordreglene. Begge trærne har 14 regler.\n\nFelles for begge:\n\n- S → NP VP (1,0)\n- NP → Name (0,3) og Name → Ada (1,0)\n- VP → V NP (0,7) og V → sees (1,0)\n- NP → Det N (0,5), Det → the (1,0) og N → robot (0,5)\n- PP → Prep NP (1,0) og Prep → with (1,0)\n- NP → Det N (0,5), Det → the (1,0) og N → lamp (0,5)\n\nT1 har i tillegg VP → VP PP (0,3):\n\nP(T1) = 0,3 · 0,3 · 0,7 · 0,5⁴ = 0,0039375\n\nT2 har i stedet NP → NP PP (0,2):\n\nP(T2) = 0,3 · 0,7 · 0,2 · 0,5⁴ = 0,002625\n\nT1 er altså 0,3/0,2 = 1,5 ganger så sannsynlig. (1 p per tre. Trekk for å glemme ordreglene eller en NP → Det N.)\n\nb) Modellsvar:\n\n- **Top-down** starter i S og utvider mot ordene: S → NP VP, og så prøves reglene for NP. NP → Det N feiler på «Ada», som ikke er en Det. NP → Name → Ada passer, og søket går videre til VP. Ulempen er at den bruker tid på utvidelser som aldri kan passe ordene, som NP → Det N for «Ada».\n- **Bottom-up** starter i ordene og slår dem sammen oppover. Ada → Name → NP, sees → V, the → Det og robot → N. Så gir Det N en NP, V NP en VP og NP VP en S over «Ada sees the robot». Ulempen er at den bygger fraser som aldri blir del av en hel parse. S over de fire første ordene er en slik blindvei.\n- Begge kan måtte bygge de samme delfrasene på nytt når de prøver den andre tilknytningen av «with the lamp». En **chart parser** (dynamic programming, for eksempel CYK) lagrer hver frase over hvert spenn én gang. NP «the robot», PP «with the lamp» og NP «the lamp» bygges én gang og gjenbrukes av begge trærne. I PCFG-versjonen lagres den mest sannsynlige analysen per kategori og spenn.\n\nPoeng: 1 p for top-down, 1 p for bottom-up og 1 p for chart.\n\n### Oppgave 13 (5 p): Knowledge Representation and Ethics\n\n**a) (i) Disjoint, exhaustive decomposition og partition. (ii) Bare exhaustive decomposition. (iii) Bare disjoint.**\n\n**b) Demographic parity: nei. Equal opportunity: ja. Calibration: nei.**\n\na) Definisjonene (boka 10.2):\n\n- Kategoriene er **disjoint** når de ikke har felles medlemmer.\n- De er en **exhaustive decomposition** av Cars når hver bil hører til minst én av dem.\n- En **partition** er en disjoint exhaustive decomposition.\n\nDe tre settene:\n\n- (i) Electric, Hybrid og Petrol deler opp {c1, …, c6} uten overlapp, så alle tre egenskapene holder.\n- (ii) Unionen er alle seks bilene, men Vans overlapper Electric (c2) og Petrol (c5). Settet er exhaustive, men ikke disjoint og dermed ingen partition.\n- (iii) Electric og Petrol er disjoint, men c3 mangler, så settet er ikke exhaustive.\n\nPoeng: omtrent 2/3 p per sett, med begrunnelse.\n\nb) Tallene:\n\n| Gruppe | Godtatt | TPR (godtatt blant kvalifiserte) | Kvalifisert blant godtatte | Kvalifisert blant avviste |\n|---|---|---|---|---|\n| X | 40/100 = 40 % | 35/50 = 70 % | 35/40 = 87,5 % | 15/60 = 25 % |\n| Y | 20/100 = 20 % | 14/20 = 70 % | 14/20 = 70 % | 6/80 = 7,5 % |\n\n- **Demographic parity** krever lik andel godtatte. Her er det 40 % mot 20 %, så **nei**.\n- **Equal opportunity** krever lik TPR. Den er 70 % i begge gruppene, så **ja**.\n- **Calibration** krever at et ja og et nei betyr det samme i begge gruppene. Her er det 87,5 % mot 70 % og 25 % mot 7,5 %, så **nei**.\n\n(2 p for de tre kriteriene med tall.)\n\nFairness through unawareness holder ikke. Andre variabler korrelerer med gruppen. Slike proxies kan være postnummer, skole eller hull i CV-en, og gjennom dem kan modellen lære gruppeforskjellen likevel. Historisk skjevhet i treningsdataene følger også med. Når attributtet er fjernet, blir skjevheten dessuten vanskeligere å måle og rette. (1 p.)"
+}

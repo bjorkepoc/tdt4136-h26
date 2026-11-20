@@ -1,0 +1,588 @@
+1
+00:00:00,450 --> 00:00:06,290
+Loven sier: en amerikaner som selger våpen til en fiendtlig nasjon, er kriminell.
+
+2
+00:00:06,290 --> 00:00:11,330
+Nono er fiende av Amerika og har noen missiler, og alle ble solgt dit av oberst
+
+3
+00:00:11,330 --> 00:00:17,170
+West, som er amerikaner. Er West kriminell? Ingen setning sier det. Svaret
+
+4
+00:00:17,170 --> 00:00:22,210
+ligger i hva x, y og z i loven må være, og det må en maskin finne selv.
+
+5
+00:00:23,583 --> 00:00:28,783
+Etterpå kan du unifisere for hånd, bruke Generalized Modus Ponens med theta
+
+6
+00:00:28,783 --> 00:00:33,943
+synlig, og bevise at West er kriminell både forover og bakover. Vi gjør
+
+7
+00:00:33,943 --> 00:00:40,223
+kvantorene konkrete, unifiserer, bruker GMP, kjører forward og backward chaining,
+
+8
+00:00:40,223 --> 00:00:41,503
+og tar eksamen.
+
+9
+00:00:42,883 --> 00:00:46,483
+Hva kan du gjøre med «for alle» og «det finnes»?
+
+10
+00:00:48,250 --> 00:00:54,090
+Alle grådige konger er onde. «For alle x» betyr at du kan sette inn hva som
+
+11
+00:00:54,090 --> 00:01:00,130
+helst: John, Richard, til og med faren til John. Det du setter inn, må være en
+
+12
+00:01:00,130 --> 00:01:06,170
+ground term, et uttrykk uten variabler. Dette er Universal Instantiation.
+
+13
+00:01:06,170 --> 00:01:09,850
+Regelen blir stående, så du kan gjøre det så mange ganger du vil.
+
+14
+00:01:11,150 --> 00:01:17,470
+Med «det finnes» er det annerledes. Nono har noen missiler: det finnes en x som
+
+15
+00:01:17,470 --> 00:01:22,350
+Nono eier og som er et missil. Du vet ikke hvilken, så du gir den et helt nytt
+
+16
+00:01:22,350 --> 00:01:29,870
+navn: M1. Dette er Existential Instantiation, og M1 er en Skolem constant.
+
+17
+00:01:29,870 --> 00:01:34,350
+Hvorfor nytt? Velger du West, påstår du at West er et missil.
+
+18
+00:01:35,717 --> 00:01:41,037
+Og hvorfor bare én gang? Setningen lover bare ett objekt. Når det har fått navn,
+
+19
+00:01:41,037 --> 00:01:47,117
+er den brukt opp og kan strykes. Forelesning sju legger til: gjør KB allerede
+
+20
+00:01:47,117 --> 00:01:52,437
+setningen sann, trengs ikke noe nytt navn. Står «det finnes» inne i en «for
+
+21
+00:01:52,437 --> 00:01:56,757
+alle», trengs en Skolem-funksjon. Den kommer i E16.
+
+22
+00:01:58,117 --> 00:02:03,957
+Din tur. Alle er grådige, og det finnes en krone på hodet til John. Hvilken
+
+23
+00:02:03,957 --> 00:02:11,437
+slutning er ikke lov?
+
+24
+00:02:11,437 --> 00:02:17,997
+C. Den gir kronen navnet John, som allerede finnes. A og D er UI med ground
+
+25
+00:02:17,997 --> 00:02:20,957
+terms, og B bruker et nytt navn.
+
+26
+00:02:22,317 --> 00:02:25,757
+Kan du ikke bare gjøre alt om til proposisjonslogikk?
+
+27
+00:02:27,517 --> 00:02:35,277
+Jo. Bokas eksempel: regelen fra i sted, King av John, Greedy av John og Brother
+
+28
+00:02:35,277 --> 00:02:42,130
+av Richard og John. Objektene er John og Richard, så UI gir to kopier av regelen.
+
+29
+00:02:42,130 --> 00:02:47,357
+Bytt hvert atom med et symbol, og forward chaining fra kapittel sju gir John is
+
+30
+00:02:47,357 --> 00:02:50,957
+evil. Dette heter propositionalization.
+
+31
+00:02:52,250 --> 00:02:58,570
+Men legg til én funksjon, Father. Da finnes Father av John, Father av Father av
+
+32
+00:02:58,570 --> 00:03:04,530
+John, og så videre. Uendelig mange ground terms, og uendelig mange kopier.
+
+33
+00:03:04,530 --> 00:03:09,290
+Herbrand viste at hvis setningen følger, holder en endelig del. Så du lager
+
+34
+00:03:09,290 --> 00:03:12,650
+kopiene dybde for dybde til beviset dukker opp.
+
+35
+00:03:14,017 --> 00:03:20,417
+Men hva om setningen ikke følger? Forelesning sju: NatNum av null, og er n et
+
+36
+00:03:20,417 --> 00:03:26,497
+naturlig tall, er S av n det også. Spør om S av S av null, og beviset kommer på
+
+37
+00:03:26,497 --> 00:03:32,537
+dybde én. Spør om noe som ikke følger, og søket lager nye termer uten ende. Du
+
+38
+00:03:32,537 --> 00:03:38,017
+vet aldri om det står fast eller er rett ved målet. Dette heter semidecidable:
+
+39
+00:03:38,017 --> 00:03:43,937
+ja-svar kommer alltid, nei-svar ikke alltid. Det spurte eksamen tjueatten om.
+
+40
+00:03:45,317 --> 00:03:54,677
+Din tur: søket har gått i en time uten svar. Hva vet du?
+
+41
+00:03:54,677 --> 00:04:00,677
+B, ingenting sikkert. Propositionalisering virker, men lager kopier blindt. Vi
+
+42
+00:04:00,677 --> 00:04:02,757
+vil bare lage dem vi trenger.
+
+43
+00:04:04,117 --> 00:04:08,517
+Hvordan finner du substitusjonen som gjør to uttrykk like?
+
+44
+00:04:10,283 --> 00:04:18,763
+Hvem kjenner John? Knows av John og x. I KB står Knows av John og Jane. UNIFY
+
+45
+00:04:18,763 --> 00:04:26,683
+går gjennom dem bit for bit. Samme predikat. John mot John: likt. x mot Jane: x
+
+46
+00:04:26,683 --> 00:04:32,123
+er en variabel, så den bindes. x skråstrek Jane går inn i theta, og nå er
+
+47
+00:04:32,123 --> 00:04:35,003
+uttrykkene like. Theta er en unifier.
+
+48
+00:04:36,383 --> 00:04:44,943
+Nå bokas tabell. Mot Knows av y og Bill: y blir John, x blir Bill. Mot Knows av
+
+49
+00:04:44,943 --> 00:04:51,743
+y og Mother av y: y blir John, x blir Mother av y, og siden y er John, er x
+
+50
+00:04:51,743 --> 00:04:58,703
+Mother av John. Mot Knows av x og Elizabeth: x blir John. Så x mot Elizabeth,
+
+51
+00:04:58,703 --> 00:05:02,943
+men x er John, og John er ikke Elizabeth. Failure.
+
+52
+00:05:04,217 --> 00:05:10,137
+Men Knows av x og Elizabeth betyr jo at alle kjenner Elizabeth! Riktig. De to
+
+53
+00:05:10,137 --> 00:05:16,217
+x-ene har bare samme navn. Gi den ene et nytt navn, x sytten. Da går det: x
+
+54
+00:05:16,217 --> 00:05:22,457
+sytten blir John, x blir Elizabeth. Dette heter standardizing apart: egne
+
+55
+00:05:22,457 --> 00:05:27,737
+variabelnavn i hver setning før du unifiserer. Fasitene vil se det gjort.
+
+56
+00:05:29,017 --> 00:05:37,017
+Ofte passer flere. Knows av John og x mot Knows av y og z. y blir John og x blir
+
+57
+00:05:37,017 --> 00:05:43,657
+z, så John kjenner z. Men alle tre kan også bli John. Det er den første pluss z
+
+58
+00:05:43,657 --> 00:05:50,377
+blir John: den binder mer enn den må. Den første er most general unifier, MGU,
+
+59
+00:05:50,377 --> 00:05:56,537
+og det er den UNIFY gir. Den holder z åpen for senere steg. Eksamen tjuefemten
+
+60
+00:05:56,537 --> 00:05:58,297
+spurte om nettopp dette.
+
+61
+00:05:59,583 --> 00:06:08,063
+En felle til. S av x mot S av S av x. Da må x bli S av x, og x står inne i seg
+
+62
+00:06:08,063 --> 00:06:15,103
+selv: S av S av S av x, uten ende. Derfor sjekker UNIFY om variabelen finnes
+
+63
+00:06:15,103 --> 00:06:20,823
+inne i termen: occur check. Svaret blir failure. Foreleser tok ikke denne
+
+64
+00:06:20,823 --> 00:06:24,143
+sjekken, og den gjør UNIFY kvadratisk.
+
+65
+00:06:25,517 --> 00:06:38,797
+Din tur: unifiser Knows av Father av y og y med Knows av x og x.
+
+66
+00:06:38,797 --> 00:06:46,877
+C, failure. x blir Father av y. Så y mot x, men x er Father av y, og y kan ikke
+
+67
+00:06:46,877 --> 00:06:53,277
+bli Father av y: occur check. Ta med deg: egne variabelnavn, og bind bare det du
+
+68
+00:06:53,277 --> 00:06:54,077
+må.
+
+69
+00:06:55,050 --> 00:06:58,170
+Hvordan bruker du theta til å trekke en slutning?
+
+70
+00:06:59,950 --> 00:07:06,110
+Du vet King av John, og at alle er grådige: Greedy av y. Legg faktaene mot
+
+71
+00:07:06,110 --> 00:07:13,683
+premissene. King mot King: x blir John. Greedy av y mot Greedy av x: x er John,
+
+72
+00:07:13,683 --> 00:07:19,310
+så y blir John. Sett theta inn i konklusjonen: Evil av John. Dette er
+
+73
+00:07:19,310 --> 00:07:24,590
+Generalized Modus Ponens, Modus Ponens løftet til førsteordens logikk. Den er
+
+74
+00:07:24,590 --> 00:07:28,190
+sound: det er bare UI og vanlig Modus Ponens.
+
+75
+00:07:29,483 --> 00:07:36,603
+GMP krever definite clauses: et atom, eller positive atomer med «og» som gir ett
+
+76
+00:07:36,603 --> 00:07:42,723
+atom. «For alle» er underforstått, og «det finnes» er ikke lov. Her er krimsaken
+
+77
+00:07:42,723 --> 00:07:48,523
+på den formen, med M1 fra Existential Instantiation. Ingen funksjoner: dette er
+
+78
+00:07:48,523 --> 00:07:54,403
+Datalog. For definite clauses og atomære spørsmål er gjentatt GMP sound og
+
+79
+00:07:54,403 --> 00:07:56,523
+complete, sier forelesning sju.
+
+80
+00:07:57,817 --> 00:08:03,097
+Hvordan finner du fakta som passer, blant millioner? FETCH henter alt som
+
+81
+00:08:03,097 --> 00:08:08,337
+unifiserer med spørsmålet. Legg hvert predikat i sin egen bøtte: predicate
+
+82
+00:08:08,337 --> 00:08:14,377
+indexing. Employs av IBM og Richard kan lagres under fire nøkler, én for hvert
+
+83
+00:08:14,377 --> 00:08:19,897
+spørsmål den svarer på. De danner et subsumption lattice, og der to noder møtes,
+
+84
+00:08:19,897 --> 00:08:24,537
+står det MGU-en deres gir. Foreleser tok ikke dette.
+
+85
+00:08:25,917 --> 00:08:29,837
+Hvordan finner maskinen ut at West er kriminell, helt av seg selv?
+
+86
+00:08:31,617 --> 00:08:36,777
+Foreleser tok ikke resten, men det er pensum. Forward chaining starter i
+
+87
+00:08:36,777 --> 00:08:42,577
+faktaene. Hver runde prøver alle reglene mot alt den vet, og det nye legges til
+
+88
+00:08:42,577 --> 00:08:49,017
+når runden er ferdig. Runde én. Loven trenger et våpen, og det finnes ikke ennå.
+
+89
+00:08:49,017 --> 00:08:56,977
+Salgsregelen: x blir M1, og West solgte M1 til Nono. Missiler er våpen: Weapon
+
+90
+00:08:56,977 --> 00:09:01,697
+av M1. Fiende av Amerika gir Hostile av Nono.
+
+91
+00:09:03,050 --> 00:09:11,290
+Din tur: kunne loven slått til allerede i runde én?
+
+92
+00:09:11,290 --> 00:09:17,690
+Nei. Weapon og Hostile kom i samme runde, og nye fakta er med først i neste.
+
+93
+00:09:17,690 --> 00:09:25,810
+Runde to: x blir West, y blir M1, z blir Nono. Criminal av West, som unifiserer
+
+94
+00:09:25,810 --> 00:09:32,730
+med spørsmålet. Svaret er ja. Treet vokste nedenfra: fakta nederst, runde én i
+
+95
+00:09:32,730 --> 00:09:35,210
+midten, runde to øverst.
+
+96
+00:09:36,583 --> 00:09:42,663
+Uten spørsmål kjører den videre, men runde tre gir ingenting nytt: fixed point.
+
+97
+00:09:42,663 --> 00:09:48,423
+Den er sound, fordi hvert steg er GMP, og complete for definite clauses og
+
+98
+00:09:48,423 --> 00:09:54,543
+atomære fakta. Uten funksjoner må den stoppe: åtte predikater, fire konstanter
+
+99
+00:09:54,543 --> 00:09:59,703
+og høyst tre argumenter gir høyst fem hundre og tolv fakta. Med funksjoner kan
+
+100
+00:09:59,703 --> 00:10:03,863
+den gå for alltid: NatNum-regelen gir ny fakta hver runde.
+
+101
+00:10:05,150 --> 00:10:12,030
+Algoritmen er enkel, men treg. For det første er matching et CSP: hvert premiss
+
+102
+00:10:12,030 --> 00:10:17,110
+er en constraint på variablene sine. Hele kartfargingen av Australia kan skrives
+
+103
+00:10:17,110 --> 00:10:23,950
+som én regel, så matching er NP-hard. Eier Nono tusen ting, men har ett missil,
+
+104
+00:10:23,950 --> 00:10:28,990
+sjekker du missilene først: MRV fra kapittel fem, som er seks i den amerikanske
+
+105
+00:10:28,990 --> 00:10:30,110
+utgaven.
+
+106
+00:10:31,383 --> 00:10:36,743
+For det andre sjekket runde to alle reglene igjen. Incremental forward chaining
+
+107
+00:10:36,743 --> 00:10:42,583
+sjekker bare regler som bruker noe nytt fra forrige runde, her bare loven. Rete
+
+108
+00:10:42,583 --> 00:10:47,543
+husker i tillegg delvise treff. For det tredje lager den fakta som er
+
+109
+00:10:47,543 --> 00:10:51,463
+irrelevante for målet. Da hjelper det å starte i målet.
+
+110
+00:10:52,817 --> 00:10:55,857
+Kan du starte i målet og jobbe deg bakover?
+
+111
+00:10:57,617 --> 00:11:03,137
+Backward chaining starter i spørsmålet: Criminal av West. Loven har det som
+
+112
+00:11:03,137 --> 00:11:11,057
+konklusjon, med x blir West. Alle fire premissene må bevises: en AND-node. Hvert
+
+113
+00:11:11,057 --> 00:11:17,217
+delmål kan løses av hvilken som helst regel som passer: OR. American av West er
+
+114
+00:11:17,217 --> 00:11:25,177
+en fakta. Weapon av y: våpenregelen, og Missile av y passer med M1. y blir M1,
+
+115
+00:11:25,177 --> 00:11:30,737
+og bindingen følger med: neste delmål er Sells av West, M1 og z.
+
+116
+00:11:32,117 --> 00:11:40,277
+Din tur: hva står i siste delmål når vi kommer dit?
+
+117
+00:11:40,277 --> 00:11:46,997
+Hostile av Nono. Salgsregelen bandt z til Nono, og bindingen fulgte med. Enemy
+
+118
+00:11:46,997 --> 00:11:52,717
+av Nono og Amerika er en fakta, og alle bladene er bevist. Treet vokste ovenfra
+
+119
+00:11:52,717 --> 00:11:55,557
+og ned, dybde først, fra venstre.
+
+120
+00:11:56,917 --> 00:12:03,424
+Dybde først betyr lite minne, men også problemene fra søk. Si at fiendskap er
+
+121
+00:12:03,424 --> 00:12:09,717
+gjensidig. Prøves den regelen før faktaen, blir Enemy av Nono og Amerika til
+
+122
+00:12:09,717 --> 00:12:15,637
+Enemy av Amerika og Nono, og så tilbake igjen. Gjentatte tilstander, og beviset
+
+123
+00:12:15,637 --> 00:12:21,397
+finnes, men blir aldri funnet: ikke complete. Forward chaining legger til den
+
+124
+00:12:21,397 --> 00:12:25,877
+speilvendte faktaen og stopper. Prolog er ikke pensum.
+
+125
+00:12:27,250 --> 00:12:29,330
+Klar for ekte oppgaver?
+
+126
+00:12:31,083 --> 00:12:45,083
+Eksamen tjuefire, oppgave sytten, fem poeng. Sett på pause og prøv.
+
+127
+00:12:45,083 --> 00:12:55,963
+F mot F. x mot F av y og A: x bindes. Inne i neste F: u blir z. Så x mot F av B
+
+128
+00:12:55,963 --> 00:13:04,683
+og z, men x er F av y og A, så y blir B, og z blir A. Svar A. Satt helt inn er x
+
+129
+00:13:04,683 --> 00:13:11,243
+lik F av B og A. B bryter occur check, og D gjør x til A, men x må være et
+
+130
+00:13:11,243 --> 00:13:12,203
+F-uttrykk.
+
+131
+00:13:13,583 --> 00:13:21,103
+Øving fire, oppgave fire d. U2 er Sone, Reveluv og Blink, og liker drama. Hva
+
+132
+00:13:21,103 --> 00:13:27,316
+anbefaler systemet? Alle reglene er definite clauses, så kjør forward chaining.
+
+133
+00:13:27,316 --> 00:13:36,463
+Prøv selv.
+
+134
+00:13:36,463 --> 00:13:45,716
+Runde én: GG, RV, BP, Ballads, Dance, og SEO fordi U2 er Sone og liker drama.
+
+135
+00:13:45,716 --> 00:13:53,983
+Runde to: CH, HE og TAE, som trengte Ballads. Runde tre: ingenting nytt. DJH
+
+136
+00:13:53,983 --> 00:13:57,423
+kommer aldri, for ingen sier at U2 liker Electro.
+
+137
+00:13:58,717 --> 00:14:00,317
+Hvor dukker dette opp igjen?
+
+138
+00:14:02,083 --> 00:14:07,363
+Forward og backward chaining kjenner du fra kapittel sju i E12, nå løftet med
+
+139
+00:14:07,363 --> 00:14:13,283
+theta. Resolution i E16 bruker samme UNIFY og samme standardizing apart.
+
+140
+00:14:13,283 --> 00:14:20,483
+Matching er et CSP, og konjunktrekkefølgen er MRV fra E06 og E07. Backward
+
+141
+00:14:20,483 --> 00:14:27,043
+chaining er dybde-først-søk, med svakhetene fra E02. Og «for alle» med pil er
+
+142
+00:14:27,043 --> 00:14:28,083
+E14.
+
+143
+00:14:29,383 --> 00:14:36,823
+Hele kjeden: UI og EI gjør kvantorene konkrete. Propositionalisering virker, men
+
+144
+00:14:36,823 --> 00:14:42,983
+blindt. UNIFY finner den minste theta som gjør to uttrykk like, og GMP bruker
+
+145
+00:14:42,983 --> 00:14:48,263
+den i én slutning. Forward chaining bygger beviset nedenfra, backward chaining
+
+146
+00:14:48,263 --> 00:14:54,903
+ovenfra, og begge dømmer West. Husker du bare én ting: theta er limet. Egne
+
+147
+00:14:54,903 --> 00:14:59,143
+variabelnavn, bind bare det du må, og ta bindingene med videre.
+

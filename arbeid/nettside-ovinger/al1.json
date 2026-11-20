@@ -1,0 +1,659 @@
+{
+ "id": "al1",
+ "ep": "AL1",
+ "tittel": "Assignment Lecture 1: Search Algorithms",
+ "kilde": "../materiale/Files/AssignmentLecture1-Fall2026.pptx",
+ "om": "TDT4137 – Introduction to Artificial Intelligence, 2026<br>\nAleksandra Jekic, Department of Computer Science\n\n*Merknad fra oss: lysbildet skriver TDT4137, men emnet er TDT4136.*\n\n### Relevant for this assignment\n\n- Lecture 2 (yesterday) and Lecture 3, which covers some mathematical theory on A\\* relevant to this assignment (next week)\n- Chapter 3 in the Russell and Norvig book (4th edition, Global).\n- If you have taken TDT4120 Algorithms and data structures, some of this may be familiar to you and you will be used to this way of thinking. However, you can also get tricked. Even small, subtle differences in our versions of the algorithms can be significant.\n- Note also that older versions of the book have different algorithms.\n\n### How important is this?\n\n- If you look at the old exams, there is usually a lot on this topic.\n- May be easy to grasp intuitively, but small details can trip you up. Behind the scenes we joke that we are still discovering new subtle details.\n- In the exam, you may have to do these algorithms by hand. Most human brains require spaced repetition to do this confidently. This assignment is a good chance to build a solid foundation for your exam practice period.\n\n### What version to use?\n\n- Many different algorithms with many different properties have the same names. If you look up random A\\* content online, it is probably not our A\\*.\n- Small details that can make a really big difference (from main lectures):\n  - Does the algorithm save where it has been (graph search) or not (tree search)?\n  - When does the algorithm check if it found the goal?\n  - How does the algorithm generate the path to the goal after finding it?\n- We have tried to make this as unambiguous as possible.\n- For Breadth-first-search (BFS), the official algorithm is the one found on page 95 in Norvig and Russell.\n  - Biggest “gotcha” is that it checks for the goal immediately when discovering a new node.\n- For all the other algorithms, please use Best-First-Search on page 91 with the appropriate function f to order the priority queue.\n  - Depth-First Search: *f*(*n*) = −depth(*n*)\n  - Uniform-Cost Search (Dijkstra): *f*(*n*) = *g*(*n*)\n  - Greedy Best-First Search: *f*(*n*) = *h*(*n*)\n  - A\\* Search: *f*(*n*) = *g*(*n*) + *h*(*n*)\n- Process nodes in alphabetical order, when not specified.\n- If function f, used to order the priority queue, has a tie, fall back on alphabetical order.\n\n**Assumptions**\n\n- Use the pseudocode from the book:\n  - For 1 (BFS), use `Breadth-First-Search`, from **Figure 3.9 (p. 95)**\n  - For 2–5, use `Best-First-Search`, from **Figure 3.7 (p. 91)** with the following heuristic functions:\n    - DFS: use *f*(*n*) = −depth(*n*)\n    - Uniform-Cost Search: use *f*(*n*) = *g*(*n*) = PathCost(*n*)\n    - Greedy Best-First Search: use *f*(*n*) = *h*(*n*)\n    - A\\*: use *f*(*n*) = *g*(*n*) + *h*(*n*)\n  - Process (or generate) nodes in alphabetical order\n    - So, *C* gets processed before *H* when Expand(*B*)\n  - In case of a tie, use alphabetical order as a tie breaker\n    - E.g., *G* will be at the top of the stack when Expand(*A*) on DFS, although *G* and *I* have the same depth\n\n**Implications of using the pseudocode**\n\n- By using the pseudocode directly, we avoid \"graph-search\"- or \"tree-search\"-like terms\n- We don't have to specify that \"BFS has an early goal check\" as it is clearly described in the algorithm\n  - `Best-First-Search` has a late goal check, and we don't have to specify it either\n- In `Best-First-Search`, if we find cheaper path to a node, it may be added into `Frontier` more than once. However, since there can only be one of each node in `Reached`, the second expansion will make no difference. To keep the solution easy to read, we do not include these superfluous expansions.\n- When we `Expand` a node, we check **all descendants** (including nodes \"seen\" before) as we are traversing a graph\n  - In `Breadth-First`, we **only add** them to the data structures `Reached` and `Frontier` if they are not in `Reached`\n  - In `Best-First`, we **only add** them to the data structures `Reached` and `Frontier` if:\n    - the node is not in `Reached`, or\n    - the node has a cheaper PathCost from this node\n  - We **never** add the parent node (where we came from) since the `Node` data structure contains it as an attribute\n  - The **parent** of a node *n* is the node which was expanded when *n* was added to `Reached`\n    - This also includes 'overwrites', when a node has a cheaper PathCost\n\n### Assignment 1\n\n- Task: We want to impress a boy/girl/something by playing through the Phobos Anomaly level in the video game Doom (1993) as fast as possible.\n- A is start. F is the goal. The numbers in the gray circles is the heuristic value.\n- Crossing any line costs 1. Stairs cost extra 1. Lift costs extra 2.\n- Going from A to G costs 1+1+2=4.\n- First task is just to write the cost of all possible paths so that we have them handy. (A, G) = 4, etc.\n- The next part is to solve this manually with the following algorithms: Breadth-first search (BFS), Depth-first search (DFS), Uniform-cost search/Dijkstra (UCS), Greedy best-first search (GBFS), A\\* search\n- The final part of the assignment is about mathematical properties of the heuristic functions which can allow guarantees for the behavior of the algorithms.\n- A\\* search is cost-optimal if arc costs are positive and the heuristic is admissible and/or consistent. This will be covered in proper detail in the next week’s lecture.\n- Also see Chapter 3 in the Norvig and Russell book.\n- A heuristic is admissible if it never overestimates the cost from a node to the goal node.\n- A heuristic is consistent if for every node n and all of its successors n’ generated by an action a, we have h(n) ≤ c(n, a, n’) + h(n’).\n  - Informally: The estimate of a node should be less than or equal to the estimate of a successor plus the cost of reaching the successor.\n  - Even more informally: The heuristic should not overestimate the cost relative to successive estimates.\n- The bonus task is a bit hard and not something you have to do.\n  - This goes a bit into why there are so many variants of the algorithms and what can be lost and gained with small changes.\n  - Tip: If you read the book closely, the answers should be apparent.",
+ "intro": "Assignment lecture 1 (28.08) gikk gjennom reglene for A1 og løste alle fem søkealgoritmene og spørsmålet om admissible/consistent på en liten eksempelgraf, ikke på Doom-grafen. Oppgavene hører til E02 (BFS, DFS, UCS) og E03 (GBFS, A\\*, heuristikker). Svarene på lysbildene ligger i fasiten og brukes i sjekken.",
+ "tasks": [
+  {
+   "t": "Oppgave 1: BFS på eksempelgrafen",
+   "d": "Not going to spoil the Doom graph for you, but let’s see if we agree how this works.\n\nBreadth-First Search (BFS).\n\nExample of solution:\n\n- Order of expansion: S, A, B, (G)\n- Found path: SBG\n- Path cost: 4",
+   "img": [
+    "nettside-figurer/al1-eksempelgraf.png",
+    "nettside-figurer/al1-pseudokode-bfs.png"
+   ],
+   "f": [
+    [
+     "Order of expansion",
+     "text",
+     "A, …, (E)"
+    ],
+    [
+     "Found path",
+     "text",
+     "A, …, E"
+    ],
+    [
+     "Path cost",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Order of expansion": [
+      "A, B, (E)"
+     ],
+     "Found path": [
+      "A, B, E",
+      "ABE"
+     ],
+     "Path cost": [
+      "7"
+     ]
+    },
+    "merk": "Målet står i parentes til slutt i rekkefølgen.",
+    "kilde": "AssignmentLecture1-Fall2026.pptx, lysbilde 11"
+   },
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "A",
+       "x": 150,
+       "y": 465
+      },
+      {
+       "id": "B",
+       "x": 405,
+       "y": 355,
+       "h": 3
+      },
+      {
+       "id": "C",
+       "x": 145,
+       "y": 260,
+       "h": 7
+      },
+      {
+       "id": "D",
+       "x": 265,
+       "y": 60,
+       "h": 2
+      },
+      {
+       "id": "E",
+       "x": 480,
+       "y": 48,
+       "h": 5
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "B",
+       "kost": 3
+      },
+      {
+       "fra": "A",
+       "til": "C",
+       "kost": 2
+      },
+      {
+       "fra": "C",
+       "til": "D",
+       "kost": 3
+      },
+      {
+       "fra": "D",
+       "til": "E",
+       "kost": 3
+      },
+      {
+       "fra": "B",
+       "til": "E",
+       "kost": 4
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "E"
+     ]
+    }
+   },
+   "fasit": "**Order of expansion: A, B, (E). Found path: A, B, E. Path cost: 7.**\n\nBFS (fig. 3.9) tester målet når en node genereres.\n\n| Utvider | Genererer | Frontier etterpå (FIFO) |\n|---|---|---|\n| A | B, C (ingen er målet) | B, C |\n| B | A er i reached; E er målet, stopp | |\n\nC utvides aldri. Kostnaden er 3 + 4 = 7. Her er det også den billigste stien, men BFS ser bare på antall kanter: A–B–E har to kanter, A–C–D–E tre.\n\nVanlig feil: å vente med måltesten til E tas ut. Da blir rekkefølgen A, B, C, (E).\n\n*Kilde: AssignmentLecture1-Fall2026, lysbilde 11. Kontroll: håndsporing og `nettside-algo/sok.js`.*"
+  },
+  {
+   "t": "Oppgave 2: DFS på eksempelgrafen",
+   "d": "Not going to spoil the Doom graph for you, but let’s see if we agree how this works.\n\nDepth-first search (DFS).\n\nExample of solution:\n\n- Order of expansion: S, A, B, (G)\n- Found path: SBG\n- Path cost: 4",
+   "img": [
+    "nettside-figurer/al1-eksempelgraf.png",
+    "nettside-figurer/al1-pseudokode-best-first.png"
+   ],
+   "f": [
+    [
+     "Order of expansion",
+     "text",
+     "A, …, (E)"
+    ],
+    [
+     "Found path",
+     "text",
+     "A, …, E"
+    ],
+    [
+     "Path cost",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Order of expansion": [
+      "A, B, (E)"
+     ],
+     "Found path": [
+      "A, B, E",
+      "ABE"
+     ],
+     "Path cost": [
+      "7"
+     ]
+    },
+    "merk": "Målet står i parentes til slutt i rekkefølgen.",
+    "kilde": "AssignmentLecture1-Fall2026.pptx, lysbilde 12"
+   },
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "A",
+       "x": 150,
+       "y": 465
+      },
+      {
+       "id": "B",
+       "x": 405,
+       "y": 355,
+       "h": 3
+      },
+      {
+       "id": "C",
+       "x": 145,
+       "y": 260,
+       "h": 7
+      },
+      {
+       "id": "D",
+       "x": 265,
+       "y": 60,
+       "h": 2
+      },
+      {
+       "id": "E",
+       "x": 480,
+       "y": 48,
+       "h": 5
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "B",
+       "kost": 3
+      },
+      {
+       "fra": "A",
+       "til": "C",
+       "kost": 2
+      },
+      {
+       "fra": "C",
+       "til": "D",
+       "kost": 3
+      },
+      {
+       "fra": "D",
+       "til": "E",
+       "kost": 3
+      },
+      {
+       "fra": "B",
+       "til": "E",
+       "kost": 4
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "E"
+     ]
+    }
+   },
+   "fasit": "**Order of expansion: A, B, (E). Found path: A, B, E. Path cost: 7.**\n\nDFS er Best-First-Search med f = −depth. Målet testes når noden tas ut.\n\n| Tar ut (dybde) | Legger inn | Frontier etterpå |\n|---|---|---|\n| A (0) | B (1), C (1) | B, C |\n| B (1) | E (2) | E, C |\n| E (2) | mål | |\n\nB og C har samme dybde, og B tas først (alfabetisk). E har dybde 2, altså lavere f = −2, og tas ut før C.\n\n*Kilde: AssignmentLecture1-Fall2026, lysbilde 12. Kontroll: håndsporing og `nettside-algo/sok.js`.*"
+  },
+  {
+   "t": "Oppgave 3: UCS på eksempelgrafen",
+   "d": "Not going to spoil the Doom graph for you, but let’s see if we agree how this works.\n\nUniform-cost search/Dijkstra (UCS).\n\nExample of solution:\n\n- Order of expansion: S, A, B, (G)\n- Found path: SBG\n- Path cost: 4",
+   "img": [
+    "nettside-figurer/al1-eksempelgraf.png",
+    "nettside-figurer/al1-pseudokode-best-first.png"
+   ],
+   "f": [
+    [
+     "Order of expansion",
+     "text",
+     "A, …, (E)"
+    ],
+    [
+     "Found path",
+     "text",
+     "A, …, E"
+    ],
+    [
+     "Path cost",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Order of expansion": [
+      "A, C, B, D, (E)"
+     ],
+     "Found path": [
+      "A, B, E",
+      "ABE"
+     ],
+     "Path cost": [
+      "7"
+     ]
+    },
+    "merk": "Målet står i parentes til slutt i rekkefølgen.",
+    "kilde": "AssignmentLecture1-Fall2026.pptx, lysbilde 13"
+   },
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "A",
+       "x": 150,
+       "y": 465
+      },
+      {
+       "id": "B",
+       "x": 405,
+       "y": 355,
+       "h": 3
+      },
+      {
+       "id": "C",
+       "x": 145,
+       "y": 260,
+       "h": 7
+      },
+      {
+       "id": "D",
+       "x": 265,
+       "y": 60,
+       "h": 2
+      },
+      {
+       "id": "E",
+       "x": 480,
+       "y": 48,
+       "h": 5
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "B",
+       "kost": 3
+      },
+      {
+       "fra": "A",
+       "til": "C",
+       "kost": 2
+      },
+      {
+       "fra": "C",
+       "til": "D",
+       "kost": 3
+      },
+      {
+       "fra": "D",
+       "til": "E",
+       "kost": 3
+      },
+      {
+       "fra": "B",
+       "til": "E",
+       "kost": 4
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "E"
+     ]
+    }
+   },
+   "fasit": "**Order of expansion: A, C, B, D, (E). Found path: A, B, E. Path cost: 7.**\n\nUCS er Best-First-Search med f = g.\n\n| Tar ut (g) | Legger inn | Frontier etterpå |\n|---|---|---|\n| A (0) | C 2, B 3 | C2, B3 |\n| C (2) | D 5 | B3, D5 |\n| B (3) | E 7 | D5, E7 |\n| D (5) | E via D koster 8, ikke billigere | E7 |\n| E (7) | mål | |\n\nVanlig feil: å stoppe da E ble generert fra B. Målet er først funnet når det tas ut, og D (5) må utvides før E (7).\n\n*Kilde: AssignmentLecture1-Fall2026, lysbilde 13. Kontroll: håndsporing og `nettside-algo/sok.js`.*"
+  },
+  {
+   "t": "Oppgave 4: GBFS på eksempelgrafen",
+   "d": "Not going to spoil the Doom graph for you, but let’s see if we agree how this works.\n\nGreedy best-first search (GBFS).\n\nExample of solution:\n\n- Order of expansion: S, A, B, (G)\n- Found path: SBG\n- Path cost: 4",
+   "img": [
+    "nettside-figurer/al1-eksempelgraf.png",
+    "nettside-figurer/al1-pseudokode-best-first.png"
+   ],
+   "f": [
+    [
+     "Order of expansion",
+     "text",
+     "A, …, (E)"
+    ],
+    [
+     "Found path",
+     "text",
+     "A, …, E"
+    ],
+    [
+     "Path cost",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Order of expansion": [
+      "A, B, (E)"
+     ],
+     "Found path": [
+      "A, B, E",
+      "ABE"
+     ],
+     "Path cost": [
+      "7"
+     ]
+    },
+    "merk": "Målet står i parentes til slutt i rekkefølgen.",
+    "kilde": "AssignmentLecture1-Fall2026.pptx, lysbilde 14"
+   },
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "A",
+       "x": 150,
+       "y": 465
+      },
+      {
+       "id": "B",
+       "x": 405,
+       "y": 355,
+       "h": 3
+      },
+      {
+       "id": "C",
+       "x": 145,
+       "y": 260,
+       "h": 7
+      },
+      {
+       "id": "D",
+       "x": 265,
+       "y": 60,
+       "h": 2
+      },
+      {
+       "id": "E",
+       "x": 480,
+       "y": 48,
+       "h": 5
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "B",
+       "kost": 3
+      },
+      {
+       "fra": "A",
+       "til": "C",
+       "kost": 2
+      },
+      {
+       "fra": "C",
+       "til": "D",
+       "kost": 3
+      },
+      {
+       "fra": "D",
+       "til": "E",
+       "kost": 3
+      },
+      {
+       "fra": "B",
+       "til": "E",
+       "kost": 4
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "E"
+     ]
+    }
+   },
+   "fasit": "**Order of expansion: A, B, (E). Found path: A, B, E. Path cost: 7.**\n\nGBFS er Best-First-Search med f = h.\n\n| Tar ut (h) | Legger inn | Frontier etterpå |\n|---|---|---|\n| A | B 3, C 7 | B3, C7 |\n| B (3) | E 5 | E5, C7 |\n| E (5) | mål | |\n\nh(B) = 3 < h(C) = 7, og deretter h(E) = 5 < h(C) = 7.\n\n*Kilde: AssignmentLecture1-Fall2026, lysbilde 14. Kontroll: håndsporing og `nettside-algo/sok.js`.*"
+  },
+  {
+   "t": "Oppgave 5: A* på eksempelgrafen",
+   "d": "Not going to spoil the Doom graph for you, but let’s see if we agree how this works.\n\nA\\* search.\n\nExample of solution:\n\n- Order of expansion: S, A, B, (G)\n- Found path: SBG\n- Path cost: 4",
+   "img": [
+    "nettside-figurer/al1-eksempelgraf.png",
+    "nettside-figurer/al1-pseudokode-best-first.png"
+   ],
+   "f": [
+    [
+     "Order of expansion",
+     "text",
+     "A, …, (E)"
+    ],
+    [
+     "Found path",
+     "text",
+     "A, …, E"
+    ],
+    [
+     "Path cost",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Order of expansion": [
+      "A, B, C, D, (E)"
+     ],
+     "Found path": [
+      "A, B, E",
+      "ABE"
+     ],
+     "Path cost": [
+      "7"
+     ]
+    },
+    "merk": "Målet står i parentes til slutt i rekkefølgen.",
+    "kilde": "AssignmentLecture1-Fall2026.pptx, lysbilde 15"
+   },
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "A",
+       "x": 150,
+       "y": 465
+      },
+      {
+       "id": "B",
+       "x": 405,
+       "y": 355,
+       "h": 3
+      },
+      {
+       "id": "C",
+       "x": 145,
+       "y": 260,
+       "h": 7
+      },
+      {
+       "id": "D",
+       "x": 265,
+       "y": 60,
+       "h": 2
+      },
+      {
+       "id": "E",
+       "x": 480,
+       "y": 48,
+       "h": 5
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "B",
+       "kost": 3
+      },
+      {
+       "fra": "A",
+       "til": "C",
+       "kost": 2
+      },
+      {
+       "fra": "C",
+       "til": "D",
+       "kost": 3
+      },
+      {
+       "fra": "D",
+       "til": "E",
+       "kost": 3
+      },
+      {
+       "fra": "B",
+       "til": "E",
+       "kost": 4
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "E"
+     ]
+    }
+   },
+   "fasit": "**Order of expansion: A, B, C, D, (E). Found path: A, B, E. Path cost: 7.**\n\nA\\* er Best-First-Search med f = g + h.\n\n| Tar ut (f) | Legger inn (g + h) | Frontier etterpå |\n|---|---|---|\n| A | B 3 + 3 = 6, C 2 + 7 = 9 | B6, C9 |\n| B (6) | E 7 + 5 = 12 | C9, E12 |\n| C (9) | D 5 + 2 = 7 | D7, E12 |\n| D (7) | E via D: g = 8 > 7, ikke billigere | E12 |\n| E (12) | mål | |\n\nh(A) står ikke i figuren. Det spiller ingen rolle, for A er start og tas ut først uansett.\n\nVanlig feil: å stoppe når E genereres fra B. Da mangler C og D i rekkefølgen.\n\n*Kilde: AssignmentLecture1-Fall2026, lysbilde 15. Kontroll: håndsporing og `nettside-algo/sok.js`.*"
+  },
+  {
+   "t": "Oppgave 6: Admissible og consistent",
+   "d": "- Is our simple graph admissible?\n- Is our simple graph consistent?\n\n*Merknad:* Spørsmålene og svarene står på samme lysbilde (18). Svarene er flyttet til fasiten. «Graph» betyr her heuristikken på eksempelgrafen.",
+   "img": [
+    "nettside-figurer/al1-eksempelgraf.png"
+   ],
+   "f": [
+    [
+     "Admissible (ja/nei)",
+     "text"
+    ],
+    [
+     "Consistent (ja/nei)",
+     "text"
+    ],
+    [
+     "Begrunnelse",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Admissible (ja/nei)": [
+      "Nei",
+      "No"
+     ],
+     "Consistent (ja/nei)": [
+      "Nei",
+      "No"
+     ]
+    },
+    "kilde": "AssignmentLecture1-Fall2026.pptx, lysbilde 18"
+   },
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "A",
+       "x": 150,
+       "y": 465
+      },
+      {
+       "id": "B",
+       "x": 405,
+       "y": 355,
+       "h": 3
+      },
+      {
+       "id": "C",
+       "x": 145,
+       "y": 260,
+       "h": 7
+      },
+      {
+       "id": "D",
+       "x": 265,
+       "y": 60,
+       "h": 2
+      },
+      {
+       "id": "E",
+       "x": 480,
+       "y": 48,
+       "h": 5
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "B",
+       "kost": 3
+      },
+      {
+       "fra": "A",
+       "til": "C",
+       "kost": 2
+      },
+      {
+       "fra": "C",
+       "til": "D",
+       "kost": 3
+      },
+      {
+       "fra": "D",
+       "til": "E",
+       "kost": 3
+      },
+      {
+       "fra": "B",
+       "til": "E",
+       "kost": 4
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "E"
+     ]
+    }
+   },
+   "fasit": "**Admissible: nei. Consistent: nei.**\n\n**Begrunnelse:** Billigste kost til målet E er h\\*(E) = 0, h\\*(D) = 3, h\\*(B) = 4 og h\\*(C) = 6 (C–D–E).\n\n- Ikke admissible: h(E) = 5 > h\\*(E) = 0, og h(C) = 7 > h\\*(C) = 6. Heuristikken overestimerer.\n- Ikke consistent: kanten C → D gir h(C) = 7 > c(C, D) + h(D) = 3 + 2 = 5.\n\nLysbildet begrunner det med «all consistent graphs are admissible». Det holder bare når h(mål) = 0, og her er h(E) = 5. Ulikheten 2 ≤ 3 + 5 på lysbildet er sann og viser ikke noe brudd. Bruk kanten C → D.\n\nSelv om h ikke er admissible, fant A\\* den billigste stien (oppgave 5). Admissibility er en garanti, ikke et krav for å treffe.\n\n*Kilde: AssignmentLecture1-Fall2026, lysbilde 18 (konklusjonene). Begrunnelsen er egen.*"
+  }
+ ],
+ "fasit": "Svarene står på lysbilde 11–15 og 18 i assignment lecture 1. Kulepunktene er sitert fra lysbildene. Forklaringene under hver algoritme er egne og kontrollert mot svarene.\n\n**BFS** (lysbilde 11)\n\n- Order of expansion: A, B, (E)\n- Found path: A, B, E\n- Path cost: 7\n\nA utvides og genererer B og C, men ingen av dem er målet. B utvides og genererer E. BFS tester målet ved generering, så søket stopper der.\n\n**DFS** (lysbilde 12)\n\n- Order of expansion: A, B, (E)\n- Found path: A, B, E\n- Path cost: 7\n\nf = −depth. B og C har samme dybde, og B tas først (alfabetisk). E har dybde 2 og tas ut før C. Målet testes når E tas ut.\n\n**UCS** (lysbilde 13)\n\n- Order of expansion: A, C, B, D, (E)\n- Found path: A, B, E\n- Path cost: 7\n\nA gir C = 2 og B = 3. C gir D = 5. B gir E = 7. D gir E = 8 via D, som ikke er billigere. E = 7 tas ut.\n\n**GBFS** (lysbilde 14)\n\n- Order of expansion: A, B, (E)\n- Found path: A, B, E\n- Path cost: 7\n\nh(B) = 3 < h(C) = 7, og deretter h(E) = 5 < h(C) = 7.\n\n**A\\*** (lysbilde 15)\n\n- Order of expansion: A, B, C, D, (E)\n- Found path: A, B, E\n- Path cost: 7\n\nB = 3 + 3 = 6 og C = 2 + 7 = 9. B gir E = 7 + 5 = 12. C (9) gir D = 5 + 2 = 7. D (7) gir E = 8 + 5 = 13 via D, som ikke er billigere. Så tas E (12) ut.\n\n*Merknad:* h(A) står ikke i figuren. Det spiller ingen rolle, for A er start og tas ut først uansett.\n\n**Admissible og consistent** (lysbilde 18)\n\n- Is our simple graph admissible?\n  - No, because (D, E) = 3 while h(e)=5.\n- Is our simple graph consistent?\n  - No, because all consistent graphs are admissible.\n  - Or h(d) ≤ c(d, a, e) + h(e) which gives us 2 ≤ 3 + 5 and this is a contradiction. The graph is not consistent.\n\n*Merknad:* Konklusjonene stemmer, men begrunnelsene på lysbildet er uklare. E er målet, så h\\*(E) = 0, og h(E) = 5 > 0 er en overestimering. Det samme gjelder h(C) = 7 > h\\*(C) = 6 (C–D–E). Ulikheten 2 ≤ 3 + 5 er sann og viser ikke noe brudd. Et ekte brudd på consistency er h(C) = 7 > c(C, D) + h(D) = 3 + 2 = 5."
+}

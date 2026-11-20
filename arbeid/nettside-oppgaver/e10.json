@@ -1,0 +1,160 @@
+{
+ "intro": "2019 oppgave 5 (dominante strategier, Nash-likevekt og Pareto-optimalitet, 10 p) er spart til fullprøven 01.12.",
+ "tasks": [
+  {
+   "t": "Eksamen 2018, problem 7 (10 p, 5–5): Game theory – vanning av risåkre",
+   "d": "**PROBLEM 7 (GAME THEORY) (10 POINTS)**\n\nThis problem is about watering rice farms in Sumatra. Two farms are located in the riverside, upstream and downstream farms. Water is not sufficient---meaning if both farmers water their rice crops at the same time the upward one gets enough water but the downstream one is not watered sufficiently. However, if they don’t water their crops at the same time, both farms will suffer from a pest problem.\n\nThe game is about the timing of watering. Assume two possible times for watering, A and B.\n\nLet x represent the utility loss for the farmer who gets reduced water and let y represent the loss in utility due to pests. Assume that when there is no crop loss due to lack of water or a pest problem, then the payoff is equal to 1.\n\n1. Draw the payoff matrix using A and B as actions. Use x and y to define the payoffs for the upward and downward farms.\n2. Under which conditions does a strongly dominant strategy equilibrium arise?",
+   "f": [
+    [
+     "1. Payoff-matrisen",
+     "area",
+     "rad = oppstrøms, kolonne = nedstrøms, celle = (oppstrøms, nedstrøms)\n(A, A): …\n(A, B): …\n(B, A): …\n(B, B): …"
+    ],
+    [
+     "2. Betingelser for strongly dominant strategy equilibrium, med begrunnelse",
+     "area"
+    ]
+   ],
+   "fasit": "**1. Payoff-matrisen** (rad = oppstrøms, kolonne = nedstrøms, celle = (oppstrøms, nedstrøms)):\n\n| Oppstrøms \\ Nedstrøms | A | B |\n|---|---|---|\n| **A** | 1, 1 − x | 1 − y, 1 − y |\n| **B** | 1 − y, 1 − y | 1, 1 − x |\n\nVanner begge samtidig, får oppstrøms nok vann (1), og nedstrøms mister x. Vanner de til ulik tid, kommer skadedyrene, og begge mister y.\n\n**2. Det finnes ingen strongly dominant strategy equilibrium for noen x, y > 0.**\n\nEn dominant strategy equilibrium krever at begge spillerne har en strengt dominant strategi.\n- **Oppstrøms:** mot A gir A 1 og B 1 − y, så A er best. Mot B gir B 1 og A 1 − y, så B er best. Beste svar avhenger av hva nedstrøms gjør, så oppstrøms har ingen dominant strategi når y > 0.\n- **Nedstrøms (fasitens argument):** for at A skal være strengt best mot A, må 1 − x > 1 − y, altså x < y. For at A også skal være best mot B, må 1 − y > 1 − x, altså y < x. Begge kan ikke gjelde, så (A, A) er ingen DSE. Det samme gjelder (B, B).\n- (A, B) og (B, A) gir begge 1 − y, og oppstrøms tjener på å bytte til samme tid (1 > 1 − y). De er heller ingen DSE.\n\nEkstra: når x < y, er (A, A) og (B, B) rene Nash-likevekter, et koordineringsspill. Når x > y, finnes ingen ren likevekt.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 7.*"
+  },
+  {
+   "t": "Eksamen 2020 kont (aug. 2021), problem 5 (15 p): Game theory – auksjon",
+   "d": "**PROBLEM 5--- Game theory**\n\nIn an auction two agents are competing to obtain a porcelain vase. This is a type of auction where all bidders simultaneously submit sealed bids to the auctioneer so that no bidder knows how much the other auction participants have bid.\n\nThe allowed bids are $0, $10, $20, $30, $40, $50.\n\nThe porcelain is worth $40 to the agent A1 and $30 to the agent A2. The highest bidder wins the porcelain. In case of a tie, A1 gets the vase.\n\nAccording to the rules of this auction, the winner pays a price p which is whatever the other agent bids. So, if the value of the porcelain for agent i is x and agent i wins the vase her payoff is x-p. If she does not win the vase her payoff is zero.\n\nAnswer the following questions:\n\na. Write down the payoffs of the agents as a matrix – illustrating agents, actions(bids), and the payoffs\n\nb. Is there a strictly dominant strategy equilibrium of this game? Explain.\n\nc. Is there a weakly dominant strategy equilibrium of this game? Explain.\n\nd. What are the action profiles that survive Iterated Elimination of Strictly Dominated Actions? Explain how do the eliminations take place.\n\ne. What are the action profiles that survive Iterated Elimination of Weakly Dominated Actions? Explain how do the eliminations take place.\n\nf. What is the solution if the game is solvable using the ‘dominance’ concept. (i.e., dominance solvable). Explain your answer.",
+   "f": [
+    [
+     "a. Payoff-matrisen",
+     "area",
+     "rad = A1s bud, kolonne = A2s bud, celle = (A1, A2)\n      0       10      20      30      40      50\n0   (…, …)  …\n10  …"
+    ],
+    [
+     "b. Strictly dominant strategy equilibrium?",
+     "area"
+    ],
+    [
+     "c. Weakly dominant strategy equilibrium?",
+     "area"
+    ],
+    [
+     "d. Iterated elimination of strictly dominated actions",
+     "area"
+    ],
+    [
+     "e. Iterated elimination of weakly dominated actions",
+     "area"
+    ],
+    [
+     "f. Dominance solvable? Løsning",
+     "area"
+    ]
+   ],
+   "fasit": "**a.** Rad = A1s bud, kolonne = A2s bud, celle = (A1, A2). Er b₁ ≥ b₂, vinner A1 og betaler b₂: (40 − b₂, 0). Er b₁ < b₂, vinner A2 og betaler b₁: (0, 30 − b₁).\n\n| A1 \\ A2 | 0 | 10 | 20 | 30 | 40 | 50 |\n|---|---|---|---|---|---|---|\n| **0** | 40, 0 | 0, 30 | 0, 30 | 0, 30 | 0, 30 | 0, 30 |\n| **10** | 40, 0 | 30, 0 | 0, 20 | 0, 20 | 0, 20 | 0, 20 |\n| **20** | 40, 0 | 30, 0 | 20, 0 | 0, 10 | 0, 10 | 0, 10 |\n| **30** | 40, 0 | 30, 0 | 20, 0 | 10, 0 | 0, 0 | 0, 0 |\n| **40** | 40, 0 | 30, 0 | 20, 0 | 10, 0 | 0, 0 | 0, −10 |\n| **50** | 40, 0 | 30, 0 | 20, 0 | 10, 0 | 0, 0 | −10, 0 |\n\n**b. Nei, ingen strictly dominant strategy equilibrium.** Beste bud avhenger av motstanderens bud. For A1 gir alle bud 40 i kolonne 0, så ingen rad er strengt bedre enn alle andre i hver kolonne. For A2 gir alle bud 0 i rad 30.\n\n**c. Nei, ingen weakly dominant strategy equilibrium.** For A1 gir 30 og 40 nøyaktig samme rad (40, 30, 20, 10, 0, 0). Begge dominerer 0, 10, 20 og 50 weakly (50 gir −10 i kolonne 50), men ikke hverandre, fordi de er like overalt. For A2 gir 30 og 40 samme kolonne (30, 20, 10, 0, 0, 0) og dominerer de andre weakly. Ingen handling dominerer alle andre, så ingen av spillerne har en weakly dominant strategi.\n\n**d. Alle 36 profilene overlever IESDA.** Ingen handling er strictly dominert: alle A1s rader er like (40) i kolonne 0, og alle A2s kolonner er like (0) i rad 30. Da kan ingen handling være strengt dårligere enn en annen overalt, og ingenting strykes.\n\n**e. {30, 40} × {20, 30, 40}** med fasitens rekkefølge:\n\n| Steg | Stryk | Dominert av | Sammenligning over det som er igjen |\n|---|---|---|---|\n| 1 | A1: 0 | 10 | (40, 30, 0, 0, 0, 0) mot (40, 0, 0, 0, 0, 0) |\n| 2 | A2: 0 | 20 | (20, 0, 0, 0, 0) mot (0, 0, 0, 0, 0) i rad 10–50 |\n| 3 | A1: 50 | 40 | (30, 20, 10, 0, 0) mot (30, 20, 10, 0, −10) i kolonne 10–50 |\n| 4 | A2: 50 | 40 | (20, 10, 0, 0) mot (20, 10, 0, −10) i rad 10–40 |\n| 5 | A1: 10 | 30 | (30, 20, 10, 0) mot (30, 0, 0, 0) i kolonne 10–40 |\n| 6 | A2: 10 | 30 | (10, 0, 0) mot (0, 0, 0) i rad 20–40 |\n| 7 | A1: 20 | 30 | (20, 10, 0) mot (20, 0, 0) i kolonne 20–40 |\n\nSå stopper det. A1s 30 og 40 er like, (20, 10, 0), og A2 får 0 overalt i rad 30 og 40. Seks profiler står igjen, med payoff (20, 0), (10, 0) og (0, 0).\n\nRekkefølgen betyr noe med weak. Stryker du A1: 0, A2: 0, A1: 10, A2: 10, A1: 20, A2: 50, står A1s 50 igjen, fordi 40 og 50 er like i kolonnene 20–40. Da blir svaret {30, 40, 50} × {20, 30, 40}. Fasiten sier det samme: andre rekkefølger gir andre utfall.\n\n**f. Nei, spillet er ikke dominance solvable.** Strict eliminasjon fjerner ingenting. Weak eliminasjon ender ikke i ett utfall, spillerne er ikke likegyldige mellom utfallene som står igjen (A1 får 20, 10 eller 0), og resultatet avhenger av rekkefølgen.\n\n*Kilde: løsningsforslaget til eksamen 2020 kontinuasjon (aug. 2021), problem 5.*"
+  },
+  {
+   "t": "Matching pennies",
+   "d": "Celle = (P1, P2). π₁ er sannsynligheten for at P1 velger første handling (Kron), og π₂ sannsynligheten for at P2 velger Kron.\n\n| P1 \\ P2 | Kron | Mynt |\n|---|---|---|\n| **Kron** | 1, −1 | −1, 1 |\n| **Mynt** | −1, 1 | 1, −1 |\n\nFinn den blandede likevekten og verdien av spillet for P1.",
+   "f": [
+    [
+     "π₁ og π₂, med utregning",
+     "area",
+     "π₁: … ⇒ π₁ = …\nπ₂: … ⇒ π₂ = …"
+    ],
+    [
+     "Verdien for P1",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Verdien for P1": [
+      "{0}"
+     ]
+    },
+    "kilde": "videoer/notater/e10-spillteori.md, Fasit Øv selv 4"
+   },
+   "fasit": "**π₁ = 1/2 og π₂ = 1/2.**\n\n**Verdien for P1 er 0** (og 0 for P2, siden spillet er zero-sum).\n\nIngen celle er en ren likevekt: i hver celle vil taperen bytte. Likevekten er derfor blandet. Hver spiller blander slik at motstanderen får like mye av begge sine handlinger. Da har ingen noe å tjene på å avvike alene.\n\n**π₁ gjør P2 likegyldig (P2s tall):**\n- P2 velger Kron: −1 · π₁ + 1 · (1 − π₁) = 1 − 2π₁\n- P2 velger Mynt: 1 · π₁ − 1 · (1 − π₁) = 2π₁ − 1\n- 1 − 2π₁ = 2π₁ − 1 ⇒ **π₁ = 1/2**\n\n**π₂ gjør P1 likegyldig (P1s tall):**\n- P1 velger Kron: 1 · π₂ − 1 · (1 − π₂) = 2π₂ − 1\n- P1 velger Mynt: −1 · π₂ + 1 · (1 − π₂) = 1 − 2π₂\n- 2π₂ − 1 = 1 − 2π₂ ⇒ **π₂ = 1/2**\n\nVerdien for P1: 2 · ½ − 1 = 0.\n\n*Kilde: notatet til E10, Fasit Øv selv 4.*"
+  },
+  {
+   "t": "Battle of the Sexes med andre tall",
+   "d": "Illustrasjon, ikke en eksamensoppgave. Celle = (P1, P2). π₁ = P(P1 velger movie), π₂ = P(P2 velger movie).\n\n| P1 \\ P2 | Movie | Opera |\n|---|---|---|\n| **Movie** | 3, 1 | 0, 0 |\n| **Opera** | 0, 0 | 1, 3 |\n\nFinn π₁ og π₂ i den blandede likevekten. Bruk riktig spillers tall.",
+   "f": [
+    [
+     "π₁",
+     "text"
+    ],
+    [
+     "Likningen for π₁",
+     "text"
+    ],
+    [
+     "π₂",
+     "text"
+    ],
+    [
+     "Likningen for π₂",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "π₁": [
+      "3/4",
+      "0.75",
+      "0,75",
+      "π₁ = 3/4",
+      "π₁ = 0.75",
+      "π₁ = 0,75",
+      "π1 = 3/4",
+      "π1 = 0.75",
+      "π1 = 0,75"
+     ],
+     "π₂": [
+      "1/4",
+      "0.25",
+      "0,25",
+      "π₂ = 1/4",
+      "π₂ = 0.25",
+      "π₂ = 0,25",
+      "π2 = 1/4",
+      "π2 = 0.25",
+      "π2 = 0,25"
+     ]
+    },
+    "merk": "P2 likegyldig: 1 · π₁ = 3(1 − π₁) ⇒ π₁ = 3/4. P1 likegyldig: 3π₂ = 1 − π₂ ⇒ π₂ = 1/4.",
+    "kilde": "videoer/notater/e10-spillteori.md, Fasit Øv selv 5"
+   },
+   "fasit": "**π₁ = 3/4.**\n\n**Likningen for π₁: 1 · π₁ = 3(1 − π₁)** (P2 skal være likegyldig, så du bruker P2s tall).\n\n**π₂ = 1/4.**\n\n**Likningen for π₂: 3π₂ = 1 · (1 − π₂)** (P1 skal være likegyldig, så du bruker P1s tall).\n\n- P2 velger movie: 1 · π₁. P2 velger opera: 3 · (1 − π₁). Likhet gir 4π₁ = 3, altså π₁ = 3/4.\n- P1 velger movie: 3 · π₂. P1 velger opera: 1 · (1 − π₂). Likhet gir 4π₂ = 1, altså π₂ = 1/4.\n- Kontroll: P1 får 3 · ¼ = ¾ fra movie og 1 · ¾ = ¾ fra opera. P2 får 1 · ¾ = ¾ fra movie og 3 · ¼ = ¾ fra opera. Begge får ¾.\n\nVanlig feil: å bruke egne tall. 3π₁ = 1 − π₁ gir π₁ = 1/4, som er P2s π₂ speilvendt.\n\nSpillet har i tillegg to rene likevekter, (movie, movie) og (opera, opera).\n\n*Kilde: notatet til E10, Fasit Øv selv 5.*"
+  },
+  {
+   "t": "Grim trigger med andre tall",
+   "d": "Illustrasjon, ikke en eksamensoppgave. Fangens dilemma spilles uendelig mange ganger. Total nytte er Σₜ δᵗ · Uₜ for t = 0, 1, 2, …, med 0 < δ < 1. Celle = (P1, P2).\n\n| P1 \\ P2 | Tie | Vitne |\n|---|---|---|\n| **Tie** | 3, 3 | 0, 5 |\n| **Vitne** | 5, 0 | 1, 1 |\n\nGrim trigger: tie til motstanderen har vitnet én gang, deretter vitne for alltid.\n\nFor hvilke δ er grim mot grim en likevekt?",
+   "f": [
+    [
+     "Utregning",
+     "area"
+    ],
+    [
+     "δ-betingelse",
+     "text",
+     "δ … …"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "δ-betingelse": [
+      "δ ≥ 1/2",
+      "δ ≥ 0.5",
+      "δ ≥ 0,5",
+      "δ >= 1/2",
+      "δ >= 0.5",
+      "δ >= 0,5",
+      "1/2 ≤ δ < 1",
+      "0.5 ≤ δ < 1"
+     ]
+    },
+    "merk": "3/(1 − δ) ≥ 5 + δ/(1 − δ) ⇔ δ ≥ 1/2.",
+    "kilde": "videoer/notater/e10-spillteori.md, Fasit Øv selv 6"
+   },
+   "fasit": "**δ ≥ 1/2** (altså 1/2 ≤ δ < 1).\n\nMotstanderen spiller grim trigger. Sammenlign å tie for alltid med å vitne i runde 0.\n- **Tie for alltid:** 3 + 3δ + 3δ² + … = 3/(1 − δ).\n- **Vitne i runde 0:** 5 nå, deretter vitner begge for alltid og får 1: 5 + δ + δ² + … = 5 + δ/(1 − δ).\n- Samarbeid lønner seg når 3/(1 − δ) ≥ 5 + δ/(1 − δ). Gang med (1 − δ): 3 ≥ 5(1 − δ) + δ = 5 − 4δ, altså **δ ≥ 1/2**.\n\nSom en handel: å vitne gir +2 nå (5 mot 3), men koster 2 i hver senere runde (1 mot 3). Det er 2δ/(1 − δ) diskontert. Å vitne lønner seg ikke når 2δ/(1 − δ) ≥ 2, altså δ ≥ 1/2.\n\nKontroll med δ = 1/2: 3/(1/2) = 6 og 5 + (1/2)/(1/2) = 6. Likt.\n\nStraffen er troverdig, fordi (vitne, vitne) er en likevekt i engangsspillet. Spillet ser likt ut fra hver runde, så et avvik senere gir samme regning.\n\n*Kilde: notatet til E10, Fasit Øv selv 6.*"
+  }
+ ]
+}

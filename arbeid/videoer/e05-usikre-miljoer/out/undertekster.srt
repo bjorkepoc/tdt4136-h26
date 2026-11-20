@@ -1,0 +1,524 @@
+1
+00:00:00,450 --> 00:00:06,050
+Du ber robotstøvsugeren suge. Noen ganger tar den bare ruta si. Andre ganger
+
+2
+00:00:06,050 --> 00:00:11,130
+naboruta også. Og på en ren rute kan den legge igjen skitt. En fast liste med
+
+3
+00:00:11,130 --> 00:00:16,210
+handlinger kan da gå galt. Så hvordan lager du en plan som virker uansett?
+
+4
+00:00:17,583 --> 00:00:22,943
+Etter episoden kan du lage betingede planer, regne ut belief states og spore
+
+5
+00:00:22,943 --> 00:00:31,023
+LRTA-stjerne. Fire stopp: flere utfall, en blind agent, en agent som ser litt og
+
+6
+00:00:31,023 --> 00:00:36,863
+en agent uten kart. Til slutt: eksamen tjue tjuetre, oppgave sju.
+
+7
+00:00:38,217 --> 00:00:41,977
+Hva om samme handling kan gi ulike resultater?
+
+8
+00:00:43,750 --> 00:00:49,150
+Støvsugerverdenen har åtte tilstander: robot til venstre eller høyre, og hver
+
+9
+00:00:49,150 --> 00:00:56,190
+rute skitten eller ren. Sju og åtte er mål. Nå gjør vi den erratic. Suck på en
+
+10
+00:00:56,190 --> 00:01:01,510
+skitten rute renser den, og noen ganger naboruta også. På en ren rute kan den
+
+11
+00:01:01,510 --> 00:01:02,790
+legge igjen skitt.
+
+12
+00:01:04,150 --> 00:01:11,270
+RESULT gir én tilstand. Nå trenger vi RESULTS, som gir en mengde. RESULTS av én
+
+13
+00:01:11,270 --> 00:01:17,110
+og Suck er fem eller sju. Ingen sekvens virker alltid, men denne planen gjør:
+
+14
+00:01:17,110 --> 00:01:23,750
+Suck. Er du i fem: Right, Suck. Ellers er du ferdig. Det heter en conditional
+
+15
+00:01:23,750 --> 00:01:28,310
+plan, eller contingency plan. Den er et tre, ikke en rekke.
+
+16
+00:01:29,583 --> 00:01:38,063
+Din tur. Hva er RESULTS av to og Suck?
+
+17
+00:01:38,063 --> 00:01:44,383
+Fire eller åtte. Høyre rute renses, og noen ganger venstre også. Planen må ha en
+
+18
+00:01:44,383 --> 00:01:46,063
+gren for hvert utfall.
+
+19
+00:01:47,417 --> 00:01:50,057
+Hvordan finner en algoritme en slik plan?
+
+20
+00:01:51,817 --> 00:01:58,137
+Søketreet har to slags noder. I en tilstand velger agenten handling. Det er en
+
+21
+00:01:58,137 --> 00:02:05,417
+OR-node: ett valg som virker, holder. Så velger miljøet utfall: en AND-node, en
+
+22
+00:02:05,417 --> 00:02:09,737
+sirkel, og buen betyr at alle utfallene må løses.
+
+23
+00:02:11,017 --> 00:02:17,257
+Vi går dybde først. Fra én velger vi handlingen Suck. Fra fem prøver vi Suck én
+
+24
+00:02:17,257 --> 00:02:24,297
+gang til: fem eller én, og begge står allerede på stien. Løkke, failure. Så
+
+25
+00:02:24,297 --> 00:02:32,137
+Right fra fem, til seks. Der gir Suck åtte: mål. Og sju er mål. Alt er løst, og
+
+26
+00:02:32,137 --> 00:02:34,697
+Right-grenen fra roten ser vi aldri på.
+
+27
+00:02:36,050 --> 00:02:42,650
+Løsningen er et deltre: ett valg i hver OR-node, alle grener i hver AND-node og
+
+28
+00:02:42,650 --> 00:02:50,050
+mål i hvert blad. Les det ovenfra: Suck. AND-noden blir en if: hvis fem, Right
+
+29
+00:02:50,050 --> 00:02:52,450
+og Suck, ellers ingenting.
+
+30
+00:02:53,817 --> 00:03:00,377
+OR-SEARCH: er tilstanden mål, returner tom plan. Står den allerede på stien,
+
+31
+00:03:00,377 --> 00:03:07,337
+returner failure. Ellers prøv handlingene til én gir en plan. AND-SEARCH lager
+
+32
+00:03:07,337 --> 00:03:13,177
+en plan for hvert utfall, og feiler ett, feiler alt. Failure ved løkke betyr
+
+33
+00:03:13,177 --> 00:03:18,617
+ikke at fem er uløselig. Finnes en løsning, finnes den fra første besøk.
+
+34
+00:03:19,983 --> 00:03:25,903
+I slippery vacuum world glipper bevegelsen. Right kan la deg bli stående, så det
+
+35
+00:03:25,903 --> 00:03:33,423
+finnes ingen plan uten løkke. Prøv igjen: Suck, så while State er fem, do Right,
+
+36
+00:03:33,423 --> 00:03:41,223
+så Suck. Eller med en label: L1 er Right, og er State fem, gå til L1. Det er en
+
+37
+00:03:41,223 --> 00:03:46,863
+cyclic plan. Den virker hvis glippen er tilfeldig, ikke hvis drivreima er røket.
+
+38
+00:03:48,217 --> 00:03:57,977
+Din tur, fra eksamen tjue tjuefire. Hva lager AND-OR-søk?
+
+39
+00:03:57,977 --> 00:04:04,617
+Contingency plans. Utsagnet om «adversive plans» var det gale. OR er ditt valg,
+
+40
+00:04:04,617 --> 00:04:06,457
+AND er verdens valg.
+
+41
+00:04:07,817 --> 00:04:10,697
+Kan en blind agent komme i mål?
+
+42
+00:04:12,450 --> 00:04:17,770
+Nå er verden deterministisk, men agenten er blind. Den vet bare hvilke
+
+43
+00:04:17,770 --> 00:04:23,130
+tilstander den kan være i. Den mengden er en belief state. Først er den alle
+
+44
+00:04:23,130 --> 00:04:29,330
+åtte. Med N tilstander finnes to opphøyd i N belief states. Her to hundre og
+
+45
+00:04:29,330 --> 00:04:32,130
+femtiseks, men bare tolv kan nås.
+
+46
+00:04:33,483 --> 00:04:38,363
+Hvordan oppdaterer du en mengde? Bruk handlingen på hver tilstand og samle
+
+47
+00:04:38,363 --> 00:04:47,923
+resultatene. Det er prediction. Right: to, fire, seks, åtte. Suck: fire, åtte.
+
+48
+00:04:47,923 --> 00:04:54,763
+Left: tre, sju. Suck: bare sju. Uten å se noe har agenten tvunget verden til én
+
+49
+00:04:54,763 --> 00:04:58,043
+tilstand. Boka kaller det å coerce.
+
+50
+00:04:59,417 --> 00:05:04,617
+Løsningen er en sekvens, ikke en betinget plan, for det kommer ingen percept å
+
+51
+00:05:04,617 --> 00:05:10,617
+velge etter. Med en ikke-deterministisk handling tar du unionen av alle RESULTS,
+
+52
+00:05:10,617 --> 00:05:12,377
+og da kan mengden vokse.
+
+53
+00:05:13,750 --> 00:05:21,190
+Du kan også kutte. Left gir én, tre, fem, sju: en supermengde av fem, sju, som
+
+54
+00:05:21,190 --> 00:05:26,350
+du alt har nådd. En plan for den store virker for den lille, så den store kan
+
+55
+00:05:26,350 --> 00:05:31,990
+kuttes. Incremental belief-state search løser én tilstand om gangen og oppdager
+
+56
+00:05:31,990 --> 00:05:33,590
+fort det uløselige.
+
+57
+00:05:34,883 --> 00:05:45,043
+Din tur. Start med alle åtte. Hva er belief state etter Left og Suck?
+
+58
+00:05:45,043 --> 00:05:54,003
+Fem og sju. Left gir én, tre, fem, sju, og Suck gjør én til fem og tre til sju.
+
+59
+00:05:54,003 --> 00:05:57,523
+Blind: mengder inn, sekvens ut.
+
+60
+00:05:58,883 --> 00:06:01,763
+Hva endrer seg når agenten ser litt?
+
+61
+00:06:03,517 --> 00:06:09,397
+Nå ser agenten hvilken rute den står i, og om den er skitten. I én og tre ser
+
+62
+00:06:09,397 --> 00:06:17,117
+den L og Dirty. Steg én, prediction: Right gir to, fire. Steg to, possible
+
+63
+00:06:17,117 --> 00:06:24,637
+percepts: R og Dirty, eller R og Clean. Steg tre, update: hver percept gir sin
+
+64
+00:06:24,637 --> 00:06:29,597
+egen mengde. Du vet ikke hvilken percept du får, så det er en AND-node.
+
+65
+00:06:30,883 --> 00:06:38,523
+Da bruker vi AND-OR-søk med belief states som noder. Suck fra én, tre gir fem,
+
+66
+00:06:38,523 --> 00:06:46,563
+sju. Right gir seks, åtte, og percepten skiller dem. Planen: Suck, Right, og er
+
+67
+00:06:46,563 --> 00:06:52,643
+belief state seks, Suck. Den tester belief state, ikke den sanne tilstanden.
+
+68
+00:06:54,017 --> 00:07:00,977
+Underveis gjelder: ny belief er update av predict av b og a, med percepten o.
+
+69
+00:07:00,977 --> 00:07:07,137
+Det heter state estimation, monitoring eller filtering. Bokas eksempel, som ikke
+
+70
+00:07:07,137 --> 00:07:15,017
+ble forelest: en robot med fire sonarer. Én, null, én, én, vegg i nord, sør og
+
+71
+00:07:15,017 --> 00:07:21,217
+vest, passer i fire ruter. Right går til en tilfeldig nabo, og etter én, null,
+
+72
+00:07:21,217 --> 00:07:23,537
+én, null passer bare én.
+
+73
+00:07:24,917 --> 00:07:32,997
+Din tur. Kan update gjøre en belief state større?
+
+74
+00:07:32,997 --> 00:07:38,117
+Nei. Update fjerner bare tilstander som ikke passer. Det er prediction som kan
+
+75
+00:07:38,117 --> 00:07:42,437
+vokse. Predict kan vokse, update krymper.
+
+76
+00:07:43,817 --> 00:07:47,017
+Hva gjør du når du ikke vet hva handlingene gjør?
+
+77
+00:07:48,783 --> 00:07:55,703
+Alt hittil var offline: planen lages før første steg. En online agent handler,
+
+78
+00:07:55,703 --> 00:08:01,943
+ser og tenker videre. Den kjenner bare ACTIONS, kostnaden c og IS-GOAL. Hva en
+
+79
+00:08:01,943 --> 00:08:06,783
+handling gjør, vet den først etterpå. Vi måler den med competitive ratio:
+
+80
+00:08:06,783 --> 00:08:13,023
+faktisk kostnad delt på beste sti med kjent kart. Utenom LRTA-stjerne står dette
+
+81
+00:08:13,023 --> 00:08:14,543
+bare i boka.
+
+82
+00:08:15,817 --> 00:08:22,377
+Online-DFS-agenten går dybde først, så neste tilstand er alltid en nabo. Den
+
+83
+00:08:22,377 --> 00:08:27,337
+husker uprøvde handlinger og hvor den kom fra. Er alt prøvd, går den fysisk
+
+84
+00:08:27,337 --> 00:08:33,177
+tilbake. Her går den ti steg, mot fire på beste vei: competitive ratio to og en
+
+85
+00:08:33,177 --> 00:08:36,937
+halv. Den krever at handlinger kan gjøres om.
+
+86
+00:08:38,217 --> 00:08:45,337
+Kan en online agent alltid lykkes? Nei. Fra en dead end kan ingen mål nås. Etter
+
+87
+00:08:45,337 --> 00:08:50,857
+S og A ser rommene like ut, men målet ligger ulikt. En motstander kan bygge
+
+88
+00:08:50,857 --> 00:08:56,337
+rommet mens du leter: et adversary argument. Blindveier kommer av irreversible
+
+89
+00:08:56,337 --> 00:09:01,657
+handlinger. Derfor krever vi safely explorable: fra hver tilstand du når, kan et
+
+90
+00:09:01,657 --> 00:09:02,777
+mål nås.
+
+91
+00:09:04,050 --> 00:09:09,050
+Hill climbing er online, men setter seg fast på topper. Random walk velger
+
+92
+00:09:09,050 --> 00:09:14,370
+tilfeldig, og når målet til slutt hvis rommet er endelig og safely explorable.
+
+93
+00:09:14,370 --> 00:09:19,450
+Men her er det dobbelt så lett å gå bakover. Ti overganger fra start til mål gir
+
+94
+00:09:19,450 --> 00:09:23,730
+rundt fire tusen steg, tjue over fire millioner.
+
+95
+00:09:25,083 --> 00:09:32,523
+Bedre: gi hill climbing hukommelse. LRTA-stjerne lagrer et estimat H, som
+
+96
+00:09:32,523 --> 00:09:38,563
+starter lik heuristikken. Agenten står i en dal med H lik to. Venstre koster én
+
+97
+00:09:38,563 --> 00:09:44,363
+pluss ni, høyre én pluss to. Den går høyre, og H der den var blir minste av ti
+
+98
+00:09:44,363 --> 00:09:51,923
+og tre: tre. Nå: venstre fire, høyre fem. Den går tilbake, og H blir fire.
+
+99
+00:09:51,923 --> 00:09:58,203
+Venstre ti, høyre fem: H blir fem. Venstre seks, høyre fem: H blir fem, og
+
+100
+00:09:58,203 --> 00:10:00,283
+agenten slipper ut av dalen.
+
+101
+00:10:01,583 --> 00:10:07,663
+En uprøvd handling antas å føre rett til mål med kostnad h. Det heter optimism
+
+102
+00:10:07,663 --> 00:10:13,263
+under uncertainty, og lokker agenten til å utforske. I et endelig, safely
+
+103
+00:10:13,263 --> 00:10:17,943
+explorable rom finner den alltid målet, og den lærer en bedre heuristikk
+
+104
+00:10:17,943 --> 00:10:19,023
+underveis.
+
+105
+00:10:20,383 --> 00:10:26,463
+Din tur. Agenten står på fire, med fem til venstre og tre til høyre. Hvor går
+
+106
+00:10:26,463 --> 00:10:34,063
+den, og hva blir H der den var?
+
+107
+00:10:34,063 --> 00:10:41,063
+Høyre: én pluss tre er fire, mot seks. H blir minste av seks og fire: fire, som
+
+108
+00:10:41,063 --> 00:10:45,223
+før. Gå til billigste nabo, og løft H der du var.
+
+109
+00:10:46,583 --> 00:10:49,143
+Klarer du en ekte eksamensoppgave?
+
+110
+00:10:50,917 --> 00:10:58,317
+Eksamen tjue tjuetre, oppgave sju, fem poeng. Roboten ser bare veggene rundt seg.
+
+111
+00:10:58,317 --> 00:11:06,437
+Del én: vegg i nord, sør og vest, ikke øst. Hva er belief state? Del to: Right,
+
+112
+00:11:06,437 --> 00:11:12,677
+så vegg i nord og sør, ikke vest og øst. Del tre: Right flytter nå til venstre.
+
+113
+00:11:12,677 --> 00:11:20,517
+Sett på pause og prøv.
+
+114
+00:11:21,817 --> 00:11:28,697
+Del én er bare update. Finn rutene der percepten passer: rad null kolonne null,
+
+115
+00:11:28,697 --> 00:11:35,097
+rad tre kolonne null, og rad null kolonne sju. Del to: predict først. Alle
+
+116
+00:11:35,097 --> 00:11:42,137
+flyttes ett steg øst. Så update. Rad null, kolonne én og åtte har åpent i nord.
+
+117
+00:11:42,137 --> 00:11:44,937
+Bare rad tre, kolonne én er igjen.
+
+118
+00:11:46,317 --> 00:11:52,157
+Del tre. Right går mot vest, og alle tre rutene har vegg i vest, så roboten blir
+
+119
+00:11:52,157 --> 00:11:57,997
+stående. Belief state er den samme som i del én. Fasiten viser også en annen
+
+120
+00:11:57,997 --> 00:12:03,917
+tolkning: start i ruta i figuren. Da passer percepten i to ruter. Skriv
+
+121
+00:12:03,917 --> 00:12:05,117
+antakelsen din.
+
+122
+00:12:06,483 --> 00:12:08,163
+Hvor dukker dette opp igjen?
+
+123
+00:12:09,917 --> 00:12:17,677
+AND-OR-søk er dybde først-søk, som i episode to. LRTA-stjerne lærer h, episode
+
+124
+00:12:17,677 --> 00:12:23,757
+tre. Belief states ligner modellene i logikk, episode elleve. Kriegspiel bruker
+
+125
+00:12:23,757 --> 00:12:29,677
+dem, episode ni. Og planlegging, episode nitten, bruker sensorless og contingent
+
+126
+00:12:29,677 --> 00:12:30,477
+planning.
+
+127
+00:12:31,683 --> 00:12:38,243
+Hele kjeden: flere utfall gir AND-noder og betingede planer. Blind: søk i
+
+128
+00:12:38,243 --> 00:12:46,203
+mengder. Litt syn: predict, percepts, update. Uten kart: utforsk og lær H.
+
+129
+00:12:46,203 --> 00:12:52,963
+Husker du støvsugeren? Suck, og hvis fem, Right og Suck, virker uansett. Hvis du
+
+130
+00:12:52,963 --> 00:12:59,163
+bare husker én ting: OR-noder er ditt valg, AND-noder verdens, og planen må tåle
+
+131
+00:12:59,163 --> 00:13:00,243
+alle verdens valg.
+

@@ -1,0 +1,370 @@
+{
+ "vis_fra": "2026-12-04",
+ "id": "al3",
+ "ep": "AL3",
+ "tittel": "Assignment Lecture 3: Adversarial Search",
+ "kilde": "../materiale/Files/AssignmentLecture3-Fall2026.pdf",
+ "om": "TDT4137 – Introduction to Artificial Intelligence, 2026<br>\nAleksandra Jekic, Department of Computer Science\n\n*Merknad fra oss: lysbildet skriver TDT4137, men emnet er TDT4136.*\n\n**Relevant for this assignment**\n\n- Lecture 8 (yesterday, 08.10.26)\n- Chapter 6 in the Russell and Norvig book (4th edition, Global).\n\n**How important is this?**\n\n- Historically, you usually have to do this with pen and paper on the exam.\n- Easy to understand intuitively, but most people will need to do some repetition practice over time to be able to do it confidently without getting confused.\n- Note: Assignment is programming only, which is different from exams. Might be a good idea to look at some old exam problems now as well.\n\n**Adversarial search?**\n\n- We can think of turn-based games as going through a search tree where you only control every other action. Can we find the victory node?\n- For some simple games, we can do that.\n- For more complicated games, we can still usually do well by calculating as many turns as we can and then estimating the value of each possible state.\n- Intuition: Pick best move, assuming the worst. Whatever the opponent does, your play will be at least as good as if they did their best.\n- Adversarial search is still the key technology in most of the best chess engines. Neural networks are usually used to aid evaluation.\n- The goofy little pseudocode in the book is smarter than you.\n\n**Adversarial search?**\n\n- One player wants to maximize the score (represented by △ nodes) and the other player wants to minimize (represented by ▽ nodes).\n- We can represent maximizer’s victory as +10 and minimizer’s victory as -10.\n- In minimax search we recursively explore the tree from the bottom, always picking the lowest and highest valued move for each respective player. Once the tree has been fully explored, we will know the most lucrative next move.\n- Alpha-beta pruning lets us ignore parts of the tree when we can guarantee none of the best moves are going to be in that direction.\n\n<img class=\"fig\" src=\"nettside-figurer/al3-om-minimaxtre.png\" alt=\"Figur fra slide 5\">\n\n**Assignment 3**\n\n- Basically, you are going to program minimax-search and run it on the halving game and the bucket game.\n- Pseudocode for minimax-search is found on p. 196 in Norvig & Russell’s book (4th edition, Global).\n- Afterwards, you will program alpha-beta search and run it on tic-tac-toe.\n- Pseudocode for alpha-beta search is found on p. 200 in Norvig & Russell’s book (4th edition, Global).\n- We provide you code for all the games.\n\n**Assignment bonus task**\n\n- If you want to do this, my tip is try to understand what this situation looks like in the code.\n\n---\n\nSlidene om halving game, bucket game og Tic-tac-toe viser koden fra Assignment 3. Pseudokoden fra slide 13 og 19: [Minimax, fig. 6.3](A3/pseudokode-minimax-fig6.3.png), [alpha-beta, fig. 6.7](A3/pseudokode-alphabeta-fig6.7.png).",
+ "intro": "Oppgavene som ble regnet i assignment-forelesning 3, dagen etter forelesning 8. De hører til E08. Alle tre bygger på romvesenproblemet fra ordinær eksamen 2020 (2020Qv2). **Den eksamenen er spart til fullprøven 03.12.** Løser du oppgavene her, kjenner du minimax-oppgaven derfra.",
+ "tasks": [
+  {
+   "t": "Oppgave 1: Making a minimax tree",
+   "d": "- This is from the 2020 exam.\n- An alien steals your speech. You and a speech organizer chase the alien. Also the alien likes to eat blue sea stars.\n- The alien must move either left, right, up or down.\n- Afterwards, you must move either up or right.\n- Finally, the organizer moves down or left.\n- The alien gets +10 for eating the blue sea star. If either you or the organizer catch the alien, the alien gets -30 and the game ends even if not all moves have been made.\n- What does the tree look like?\n\n*Merknad:* Treet står ferdig tegnet i oppgave 2, og delvis i oppgave 3. Tegn ditt eget først.",
+   "img": [
+    "nettside-figurer/al3-romvesen-brett.png"
+   ],
+   "f": [
+    [
+     "Spilltreet: nivåer, trekk og verdien i hvert blad",
+     "area",
+     "Alien (MAX): U, L, R, D\n  U → You (MIN): U, R\n    U → Organizer (MIN): L, D\n      L: …"
+    ]
+   ],
+   "fasit": "**Spilltreet:** Alien (MAX) velger U, L, R eller D. Så velger du (MIN) U eller R, og til slutt Organizer (MIN) L eller D. Går du eller Organizer inn i ruta til romvesenet, får det −30, og spillet stopper. Spiser romvesenet sjøstjerna, får det +10.\n\nRutene, med (kolonne, rad) og rad 0 øverst: sjøstjerna (1, 0), Organizer (2, 0), romvesenet (1, 1), du (0, 2).\n\n- **U**, romvesenet til (1, 0) og spiser sjøstjerna (+10)\n  - You U: Organizer L fanger det: 10 − 30 = **−20**. Organizer D: **10**\n  - You R: Organizer L: **−20**. Organizer D: **10**\n- **L**, romvesenet til (0, 1)\n  - You U fanger det: **−30**, spillet slutter\n  - You R: Organizer L: **0**. Organizer D: **0**\n- **R**, romvesenet til (2, 1)\n  - You U: Organizer L: **0**. Organizer D fanger det: **−30**\n  - You R: Organizer L: **0**. Organizer D: **−30**\n- **D**, romvesenet til (1, 2)\n  - You U: Organizer L: **0**. Organizer D: **0**\n  - You R fanger det: **−30**, spillet slutter\n\n<img class=\"fig\" src=\"nettside-figurer/al3-romvesen-tre.png\" alt=\"Minimax-treet for romvesenproblemet (slide 7)\">\n\nVanlig feil: å la Organizer trekke etter at du har fanget romvesenet. Da blir grenene L–U og D–R for dype.\n\n*Kilde: AssignmentLecture3-Fall2026, slide 7. Oppgaven er fra ordinær eksamen 2020.*"
+  },
+  {
+   "t": "Oppgave 2: Let’s do minimax search on the alien problem",
+   "d": "**Let’s do minimax search on the alien problem**\n\n*Merknad:* Sliden har bare denne tittelen og treet under. Oppgaven er å regne ut minimax-verdien til alle nodene og finne trekket Alien gjør. I «Tegn og sjekk» heter nodene etter trekkene ned til dem: UR betyr at Alien gikk U og du gikk R.",
+   "img": [
+    "nettside-figurer/al3-romvesen-tre.png"
+   ],
+   "f": [
+    [
+     "Minimax-verdien i rota (Alien)",
+     "text",
+     "ett tall"
+    ],
+    [
+     "Trekket Alien velger",
+     "text",
+     "U, L, R eller D"
+    ],
+    [
+     "Verdiene til You-nodene (U, L, R, D)",
+     "text",
+     "fire tall fra venstre, f.eks. 1, 2, 3, 4"
+    ],
+    [
+     "Verdiene til Organizer-nodene",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Minimax-verdien i rota (Alien)": [
+      "-20"
+     ],
+     "Trekket Alien velger": [
+      "U"
+     ],
+     "Verdiene til You-nodene (U, L, R, D)": [
+      "-20 -30 -30 -30"
+     ]
+    },
+    "merk": "Rota får −20, og Alien går U. You-nodene får −20, −30, −30 og −30.",
+    "kilde": "AssignmentLecture3-Fall2026.pdf, slide 15"
+   },
+   "tegn": {
+    "type": "tre",
+    "data": {
+     "id": "rot",
+     "type": "max",
+     "barn": [
+      {
+       "id": "U",
+       "type": "min",
+       "tekst": "U",
+       "barn": [
+        {
+         "id": "UU",
+         "type": "min",
+         "tekst": "UU",
+         "barn": [
+          {
+           "id": "UUL",
+           "type": "blad",
+           "verdi": -20,
+           "tekst": "UUL"
+          },
+          {
+           "id": "UUD",
+           "type": "blad",
+           "verdi": 10,
+           "tekst": "UUD"
+          }
+         ]
+        },
+        {
+         "id": "UR",
+         "type": "min",
+         "tekst": "UR",
+         "barn": [
+          {
+           "id": "URL",
+           "type": "blad",
+           "verdi": -20,
+           "tekst": "URL"
+          },
+          {
+           "id": "URD",
+           "type": "blad",
+           "verdi": 10,
+           "tekst": "URD"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "L",
+       "type": "min",
+       "tekst": "L",
+       "barn": [
+        {
+         "id": "LU",
+         "type": "blad",
+         "verdi": -30,
+         "tekst": "LU"
+        },
+        {
+         "id": "LR",
+         "type": "min",
+         "tekst": "LR",
+         "barn": [
+          {
+           "id": "LRL",
+           "type": "blad",
+           "verdi": 0,
+           "tekst": "LRL"
+          },
+          {
+           "id": "LRD",
+           "type": "blad",
+           "verdi": 0,
+           "tekst": "LRD"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "R",
+       "type": "min",
+       "tekst": "R",
+       "barn": [
+        {
+         "id": "RU",
+         "type": "min",
+         "tekst": "RU",
+         "barn": [
+          {
+           "id": "RUL",
+           "type": "blad",
+           "verdi": 0,
+           "tekst": "RUL"
+          },
+          {
+           "id": "RUD",
+           "type": "blad",
+           "verdi": -30,
+           "tekst": "RUD"
+          }
+         ]
+        },
+        {
+         "id": "RR",
+         "type": "min",
+         "tekst": "RR",
+         "barn": [
+          {
+           "id": "RRL",
+           "type": "blad",
+           "verdi": 0,
+           "tekst": "RRL"
+          },
+          {
+           "id": "RRD",
+           "type": "blad",
+           "verdi": -30,
+           "tekst": "RRD"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "D",
+       "type": "min",
+       "tekst": "D",
+       "barn": [
+        {
+         "id": "DU",
+         "type": "min",
+         "tekst": "DU",
+         "barn": [
+          {
+           "id": "DUL",
+           "type": "blad",
+           "verdi": 0,
+           "tekst": "DUL"
+          },
+          {
+           "id": "DUD",
+           "type": "blad",
+           "verdi": 0,
+           "tekst": "DUD"
+          }
+         ]
+        },
+        {
+         "id": "DR",
+         "type": "blad",
+         "verdi": -30,
+         "tekst": "DR"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "fasit": "**Minimax-verdien i rota er −20, og Alien går U. You-nodene får −20, −30, −30 og −30.**\n\n**Organizer-nodene** (MIN av bladene): UU = min(−20, 10) = −20, UR = −20, LR = min(0, 0) = 0, RU = min(0, −30) = −30, RR = −30, DU = 0. LU og DR er terminaler med −30.\n\n**You-nodene** (MIN av barna):\n- U = min(−20, −20) = −20\n- L = min(−30, 0) = −30\n- R = min(−30, −30) = −30\n- D = min(0, −30) = −30\n\n**Rota** (MAX): max(−20, −30, −30, −30) = −20, så Alien går U.\n\nRomvesenet går opp og spiser sjøstjerna selv om Organizer fanger det etterpå (−20). Alle andre trekk lar deg eller Organizer fange det uten sjøstjerna (−30).\n\n<img class=\"fig\" src=\"nettside-figurer/al3-losning-2-minimax.png\" alt=\"Minimax-verdiene (slide 15)\">\n\n*Kilde: AssignmentLecture3-Fall2026, slide 15. Kontroll: minimax i `nettside-algo/spill.js` gir de samme verdiene.*"
+  },
+  {
+   "t": "Oppgave 3: Alpha-beta search on the alien tree",
+   "d": "**Alpha-beta search on the alien tree**\n\n**Let’s make it min/max and smaller**\n\n*Merknad:* Slide 20 viser hele treet fra oppgave 2 under den første tittelen. Slide 21 gjør treet mindre og lar nivåene veksle mellom MAX og MIN (Organizer er nå MAX). Det er det minste treet, under, som blir regnet gjennom i tre steg. Oppgaven er å kjøre alpha-beta fra venstre mot høyre, skrive α og β ved nodene og finne hva som kuttes bort. I «Tegn og sjekk» heter nodene etter trekkene ned til dem: UR betyr at Alien gikk U og du gikk R.",
+   "img": [
+    "nettside-figurer/al3-mindre-tre.png"
+   ],
+   "f": [
+    [
+     "Verdien i rota",
+     "text",
+     "ett tall"
+    ],
+    [
+     "Trekket MAX velger i rota",
+     "text",
+     "U eller L"
+    ],
+    [
+     "α i MIN-noden under L etter bladet −30",
+     "text"
+    ],
+    [
+     "β i MIN-noden under L etter bladet −30",
+     "text"
+    ],
+    [
+     "Hva kuttes bort, og hvorfor?",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Verdien i rota": [
+      "10"
+     ],
+     "Trekket MAX velger i rota": [
+      "U"
+     ],
+     "α i MIN-noden under L etter bladet −30": [
+      "10"
+     ],
+     "β i MIN-noden under L etter bladet −30": [
+      "-30"
+     ]
+    },
+    "merk": "Rota får α = 10 fra U-grenen. Under L blir β = −30 ≤ α = 10, så R-grenen (MAX-noden med bladene 0 og 0) kuttes.",
+    "kilde": "AssignmentLecture3-Fall2026.pdf, slide 22–24 (Alpha-beta search, step 1–3)"
+   },
+   "tegn": {
+    "type": "tre",
+    "data": {
+     "id": "rot",
+     "type": "max",
+     "barn": [
+      {
+       "id": "U",
+       "type": "min",
+       "tekst": "U",
+       "barn": [
+        {
+         "id": "UU",
+         "type": "max",
+         "tekst": "UU",
+         "barn": [
+          {
+           "id": "UUL",
+           "type": "blad",
+           "verdi": -20,
+           "tekst": "UUL"
+          },
+          {
+           "id": "UUD",
+           "type": "blad",
+           "verdi": 10,
+           "tekst": "UUD"
+          }
+         ]
+        },
+        {
+         "id": "UR",
+         "type": "max",
+         "tekst": "UR",
+         "barn": [
+          {
+           "id": "URL",
+           "type": "blad",
+           "verdi": -20,
+           "tekst": "URL"
+          },
+          {
+           "id": "URD",
+           "type": "blad",
+           "verdi": 10,
+           "tekst": "URD"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "L",
+       "type": "min",
+       "tekst": "L",
+       "barn": [
+        {
+         "id": "LU",
+         "type": "blad",
+         "verdi": -30,
+         "tekst": "LU"
+        },
+        {
+         "id": "LR",
+         "type": "max",
+         "tekst": "LR",
+         "barn": [
+          {
+           "id": "LRL",
+           "type": "blad",
+           "verdi": 0,
+           "tekst": "LRL"
+          },
+          {
+           "id": "LRD",
+           "type": "blad",
+           "verdi": 0,
+           "tekst": "LRD"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "fasit": "**Verdien i rota er 10, og MAX velger U. I MIN-noden under L er α = 10 og β = −30 etter bladet −30. Da er β ≤ α, og R-grenen under L (MAX-noden LR med bladene 0 og 0) kuttes.**\n\nAlpha-beta fra venstre mot høyre. MAX kutter ved v ≥ β og MIN ved v ≤ α.\n\n| Node | α, β inn | Det som skjer | Verdi |\n|---|---|---|---|\n| UU (MAX) | −∞, ∞ | −20 gir α = −20, så 10 gir α = 10 | 10 |\n| U (MIN) | −∞, ∞ | UU = 10 gir β = 10 | |\n| UR (MAX) | −∞, 10 | −20 gir α = −20, så 10 gir v = 10 ≥ β = 10 (ingen flere barn) | 10 |\n| U (MIN) | | min(10, 10) | 10 |\n| rot (MAX) | −∞, ∞ | U = 10 gir α = 10 | |\n| L (MIN) | 10, ∞ | −30 gir β = −30. v = −30 ≤ α = 10: kutt LR | ≤ −30 |\n| rot (MAX) | | max(10, ≤ −30) | 10 |\n\nKuttet er trygt: L er allerede ≤ −30, og MAX har U med 10. Uansett hva LR gir, velger ikke MAX L.\n\nTreet er gjort mindre og har alternerende nivåer, så Organizer er nå MAX. Derfor blir U = 10 her og ikke −20 som i oppgave 2.\n\nVanlig feil: å bytte om α og β. MAX sammenligner v med β, og MIN sammenligner v med α.\n\n*Kilde: AssignmentLecture3-Fall2026, slide 22–24 (steg 1–3). Kontroll: alpha-beta i `nettside-algo/spill.js` kutter LR og gir 10.*"
+  }
+ ],
+ "fasit": "**Oppgave 1: Making a minimax tree** (slide 7). Alien (MAX) velger U, L, R eller D. Så velger du (MIN) U eller R, og til slutt Organizer (MIN) L eller D. To grener stopper før Organizer trekker, fordi du fanger romvesenet: Alien L og du U, og Alien D og du R. Der er verdien −30. Går Alien U, spiser den sjøstjerna (+10). Fanger Organizer den etterpå med L, blir bladet −20.\n\n<img class=\"fig\" src=\"nettside-figurer/al3-romvesen-tre.png\" alt=\"Minimax-treet (slide 7)\">\n\n**Oppgave 2: Let’s do minimax search on the alien problem** (slide 15). Organizer-nodene tar minimum av bladene, og You-nodene minimum av barna: U = −20, L = −30, R = −30, D = −30. Alien tar maksimum. Rota får −20, så Alien går U.\n\n<img class=\"fig\" src=\"nettside-figurer/al3-losning-2-minimax.png\" alt=\"Minimax-verdiene (slide 15)\">\n\n**Oppgave 3: Alpha-beta search on the alien tree** (slide 22–24, det minste treet).\n\n- **Steg 1:** Alle noder starter med α = −∞ og β = ∞. Den første MAX-noden (UU) ser −20 og så 10, så α går fra −∞ til −20 og så til 10.\n- **Steg 2:** MIN-noden under U får β = 10. Den andre MAX-noden (UR) arver β = 10. Den ser −20 (α = −20) og så 10 (α = 10). MIN-noden under U får verdien 10.\n- **Steg 3:** Rota får α = 10. MIN-noden under L arver α = 10. Første barn er bladet −30, så β = −30. Nå er β ≤ α, og R-grenen (MAX-noden med bladene 0 og 0) kuttes, markert med rødt kryss. Rota får verdien 10, og MAX velger U.\n\n<img class=\"fig\" src=\"nettside-figurer/al3-losning-3-steg1.png\" alt=\"Steg 1 (slide 22)\">\n\n<img class=\"fig\" src=\"nettside-figurer/al3-losning-3-steg2.png\" alt=\"Steg 2 (slide 23)\">\n\n<img class=\"fig\" src=\"nettside-figurer/al3-losning-3-steg3.png\" alt=\"Steg 3 (slide 24)\">"
+}

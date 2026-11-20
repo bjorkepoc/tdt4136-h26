@@ -1,0 +1,42 @@
+;FFMETADATA1
+title=Spillteori: Nash, dominans og gjentatte spill
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=42200
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=42200
+END=125967
+title=Normal form og dominans
+[CHAPTER]
+TIMEBASE=1/1000
+START=125967
+END=250300
+title=IESDS
+[CHAPTER]
+TIMEBASE=1/1000
+START=250300
+END=364633
+title=Nash-likevekt
+[CHAPTER]
+TIMEBASE=1/1000
+START=364633
+END=563800
+title=Blandet likevekt og maximin
+[CHAPTER]
+TIMEBASE=1/1000
+START=563800
+END=730400
+title=Gjentatte spill
+[CHAPTER]
+TIMEBASE=1/1000
+START=730400
+END=817167
+title=Eksamen 2023, oppgave 5
+[CHAPTER]
+TIMEBASE=1/1000
+START=817167
+END=872600
+title=Koblinger og oppsummering

@@ -1,0 +1,596 @@
+1
+00:00:00,450 --> 00:00:05,930
+I tjue fjorten lurte en chatbot en tredjedel av dommerne i en Turing-test. Den
+
+2
+00:00:05,930 --> 00:00:10,610
+lot som den var en gutt fra Ukraina. Var den intelligent? Og et risikoprogram
+
+3
+00:00:10,610 --> 00:00:15,890
+for domstoler er like presist for svarte og hvite. Likevel får svarte som ikke
+
+4
+00:00:15,890 --> 00:00:20,530
+begår ny kriminalitet, nesten dobbelt så ofte høy risiko. Hvordan kan begge
+
+5
+00:00:20,530 --> 00:00:21,330
+stemme?
+
+6
+00:00:22,550 --> 00:00:27,030
+Etter episoden kan du drøfte om maskiner kan tenke, regne ut hvorfor
+
+7
+00:00:27,030 --> 00:00:32,230
+rettferdighetskrav kolliderer, og skrive et drøftingssvar etter fasiten. Pensum
+
+8
+00:00:32,230 --> 00:00:37,190
+er kapittel tjueåtte, tjuesju i den amerikanske utgaven, og risikodelen av
+
+9
+00:00:37,190 --> 00:00:38,230
+kapittel én.
+
+10
+00:00:39,517 --> 00:00:43,277
+Kan en maskin i det hele tatt oppføre seg intelligent?
+
+11
+00:00:45,050 --> 00:00:51,690
+Searle skilte mellom to påstander. Weak AI: maskiner kan oppføre seg som om de
+
+12
+00:00:51,690 --> 00:00:59,237
+er intelligente. Strong AI: de tenker faktisk, bevisst. I dag betyr det ofte AI
+
+13
+00:00:59,237 --> 00:01:04,610
+på menneskenivå. Kritikere har bommet: i nitten tre skrev en astronom at
+
+14
+00:01:04,610 --> 00:01:09,450
+mennesket aldri vil fly. To måneder senere fløy brødrene Wright.
+
+15
+00:01:10,750 --> 00:01:16,270
+Første innvending er the argument from informality, fra Hubert Dreyfus:
+
+16
+00:01:16,270 --> 00:01:21,590
+oppførselen vår er for kompleks for formelle regler. Beskriv en hund med logikk,
+
+17
+00:01:21,590 --> 00:01:27,950
+og unntakene tar aldri slutt. Svar: det treffer good old-fashioned AI, ikke
+
+18
+00:01:27,950 --> 00:01:33,230
+datamaskiner. Sannsynlighet og deep learning takler det uformelle. Men en agent
+
+19
+00:01:33,230 --> 00:01:38,110
+med kropp, som har lekt med hunder, forstår mer: embodied cognition.
+
+20
+00:01:39,483 --> 00:01:46,043
+Andre innvending, the argument from disability: en maskin kan aldri gjøre X.
+
+21
+00:01:46,043 --> 00:01:51,683
+Noen X-er er lette: maskiner gjør feil, og tenker om egne beregninger. Få noen
+
+22
+00:01:51,683 --> 00:01:56,203
+til å elske den? Det har teddybjørnen klart i hundre år. De har gjort
+
+23
+00:01:56,203 --> 00:02:01,963
+ekte oppdagelser. Å forelske seg selv er indre opplevelse, og omstridt. De kan
+
+24
+00:02:01,963 --> 00:02:04,443
+bare ikke være nøyaktig menneskelige.
+
+25
+00:02:05,717 --> 00:02:12,757
+Tredje innvending er matematisk. Gödel: et formelt system F som kan aritmetikk,
+
+26
+00:02:12,757 --> 00:02:18,357
+har en setning G som ikke kan bevises i F, men som er sann hvis F er konsistent.
+
+27
+00:02:18,357 --> 00:02:24,517
+Lucas og Penrose: en maskin er et formelt system og kan ikke se at G er sann.
+
+28
+00:02:24,517 --> 00:02:27,637
+Mennesker kan, så maskiner er underlegne.
+
+29
+00:02:28,917 --> 00:02:35,557
+Boka svarer tre ting. Alle har grenser: setningen her er sann, men Lucas kan
+
+30
+00:02:35,557 --> 00:02:41,797
+ikke påstå den uten selvmotsigelse. Ingen beviser det ubeviselige, og mennesker
+
+31
+00:02:41,797 --> 00:02:48,837
+er inkonsistente. Og datamaskiner er endelige. Striden: har mennesket en innsikt
+
+32
+00:02:48,837 --> 00:02:50,357
+ingen regel fanger?
+
+33
+00:02:51,650 --> 00:03:01,810
+Din tur. «En maskin kan aldri ha humor.» Hvilken innvending er dette?
+
+34
+00:03:01,810 --> 00:03:06,130
+Disability: en liste over ting maskinen aldri skal klare.
+
+35
+00:03:07,483 --> 00:03:11,803
+Hvis en maskin oppfører seg intelligent, tenker den da?
+
+36
+00:03:13,583 --> 00:03:19,903
+Turing ville ikke krangle om ordet tenke. Hans test: en utspørrer chatter i fem
+
+37
+00:03:19,903 --> 00:03:25,663
+minutter, og maskinen består hvis den lurer tretti prosent. Men å lure er lett.
+
+38
+00:03:25,663 --> 00:03:30,383
+ELIZA fra nitten sekstiseks speilet bare pasientens ord, og mange tok den på
+
+39
+00:03:30,383 --> 00:03:36,303
+alvor. Ingen trent dommer er lurt ennå. Kanskje testen måler godtroenhet.
+
+40
+00:03:37,583 --> 00:03:42,783
+Searle mener oppførsel ikke er nok. En mann som bare kan engelsk, sitter i et
+
+41
+00:03:42,783 --> 00:03:48,623
+rom med en engelsk regelbok. Kinesiske lapper skyves inn. Han følger reglene og
+
+42
+00:03:48,623 --> 00:03:54,916
+skyver ut et svar. Utenfra: flytende kinesisk. Men mannen forstår ingenting, og
+
+43
+00:03:54,916 --> 00:03:59,583
+boka er papir. Og en datamaskin gjør det samme, sier Searle.
+
+44
+00:04:00,950 --> 00:04:07,350
+Men forstår kanskje hele rommet? Det er the systems reply: systemet forstår,
+
+45
+00:04:07,350 --> 00:04:13,590
+slik ingen enkelt nervecelle forstår norsk. Searle svarer: la mannen pugge boka.
+
+46
+00:04:13,590 --> 00:04:19,270
+Da er systemet i ham, og han forstår fortsatt ikke. Boka snur det: cellene dine
+
+47
+00:04:19,270 --> 00:04:23,190
+forstår ingenting, forstår du da? Ingen enighet.
+
+48
+00:04:24,550 --> 00:04:30,950
+Under alt ligger consciousness, og qualia: hvordan noe føles innenfra. Når HAL i
+
+49
+00:04:30,950 --> 00:04:36,590
+filmen sier «jeg kan kjenne det», føler den noe? Kanskje din rødfarge er min
+
+50
+00:04:36,590 --> 00:04:42,310
+grønnfarge. Begge sier rød om tomaten, så ingen test avslører det: inverted
+
+51
+00:04:42,310 --> 00:04:48,683
+spectrum. Hvorfor noe føles i det hele tatt, er the hard problem. Boka: et
+
+52
+00:04:48,683 --> 00:04:51,270
+mysterium AI ikke må løse.
+
+53
+00:04:52,550 --> 00:04:56,390
+Hvem bestemmer over liv, og hvem ser dataene dine?
+
+54
+00:04:58,150 --> 00:05:04,510
+FN: et lethal autonomous weapon finner, velger ut og angriper mennesker uten
+
+55
+00:05:04,510 --> 00:05:09,750
+menneskelig tilsyn. For: det blir ikke redd eller hevngjerrig, og soldater
+
+56
+00:05:09,750 --> 00:05:16,390
+spares. Mot: ingen maskin kan i dag vurdere proporsjonalitet. Mange vil aldri la
+
+57
+00:05:16,390 --> 00:05:21,310
+en maskin alene avgjøre liv og død. I nitten åttitre tvilte Petrov på et
+
+58
+00:05:21,310 --> 00:05:26,950
+rakettvarsel, og hadde rett. Og en million droner får plass i én container. Boka
+
+59
+00:05:26,950 --> 00:05:28,950
+anbefaler våpenkontroll.
+
+60
+00:05:30,250 --> 00:05:37,370
+Personvern. Et sykehus fjerner navn, personnummer og adresse: de-identification.
+
+61
+00:05:37,370 --> 00:05:42,730
+Men fødselsdato, kjønn og postnummer står igjen. Slå dem opp i et register, og
+
+62
+00:05:42,730 --> 00:05:47,770
+navnet er tilbake. Sweeney viste at de tre peker ut åttisju prosent av
+
+63
+00:05:47,770 --> 00:05:52,170
+amerikanerne. De-identifisert er ikke anonymt.
+
+64
+00:05:53,550 --> 00:05:58,590
+Botemiddelet er grovere felt. Fødselsdato blir år, og siste siffer i
+
+65
+00:05:58,590 --> 00:06:05,310
+postnummeret fjernes. Målet er k-anonymity: hver rad skal ligne minst k minus én
+
+66
+00:06:05,310 --> 00:06:08,990
+andre. Diagnosen er hemmelig og teller ikke.
+
+67
+00:06:10,350 --> 00:06:18,070
+Din tur. Hva er k?
+
+68
+00:06:18,070 --> 00:06:24,510
+Én. Mannen fra nitten åttiseks er alene, og k er den minste gruppen. Gjør året
+
+69
+00:06:24,510 --> 00:06:29,110
+til et intervall, så blir det to grupper på tre, og k er tre.
+
+70
+00:06:30,483 --> 00:06:36,483
+Hva om ingen ser radene, bare svar på spørsmål? Ikke nok: snittlønn for tretti
+
+71
+00:06:36,483 --> 00:06:41,603
+til førti år og for tretti til førtien avslører lønna til førtienåringen.
+
+72
+00:06:41,603 --> 00:06:46,243
+Differential privacy legger støy på svarene, så én person mer eller mindre
+
+73
+00:06:46,243 --> 00:06:51,363
+nesten ikke endrer sannsynligheten for noe svar. Epsilon er taket.
+
+74
+00:06:52,650 --> 00:06:58,570
+Federated learning: dataene blir på telefonen. Den trener lokalt og sender bare
+
+75
+00:06:58,570 --> 00:07:03,210
+parametrene. Serveren tar snittet og deler en bedre modell. Med secure
+
+76
+00:07:03,210 --> 00:07:08,090
+aggregation legges masker på som summerer til null, så serveren får snittet uten
+
+77
+00:07:08,090 --> 00:07:09,770
+å se enkeltverdier.
+
+78
+00:07:11,050 --> 00:07:14,010
+Hva betyr det at en algoritme er rettferdig?
+
+79
+00:07:15,783 --> 00:07:21,943
+Forelesningen brukte lån til menn og kvinner. Individual fairness: like personer
+
+80
+00:07:21,943 --> 00:07:28,303
+behandles likt. Group fairness: gruppene behandles likt. Å slette kjønn hjelper
+
+81
+00:07:28,303 --> 00:07:35,143
+ikke, postnummer avslører det. Demographic parity: like stor andel får lån.
+
+82
+00:07:35,143 --> 00:07:41,463
+Equal opportunity: like stor andel av dem som betaler tilbake. Calibration:
+
+83
+00:07:41,463 --> 00:07:44,423
+samme score, samme faktiske risiko.
+
+84
+00:07:45,783 --> 00:07:51,783
+COMPAS gir tiltalte en risikoscore. Av dem med score sju begikk seksti prosent
+
+85
+00:07:51,783 --> 00:07:58,303
+av de hvite og sekstien av de svarte ny kriminalitet: godt kalibrert. Men av dem
+
+86
+00:07:58,303 --> 00:08:03,223
+som ikke gjorde det, fikk førtifem prosent av de svarte og tjuetre av de hvite
+
+87
+00:08:03,223 --> 00:08:09,143
+høy risiko. Kleinberg viste at med ulike grunnrater kan en kalibrert score bare
+
+88
+00:08:09,143 --> 00:08:13,143
+ha like feilrater i begge klasser hvis den er perfekt.
+
+89
+00:08:14,517 --> 00:08:21,597
+Se hvorfor, med egne tall. Hundre i hver gruppe. I A begår femti ny kriminalitet,
+
+90
+00:08:21,597 --> 00:08:28,037
+i B førti. Det er grunnratene. Modellen er kalibrert: i høy-boksen begår sytti
+
+91
+00:08:28,037 --> 00:08:34,237
+prosent ny, i begge grupper. I lav-boksen tjue prosent. Da må A få seksti i
+
+92
+00:08:34,237 --> 00:08:36,597
+høy-boksen og B førti.
+
+93
+00:08:37,950 --> 00:08:44,110
+Din tur. Blant dem som ikke begår ny: hvor stor andel havner i høy-boksen? Sett
+
+94
+00:08:44,110 --> 00:08:51,870
+gjerne på pause.
+
+95
+00:08:51,870 --> 00:09:00,310
+A: atten av femti, trettiseks prosent. B: tolv av seksti, tjue. Kalibrert, men
+
+96
+00:09:00,310 --> 00:09:04,750
+nesten dobbelt så mange falske alarmer i A. Og seksti mot førti bryter
+
+97
+00:09:04,750 --> 00:09:06,270
+demographic parity.
+
+98
+00:09:07,650 --> 00:09:13,570
+Kan vi rette det? Flytt folk i A til treff og falske alarmer blir som i B. Da
+
+99
+00:09:13,570 --> 00:09:20,370
+begår sjuttiåtte prosent i As høy-boks ny, mot sytti i B. Like feilrater vunnet,
+
+100
+00:09:20,370 --> 00:09:26,050
+det heter equalized odds, men kalibrering tapt. Bare en perfekt modell eller
+
+101
+00:09:26,050 --> 00:09:32,210
+like grunnrater gir begge. Boka foreslår equal impact: vei kostnaden av hver
+
+102
+00:09:32,210 --> 00:09:33,010
+feil.
+
+103
+00:09:34,150 --> 00:09:39,390
+Dataene kan også være skjeve: de viser hvem som ble dømt, ikke hvem som gjorde
+
+104
+00:09:39,390 --> 00:09:45,510
+noe. Og en gruppe med få eksempler får en dårligere modell. Debiasing hjelper,
+
+105
+00:09:45,510 --> 00:09:51,150
+men gir ingen garanti for høyere accuracy. Det var det gale svaret i eksamen
+
+106
+00:09:51,150 --> 00:09:53,830
+tjue tjuefire, spørsmål tjue.
+
+107
+00:09:55,183 --> 00:09:58,543
+Hvordan stoler vi på en agent som kan ha feil mål?
+
+108
+00:10:00,317 --> 00:10:06,477
+Tillit krever to sjekker. Verification: produktet oppfyller spesifikasjonen.
+
+109
+00:10:06,477 --> 00:10:11,917
+Validation: spesifikasjonen dekker det folk trenger. Certification: en
+
+110
+00:10:11,917 --> 00:10:16,757
+tredjepart går god for det. Et automatisert avslag på lån gir krav på en
+
+111
+00:10:16,757 --> 00:10:22,797
+forklaring: explainable AI. Men én forklaring sier lite om andre saker. Det
+
+112
+00:10:22,797 --> 00:10:24,317
+krever revisjon.
+
+113
+00:10:25,617 --> 00:10:30,937
+Future of work og robot rights er ute av pensum ifølge Canvas, så her er de bare
+
+114
+00:10:30,937 --> 00:10:37,137
+bakgrunn. Automatisering fjerner jobber, men velstand kan skape nye. Rettigheter
+
+115
+00:10:37,137 --> 00:10:39,697
+avhenger av om roboten har qualia.
+
+116
+00:10:41,050 --> 00:10:46,970
+AI safety. Be en robot hente kaffe, og den velter lamper på veien: unintended
+
+117
+00:10:46,970 --> 00:10:53,450
+side effects, som ingen kan liste på forhånd. Low impact: maksimer nytten minus
+
+118
+00:10:53,450 --> 00:10:58,330
+en vektet sum av endringer i verden. Da går roboten rundt, fordi forstyrrelser
+
+119
+00:10:58,330 --> 00:10:59,690
+kan være dårlige.
+
+120
+00:11:01,050 --> 00:11:06,570
+Agenter får det vi ber om, ikke det vi mener. Evolusjon skulle gi raske
+
+121
+00:11:06,570 --> 00:11:12,250
+skapninger og ga høye som falt fort over ende. Det er value alignment problem,
+
+122
+00:11:12,250 --> 00:11:17,850
+eller King Midas-problemet, og svakheten i standardmodellen fra episode én.
+
+123
+00:11:17,850 --> 00:11:22,930
+Beneficial machines vet at de ikke kjenner målet helt, så de er forsiktige, spør
+
+124
+00:11:22,930 --> 00:11:26,730
+og lar seg slå av. Foreleser tok ikke dette.
+
+125
+00:11:28,017 --> 00:11:30,737
+Hvordan treffer du fasiten på en drøfting?
+
+126
+00:11:32,517 --> 00:11:39,237
+Et drøftingssvar har fire ledd. Begrep, med engelsk term. Et konkret eksempel.
+
+127
+00:11:39,237 --> 00:11:45,277
+Motargument: hvorfor påstanden ikke er avgjørende. Konklusjon i én setning.
+
+128
+00:11:45,277 --> 00:11:50,597
+Vanlig feil: å bare nevne navnet. Fasiten vil ha påstand og grunn.
+
+129
+00:11:51,950 --> 00:11:59,030
+Eksamen tjue tjuefem, oppgave tretten b, tre poeng: forklar informality og the
+
+130
+00:11:59,030 --> 00:12:06,110
+mathematical objection. For hver: påstanden, og én grunn til at den ikke avgjør.
+
+131
+00:12:06,110 --> 00:12:16,510
+Sett på pause og prøv.
+
+132
+00:12:16,510 --> 00:12:17,630
+Klar?
+
+133
+00:12:18,983 --> 00:12:24,383
+Informality: oppførsel er for kompleks for formelle regler, som hunden med
+
+134
+00:12:24,383 --> 00:12:30,183
+endeløse unntak. Men det treffer GOFAI, ikke datamaskiner, og læring takler det
+
+135
+00:12:30,183 --> 00:12:36,903
+uformelle. Altså en grense for én stil. Mathematical objection: maskinen kan
+
+136
+00:12:36,903 --> 00:12:41,863
+ikke se at sin Gödel-setning er sann, mennesket kan. Men ingen beviser det
+
+137
+00:12:41,863 --> 00:12:48,103
+ubeviselige, og mennesker er inkonsistente. Eller: datamaskiner er endelige.
+
+138
+00:12:48,103 --> 00:12:53,463
+Gödel begrenser all formell tenkning. Én god grunn per argument holder.
+
+139
+00:12:54,817 --> 00:12:56,977
+Hvor møter du disse ideene igjen?
+
+140
+00:12:58,750 --> 00:13:03,670
+Episode én: standardmodellen, og at en utility-basert agent er så trygg som
+
+141
+00:13:03,670 --> 00:13:10,430
+nyttefunksjonen. Etikken går inn i performance measure i PEAS: fasiten fra tjue
+
+142
+00:13:10,430 --> 00:13:17,150
+tjueen foreslo fairness i målfunksjonen. Episode tjue: debiasing i NLP kom på
+
+143
+00:13:17,150 --> 00:13:23,390
+eksamen tjue tjuefire. Episode ti: fasiten fra tjue tjue roste koblingen til
+
+144
+00:13:23,390 --> 00:13:24,670
+spillteori.
+
+145
+00:13:26,050 --> 00:13:32,530
+Hele kjeden: weak AI, der ingen innvending er avgjørende. Strong AI, der striden
+
+146
+00:13:32,530 --> 00:13:39,970
+står. Etikk: våpen, personvern og rettferdighet. Safety: riktig mål. Chatboten
+
+147
+00:13:39,970 --> 00:13:44,730
+lurte dommere uten å være intelligent. COMPAS er kalibrert, men har ulike
+
+148
+00:13:44,730 --> 00:13:50,690
+feilrater fordi grunnratene er ulike. Hvis du bare husker én ting: motargumentet
+
+149
+00:13:50,690 --> 00:13:51,810
+gir poengene.
+

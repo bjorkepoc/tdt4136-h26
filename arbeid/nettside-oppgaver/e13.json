@@ -1,0 +1,176 @@
+{
+ "intro": "2019 oppgave 7 er spart til fullprøven 01.12. DPLL (fig. 7.17) og WalkSAT (fig. 7.18) står i kortform i notatet over.",
+ "tasks": [
+  {
+   "t": "DPLL for hånd",
+   "d": "Klausulene er\n\n- C1: A ∨ B\n- C2: ¬A ∨ C\n- C3: ¬B ∨ ¬C\n- C4: ¬A ∨ ¬C ∨ D\n- C5: ¬D ∨ B\n\nKjør DPLL (fig. 7.17). DPLL går gjennom symbolene alfabetisk, både når den leter etter pure symbols og når den må gjette, og prøver true før false. Finnes flere unit clauses, tar den den første i lista (C1, C2, …). Navngi hvert steg: pure symbol, unit clause (med hvilken klausul), gjett eller konflikt. Oppgi modellen DPLL returnerer.",
+   "f": [
+    [
+     "Forløpet",
+     "area",
+     "Steg | regel | modell\n1 | … | …\n…"
+    ],
+    [
+     "Modellen DPLL returnerer",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Modellen DPLL returnerer": [
+      "A = false, B = true, C = false",
+      "A=false, B=true, C=false",
+      "A = F, B = T, C = F",
+      "A=F, B=T, C=F",
+      "¬A, B, ¬C"
+     ]
+    },
+    "merk": "DPLL returnerer A = false, B = true, C = false. D blir aldri satt og kan ha begge verdier.",
+    "kilde": "videoer/notater/e13-dpll-walksat.md, Fasit Øv selv 1"
+   },
+   "fasit": "**Forløpet:** gjett A = true → unit C2 (C = true) → unit C3 (B = false) → unit C4 (D = true) → konflikt i C5 → gjett A = false → pure C = false → pure B = true → alle sanne.\n\nHvert kall sjekker i denne rekkefølgen: alle klausulene sanne → én klausul usann → pure symbol → unit clause → gjett. Statusene gjelder C1–C5: T = sann, F = usann, ? = uavgjort.\n\n| Steg | Regel | Modell etter steget | C1–C5 |\n|---|---|---|---|\n| 0 | start | {} | ? ? ? ? ? |\n| 1 | gjett | A = true | T ? ? ? ? |\n| 2 | unit C2 (¬A er usann) | A = true, C = true | T T ? ? ? |\n| 3 | unit C3 (¬C er usann) | A = true, C = true, B = false | T T T ? ? |\n| 4 | unit C4 (¬A og ¬C er usanne) | A = true, C = true, B = false, D = true | T T T T F |\n| 5 | konflikt: C5 er usann | gå tilbake | |\n| 6 | gjett | A = false | ? T ? T ? |\n| 7 | pure (¬C står bare i C3) | A = false, C = false | ? T T T ? |\n| 8 | pure (B står bare positivt, i C1 og C5) | A = false, B = true, C = false | T T T T T |\n| 9 | alle sanne | return true | |\n\n- Ved start står alle fire symbolene med begge fortegn, og ingen klausul er unit, så DPLL må gjette. A er først, og true prøves før false.\n- I steg 3 er både C3 og C4 unit. C3 står først i lista.\n- I steg 7 er C pure bare fordi C2 og C4 er sanne og ikke teller. D er også pure (¬D står bare i C5), men C kommer før D alfabetisk. I steg 8 kommer B før D av samme grunn.\n\n**Modellen DPLL returnerer: A = false, B = true, C = false.** D blir aldri satt og kan ha begge verdier.\n\nVanligste feil: å ta unit før pure. Etter A = false er C1 unit (B), og unit-først gir samme modell, men forløpet er feil.\n\n*Kilde: notatet til E13, Fasit Øv selv 1.*"
+  },
+  {
+   "t": "DPLL: hva skjer i neste kall?",
+   "d": "Klausulene er\n\n- C1: A ∨ B\n- C2: ¬A ∨ C\n- C3: ¬C ∨ D ∨ ¬B\n- C4: A ∨ ¬D\n\nModellen så langt er A = true. Som i «DPLL for hånd» går DPLL gjennom symbolene alfabetisk når den leter etter pure symbols, og tar den første unit clause i lista.",
+   "f": [
+    [
+     "a) Hvilke klausuler er allerede sanne?",
+     "text"
+    ],
+    [
+     "b) Hvilke symboler er pure, og med hvilket fortegn?",
+     "text"
+    ],
+    [
+     "c) Er noen klausul unit?",
+     "text"
+    ],
+    [
+     "d) Hvilken verdi setter DPLL i neste kall?",
+     "text"
+    ],
+    [
+     "d) Hvorfor?",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Hvilke klausuler er allerede sanne?": [
+      "{C1, C4}",
+      "{C1 og C4}",
+      "{C1 and C4}"
+     ],
+     "c) Er noen klausul unit?": [
+      "ja",
+      "yes"
+     ],
+     "d) Hvilken verdi setter DPLL i neste kall?": [
+      "B = false",
+      "B=false",
+      "B = F",
+      "B=F",
+      "¬B"
+     ]
+    },
+    "merk": "C2 er unit (C), men DPLL sjekker pure symbols før unit clauses, og B er det første pure symbolet (negativt).",
+    "kilde": "videoer/notater/e13-dpll-walksat.md, Fasit Øv selv 2"
+   },
+   "fasit": "**a) C1 og C4.** A = true gjør literalen A sann i C1 (A ∨ B) og i C4 (A ∨ ¬D).\n\n**b) B er pure med negativt fortegn, og D er pure med positivt fortegn.** De åpne klausulene er C2 (¬A ∨ C) og C3 (¬C ∨ D ∨ ¬B).\n- B står bare som ¬B, i C3.\n- D står bare positivt, i C3. ¬D står i C4, men C4 er sann og teller ikke.\n- C er ikke pure: C står i C2 og ¬C i C3. A er allerede satt.\n\n**c) Ja.** C2 er unit: ¬A er usann, så C er den eneste literalen igjen, og C må bli true.\n\n**d) B = false.**\n\n**Hvorfor:** fig. 7.17 sjekker pure symbols før unit clauses. Både B og D er pure, og B kommer først alfabetisk. Den pure literalen ¬B gjøres sann, altså B = false. Unit-regelen for C2 venter til ingen symboler er pure. I kallet etter blir C pure (C står bare i C2), og DPLL ender med A = true, B = false, C = true.\n\nVanligste feil: å svare C = true fra unit C2. Det tar unit før pure.\n\n*Kilde: notatet til E13, Fasit Øv selv 2.*"
+  },
+  {
+   "t": "WalkSAT: ett steg",
+   "d": "Klausulene er de samme som i «DPLL for hånd»:\n\n- C1: A ∨ B\n- C2: ¬A ∨ C\n- C3: ¬B ∨ ¬C\n- C4: ¬A ∨ ¬C ∨ D\n- C5: ¬D ∨ B\n\nWalkSAT (fig. 7.18) står i modellen A = false, B = true, C = true, D = true.",
+   "f": [
+    [
+     "a) Hvilken klausul må WalkSAT velge?",
+     "text"
+    ],
+    [
+     "b) Hvor mange klausuler er sanne etter hvert mulig flipp?",
+     "text",
+     "flip X: … sanne, …"
+    ],
+    [
+     "c) Hvilket symbol flipper det grådige steget?",
+     "text"
+    ],
+    [
+     "d) Med p = 0,5: hvor sannsynlig er det at hvert av symbolene flippes?",
+     "text",
+     "P(flip X) = …, …"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Hvilken klausul må WalkSAT velge?": [
+      "C3"
+     ],
+     "c) Hvilket symbol flipper det grådige steget?": [
+      "C"
+     ]
+    },
+    "kilde": "videoer/notater/e13-dpll-walksat.md, Fasit Øv selv 3"
+   },
+   "fasit": "**a) C3 (¬B ∨ ¬C).** Det er den eneste usanne klausulen, fordi både B og C er true. C1 og C5 er sanne via B, og C2 og C4 er sanne via ¬A.\n\n**b) Flip B: 3 sanne. Flip C: 5 sanne.** Bare symbolene i den valgte klausulen kan flippes.\n\n| Flip | Modell etterpå | C1 | C2 | C3 | C4 | C5 | Sanne |\n|---|---|---|---|---|---|---|---|\n| B | A = F, B = F, C = T, D = T | F | T | T | T | F | 3 |\n| C | A = F, B = T, C = F, D = T | T | T | T | T | T | 5 |\n\n**c) C.** Det grådige steget flipper symbolet som gir flest sanne klausuler. Flip C gjør alle fem sanne, så WalkSAT returnerer A = F, B = T, C = F, D = T etter ett flipp.\n\n**d) P(flip C) = 0,75 og P(flip B) = 0,25.**\n- Med sannsynlighet p = 0,5 tas et random walk-steg, der B og C velges med ½ hver.\n- Med sannsynlighet 1 − p = 0,5 tas det grådige steget, som alltid velger C.\n- P(C) = 0,5 · ½ + 0,5 · 1 = 0,75 og P(B) = 0,5 · ½ = 0,25. A og D står ikke i C3 og kan ikke flippes.\n\n*Kilde: notatet til E13, Fasit Øv selv 3.*"
+  },
+  {
+   "t": "Tilfeldig 3-CNF og terskelen",
+   "d": "Du lager tilfeldige 3-CNF-setninger med n = 100 symboler og m = 150, 430 og 800 klausuler.",
+   "f": [
+    [
+     "a) Hvilken er nesten sikkert satisfiable, og hvilken nesten sikkert unsatisfiable?",
+     "text"
+    ],
+    [
+     "b) Hvilken tar typisk lengst tid for DPLL, og hvorfor?",
+     "text"
+    ],
+    [
+     "c) WalkSAT svarer failure på setningen med m = 800. Hva kan du konkludere?",
+     "text"
+    ]
+   ],
+   "fasit": "Forholdet m/n er 150/100 = 1,5, 430/100 = 4,3 og 800/100 = 8,0. For random 3-SAT stuper P(satisfiable) rundt m/n ≈ 4,3 (bokteksten og fig. 7.19). Litteraturnotene oppgir 4,26, et empirisk anslag fra Crawford og Auton.\n\n**a) m = 150 er nesten sikkert satisfiable, og m = 800 er nesten sikkert unsatisfiable.** Med m/n = 1,5 er setningen underconstrained: få klausuler per symbol, og nesten alle setninger har modeller. Med m/n = 8 er den overconstrained, og nesten ingen setning har en modell.\n\n**b) m = 430 tar typisk lengst tid.** m/n = 4,3 ligger ved terskelen. Der er setningene «nesten løsbare»: det finnes få eller ingen modeller, og DPLL må dypt i søketreet før den finner en modell eller en motsigelse. Under terskelen er en modell lett å finne. Over terskelen gir unit propagation konflikt tidlig. Boka sier at problemene ved 4,3 er omtrent 20 ganger vanskeligere enn ved 3,3.\n\n**c) Ingenting sikkert.** WalkSAT er incomplete, så failure betyr bare at ingen modell ble funnet innen max_flips. Setningen er trolig unsatisfiable (m/n = 8), men for å vise det trengs en complete metode som DPLL eller resolution.\n\nVanligste feil: å tro at flere klausuler gjør problemet vanskeligere. De vanskeligste setningene ligger ved terskelen.\n\n*Kilde: notatet til E13, Fasit Øv selv 4.*"
+  },
+  {
+   "t": "Eksamen 2018, problem 8 (short questions), punkt 5",
+   "d": "**PROBLEM 8 SHORT QUESTIONS**\n\n5 Fill in the blank so that the sentence becomes correct.\n\nA entails B if and only if (. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ) is unsatisfiable.\n\n*Merknad:* Poeng står ikke i oppgaveteksten. Ekstra (ikke i eksamensoppgaven): forklar hva DPLL må returnere for å vise at A ⊨ B, og hvorfor WalkSAT ikke kan brukes til det.",
+   "f": [
+    [
+     "5 Det tomme feltet",
+     "text"
+    ],
+    [
+     "Ekstra: Hva må DPLL returnere for å vise A ⊨ B?",
+     "text"
+    ],
+    [
+     "Ekstra: Hvorfor kan ikke WalkSAT brukes?",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "5 Det tomme feltet": [
+      "A ∧ ¬B",
+      "A∧¬B",
+      "¬B ∧ A",
+      "¬B∧A",
+      "A and not B",
+      "A og ikke B"
+     ],
+     "Ekstra: Hva må DPLL returnere for å vise A ⊨ B?": [
+      "false",
+      "usann",
+      "usant"
+     ]
+    },
+    "merk": "Løsningsforslaget 2018 svarer «A ∧ ¬B» (nummerert 4 der). Boka 7.5: A ⊨ B hvis og bare hvis A ∧ ¬B er unsatisfiable.",
+    "kilde": "videoer/notater/e13-dpll-walksat.md, Fasit Øv selv 5"
+   },
+   "fasit": "**5: A ∧ ¬B.** A ⊨ B betyr at B er sann i alle modeller der A er sann. Da finnes ingen modell der A er sann og B usann, så A ∧ ¬B er unsatisfiable (refutation, AIMA 7.5).\n\n**Ekstra, DPLL: må returnere false** på CNF(A ∧ ¬B). DPLL er complete, så false betyr at ingen modell finnes, og da gjelder A ⊨ B. Returnerer DPLL true, er modellen den finner, et moteksempel.\n\n**Ekstra, WalkSAT: kan bare finne modeller.** For å vise A ⊨ B må vi vise at ingen modell finnes. WalkSAT er incomplete: failure etter max_flips kan også bety at søket trengte mer tid. Uten grense stopper WalkSAT aldri på en setning som er unsatisfiable.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 8. Svaret står der som punkt 4: «A ∧ ¬B».*"
+  }
+ ]
+}

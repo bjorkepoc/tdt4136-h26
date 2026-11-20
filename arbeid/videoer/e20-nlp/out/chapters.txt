@@ -1,0 +1,52 @@
+;FFMETADATA1
+title=Språk: språkmodeller, tagging og parsing
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=44466
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=44467
+END=128500
+title=Hva er en språkmodell?
+[CHAPTER]
+TIMEBASE=1/1000
+START=128500
+END=255067
+title=N-gram og nullene
+[CHAPTER]
+TIMEBASE=1/1000
+START=255067
+END=327500
+title=Bedre smoothing og andre modeller
+[CHAPTER]
+TIMEBASE=1/1000
+START=327500
+END=446033
+title=Ord og ordklasser
+[CHAPTER]
+TIMEBASE=1/1000
+START=446033
+END=531567
+title=Grammatikk og PCFG
+[CHAPTER]
+TIMEBASE=1/1000
+START=531567
+END=639567
+title=Parsing og CYK
+[CHAPTER]
+TIMEBASE=1/1000
+START=639567
+END=714766
+title=Oppgaver og dyp læring
+[CHAPTER]
+TIMEBASE=1/1000
+START=714767
+END=782633
+title=Eksamensoppgave
+[CHAPTER]
+TIMEBASE=1/1000
+START=782633
+END=843133
+title=Koblinger og oppsummering

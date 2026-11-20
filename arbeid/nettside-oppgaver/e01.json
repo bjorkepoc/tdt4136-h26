@@ -1,0 +1,402 @@
+{
+ "intro": "2019 oppgave 1 (sant/usant om Turing-testen og sound reasoning) og oppgave 7 (støvsugeren der Suck feiler 10 % av gangene) er spart til fullprøven 01.12. 2020 ordinær («PEAS and Characteristics of the Environment», minebåten) er spart til fullprøven 03.12.",
+ "tasks": [
+  {
+   "t": "Robotgressklipperen: PEAS og miljøegenskaper",
+   "d": "En robotgressklipper har kamera, GPS og støtsensor.\n\nSkriv PEAS, og klassifiser miljøet på alle sju aksene med én begrunnelse per akse. Si hvilken antakelse som avgjør hvert svar som kunne gått begge veier.",
+   "f": [
+    [
+     "PEAS",
+     "area",
+     "P: …\nE: …\nA: …\nS: …"
+    ],
+    [
+     "Miljøet på de sju aksene, med begrunnelse",
+     "area",
+     "Observable: … fordi …\nAgents: …\nDeterministic: …\nEpisodic: …\nStatic: …\nDiscrete: …\nKnown: …"
+    ],
+    [
+     "Antakelser som avgjør svar som kunne gått begge veier",
+     "area"
+    ]
+   ],
+   "fasit": "**PEAS** (ett godt svar, andre godtas med begrunnelse):\n\n- **P:** andel av plenen som er klippet, jevn klippehøyde, ingen kollisjoner eller skade på mennesker, dyr og hage, kort tid og lavt strømforbruk.\n- **E:** plenen med kanter og bed, hindringer (trær, møbler, leker), terreng og vær, mennesker og dyr, ladestasjonen.\n- **A:** hjulmotorene (kjøre, svinge, stoppe), knivmotoren (av/på, klippehøyde), eventuelt lys eller lyd for varsling.\n- **S:** kamera, GPS og støtsensor, gjerne også hjulenkodere og batterimåler.\n\n**Miljøet på de sju aksene:**\n\n| Akse | Verdi | Begrunnelse |\n|---|---|---|\n| Observable | partially | Kameraet ser ikke bak hindringer, GPS har feilmargin, og klipperen ser ikke hele plenen på en gang. |\n| Agents | single | Mennesker og dyr regnes som en del av miljøet (se antakelsene). |\n| Deterministic | stochastic | Hjulene kan skli i vått gress, GPS-målingen har støy, og dyr og mennesker dukker opp uforutsigbart. |\n| Episodic | sequential | Hvor klipperen kjører nå, avgjør hva som gjenstår og hvor den ender. |\n| Static | dynamic | Mennesker og dyr flytter seg og været endrer seg mens den tenker. |\n| Discrete | continuous | Posisjon, fart, retning og tid er kontinuerlige. |\n| Known | known | Designeren vet hva handlingene gjør (kjøre, svinge, klippe), i hvert fall med sannsynligheter. |\n\n**Antakelser som avgjør svar som kunne gått begge veier:**\n\n- **Agents:** Single hvis mennesker og dyr er en del av naturen. Multi hvis noe i miljøet best beskrives som en agent som maksimerer sitt eget performance measure, for eksempel en annen robot på samme plen.\n- **Known:** Known betyr at utfallene (eller sannsynlighetene for utfallene) av alle handlingene er kjent. Det handler ikke om kart. Mangler klipperen kart, er miljøet partially observable, ikke unknown. Unknown blir det bare hvis klipperen må lære hva handlingene gjør, for eksempel hvordan den sklir i bratt terreng.\n- **Static:** En tom plen uten folk og dyr kunne vært nesten static, men vær og gressvekst endrer seg uansett.\n- **Observable:** Selv med kart over plenen ser den hindringer som flytter seg bare når de er nær, så partially holder.\n\nVanlig feil: å liste ting i miljøet i stedet for å klassifisere egenskapene, eller å si «known fordi den har kart».\n\n*Kilde: notatet til E01, Fasit Øv selv 1, og boka 2.3.2 (known/unknown).*"
+  },
+  {
+   "t": "Støvsugeren med flyttekostnad",
+   "d": "Støvsugerverdenen har to ruter, A og B. En tilstand skrives (agentens rute, status i A, status i B), så (A, Clean, Dirty) betyr at agenten står i A, A er ren og B er skitten. Handlingene er Left, Right og Suck, og Suck gjør ruta ren.\n\n```\nREFLEX-VACUUM-AGENT([location, status]):\n  if status = Dirty: return Suck\n  elif location = A: return Right\n  elif location = B: return Left\n```\n\nPerformance measure er ett poeng per ren rute per tidssteg (starttilstanden telles med), minus ett poeng per Left eller Right.\n\nStart i (A, Clean, Dirty). Spor REFLEX-VACUUM-AGENT i fire handlinger og regn ut summen. Hva får en agent som gjør det samme til alt er rent, men som deretter vet at alt er rent og står stille resten av de fire stegene?",
+   "f": [
+    [
+     "Sporing: tilstand, handling og poeng i hvert steg",
+     "area",
+     "t = 0: (A, Clean, Dirty), … poeng → handling …\nt = 1: …"
+    ],
+    [
+     "Sum for REFLEX-VACUUM-AGENT",
+     "text"
+    ],
+    [
+     "Sum for agenten som står stille når alt er rent",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Sum for REFLEX-VACUUM-AGENT": [
+      "5"
+     ],
+     "Sum for agenten som står stille når alt er rent": [
+      "7"
+     ]
+    },
+    "kilde": "videoer/notater/e01-agenter.md, Fasit Øv selv 2"
+   },
+   "fasit": "**Sum for REFLEX-VACUUM-AGENT: 5.** **Sum for agenten som står stille når alt er rent: 7.**\n\n| t | Tilstand | Rene ruter = poeng | Handling | Flyttekostnad |\n|---|---|---|---|---|\n| 0 | (A, Clean, Dirty) | 1 | Right | −1 |\n| 1 | (B, Clean, Dirty) | 1 | Suck | 0 |\n| 2 | (B, Clean, Clean) | 2 | Left | −1 |\n| 3 | (A, Clean, Clean) | 2 | Right | −1 |\n| 4 | (B, Clean, Clean) | 2 | – | |\n\nTilstandene gir 1 + 1 + 2 + 2 + 2 = 8, og de tre flyttene gir −3. Summen er **8 − 3 = 5**.\n\nAgenten som vet at alt er rent etter t = 2, gjør ingenting (NoOp) i t = 2 og t = 3. Tilstandene gir fortsatt 8, men den flytter seg bare én gang (Right i t = 0). Summen er **8 − 1 = 7**.\n\nUnder dette performance measure er REFLEX-VACUUM-AGENT altså ikke rasjonell, fordi den pendler i et rent rom. Med denne faste starten kunne riktignok en annen simple reflex agent fått 7, med reglene [A, Clean] → Right, [B, Dirty] → Suck og [B, Clean] → NoOp. Men når starttilstanden er ukjent, vet en simple reflex agent ved [B, Clean] ikke om A er skitten: NoOp lar A forbli skitten, og Left gir unødige flytt når A er ren. For å gjøre det godt fra alle starttilstander må agenten huske hva den har sett, og det krever intern state (en model-based agent).\n\n*Kilde: notatet til E01, Fasit Øv selv 2.*"
+  },
+  {
+   "t": "Tabellen til TABLE-DRIVEN-AGENT",
+   "d": "TABLE-DRIVEN-AGENT husker hele percept sequence og slår den opp i en tabell med én rad for hver mulig percept sequence agenten kan få i løpet av levetiden.\n\nI støvsugerverdenen er |P| = 4 percepter. Hvor mange rader har tabellen med levetid T = 3? Og med T = 10?",
+   "f": [
+    [
+     "T = 3",
+     "text",
+     "uttrykk = tall"
+    ],
+    [
+     "T = 10",
+     "text",
+     "uttrykk = tall"
+    ]
+   ],
+   "fasit": "**T = 3: 4 + 4² + 4³ = 84 rader.** **T = 10: 4(4¹⁰ − 1)/3 = 1 398 100 rader.**\n\nTabellen har én rad for hver mulig percept sequence med lengde 1, 2, …, T, altså |P| + |P|² + … + |P|^T rader.\n\n- T = 3: 4 + 16 + 64 = 84.\n- T = 10: en geometrisk rekke, 4 + 4² + … + 4¹⁰ = 4(4¹⁰ − 1)/(4 − 1) = 4 · 1 048 575 / 3 = 1 398 100.\n\nVanlig feil: å telle bare sekvensene med lengde T (4¹⁰ = 1 048 576) og glemme de kortere. Tabellen vokser eksponentielt med levetiden, og derfor trenger vi et lite agentprogram i stedet for en tabell.\n\n*Kilde: notatet til E01, Fasit Øv selv 3.*"
+  },
+  {
+   "t": "Sant eller usant",
+   "d": "Fig. 2.6 er lærebokas tabell over eksempler på task environments og egenskapene deres.",
+   "tf": [
+    "a) Et miljø som er known, er også fully observable.",
+    "b) En model-based reflex agent velger handling med søk.",
+    "c) Agent function avbilder siste percept til en handling.",
+    "d) Sjakk med klokke er semidynamic.",
+    "e) En rasjonell agent må være omniscient.",
+    "f) Image analysis er episodic i Fig. 2.6."
+   ],
+   "sjekk": {
+    "tf": [
+     "usant",
+     "usant",
+     "usant",
+     "sant",
+     "usant",
+     "sant"
+    ],
+    "kilde": "videoer/notater/e01-agenter.md, Fasit Øv selv 4"
+   },
+   "fasit": "- **a) Usant.** Known betyr at utfallene av handlingene er kjent, ikke at agenten ser alt. Kabal er known, men partially observable.\n- **b) Usant.** En model-based reflex agent velger fortsatt med condition-action rules (rule matching) på sin interne state. Søk og planlegging hører til goal-based agenter.\n- **c) Usant.** Agent function avbilder hele percept sequence til en handling, ikke bare siste percept.\n- **d) Sant.** Fig. 2.6 sier semi: brettet står stille mens agenten tenker, men klokka går, så poengene endrer seg.\n- **e) Usant.** En rasjonell agent maksimerer forventet performance gitt percept sequence og forkunnskap. Omniscience trengs bare for en perfekt agent.\n- **f) Sant.** Hvert bilde vurderes for seg, så image analysis er episodic i Fig. 2.6.\n\n*Kilde: notatet til E01, Fasit Øv selv 4.*"
+  },
+  {
+   "t": "Atomic, factored eller structured?",
+   "d": "Er tilstanden atomic, factored eller structured?",
+   "f": [
+    [
+     "a) In(Arad) i ruteplanlegging der byen bare er et navn",
+     "text"
+    ],
+    [
+     "b) En fargelegging av regioner i en CSP",
+     "text"
+    ],
+    [
+     "c) Ku(k) ∧ Lastebil(l) ∧ Sperrer(k, l)",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) In(Arad) i ruteplanlegging der byen bare er et navn": [
+      "atomic"
+     ],
+     "b) En fargelegging av regioner i en CSP": [
+      "factored"
+     ],
+     "c) Ku(k) ∧ Lastebil(l) ∧ Sperrer(k, l)": [
+      "structured"
+     ]
+    },
+    "kilde": "videoer/notater/e01-agenter.md, Fasit Øv selv 5"
+   },
+   "fasit": "**a) Atomic. b) Factored. c) Structured.**\n\n- **a)** Byen er en svart boks uten indre struktur. Søket kan bare spørre om to tilstander er like, eller om dette er målet.\n- **b)** Hver region er en variabel med en verdi (fargen). Variabler med verdier er factored, og CSP-er bruker alltid factored representation.\n- **c)** Tilstanden har objekter (k og l) og relasjoner mellom dem (Sperrer(k, l)). Det er structured, som i førsteordens logikk.\n\n*Kilde: notatet til E01, Fasit Øv selv 5.*"
+  },
+  {
+   "t": "Støvsugeren uten lokasjonssensor",
+   "d": "Støvsugeren har bare en skittsensor og ingen lokasjonssensor, så perceptet er bare `[Dirty]` eller `[Clean]`.\n\nForklar hvorfor en simple reflex agent kan gå i løkke. Vis deretter at en agent som kaster mynt (Left eller Right med sannsynlighet 1/2 hver når ruta er ren) i forventning bruker 2 steg på å komme til den andre ruta.",
+   "f": [
+    [
+     "Hvorfor kan en simple reflex agent gå i løkke?",
+     "area"
+    ],
+    [
+     "Utregning av forventet antall steg med myntkast",
+     "area"
+    ]
+   ],
+   "fasit": "**Løkke:** Uten lokasjonssensor er perceptet bare [Clean] eller [Dirty], så en simple reflex agent må gjøre det samme hver gang den ser [Clean]. Er regelen «[Clean] → Left» og agenten står i A, flytter Left den ingen steder. Den ser [Clean] igjen og gjør Left igjen, i det uendelige. Det samme skjer med Right i B. Agenten har ingen hukommelse som kan si at forsøket ikke virket. Uendelige løkker er ofte uunngåelige for simple reflex agents i partially observable miljøer.\n\n**Myntkast:** Når ruta er ren, velger agenten Right eller Left med sannsynlighet 1/2 hver. Bare én av dem flytter den til den andre ruta, så hvert steg lykkes med p = 1/2, uavhengig av de forrige. Antall steg K er geometrisk fordelt:\n\nP(K = k) = (1/2)^(k−1) · (1/2) = (1/2)^k\n\nE[K] = 1 · 1/2 + 2 · 1/4 + 3 · 1/8 + 4 · 1/16 + … = Σ k · (1/2)^k = **2** (= 1/p).\n\nDet er bokas «an average of two steps». Er den andre ruta skitten, suger agenten den, og oppgaven er løst. En randomisert simple reflex agent kan altså slå en deterministisk simple reflex agent, men en agent med hukommelse kan gjøre det enda bedre uten tilfeldighet.\n\n*Kilde: notatet til E01, Fasit Øv selv 6, og boka 2.4.2.*"
+  },
+  {
+   "t": "Eksamen 2022, oppgave 2: Intelligent Agents – Grocery Store Robot",
+   "d": "Grocery store robots can navigate autonomously through the store to scan shelves and report on inventory, e.g. how many products of different types are left. This particular robot is equipped with cameras, ultrasonic sensor (measures distances to obstacles) and collision sensor.\n\n2.1) Specify:\n\n- performance measure\n- environment properties\n- actuators and sensors\n\nExplain your specification, including the answer for the following questions:\n\n- Why this performance measure makes sense for this environment?\n- With respect to each of the properties, why this environment can be characterized in this way?\n\n2.2) What agent type will work best for this environment? Explain why. Make a visualization showing the main components for this type of agent. Briefly describe each component and interaction between them.\n\n*Merknad:* Poeng er ikke oppgitt i oppgaveteksten.",
+   "f": [
+    [
+     "2.1 Performance measure, med begrunnelse",
+     "area"
+    ],
+    [
+     "2.1 Miljøegenskaper, med begrunnelse for hver",
+     "area"
+    ],
+    [
+     "2.1 Actuators og sensors",
+     "area"
+    ],
+    [
+     "2.2 Agenttype og hvorfor",
+     "area"
+    ],
+    [
+     "2.2 Komponentene (beskriv figuren i tekst) og samspillet mellom dem",
+     "area",
+     "komponent → komponent: …"
+    ]
+   ],
+   "fasit": "**2.1 Performance measure:** andel av hyllene og produktene som er skannet og rapportert riktig, tid per runde, ingen kollisjoner med kunder, ansatte, andre roboter eller hyller, minst mulig hinder for andre i gangene, og lavt energiforbruk. Løsningsforslaget: «Safe, fast, maximize scanned products, minimize collisions on other aisle users».\n\n*Hvorfor:* Målet måler det vi vil ha i miljøet, korrekt og oppdatert lagerstatus uten skade, og ikke hvordan roboten skal kjøre. Delmålene står i konflikt (fart mot sikkerhet), så de må vektes mot hverandre.\n\n**2.1 Miljøegenskaper** (løsningsforslaget lister bare ting i miljøet: aisles, customers, employees, other robots, shelves, products. Sensor vil også ha egenskapene):\n\n| Akse | Verdi | Begrunnelse |\n|---|---|---|\n| Observable | partially | Kameraene ser noen meter, ikke bak hyller og rundt hjørner, og varer kan være skjult. |\n| Agents | multi | Kunder, ansatte og andre roboter. Mest cooperative (alle vil unngå kollisjon), delvis competitive om plassen i smale ganger. |\n| Deterministic | stochastic | Folk beveger seg uforutsigbart, varer flyttes, og sensorene har støy. |\n| Episodic | sequential | Ruten og skanningene nå avgjør hva som gjenstår og hvor roboten er senere. |\n| Static | dynamic | Kunder flytter seg og tar varer mens roboten tenker. |\n| Discrete | continuous | Posisjon, fart, avstand fra ultralydsensoren og tid er kontinuerlige. |\n| Known | known | Designeren vet hva handlingene gjør (kjøre, svinge, skanne). Kart over butikken handler om observability, ikke om known. |\n\n**2.1 Actuators og sensors:**\n\n- **Actuators:** hjul med motorer (kjøre, svinge, bremse), skjerm (konfigurasjon og feilsøking) og sending av lagerrapporten.\n- **Sensors:** kameraer (navigasjon og gjenkjenning av produkter og tomme plasser), ultralydsensor (avstand til hindringer), kollisjonssensor (berøring), skanner (strekkoder).\n- Løsningsforslaget lister «camera, scanner, ultrasonic sensor, collision sensor, display, wheels» samlet. Wheels og display er aktuatorer, resten er sensorer.\n\n**2.2 Agenttype: model-based, goal-based agent** (løsningsforslaget). Model-based fordi miljøet er partially observable: roboten ser bare noen meter og ikke bak hyllene, så den må holde en intern state med hvor den er, hvilke ganger som er skannet, og hvor hindringene var. Goal-based fordi den har et eksplisitt mål, å skanne alle hyllene og rapportere, og må planlegge en rute (søk) dit. En utility-based agent kan også forsvares hvis du vil veie fart mot sikkerhet.\n\n**2.2 Komponentene** (figuren «model-based, goal-based agent», Fig. 2.13 i US-teksten):\n\n- **Sensors → What the world is like now:** perceptene oppdaterer den interne staten.\n- **State, How the world evolves og What my actions do:** modellen. Den sier hvordan butikken endrer seg (kunder går, varer tas) og hva handlingene gjør (kjør én meter fram gir ny posisjon). Den brukes til å oppdatere staten.\n- **What it will be like if I do action A:** agenten forutsier utfallet av mulige handlinger med modellen.\n- **Goals → What action I should do now:** de forutsagte tilstandene sammenlignes med målet (alle hyller skannet, ingen kollisjon), og agenten velger handlingen som fører dit.\n- **Actuators:** utfører handlingen i miljøet, og det gir nye percepter.\n\nSamspillet: sensors → state (oppdatert med modellen) → prediksjon → valg mot målene → actuators → environment → sensors.\n\n*Kilde: løsningsforslaget til eksamen 2022, oppgave 2. Miljøtabellen er laget etter bokas definisjoner, fordi løsningsforslaget ikke klassifiserer miljøet.*"
+  },
+  {
+   "t": "Eksamen 2022, oppgave 1.1 og 1.2: Theoretical questions",
+   "d": "1.1) Why we might want to use a factored instead of atomic state representation?\n\n1.2) What is the benefit of having a model in a model-base agent?\n\n*Merknad:* Poeng er ikke oppgitt i oppgaveteksten.",
+   "f": [
+    [
+     "1.1 Factored i stedet for atomic",
+     "area"
+    ],
+    [
+     "1.2 Fordelen med en modell",
+     "area"
+    ]
+   ],
+   "fasit": "**1.1** Med atomic representation er tilstanden en svart boks. Agenten kan bare sjekke om den er målet (ja eller nei) eller lik en annen tilstand. Factored representation deler tilstanden i variabler med verdier. Da kan agenten regne med verdiene og ta smartere valg, for eksempel lage heuristikker (hvor langt unna målet er vi?), bruke generelle heuristikker som MRV i CSP og se hvilke variabler en handling endrer. To tilstander kan også dele noen verdier, så det blir lettere å finne ut hvordan én tilstand gjøres om til en annen. Beskrivelsene blir mer kompakte, som i planlegging og proposisjonslogikk.\n\n**1.2** Modellen, en transition model (hvordan verden endrer seg og hva handlingene gjør) og en sensor model (hvordan verden viser seg i perceptene), lar agenten holde en intern state om det den ikke ser akkurat nå. Da kan den handle fornuftig i et partially observable miljø, der en simple reflex agent bare ser nåværende percept og kan gå i løkke. Agenten kan også forutsi hva handlingene vil føre til, og velge deretter.\n\n*Kilde: løsningsforslaget til eksamen 2022, oppgave 1.1 og 1.2.*"
+  },
+  {
+   "t": "Eksamen 2025, oppgave 1 (5 p): Intelligent Agents",
+   "d": "This question aims to identify the differences between these 3 types of agents: simple reflex, model-based reflex, and goal-based agents, along with action selection or reasoning mechanisms.\n\nFill in the boxes in the table using one of the following: “Rule matching”, “Search”, “Search and Plan”\n\n<table><thead><tr><th></th><th colspan=\"3\">Agent type</th></tr><tr><th></th><th>1. Simple reflex agent</th><th>2. Model-based reflex agent</th><th>3. Goal-based agent</th></tr></thead><tbody><tr><th>Action selection/<br>Reasoning method</th><td></td><td></td><td></td></tr></tbody></table>\n\nWhich of the following alternatives best reflects the action selection/reasoning method of these agents?\n\n**Select one alternative:**\n\n- A. 1. Rule matching; 2. Rule matching; 3. Search and Plan\n- B. 1. Rule matching; 2. Rule matching; 3. Search\n- C. 1. Search; 2. Search and Plan; 3. Search and Plan\n- D. 1. Rule matching; 2. Search; 3. Search and Plan\n\nMaximum marks: 5",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C eller D"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "A"
+     ]
+    },
+    "kilde": "2025QA.pdf, Solution to 1"
+   },
+   "fasit": "**A.** 1. Rule matching; 2. Rule matching; 3. Search and Plan.\n\n- **Simple reflex agent:** condition-action rules på nåværende percept, altså rule matching.\n- **Model-based reflex agent:** de samme reglene, men brukt på intern state. Modellen gir bare bedre input til reglene, så det er fortsatt rule matching.\n- **Goal-based agent:** ser framover («hva skjer hvis jeg gjør A?») og finner handlingssekvenser som når målet, altså search and planning.\n\nVanlig feil: å velge D fordi model-based «har en modell». Modellen brukes til å oppdatere state, ikke til å søke.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 1.*"
+  },
+  {
+   "t": "Eksamen 2024, Q1 (4 p): Agents and environments",
+   "d": "Which of the following sentences is NOT true?\n\n**Select one alternative:**\n\n- A. The set of actions that the agent can take is called \"transition model\"\n- B. Model based reflex agents use condition-action rules to decide the next action to take.\n- C. A vacuum cleaner agent with a dirt sensor but no location sensor may behave intelligently only if it can randomize its action choices.\n- D. An agents that knows how the world changes can handle partial observability\n- E. The goal is represented in reflex agents implicitly through condition-action rules\n\nMaximum marks: 4",
+   "f": [
+    [
+     "Alternativ (bokstav)",
+     "text"
+    ],
+    [
+     "Begrunnelse",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ (bokstav)": [
+      "A",
+      "C"
+     ]
+    },
+    "merk": "Fasiten 2024 godtok både A og C. A er usann fordi transition model beskriver hva en handling fører til, ikke mengden handlinger. C er også usann på grunn av «only»: randomisering er ikke den eneste måten.",
+    "kilde": "2024Q&A.docx, Q1 – Agents"
+   },
+   "fasit": "**A** (fasiten godtok også **C**).\n\n- **A er usann.** Mengden handlinger agenten kan gjøre, er ACTIONS(s). Transition model, RESULT(s, a), sier hva en handling fører til: gitt tilstand og handling gir den den nye tilstanden.\n- **B er sann.** En model-based reflex agent velger med condition-action rules, men på sin interne state.\n- **C er også usann** på grunn av «only». Randomisering er én måte å komme ut av løkka på (myntkast gir i snitt 2 steg), men ikke den eneste. En agent med hukommelse kan for eksempel suge hvis skittent, gå Right, suge, gå Left og suge, og da har den dekket begge rutene uansett hvor den startet.\n- **D er sann.** En agent som vet hvordan verden endrer seg (en modell), kan holde styr på det den ikke ser, og takle partial observability.\n- **E er sann.** En reflex agent har ikke noe eksplisitt mål. Målet ligger implisitt i reglene designeren skrev.\n\n*Kilde: løsningsforslaget til eksamen 2024, Q1.*"
+  },
+  {
+   "t": "Eksamen 2024, Q2 (4 p): Miscellaneous – Mixture of Chapters",
+   "d": "**Which of the following sentences is FALSE?**\n\n**Select one alternative:**\n\n- A. In nondeterministic environments agent can apply AND-OR search to generate adversive plans\n- B. Consider that our simple vacuum cleaner has a suction mechanism that doesn’t suck properly. This is then a fully observable and nondeterministic environment\n- C. “Proof by refutation” can also be called proof by contradiction\n- D. A sentence is “satisfiable” if it is true in some models\n- E. Generalized Modus Ponens is complete for definite clauses\n- F. When the environment is partially observable, the belief state represents the set of possible states that the agent might be in.\n- G. Agent functions map the percepts to actions\n\nMaximum marks: 4",
+   "f": [
+    [
+     "Alternativ (bokstav)",
+     "text"
+    ],
+    [
+     "Begrunnelse",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ (bokstav)": [
+      "A",
+      "B"
+     ]
+    },
+    "merk": "Fasiten 2024 godtok både A og B. A er usann fordi AND-OR search gir contingency plans, ikke «adversive plans». B ble også godtatt fordi «our» vacuum cleaner kunne leses som agenten uten lokasjonssensor i Q1, og da er miljøet partially observable.",
+    "kilde": "2024Q&A.docx, Q2 – Mixture of chapters"
+   },
+   "fasit": "**A** (fasiten godtok også **B**).\n\n- **A er usann.** AND-OR search i nondeterministic miljøer gir contingency plans (betingede planer, «hvis dette skjer, gjør det»), ikke «adversive plans».\n- **B** er sann for den vanlige støvsugeren med lokasjons- og skittsensor: den ser alt (fully observable), og Suck virker ikke alltid (nondeterministic). Den ble likevel godtatt som usann, fordi «our» kunne leses som støvsugeren uten lokasjonssensor fra Q1, og da er miljøet partially observable.\n- **C er sann.** Proof by refutation er det samme som proof by contradiction: legg til ¬α i KB og utled en motsigelse.\n- **D er sann.** Satisfiable betyr sann i minst én modell.\n- **E er sann.** Generalized Modus Ponens (forward og backward chaining) er complete for first-order definite clauses.\n- **F er sann.** Belief state er mengden tilstander agenten kan være i.\n- **G regnes som sann.** Presist avbilder agent function hele percept sequence, ikke enkeltpercepter. Fasiten nevner at formuleringen kan forvirre.\n\n*Kilde: løsningsforslaget til eksamen 2024, Q2.*"
+  },
+  {
+   "t": "Eksamen 2023, oppgave 1: Short questions (to av spørsmålene)",
+   "d": "An AI system is used at the Human Resources (HR) department in the recruitment process. The system is given a job advertisement together with the applications of the candidates and it makes a suggestion about who to hire. Assume that the system is taking “corrective decisions”, which means that it takes into consideration the social injustice issues that appear because of the bias in the past decisions and attempts to decrease injustice. Is this an episodic or a sequential environment? Justify your answer.\n\nThis question is about the environment and agent matching. To behave intelligently in a partially observable environment, in which respects the agent should be different from a simple reflex agent?\n\n*Merknad:* Poeng er ikke oppgitt for denne oppgaven.",
+   "f": [
+    [
+     "HR-systemet: episodic eller sequential, med begrunnelse",
+     "area"
+    ],
+    [
+     "Partially observable: hva må agenten ha utover en simple reflex agent?",
+     "area"
+    ]
+   ],
+   "fasit": "**HR-systemet: sequential.** Med «corrective decisions» bygger systemet på tidligere beslutninger (skjevheten i dem) og prøver å redusere urettferdigheten over tid. Hvert forslag endrer sammensetningen av de ansatte og dermed hva som er rettferdig neste gang, så valget nå påvirker framtidige valg. Hadde hver ansettelse stått helt alene, ville miljøet vært episodic. Løsningsforslaget svarer «fully observable, and sequential»: systemet får hele utlysningen og alle søknadene.\n\n**Partially observable:** Agenten må ha hukommelse, altså en intern state som oppdateres med en modell (hvordan verden endrer seg og hva handlingene gjør), slik at den holder styr på det den ikke ser nå. Den arbeider med belief states, mengden tilstander den kan være i, og overgangsfunksjonen opererer på belief states i stedet for på én tilstand. En simple reflex agent reagerer bare på nåværende percept og kan gå i evig løkke, som støvsugeren uten lokasjonssensor.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 1.*"
+  },
+  {
+   "t": "Eksamen 2021, oppgave 6: Short questions (20 p totalt, tre av spørsmålene)",
+   "d": "**6) SHORT-QUESTIONS (20 pts)**\n\n2\\) Knowledge Representation\n\na. What are the three ways to represent states and transitions between them? Describe each of them very briefly and describe what kinds of tasks (e.g., planning, or classical search task) we used each of them in this course.\n\n3\\) AI-Ethics: What kind of connection can you make between P of PEAS (in Chapter 2) and ethical issues in AI? This is an open question which needs you to support your answer with arguments. In other words, explain your answer – concisely.\n\n4\\) Environment type: Assume a human agent is collecting beautiful, rare orchids in the rain forest. They suddenly notice that some birds are following them and pick the orchids just when the agent reaches to the orchids. Is this a deterministic, stochastic or strategic environment? Explain your answer.",
+   "f": [
+    [
+     "2) a. De tre representasjonene, og hvor de ble brukt",
+     "area",
+     "1. …: … (brukt i …)\n2. …\n3. …"
+    ],
+    [
+     "3) P i PEAS og etikk",
+     "area"
+    ],
+    [
+     "4) Orkidémiljøet: deterministic, stochastic eller strategic?",
+     "area"
+    ]
+   ],
+   "fasit": "**2) a. De tre representasjonene** (boka 2.4.7):\n\n1. **Atomic:** tilstanden er en udelelig svart boks, bare et navn som In(Arad). En overgang er en kant fra én boks til en annen. Brukt i klassisk søk (BFS, UCS, A\\*) og i spill (adversarial search).\n2. **Factored:** tilstanden er et fast sett variabler med verdier, som bensin, GPS-posisjon og bompenger. En handling endrer noen av verdiene. Brukt i CSP, proposisjonslogikk og planlegging (fluents med preconditions og effects).\n3. **Structured:** tilstanden har objekter og relasjoner mellom dem, som Ku(k), Lastebil(l) og Sperrer(k, l). Brukt i førsteordens logikk og inferens, kunnskapsrepresentasjon og NLP.\n\nUttrykkskraften øker fra atomic til structured, og prisen er tyngre resonnering og læring.\n\n**3) P i PEAS og etikk.** Performance measure bestemmer hva agenten optimaliserer, og en rasjonell agent maksimerer det uten hensyn til noe som ikke står der. Er P bare nøyaktighet eller profitt, kan agenten bli urettferdig (biased decision making, for eksempel ansettelser på skjeve historiske data), krenke personvern eller skade folk utenfor målet. Etiske krav som fairness, sikkerhet og personvern må derfor bygges inn i P, for eksempel med fairness som en del av objective function. De kan stå i konflikt med nøyaktighet, så det trengs avveininger. Å få P til å stemme med det vi egentlig vil, er value alignment problem (kong Midas).\n\n**4) Orkidémiljøet: stochastic, eller strategic hvis fuglene regnes som agenter.** Fuglene gjør at samme handling (plukk orkidéen) i samme tilstand kan gi orkidé eller ikke, så miljøet er ikke deterministic. Er fuglene en del av naturen, er det stochastic. Er de agenter som maksimerer sitt eget mål (de vil også ha orkideene), er miljøet multiagent og competitive. Løsningsforslaget kaller det da strategic: tilfeldigheten kommer fra andre agenter. Fasiten godtok deterministic, stochastic og strategic med god begrunnelse. Begrepet «strategic» står ikke i kap. 2 i 4. utgave, så med boka sier du helst multiagent (competitive) og stochastic.\n\n*Kilde: løsningsforslaget til eksamen 2021, oppgave 6 (2, 3 og 4).*"
+  },
+  {
+   "t": "Eksamen 2018, problem 3: sant eller usant (2 p, −1 for feil)",
+   "d": "PROBLEM 3 True/False Questions (2 points for each correct answer, -1 point for each wrong answer, 0 for each unanswered question. Total score between 0-20 points)\n\n*Merknad:* Ett av sant/usant-spørsmålene i problem 3.",
+   "tf": [
+    "5. Principal of rationality (due to Allen Newell) maintains that the agent chooses actions in order to achieve its goal using the knowledge it has the knowledge it might gather."
+   ],
+   "sjekk": {
+    "tf": [
+     "usant"
+    ],
+    "kilde": "2018Q&A.docx, Problem 3 (svarrekka F F F T F T F F T F, påstand 5)"
+   },
+   "fasit": "**5. Usant** (fasiten: F).\n\nNewells principle of rationality sier at hvis agenten *vet* at en av handlingene fører til et av målene, så velger den den handlingen. Det handler om kunnskapen agenten har, ikke om kunnskap den kunne samlet inn. Påstanden blander inn «the knowledge it might gather».\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 3 (svarrekka F F F T F T F F T F, påstand 5). Løsningsforslaget gir ingen begrunnelse.*"
+  },
+  {
+   "t": "Eksamen 2018, problem 8: Short questions",
+   "d": "**PROBLEM 8 SHORT QUESTIONS**\n\n1\\. In some environments randomized behaviour can be rational. Describe what type of environments and give an example.\n\n*Merknad:* Poeng er ikke oppgitt for dette spørsmålet.",
+   "f": [
+    [
+     "1. Type miljø og eksempel",
+     "area"
+    ]
+   ],
+   "fasit": "**Competitive multiagent environments.** Der kan en motstander utnytte deterministisk, forutsigbar oppførsel. Randomisering unngår «the pitfalls of predictability».\n\nEksempler: stein-saks-papir, der den eneste likevekten er å velge hver med sannsynlighet 1/3 (mixed strategy). Straffespark i fotball, der keeperen ikke skal kunne lese hvilket hjørne du velger. Bløff i poker.\n\nRandomisering kan også hjelpe en simple reflex agent i et partially observable single-agent miljø (støvsugeren uten lokasjonssensor kommer ut av løkka), men der gjør en smartere deterministisk agent det vanligvis bedre.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 8.1, og boka 2.3.2 og 2.4.2.*"
+  },
+  {
+   "t": "Eksamen 2017, problem 6: sant eller usant (2 p hver, −1 for feil)",
+   "d": "Problem 6 (20 points. Each question is 2 points. -1 for each wrong answer but the total points will not be negative.)\n\nTrue/False type of questions. Answer with either True(T) or False(F)\n\n*Merknad:* Fire av påstandene i problem 6.",
+   "tf": [
+    "a) Randomized behaviour may be rational in competitive multi-agent environments.",
+    "b) There exists a task environment in which every agent is rational.",
+    "c) Philosopher John Searle suggests that any physical symbol system has necessary and sufficient means for general intelligent action. True or False?",
+    "f) Backgammon is a fully observable, sequential, deterministic, static, discrete and multiagent environment. True or False?"
+   ],
+   "sjekk": {
+    "tf": [
+     "sant",
+     "sant",
+     "usant",
+     "usant"
+    ],
+    "kilde": "2017Q&A.docx, Problem 6"
+   },
+   "fasit": "- **a) Sant.** I competitive multiagent miljøer unngår randomisering at motstanderen utnytter at du er forutsigbar (stein-saks-papir).\n- **b) Sant.** Gir alle handlinger, også å gjøre ingenting, samme belønning, er hvert valg optimalt, og alle agenter er rasjonelle.\n- **c) Usant.** Physical symbol system hypothesis er fra Newell og Simon. Searle mente det motsatte: symbolmanipulasjon gir ikke forståelse (Chinese room).\n- **f) Usant.** Backgammon er stochastic på grunn av terningene, ikke deterministic. Resten stemmer med Fig. 2.6: fully, multi, sequential, static, discrete.\n\n*Kilde: løsningsforslaget til eksamen 2017, problem 6.*"
+  },
+  {
+   "t": "Eksamen 2016, task 1 (10 p): Task Environment",
+   "d": "Specify the task environment of the following four agents.\n\nNote 2020: Several students have pointed out that there sometimes exists reasonable alternative answers to questions about agent environments. On future exams these kinds of questions will be discussion questions where you will explain your answers and what assumptions you make.\n\nPossible answers:\n\nObservable: Fully (F) or partially (P).\\\nAgents: Single (S) or Multi (M)\\\nDeterministic: Deterministic (D) or stochastic (S).\\\nEpisodic: Episodic (E) or sequential (S)\\\nStatic: Static (S), semi (I) or dynamic (D)\\\nDiscrete: Discrete (D) or continuous (C)\n\n**Agent 1: Deep Blue**\\\nDeep Blue is a chess playing agent that played and won against Garry Kasparov in 1997. Consider one game against Garry using a clock.\n\n**Agent 2: Roomba**\\\nRoomba is a vacuum-cleaning robot that drives around and vacuums the floors in all the rooms of a home.\n\n**Agent 3: A Tesla factory paint-robot.**\\\nA paint robot on the Tesla factory paints one and one car. The cars are transported by a transport robot to and from the paint robot. The paint robot uses a spray-painting robot arm to paint the cars.\n\n**Agent 4: Stats Monkey the robot journalist**\\\nStats Monkey collects box scores and play-by-play data to spit out credible accounts of college baseball games while the games are being played.\n\nAnswer to be written down into answer sheet following the given table:\n\n| Task Environment | Observable P/F | Agents S/M | Deterministic D/S | Episodic E/S | Static S/D/I | Discrete D/C |\n|---|---|---|---|---|---|---|\n| Deep Blue | | | | | | |\n| Roomba | | | | | | |\n| Paint robot | | | | | | |\n| Stats Monkey | | | | | | |",
+   "f": [
+    [
+     "Deep Blue",
+     "text",
+     "Observable P/F, Agents S/M, Deterministic D/S, Episodic E/S, Static S/I/D, Discrete D/C, med antakelser"
+    ],
+    [
+     "Roomba",
+     "text",
+     "Observable P/F, Agents S/M, Deterministic D/S, Episodic E/S, Static S/I/D, Discrete D/C, med antakelser"
+    ],
+    [
+     "Tesla-lakkroboten",
+     "text",
+     "Observable P/F, Agents S/M, Deterministic D/S, Episodic E/S, Static S/I/D, Discrete D/C, med antakelser"
+    ],
+    [
+     "Stats Monkey",
+     "text",
+     "Observable P/F, Agents S/M, Deterministic D/S, Episodic E/S, Static S/I/D, Discrete D/C, med antakelser"
+    ]
+   ],
+   "fasit": "**Løsningsforslaget:**\n\n| Task environment | Observable | Agents | Deterministic | Episodic | Static | Discrete |\n|---|---|---|---|---|---|---|\n| Deep Blue | F | M | D | S | I | D |\n| Roomba | P | S | S | S | D | C |\n| Paint robot | P | M | S | S | S | C |\n| Stats Monkey | P | S | D | S | I | C |\n\n**Begrunnelse og antakelser:**\n\n- **Deep Blue (F, M, D, S, I, D):** som chess with a clock i Fig. 2.6. Hele brettet er synlig, Kasparov er motspiller (competitive), trekkene har sikre utfall, hvert trekk påvirker resten av partiet, brettet står stille, men klokka går (semi), og det finnes endelig mange stillinger og trekk.\n- **Roomba (P, S, S, S, D, C):** den ser bare nærområdet. Mennesker og dyr regnes som en del av miljøet, så single. Hjulene kan skli og ny skitt dukker opp (stochastic). Der den har vasket, avgjør hva som gjenstår (sequential). Folk og kjæledyr flytter seg (dynamic), og posisjon og bevegelse er kontinuerlige.\n- **Paint robot (P, M, S, S, S, C):** den ser ikke alt, for eksempel små feil i lakken. Transportroboten er en annen agent (cooperative), så multi. Sprøytingen har usikkert resultat (stochastic). Hvert strøk bygger på det forrige (sequential), men episodic kan forsvares fordi hver bil er en egen episode, som part-picking robot i Fig. 2.6. Bilen står stille mens den lakkeres (static). Armposisjon og malingsmengde er kontinuerlige.\n- **Stats Monkey (P, S, D, S, I, C):** den ser bare dataene den får, ikke selve kampen. Ingen andre agenter påvirker dens performance (single), og å lage tekst fra data er deterministic. Teksten bygger på det som har skjedd tidligere i kampen (sequential). Kampen går videre mens den skriver. Fasiten sier semi, men dynamic kan forsvares. Fasiten sier continuous, men box scores, play-by-play og tekst er diskrete, så discrete er minst like godt begrunnet.\n\nMerknaden fra 2020 sier at begrunnede alternativer godtas. Skriv antakelsen din når svaret kan gå begge veier.\n\n*Kilde: løsningsforslaget til eksamen 2016, task 1.*"
+  },
+  {
+   "t": "Eksamen 2015, problem 1: sant eller usant (2 p)",
+   "d": "Problem 1(20 pts, 2pts each question)\n\nAnswer the following questions with TRUE or FALSE.\n\n*Merknad:* Ett av spørsmålene i problem 1.",
+   "tf": [
+    "i) An agent must think like a human in order to pass the Turing test.."
+   ],
+   "sjekk": {
+    "tf": [
+     "usant"
+    ],
+    "kilde": "2015Q&A.docx, Problem 1"
+   },
+   "fasit": "**Usant.** Turing-testen måler oppførsel (acting humanly). Maskinen består hvis utspørreren ikke kan skille den fra et menneske i en skriftlig samtale. Hvordan den tenker inni, betyr ingenting for testen. Å tenke som et menneske er en annen tilnærming (thinking humanly, cognitive modeling).\n\n*Kilde: løsningsforslaget til eksamen 2015, problem 1 i.*"
+  },
+  {
+   "t": "Eksamen 2015, problem 6 c (2 p): Dartmouth",
+   "d": "Problem 6(10 pts, 2 pts each question)\n\nChoose the correct answers (one for each question) to the questions below.\n\nc) Which of the following researchers did not participate in the Dartmouth conference where the name \"artificial intelligence\" was coined?\n\n- A. John McCarthy\n- B. Marvin Minsky\n- C. Herbert Simon\n- D. Allen Newell\n- E. Alan Turing",
+   "f": [
+    [
+     "Svar",
+     "text",
+     "bokstav"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Svar": [
+      "E",
+      "Alan Turing",
+      "Turing"
+     ]
+    },
+    "kilde": "2015Q&A.docx, Problem 6 c"
+   },
+   "fasit": "**E. Alan Turing.** Turing døde i 1954, to år før Dartmouth-møtet sommeren 1956. McCarthy, som laget navnet «artificial intelligence», var med sammen med Minsky, Newell og Simon (og blant andre Shannon og Rochester).\n\n*Kilde: løsningsforslaget til eksamen 2015, problem 6 c.*"
+  }
+ ]
+}

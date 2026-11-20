@@ -1,0 +1,588 @@
+1
+00:00:00,450 --> 00:00:05,250
+En sjakkmaskin regner en million stillinger i sekundet. Sjakk har rundt
+
+2
+00:00:05,250 --> 00:00:10,290
+trettifem trekk per stilling, så fem halvtrekk fram er over femti millioner
+
+3
+00:00:10,290 --> 00:00:15,330
+stillinger, nesten et minutt. Ifølge boka kan en helt vanlig sjakkspiller slå
+
+4
+00:00:15,330 --> 00:00:20,130
+den. Likevel slår maskiner i dag alle mennesker. Hva er trikset?
+
+5
+00:00:21,483 --> 00:00:27,363
+Minimax fra episode åtte krever at du når bunnen av treet. For dypt? Gjett med
+
+6
+00:00:27,363 --> 00:00:33,643
+en evaluering. For bredt? Spill tilfeldige partier. Terninger? Bruk forventet
+
+7
+00:00:33,643 --> 00:00:40,043
+verdi. Skjulte brikker? Tenk i mulige brett. Det er seksjon seks punkt tre til
+
+8
+00:00:40,043 --> 00:00:45,083
+seks punkt sju, i den amerikanske utgaven fem punkt tre til fem punkt sju.
+
+9
+00:00:46,450 --> 00:00:49,170
+Hva gjør du når du ikke rekker ned til bladene?
+
+10
+00:00:50,950 --> 00:00:56,870
+Repetisjon: minimax fyller inn verdier nedenfra. Nå trekker du en strek ved en
+
+11
+00:00:56,870 --> 00:01:02,150
+fast dybde. Der gjetter en evalueringsfunksjon verdien, og minimax går opp som
+
+12
+00:01:02,150 --> 00:01:09,190
+før. Terminaltesten blir en cutoff test, og utility blir eval. Hvor dypt? Bruk
+
+13
+00:01:09,190 --> 00:01:13,670
+iterative deepening, og spill trekket fra det dypeste søket du rakk.
+
+14
+00:01:14,950 --> 00:01:21,630
+Hvordan gjetter du? Tell brikker. Boka gir bonden én, springer og løper tre,
+
+15
+00:01:21,630 --> 00:01:28,230
+tårn fem og dronning ni. Hver feature er en forskjell: hvit har ett tårn mer, én
+
+16
+00:01:28,230 --> 00:01:36,150
+løper mindre og én bonde mer. Fem, minus tre, pluss én: hvit er tre foran. Dette
+
+17
+00:01:36,150 --> 00:01:41,470
+er en weighted linear function. Foreleser brukte andre vekter og flere features.
+
+18
+00:01:41,470 --> 00:01:43,350
+Begge er bare eksempler.
+
+19
+00:01:44,717 --> 00:01:51,117
+Hva gjør en eval god? Ferdige stillinger får ekte utility, de andre et tall
+
+20
+00:01:51,117 --> 00:01:55,997
+mellom tap og seier. Den må være rask, og henge sterkt sammen med sjansen for å
+
+21
+00:01:55,997 --> 00:01:58,957
+vinne. Samme idé som h i A-stjerne.
+
+22
+00:02:00,317 --> 00:02:06,477
+En fast dybde kan lure deg. I denne stillingen fra boka er svart en springer og
+
+23
+00:02:06,477 --> 00:02:12,317
+to bønder foran. Eval sier minus fem for hvit. Men neste trekk slår hvit
+
+24
+00:02:12,317 --> 00:02:17,877
+dronningen, og står fire foran. Evaluer derfor bare rolige stillinger. Er et
+
+25
+00:02:17,877 --> 00:02:23,037
+slag på vei, søker du videre med slagtrekk. Det er quiescence search.
+
+26
+00:02:24,417 --> 00:02:30,924
+Svart søker åtte ply, altså halvtrekk. Svarts løper er dømt: hvitt tårn slår den
+
+27
+00:02:30,924 --> 00:02:35,937
+på halvtrekk seks, og søket ser det. Men svart kan ofre en bonde med sjakk, og
+
+28
+00:02:35,937 --> 00:02:41,257
+så en til. Hvert offer koster to halvtrekk, så slaget skyves til ti, bak
+
+29
+00:02:41,257 --> 00:02:47,137
+horisonten. Søket tror løperen er reddet, men svart mister to bønder og løperen.
+
+30
+00:02:47,137 --> 00:02:48,977
+Det er horizon effect.
+
+31
+00:02:50,350 --> 00:02:55,710
+Alpha-beta kutter bare det som beviselig ikke endrer svaret. Forward pruning
+
+32
+00:02:55,710 --> 00:03:00,350
+kutter også trekk som bare ser dårlige ut. Beam search beholder de beste
+
+33
+00:03:00,350 --> 00:03:06,110
+trekkene etter eval, men det beste kan bli kastet. ProbCut anslår med et grunt
+
+34
+00:03:06,110 --> 00:03:10,310
+søk og erfaring hvor sannsynlig det er at verdien havner utenfor
+
+35
+00:03:10,310 --> 00:03:13,870
+alfa-beta-vinduet, og kutter hvis det er sannsynlig.
+
+36
+00:03:15,250 --> 00:03:25,130
+Din tur. Hvilken kan gi et annet trekk enn ren minimax på samme dybde?
+
+37
+00:03:25,130 --> 00:03:30,370
+Forward pruning. Alpha-beta gir alltid samme svar. Forward pruning tar en
+
+38
+00:03:30,370 --> 00:03:31,330
+sjanse.
+
+39
+00:03:32,683 --> 00:03:39,243
+Foreleser spurte: bør du søke på første trekk i sjakk? Nei. Programmet slår opp
+
+40
+00:03:39,243 --> 00:03:44,683
+i en opening book de første ti, femten trekkene. Sluttspill løses baklengs fra
+
+41
+00:03:44,683 --> 00:03:50,363
+stillinger som er vunnet, med reglene i revers. Det er retrograde analysis, og
+
+42
+00:03:50,363 --> 00:03:56,523
+alle sluttspill med høyst sju brikker er løst slik. Ta med deg: gjett bare der
+
+43
+00:03:56,523 --> 00:03:59,883
+stillingen er rolig og svaret ikke kan slås opp.
+
+44
+00:04:01,250 --> 00:04:05,090
+Og når treet er for bredt, og ingen god eval finnes?
+
+45
+00:04:06,850 --> 00:04:12,290
+Go har tre hundre og sekstien trekk i starten, så alpha-beta når bare fire, fem
+
+46
+00:04:12,290 --> 00:04:17,837
+trekk dypt. Og en god eval er vanskelig å lage. Så spill partiet ferdig mange
+
+47
+00:04:17,837 --> 00:04:22,810
+ganger, med tilfeldige trekk, og bruk vinnerandelen som verdi. Et slikt parti
+
+48
+00:04:22,810 --> 00:04:26,530
+heter en playout. Metoden heter Monte Carlo.
+
+49
+00:04:27,883 --> 00:04:33,323
+Monte Carlo tree search bygger et tre underveis. Hver node viser seire over
+
+50
+00:04:33,323 --> 00:04:39,603
+playouts for den som valgte den. Fire faser. Selection: gå fra roten ned til et
+
+51
+00:04:39,603 --> 00:04:46,203
+blad. Expansion: legg til ett nytt barn. Simulation: spill ett parti til slutten.
+
+52
+00:04:46,203 --> 00:04:52,123
+Svart vinner. Back-propagation: svarts noder får en seier og en playout, hvite
+
+53
+00:04:52,123 --> 00:04:53,563
+bare en playout.
+
+54
+00:04:54,917 --> 00:05:02,757
+Hvordan velger selection? Med UCB1. Første ledd er snittet, exploitation. Andre
+
+55
+00:05:02,757 --> 00:05:09,157
+ledd er stort når noden er lite prøvd, exploration. C balanserer, og foreleser
+
+56
+00:05:09,157 --> 00:05:14,837
+brukte kvadratroten av to. På roten gir seksti av syttini null komma sju seks
+
+57
+00:05:14,837 --> 00:05:20,837
+pluss null komma tre fire. Én av ti får bare null komma én, men stor bonus. To
+
+58
+00:05:20,837 --> 00:05:25,397
+av elleve likeså. Seksti av syttini vinner, knepent.
+
+59
+00:05:26,750 --> 00:05:33,750
+Med C lik én komma fem snur det: to av elleve velges. Høy C gir mer exploration.
+
+60
+00:05:33,750 --> 00:05:38,310
+Formelen brukes på hvert nivå, og med kvadratroten av to gir den akkurat stien i
+
+61
+00:05:38,310 --> 00:05:39,630
+bokas figur.
+
+62
+00:05:40,983 --> 00:05:47,303
+Din tur. Tiden er ute. Spiller du barnet med sekstifem av hundre, eller to av
+
+63
+00:05:47,303 --> 00:05:52,383
+tre?
+
+64
+00:05:52,383 --> 00:05:59,703
+Sekstifem av hundre. MCTS returnerer trekket med flest playouts, for tre partier
+
+65
+00:05:59,703 --> 00:06:01,543
+er for lite å stole på.
+
+66
+00:06:02,917 --> 00:06:08,157
+Helt tilfeldige playouts svarer på hva som er best hvis begge spiller tilfeldig.
+
+67
+00:06:08,157 --> 00:06:13,237
+Derfor brukes en playout policy som drar mot gode trekk, lært ved self-play
+
+68
+00:06:13,237 --> 00:06:18,837
+eller som en tommelfingerregel. Og en playout er billig: den er lineær i dybden.
+
+69
+00:06:20,217 --> 00:06:27,497
+Når slår MCTS alpha-beta? Når forgreningen er stor, eller evalueringen er dårlig.
+
+70
+00:06:27,497 --> 00:06:33,257
+I bokas tre velger minimax høyre, hundre mot nittini. Men har hver eval en
+
+71
+00:06:33,257 --> 00:06:38,057
+tilfeldig feil med standardavvik fem, er venstre bedre i syttien prosent av
+
+72
+00:06:38,057 --> 00:06:45,177
+tilfellene. Alpha-beta stoler på hvert blad. MCTS tar snitt av mange playouts.
+
+73
+00:06:45,177 --> 00:06:49,097
+Svakheten: ett avgjørende trekk kan bli oversett.
+
+74
+00:06:50,383 --> 00:06:57,103
+Boka nevner flere grenser: søket tenker i enkelttrekk, ikke i mål. AlphaZero
+
+75
+00:06:57,103 --> 00:07:03,503
+kombinerer det hele. Et value network erstatter playouts: en lært eval. Et
+
+76
+00:07:03,503 --> 00:07:09,743
+policy network styrer selection mot gode trekk. Begge trenes ved self-play. Ta
+
+77
+00:07:09,743 --> 00:07:16,783
+med deg: MCTS bytter eval mot statistikk, og UCB1 velger hvor den samles.
+
+78
+00:07:18,150 --> 00:07:21,510
+Hva gjør du når en terning avgjør hva som kan skje?
+
+79
+00:07:23,283 --> 00:07:29,283
+Husker du bøttespillet? Du velger bøtte, motstanderen et tall. Minimax antar det
+
+80
+00:07:29,283 --> 00:07:34,883
+verste og velger B, med verdi én. Men velger motstanderen på måfå, blir den en
+
+81
+00:07:34,883 --> 00:07:42,723
+chance node som tar snittet. A gir null, B to, C fem. Nå velger du C. Dette er
+
+82
+00:07:42,723 --> 00:07:47,563
+expectimax fra forelesningene. Navnet står ikke i kapittel seks, men det er
+
+83
+00:07:47,563 --> 00:07:48,723
+forelest.
+
+84
+00:07:50,017 --> 00:07:55,137
+Nå kastes en mynt etter valget ditt. Kron flytter deg én bøtte til venstre, og
+
+85
+00:07:55,137 --> 00:08:03,457
+fra A rundt til C. Motstanderen minimerer: A gir minus femti, B én, C minus fem.
+
+86
+00:08:03,457 --> 00:08:08,977
+Velger du A: halvparten av minus femti og halvparten av minus fem, minus tjuesju
+
+87
+00:08:08,977 --> 00:08:16,857
+komma fem. B gir minus tjuefire komma fem. C gir minus to. Max velger C. Max,
+
+88
+00:08:16,857 --> 00:08:20,417
+min og sjanse i samme tre: expectiminimax.
+
+89
+00:08:21,783 --> 00:08:30,343
+Her er en felle. Bladene har verdiene én, to, tre og fire. A1 gir to komma én,
+
+90
+00:08:30,343 --> 00:08:38,663
+a2 én komma tre: du velger a1. Bytt til én, tjue, tretti og fire hundre. Samme
+
+91
+00:08:38,663 --> 00:08:45,543
+rekkefølge, men nå gir a1 tjueén og a2 førti komma ni. Valget snur! I
+
+92
+00:08:45,543 --> 00:08:50,423
+sjansespill må eval være en positiv lineær transformasjon av vinnersjansen,
+
+93
+00:08:50,423 --> 00:08:52,903
+eller av forventet utility.
+
+94
+00:08:54,283 --> 00:09:05,123
+Din tur. Hver bladverdi x byttes med to x pluss ti. Hvilket trekk velges?
+
+95
+00:09:05,123 --> 00:09:11,483
+Fortsatt a1. Lineært bevarer snittet: fjorten komma to mot tolv komma seks.
+
+96
+00:09:12,850 --> 00:09:18,930
+I backgammon gir to terninger tjueén ulike kast. Hvert sjansenivå ganger treet
+
+97
+00:09:18,930 --> 00:09:24,930
+med antall kast, så tiden blir b opphøyd i m ganger n opphøyd i m, og du rekker
+
+98
+00:09:24,930 --> 00:09:33,090
+rundt tre ply. Forelesningens utvei: MCTS med terningkast i playoutene. Ta med
+
+99
+00:09:33,090 --> 00:09:38,930
+deg: med sjansenoder betyr størrelsen på tallene noe, ikke bare rekkefølgen.
+
+100
+00:09:40,283 --> 00:09:43,563
+Hva gjør du når du ikke ser motstanderens brikker?
+
+101
+00:09:45,317 --> 00:09:51,637
+I Kriegspiel ser du bare dine egne brikker. En dommer ser alt. Foreslår du et
+
+102
+00:09:51,637 --> 00:09:57,237
+ulovlig trekk, sier dommeren «illegal», og du lærer noe. Dommeren melder også
+
+103
+00:09:57,237 --> 00:10:02,597
+slag og sjakk. Alle brett som fortsatt er mulige, er din belief state, som i
+
+104
+00:10:02,597 --> 00:10:06,837
+kapittel fire. Etter ett trekk hver er de allerede tjue.
+
+105
+00:10:08,117 --> 00:10:12,877
+En guaranteed checkmate virker på hvert brett i belief state, uansett hva
+
+106
+00:10:12,877 --> 00:10:18,117
+motstanderen gjør. I bokas eksempel står svart konge ett av tre steder, og
+
+107
+00:10:18,117 --> 00:10:24,597
+prøvetrekk snevrer det inn. Slike strategier finner AND-OR-søk. En probabilistic
+
+108
+00:10:24,597 --> 00:10:28,917
+checkmate virker også på alle brettene, men du trekker tilfeldig selv, og kan
+
+109
+00:10:28,917 --> 00:10:30,997
+vinne med sannsynlighet én.
+
+110
+00:10:32,283 --> 00:10:38,363
+Kortspill er skjult tilfeldighet. Fristende: regn hver utdeling som om du ser
+
+111
+00:10:38,363 --> 00:10:45,123
+alle kort, og ta snittet. Det heter averaging over clairvoyance. I boka: vei A
+
+112
+00:10:45,123 --> 00:10:51,483
+gir én gullkrukke, vei B et veiskille. Dag én gir venstre to krukker, høyre en
+
+113
+00:10:51,483 --> 00:10:56,203
+buss. Dag to er det motsatt. Dag tre vet du ikke hvilken som er hvilken, men
+
+114
+00:10:56,203 --> 00:11:01,283
+metoden sier B. Den tror du vet svaret ved veiskillet. Derfor samler den aldri
+
+115
+00:11:01,283 --> 00:11:03,163
+informasjon, og bløffer aldri.
+
+116
+00:11:04,450 --> 00:11:11,250
+I stein, saks, papir velger begge samtidig. Foreleser viste regret minimization.
+
+117
+00:11:11,250 --> 00:11:16,290
+Regret er hva hvert trekk ville gitt, minus det du fikk. Du spilte stein mot
+
+118
+00:11:16,290 --> 00:11:23,170
+papir og fikk minus én. Stein, papir og saks ville gitt minus én, null og én.
+
+119
+00:11:23,170 --> 00:11:27,490
+Regret blir null, én og to, og summeres over rundene.
+
+120
+00:11:28,850 --> 00:11:35,810
+Regret matching: sett negative tall til null og del på summen. Null, én, to blir
+
+121
+00:11:35,810 --> 00:11:43,130
+null, en tredjedel, to tredjedeler. Din tur. Neste runde: du saks, motstanderen
+
+122
+00:11:43,130 --> 00:11:52,210
+stein. Ny summert regret og strategi?
+
+123
+00:11:52,210 --> 00:11:59,570
+Du fikk minus én. Regret blir én, to og null. Summen blir én, tre, to, og
+
+124
+00:11:59,570 --> 00:12:03,410
+strategien en sjettedel, en halv og en tredjedel.
+
+125
+00:12:04,783 --> 00:12:09,903
+Spiller motstanderen papir halve tiden og stein og saks en firedel hver, ender
+
+126
+00:12:09,903 --> 00:12:15,423
+du på ren saks, med forventet gevinst null komma to fem. Lærer begge, går
+
+127
+00:12:15,423 --> 00:12:21,023
+gjennomsnittet av sannsynlighetene mot Nash-likevekten, en tredjedel på hvert.
+
+128
+00:12:21,023 --> 00:12:25,663
+Ta med deg: med skjult informasjon er litt tilfeldighet optimalt.
+
+129
+00:12:27,017 --> 00:12:29,657
+Klarer du en ekte eksamensoppgave?
+
+130
+00:12:31,417 --> 00:12:38,350
+Eksamen tjuetjuetre, oppgave seks. En fagforening krever seks eller ti prosent.
+
+131
+00:12:38,350 --> 00:12:43,937
+Ved seks byr bedriften tre eller fire med femti prosent sjanse, ellers fem eller
+
+132
+00:12:43,937 --> 00:12:50,137
+seks. Ved ti byr den to eller fire med tjuefem prosent sjanse, ellers åtte eller
+
+133
+00:12:50,137 --> 00:13:04,697
+ti. Fagforeningen er MAX, bedriften MIN. Stopp videoen og regn.
+
+134
+00:13:05,983 --> 00:13:13,823
+Nederst minimerer bedriften: tre, fem, to og åtte. B er null komma fem ganger
+
+135
+00:13:13,823 --> 00:13:20,383
+tre pluss null komma fem ganger fem: fire. C er en fjerdedel ganger to pluss tre
+
+136
+00:13:20,383 --> 00:13:26,623
+fjerdedeler ganger åtte: seks komma fem. A tar max: seks komma fem. Krev ti
+
+137
+00:13:26,623 --> 00:13:31,983
+prosent. Min før sjanse, og vis alle mellomverdiene, slik fasiten gjør.
+
+138
+00:13:33,350 --> 00:13:35,590
+Hvor møter du disse ideene igjen?
+
+139
+00:13:37,350 --> 00:13:43,350
+Alt bygger på minimax og alpha-beta, episode åtte. Eval er heuristikken fra
+
+140
+00:13:43,350 --> 00:13:49,110
+A-stjerne i episode tre, og beam search derfra er forward pruning. Belief states
+
+141
+00:13:49,110 --> 00:13:54,870
+og AND-OR kommer fra kapittel fire, episode fem. Nash og blandede strategier er
+
+142
+00:13:54,870 --> 00:13:59,750
+seksjon sytten punkt to, atten punkt to i den amerikanske, episode ti.
+
+143
+00:14:01,050 --> 00:14:07,810
+Hele kjeden: For dypt? Stopp, og evaluer bare rolige stillinger. For bredt?
+
+144
+00:14:07,810 --> 00:14:15,530
+Playouts, og UCB1 velger hvor. Terninger? Vektet snitt, med lineær eval. Skjult?
+
+145
+00:14:15,530 --> 00:14:21,330
+Belief states og regret. Og sjakkmaskinen? Alpha-beta, en finjustert eval og
+
+146
+00:14:21,330 --> 00:14:26,570
+sluttspilltabeller gjør den til stormester. Hvis du bare husker én ting: når du
+
+147
+00:14:26,570 --> 00:14:29,370
+ikke kan regne til slutten, avgjør gjettet ditt.
+

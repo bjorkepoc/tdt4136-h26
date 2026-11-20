@@ -1,0 +1,157 @@
+{
+ "tasks": [
+  {
+   "t": "Eksamen 2025, oppgave 11 (5 p): HLA og sensorless planning",
+   "d": "**11 Automated Planning**\n\na) What is a High-Level Action (HLA) in hierarchical planning, and what does it mean for a refinement to be an implementation of an HLA? (2 pts.)\n\nb) Describe briefly classical planning and sensorless planning and highlight the main differences between them. (3 pts.)",
+   "f": [
+    [
+     "a) Hva er en high-level action (HLA) i hierarkisk planlegging, og hva betyr det at en refinement er en implementation av en HLA? (2 p)",
+     "area"
+    ],
+    [
+     "b) Beskriv kort klassisk planlegging og sensorless planning, og få fram de viktigste forskjellene mellom dem. (3 p)",
+     "area"
+    ]
+   ],
+   "fasit": "**a) En high-level action (HLA) er en abstrakt handling for en større oppgave på et høyere abstraksjonsnivå, og en refinement er en implementation av HLA-en når den bare består av primitive handlinger.**\n\nEn HLA, for eksempel Go(Home, SFO), kan ikke utføres direkte, men må brytes ned. Hver HLA har én eller flere **refinements**: sekvenser av handlinger som utfører den, og som selv kan være HLA-er eller primitive handlinger. Eksempler er [Taxi(Home, SFO)] og [Drive(Home, SFOLongTermParking), Shuttle(SFOLongTermParking, SFO)]. En refinement er en **implementation** når alle handlingene er primitive, slik at agenten kan utføre sekvensen direkte. En høynivåplan når målet hvis minst én av implementasjonene gjør det, fordi agenten selv velger refinement.\n\n**b) Klassisk planlegging antar et discrete, deterministic, static og fully observable miljø. Sensorless (conformant) planning antar at agenten ikke får noen observasjoner under utførelsen.**\n\nI klassisk planlegging kjenner agenten starttilstanden. En tilstand er en mengde ground fluents med closed world assumption, og planen er en fast sekvens funnet ved søk i tilstandsrommet.\n\nI sensorless planning kjenner agenten ikke starttilstanden helt og kan ikke se hva som skjer, så den må finne én plan som virker i alle mulige tilstander. Den holder en belief state, skrevet som en formel. Generelt er b′ = {RESULT(s, a) : s ∈ b}, altså etterfølgerne til alle tilstandene agenten kan være i. Når b er en konjunksjon av literaler (1-CNF), blir hvert atom i DEL(a) kjent usant (¬ℓ legges inn) og hvert atom i ADD(a) kjent sant. Boka skriver det som b′ = (b − DEL(a)) ∪ ADD(a), men å bare fjerne ℓ ville gjort atomet ukjent. Et fluent som ikke står i b, er ukjent, ikke usant (open world). Eksempel: i malingsproblemet kjenner agenten ikke fargen på boksene, men [RemoveLid(Can1), Paint(Chair, Can1), Paint(Table, Can1)] gir stol og bord samme farge uansett.\n\n| | Klassisk | Sensorless |\n|---|---|---|\n| Observerbarhet | full | ingen observasjoner |\n| Verdensmodell | closed world | open world |\n| Søkerom | tilstander (state space) | belief states (belief space) |\n\nVanlig feil: å blande open og closed world. I sensorless planning betyr «ikke nevnt» ukjent; i klassisk planlegging betyr det usant.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 11.*"
+  },
+  {
+   "t": "Eksamen 2024, Q2 (4 p): hvilket utsagn er usant?",
+   "d": "**2 Miscellaneous - Mixture of Chapters**\n\n**Which of the following sentences is FALSE?**\n\n**Select one alternative:**\n\n- A. In nondeterministic environments agent can apply AND-OR search to generate adversive plans\n- B. Consider that our simple vacuum cleaner has a suction mechanism that doesn’t suck properly. This is then a fully observable and nondeterministic environment\n- C. “Proof by refutation” can also be called proof by contradiction\n- D. A sentence is “satisfiable” if it is true in some models\n- E. Generalized Modus Ponens is complete for definite clauses\n- F. When the environment is partially observable, the belief state represents the set of possible states that the agent might be in.\n- G. Agent functions map the percepts to actions\n\nMaximum marks: 4",
+   "f": [
+    [
+     "Usant utsagn (bokstav)",
+     "text"
+    ],
+    [
+     "Hva er galt med det utsagnet? Rett det opp.",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Usant utsagn (bokstav)": [
+      "A",
+      "B"
+     ]
+    },
+    "merk": "Fasiten 2024 godtok både A og B. A er usann fordi AND-OR search gir contingency plans, ikke «adversive plans». B ble også godtatt fordi «our» vacuum cleaner kunne leses som agenten uten lokasjonssensor i Q1, og da er miljøet partially observable.",
+    "kilde": "2024Q&A.docx, Q2 – Mixture of chapters"
+   },
+   "fasit": "**A.** Løsningsforslaget godtok også B.\n\n**Hva er galt:** AND-OR search i ikke-deterministiske miljøer gir *contingency plans* (betingede planer med if–then-grener), ikke «adversive plans». Rettet: «In nondeterministic environments the agent can apply AND-OR search to generate contingency plans.»\n\n- B ble godtatt fordi noen leste «our» vacuum cleaner som agenten fra Q1 (dirt sensor, men ingen location sensor). Da er miljøet partially observable, ikke fully observable. Med vanlig lesning (full sensing, og Suck som ikke alltid virker) er B sann.\n- C, D, E og F er sanne: proof by refutation er proof by contradiction, satisfiable betyr sann i minst én modell, GMP er komplett for definite clauses, og belief state er mengden mulige tilstander.\n- G er ment som sann, men presist mapper agentfunksjonen *percept sequences* til handlinger.\n\n*Kilde: løsningsforslaget til eksamen 2024, Q2.*"
+  },
+  {
+   "t": "Egenlaget: hvor mye sparer hierarkiet?",
+   "d": "Anta en helt regelmessig struktur: hver HLA har r = 5 refinements, hver med k = 3 handlinger på nivået under, og løsningen har d = 27 primitive handlinger.",
+   "f": [
+    [
+     "a) Hvor mange indre noder har nedbrytingstreet?",
+     "text"
+    ],
+    [
+     "b) Hvor mange mulige nedbrytingstrær finnes? Sammenlign med et flatt søk med b = 5.",
+     "text",
+     "HTN: … · flatt søk: …"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Hvor mange indre noder har nedbrytingstreet?": [
+      "13"
+     ]
+    },
+    "merk": "log₃ 27 = 3 nivåer under roten, så 1 + 3 + 9 = 13 indre noder.",
+    "kilde": "videoer/notater/e19-planlegging-2.md, Fasit 3"
+   },
+   "fasit": "**a) 13** indre noder. **b) HTN: 5¹³ ≈ 1,2 · 10⁹ nedbrytingstrær · flatt søk: 5²⁷ ≈ 7,5 · 10¹⁸**\n\n- Hver HLA har k = 3 handlinger under seg, så treet har log₃ 27 = 3 nivåer under roten.\n- Indre noder: 1 + 3 + 9 = 13 = (d − 1)/(k − 1) = 26/2. De 27 bladene er de primitive handlingene.\n- Hver indre node har r = 5 refinements å velge mellom, så det finnes r^((d − 1)/(k − 1)) = 5¹³ = 1 220 703 125 mulige nedbrytingstrær.\n- Et flatt søk med b = 5 over d = 27 steg koster O(bᵈ) = 5²⁷ ≈ 7,45 · 10¹⁸.\n- Hierarkiet sparer en faktor 5¹⁴ ≈ 6 · 10⁹. Gevinsten er størst med få refinements (liten r) og lange refinements (stor k). Boka advarer selv om at så regelmessige, gjenbrukbare strukturer er sjeldne i praksis.\n\n*Kilde: notatet til E19, Fasit Øv selv 3.*"
+  },
+  {
+   "t": "Egenlaget: HIERARCHICAL-SEARCH med byttet rekkefølge",
+   "d": "Hierarkiet fra videoen (etter bokas Hawaii-eksempel):\n\n- Act har én refinement: [Go(Home, SFO), Fly(SFO, HNL)].\n- Go(Home, SFO) har to refinements, nå i denne rekkefølgen: først [Taxi(Home, SFO)], så [Drive(Home, SFOLongTermParking), Shuttle(SFOLongTermParking, SFO)].\n- Drive krever at agenten har bil. Taxi, Shuttle og Fly kan alltid utføres.\n- Start: At(Home), og agenten har bil. Mål: At(HNL).\n\nSøket er HIERARCHICAL-SEARCH (fig. 11.8) med FIFO-kø. Hvilken plan returneres, og hvorfor?",
+   "f": [
+    [
+     "Plan",
+     "text"
+    ],
+    [
+     "Begrunnelse",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Plan": [
+      "Taxi Fly",
+      "Taxi(Home, SFO), Fly(SFO, HNL)"
+     ]
+    },
+    "merk": "[Taxi, Fly] ligger først i FIFO-køen etter at Go er brutt ned, er primitiv og består måltesten.",
+    "kilde": "videoer/notater/e19-planlegging-2.md, Fasit 4"
+   },
+   "fasit": "**Plan: [Taxi(Home, SFO), Fly(SFO, HNL)]**\n\n| Steg | POP | Første HLA | Hva skjer | Frontier etterpå |\n|---|---|---|---|---|\n| 0 | – | – | start | [Act] |\n| 1 | [Act] | Act | én refinement | [Go, Fly] |\n| 2 | [Go, Fly] | Go | to refinements, prefix [ ], suffix [Fly] | [Taxi, Fly], [Drive, Shuttle, Fly] |\n| 3 | [Taxi, Fly] | ingen | primitiv; outcome At(HNL), IS-GOAL sann: **return** | [Drive, Shuttle, Fly] (tas aldri ut) |\n\n**Begrunnelse:** HIERARCHICAL-SEARCH (fig. 11.8) er bredde-først søk over refinements med FIFO-kø. Når Go brytes ned, legges én plan per refinement bakerst i køen, i den rekkefølgen biblioteket gir dem, og nå kommer [Taxi] først. Begge planene ligger to nedbrytninger ned, så [Taxi, Fly] tas ut først. Den har ingen HLA igjen og er derfor en implementation. Taxi og Fly kan utføres fra At(Home), og outcome At(HNL) består måltesten, så planen returneres. At agenten har bil, spiller ingen rolle, for [Drive, Shuttle, Fly] blir aldri tatt ut. Med den opprinnelige rekkefølgen ville [Drive, Shuttle, Fly] vunnet.\n\nVanlig feil: å tro at søket finner den korteste planen. Det finner den første primitive planen som når målet, blant planene med færrest nedbrytninger.\n\n*Kilde: notatet til E19, Fasit Øv selv 4.*"
+  },
+  {
+   "t": "Egenlaget: sensorless støvsuger med conditional effects",
+   "d": "Støvsugerverdenen har to ruter, L og R, og fluents AtL, AtR, CleanL og CleanR. Left flytter roboten til L, og Right flytter den til R. Suck har conditional effects:\n\n```\nAction(Suck, EFFECT: when AtL: CleanL ∧ when AtR: CleanR)\n```\n\nRoboten har ingen sensorer og starter i belief staten True. Den utfører [Left, Suck, Right, Suck]. Skriv belief staten som formel etter hvert steg. Det holder å skrive literalene som er kjent sanne.",
+   "f": [
+    [
+     "1. Etter Left",
+     "text"
+    ],
+    [
+     "2. Etter Suck",
+     "text"
+    ],
+    [
+     "3. Etter Right",
+     "text"
+    ],
+    [
+     "4. Etter Suck",
+     "text"
+    ],
+    [
+     "Hvorfor holder formelen seg i 1-CNF, selv om Suck har conditional effects?",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "1. Etter Left": [
+      "{AtL}"
+     ],
+     "2. Etter Suck": [
+      "{AtL ∧ CleanL}",
+      "{AtL, CleanL}"
+     ],
+     "3. Etter Right": [
+      "{AtR ∧ CleanL}",
+      "{AtR, CleanL}"
+     ],
+     "4. Etter Suck": [
+      "{AtR ∧ CleanL ∧ CleanR}",
+      "{AtR, CleanL, CleanR}"
+     ]
+    },
+    "merk": "Skriv bare literalene som er kjent sanne, for eksempel AtL ∧ CleanL. Rekkefølgen er fri.",
+    "kilde": "videoer/notater/e19-planlegging-2.md, Fasit 5"
+   },
+   "fasit": "**1. AtL · 2. AtL ∧ CleanL · 3. AtR ∧ CleanL · 4. AtR ∧ CleanL ∧ CleanR**\n\n| Steg | Handling | Belief state (1-CNF) | Mengden (fig. 4.9) |\n|---|---|---|---|\n| b₀ | – | True | {1, 2, 3, 4, 5, 6, 7, 8} |\n| b₁ | Left | AtL | {1, 3, 5, 7} |\n| b₂ | Suck | AtL ∧ CleanL | {5, 7} |\n| b₃ | Right | AtR ∧ CleanL | {6, 8} |\n| b₄ | Suck | AtR ∧ CleanL ∧ CleanR | {8} |\n\n- Left har ADD AtL og DEL AtR. Add-effekten gjør AtL kjent sann og delete-effekten AtR kjent usann, så b₁ = AtL ∧ ¬AtR. Oppgaven ber bare om de sanne literalene, så svaret er AtL.\n- I b₁ er AtL kjent sann. Betingelsen «when AtL» slår til i alle verdenene i b₁, og «when AtR» i ingen, så Suck legger bare til CleanL.\n- Right gjør AtR sann og AtL usann. CleanL er ikke rørt og står.\n- Suck i b₃ legger til CleanR på samme måte. Til slutt er begge rutene rene i alle mulige verdener, så planen virker uten sensorer.\n\n**Hvorfor 1-CNF:** Plasseringen er kjent hver gang Suck utføres. Da slår nøyaktig den samme betingelsen til i alle tilstandene i belief staten, conditional effect gir samme resultat overalt, og b′ blir igjen en konjunksjon av literaler. Bare når betingelsen er ukjent, gir en conditional effect en disjunksjon: Suck rett på True gir (AtL ∧ CleanL) ∨ (AtR ∧ CleanR), som ikke er 1-CNF.\n\n*Kilde: notatet til E19, Fasit Øv selv 5.*"
+  },
+  {
+   "t": "Egenlaget: action monitoring mot plan monitoring",
+   "d": "Malingsproblemet fra boka (11.5):\n\n```\nInit(Object(Table) ∧ Object(Chair) ∧ Can(Can1) ∧ Can(Can2) ∧ InView(Table))\nGoal(Color(Chair, c) ∧ Color(Table, c))\nAction(RemoveLid(can), PRECOND: Can(can), EFFECT: Open(can))\nAction(Paint(x, can), PRECOND: Object(x) ∧ Can(can) ∧ Color(can, c) ∧ Open(can), EFFECT: Color(x, c))\n```\n\nPlanen er [RemoveLid(Can1), Paint(Chair, Can1), Paint(Table, Can1)]. Mens agenten maler stolen, maler noen andre bordet i samme farge.",
+   "f": [
+    [
+     "Hva gjør en agent med action monitoring?",
+     "area"
+    ],
+    [
+     "Hva gjør en agent med plan monitoring?",
+     "area"
+    ]
+   ],
+   "fasit": "**Action monitoring: agenten sjekker bare preconditions for neste handling og maler bordet en gang til.** Preconditions for Paint(Table, Can1) er Object(Table), Can(Can1), Color(Can1, c) og Open(Can1). Alle holder, så agenten utfører handlingen. Det er bortkastet arbeid, men skader ikke her, fordi bordet får samme farge.\n\n**Plan monitoring: agenten ser at målet allerede er nådd, og stopper.** Plan monitoring sjekker om resten av planen fortsatt vil lykkes, altså preconditions for hvert gjenværende steg (unntatt de et annet gjenværende steg sørger for) og målet. Etter Paint(Chair, Can1) holder allerede Color(Chair, c) ∧ Color(Table, c), så agenten trenger ikke Paint(Table, Can1) og kan gå hjem tidlig. Dette er **serendipity**: plan monitoring utnytter at noe uventet hjalp.\n\nPlan monitoring kan også stoppe en dømt plan tidligere enn action monitoring, for eksempel når malingen i boksen bare rekker til stolen.\n\n*Kilde: notatet til E19, Fasit Øv selv 6.*"
+  }
+ ]
+}

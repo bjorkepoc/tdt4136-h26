@@ -1,0 +1,37 @@
+;FFMETADATA1
+title=Spill 1: minimax og alpha-beta
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=46300
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=46300
+END=160400
+title=Spill som søkeproblem
+[CHAPTER]
+TIMEBASE=1/1000
+START=160400
+END=339167
+title=Minimax
+[CHAPTER]
+TIMEBASE=1/1000
+START=339167
+END=557234
+title=Alpha-beta pruning
+[CHAPTER]
+TIMEBASE=1/1000
+START=557233
+END=689400
+title=Move ordering
+[CHAPTER]
+TIMEBASE=1/1000
+START=689400
+END=814700
+title=Eksamen 2025, oppgave 8
+[CHAPTER]
+TIMEBASE=1/1000
+START=814700
+END=886500
+title=Koblinger og oppsummering

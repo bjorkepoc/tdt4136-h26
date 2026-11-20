@@ -1,0 +1,218 @@
+{
+ "intro": "A4 er Assignment 4 i årets emne (Propositional and First Order Logic in Reasoning). Skriv sannhetstabeller med T og F, én rad per linje.",
+ "tasks": [
+  {
+   "t": "A4 1.1 b, d og e: entailment med sannhetstabell",
+   "d": "Avgjør for hver påstand om den holder, ved å sette opp hele modellen (full sannhetstabell). Gi en motmodell hvis påstanden ikke holder.\n\nHint fra A4: Du kan legge hele påstanden til som en kolonne i tabellen ved å bytte «entails» (⊨) med «implies» (⇒).\n\n- (b) ¬A ∨ ¬B ⊨ ¬B\n- (d) A ⇒ B ⊨ A ⇔ B\n- (e) (A ⇒ B) ⇔ C ⊨ A ∨ ¬B ∨ C",
+   "f": [
+    [
+     "(b) Holder påstanden? (ja/nei)",
+     "text"
+    ],
+    [
+     "(b) ¬A ∨ ¬B ⊨ ¬B: sannhetstabell og ev. motmodell",
+     "area"
+    ],
+    [
+     "(d) Holder påstanden? (ja/nei)",
+     "text"
+    ],
+    [
+     "(d) A ⇒ B ⊨ A ⇔ B: sannhetstabell og ev. motmodell",
+     "area"
+    ],
+    [
+     "(e) Holder påstanden? (ja/nei)",
+     "text"
+    ],
+    [
+     "(e) (A ⇒ B) ⇔ C ⊨ A ∨ ¬B ∨ C: sannhetstabell og ev. motmodell",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "(b) Holder påstanden? (ja/nei)": [
+      "nei",
+      "no"
+     ],
+     "(d) Holder påstanden? (ja/nei)": [
+      "nei",
+      "no"
+     ],
+     "(e) Holder påstanden? (ja/nei)": [
+      "ja",
+      "yes"
+     ]
+    },
+    "merk": "(b) og (d) har motmodellen A = F, B = T. (e) holder: høyresiden er usann bare når A = F, B = T, C = F, og der er venstresiden usann.",
+    "kilde": "videoer/notater/e11-proposisjonslogikk-1.md, Fasit Øv selv 1"
+   },
+   "fasit": "**(b) Nei.** Motmodell: A = F, B = T. Der er ¬A ∨ ¬B = T, men ¬B = F.\n\n| A | B | ¬A ∨ ¬B | ¬B | (¬A ∨ ¬B) ⇒ ¬B |\n|---|---|---|---|---|\n| T | T | F | F | T |\n| T | F | T | T | T |\n| F | T | T | F | **F** |\n| F | F | T | T | T |\n\n**(d) Nei.** Motmodell: A = F, B = T. Der er A ⇒ B = T, men A ⇔ B = F.\n\n| A | B | A ⇒ B | A ⇔ B | (A ⇒ B) ⇒ (A ⇔ B) |\n|---|---|---|---|---|\n| T | T | T | T | T |\n| T | F | F | F | T |\n| F | T | T | F | **F** |\n| F | F | T | T | T |\n\n**(e) Ja.** ⇒-kolonnen er T i alle 8 radene.\n\n| A | B | C | A ⇒ B | (A ⇒ B) ⇔ C | A ∨ ¬B ∨ C | ⇒-kolonnen |\n|---|---|---|---|---|---|---|\n| T | T | T | T | T | T | T |\n| T | T | F | T | F | T | T |\n| T | F | T | F | F | T | T |\n| T | F | F | F | T | T | T |\n| F | T | T | T | T | T | T |\n| F | T | F | T | F | F | T |\n| F | F | T | T | T | T | T |\n| F | F | F | T | F | T | T |\n\nHøyresiden A ∨ ¬B ∨ C er usann bare i raden A = F, B = T, C = F. Der er A ⇒ B = T og C = F, så venstresiden er F. Ingen rad har venstresiden sann og høyresiden usann.\n\nMetoden: α ⊨ β holder nøyaktig når α ⇒ β er sann i alle rader. En motmodell er en rad der α er sann og β usann.\n\n*Kilde: notatet til E11, Fasit Øv selv 1 (A4 1.1 b, d, e).*"
+  },
+  {
+   "t": "A4 1.1 f og g: satisfiable?",
+   "d": "Avgjør med sannhetstabell om påstanden holder, altså om setningen er satisfiable.\n\n- (f) (¬A ⇒ ¬B) ∧ (A ∧ ¬B) is satisfiable\n- (g) (¬A ⇔ ¬B) ∧ (A ∧ ¬B) is satisfiable",
+   "f": [
+    [
+     "(f) Satisfiable? (ja/nei)",
+     "text"
+    ],
+    [
+     "(f) (¬A ⇒ ¬B) ∧ (A ∧ ¬B): sannhetstabell",
+     "area"
+    ],
+    [
+     "(g) Satisfiable? (ja/nei)",
+     "text"
+    ],
+    [
+     "(g) (¬A ⇔ ¬B) ∧ (A ∧ ¬B): sannhetstabell",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "(f) Satisfiable? (ja/nei)": [
+      "ja",
+      "yes",
+      "satisfiable"
+     ],
+     "(g) Satisfiable? (ja/nei)": [
+      "nei",
+      "no",
+      "unsatisfiable"
+     ]
+    },
+    "merk": "(f) er sann med A = T, B = F. (g) krever A = T og B = F, og da er ¬A ⇔ ¬B usann.",
+    "kilde": "videoer/notater/e11-proposisjonslogikk-1.md, Fasit Øv selv 2"
+   },
+   "fasit": "**(f) Ja, satisfiable.** Modellen A = T, B = F gjør setningen sann.\n\n| A | B | ¬A ⇒ ¬B | A ∧ ¬B | (¬A ⇒ ¬B) ∧ (A ∧ ¬B) |\n|---|---|---|---|---|\n| T | T | T | F | F |\n| T | F | T | T | **T** |\n| F | T | F | F | F |\n| F | F | T | F | F |\n\nI raden A = T, B = F er ¬A ⇒ ¬B = F ⇒ T = T, og A ∧ ¬B = T.\n\n**(g) Nei, unsatisfiable.** Setningen er usann i alle fire radene.\n\n| A | B | ¬A ⇔ ¬B | A ∧ ¬B | (¬A ⇔ ¬B) ∧ (A ∧ ¬B) |\n|---|---|---|---|---|\n| T | T | T | F | F |\n| T | F | F | T | F |\n| F | T | F | F | F |\n| F | F | T | F | F |\n\nA ∧ ¬B krever A = T og B = F. Da er ¬A ⇔ ¬B = F ⇔ T = F.\n\nSatisfiable betyr sann i minst én modell. Unsatisfiable betyr sann i ingen.\n\n*Kilde: notatet til E11, Fasit Øv selv 2 (A4 1.1 f, g).*"
+  },
+  {
+   "t": "Eksamen 2021, oppgave 1.1 (del av Logic, 25 p): ekvivalens og validity",
+   "d": "**1) LOGIC (25 pts)**\n\n1. Show, using a truth table, that ¬a → (b → c) and b → (a ∨ c) are logically equivalent. Is ¬a → (b → c) valid or satisfiable?\n\n*Merknad:* Poeng per deloppgave står ikke i oppgaveteksten.",
+   "f": [
+    [
+     "1.1 Sannhetstabell",
+     "area",
+     "a b c | ¬a → (b → c) | b → (a ∨ c)\nT T T | … | …\n…"
+    ],
+    [
+     "1.1 Er setningene logisk ekvivalente? (ja/nei)",
+     "text"
+    ],
+    [
+     "1.1 Hvorfor?",
+     "text"
+    ],
+    [
+     "1.1 Er ¬a → (b → c) valid eller satisfiable?",
+     "text"
+    ],
+    [
+     "1.1 Begrunnelse",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "1.1 Er setningene logisk ekvivalente? (ja/nei)": [
+      "ja",
+      "yes"
+     ],
+     "1.1 Er ¬a → (b → c) valid eller satisfiable?": [
+      "satisfiable"
+     ]
+    },
+    "merk": "Satisfiable, men ikke valid: setningen er usann når a = F, b = T, c = F.",
+    "kilde": "2021A.docx, Logic 1"
+   },
+   "fasit": "**1.1 Sannhetstabell:**\n\n| a | b | c | b → c | ¬a → (b → c) | a ∨ c | b → (a ∨ c) |\n|---|---|---|---|---|---|---|\n| T | T | T | T | T | T | T |\n| T | T | F | F | T | T | T |\n| T | F | T | T | T | T | T |\n| T | F | F | T | T | T | T |\n| F | T | T | T | T | T | T |\n| F | T | F | F | **F** | F | **F** |\n| F | F | T | T | T | T | T |\n| F | F | F | T | T | F | T |\n\n**Ja, setningene er logisk ekvivalente.**\n\n**Hvorfor: kolonnene for ¬a → (b → c) og b → (a ∨ c) er like i alle 8 radene.** Begge er usanne bare når a = F, b = T og c = F. Begge er ekvivalente med klausulen a ∨ ¬b ∨ c.\n\n**¬a → (b → c) er satisfiable, men ikke valid.**\n\n**Begrunnelse: den er sann i 7 av 8 modeller, så den er satisfiable. Den er usann i modellen a = F, b = T, c = F, så den er ikke valid.**\n\nValid betyr sann i alle modeller, satisfiable sann i minst én. Ekvivalens krever like kolonner i alle rader, ikke bare i radene der én side er sann.\n\n*Kilde: løsningsforslaget til eksamen 2021, oppgave 1.1 (Logic).*"
+  },
+  {
+   "t": "Eksamen 2016, task 2 a (4 p): implication og entailment",
+   "d": "**TASK 2: Propositional and first-order logic (20p)**\n\na) (4p) What are the advantages and disadvantages of the propositional logic ? What is the difference between implication and entailment in propositional logic ? (The answer should be shorter than one page).\n\n*Merknad:* Øv selv-punktet gjelder det andre spørsmålet. Det første er tatt med fordi det hører til samme deloppgave.",
+   "f": [
+    [
+     "a) Forskjellen på implication og entailment",
+     "area"
+    ],
+    [
+     "a) Fordeler og ulemper med proposisjonslogikk (resten av deloppgaven)",
+     "area"
+    ]
+   ],
+   "fasit": "**Implication (α ⇒ β) er en setning i språket. Den har en sannhetsverdi i hver modell og er usann bare når α er sann og β usann (α ⇒ β ≡ ¬α ∨ β). Entailment (α ⊨ β) er en påstand om setninger, ikke en del av språket: β er sann i hver modell der α er sann, altså M(α) ⊆ M(β).**\n\nKoblingen er deduction theorem: α ⊨ β hvis og bare hvis α ⇒ β er valid, altså sann i alle modeller. Å regne ut α ⇒ β i én rad er derfor ikke nok for å vise entailment. Eksempel: Rain ⊨ Rain ∨ Wind, men Rain ⇒ Wind er bare en setning som er usann i modellen Rain = T, Wind = F.\n\nFasiten skriver det slik: S → Q er sann hvis og bare hvis ¬S ∨ Q er sann. KB ⊨ Q holder hvis hver tolkning som gjør alle setningene i KB sanne, også gjør Q sann.\n\n**Fordeler og ulemper med proposisjonslogikk** (resten av deloppgaven):\n- Fordeler: *declarative*, deler av syntaksen svarer til fakta. Den tillater delvis, disjunktiv og negert informasjon (P₂,₂ ∨ P₃,₁, ¬P₁,₂). Den er *compositional*: betydningen av en setning er en funksjon av betydningen til delene. Inferens er sound og complete og kan gjøres mekanisk (sannhetstabell, resolution).\n- Ulemper: svært begrenset uttrykkskraft. Det finnes ingen objekter, relasjoner eller kvantorer, så du trenger ett symbol per rute og tidspunkt (P₁,₂, P₂,₂, …) og kan ikke si «alle ruter ved siden av en grop har breeze» med én setning. Det løser førsteordens logikk. Model checking er i tillegg eksponentiell i antall symboler.\n\n*Kilde: løsningsforslaget til eksamen 2016, task 2 a.*"
+  },
+  {
+   "t": "Wumpus: entailment med de åtte modellene (egen oppgave)",
+   "d": "Wumpus world (AIMA 7.2): En rute har *breeze* hvis og bare hvis minst én naborute (opp, ned, venstre eller høyre) har en grop (pit).\n\nAgenten har besøkt [1,1] og [2,1], så ingen av dem har grop. Den kjente ingen breeze i [1,1], men breeze i [2,1]. KB består av breeze-regelen og disse to persepsjonene. Rutene som kan ha grop og som påvirker persepsjonene, er [1,2], [2,2] og [3,1]. Det gir 2³ = 8 mulige modeller for (P₁,₂, P₂,₂, P₃,₁), som i fig. 7.5.\n\nAvgjør med de åtte modellene om\n\n1. KB ⊨ P₂,₂ ∨ P₃,₁\n2. KB ⊨ P₃,₁\n3. KB ⊨ ¬P₃,₁",
+   "f": [
+    [
+     "Modellene der KB er sann",
+     "area",
+     "(P₁,₂, P₂,₂, P₃,₁) = (…, …, …), …"
+    ],
+    [
+     "KB ⊨ P₂,₂ ∨ P₃,₁?",
+     "text",
+     "ja/nei, fordi …"
+    ],
+    [
+     "KB ⊨ P₃,₁?",
+     "text",
+     "ja/nei, fordi …"
+    ],
+    [
+     "KB ⊨ ¬P₃,₁?",
+     "text",
+     "ja/nei, fordi …"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "KB ⊨ P₂,₂ ∨ P₃,₁?": [
+      "ja",
+      "yes"
+     ],
+     "KB ⊨ P₃,₁?": [
+      "nei",
+      "no"
+     ],
+     "KB ⊨ ¬P₃,₁?": [
+      "nei",
+      "no"
+     ]
+    },
+    "kilde": "videoer/notater/e11-proposisjonslogikk-1.md, Fasit Øv selv 5"
+   },
+   "fasit": "**Modellene der KB er sann: (P₁,₂, P₂,₂, P₃,₁) = (F, F, T), (F, T, F) og (F, T, T).**\n\n**KB ⊨ P₂,₂ ∨ P₃,₁: ja, fordi setningen er sann i alle tre KB-modellene.**\n\n**KB ⊨ P₃,₁: nei, fordi KB-modellen (F, T, F) har ingen grop i [3,1].**\n\n**KB ⊨ ¬P₃,₁: nei, fordi KB-modellene (F, F, T) og (F, T, T) har grop i [3,1].**\n\nIngen breeze i [1,1] gir ¬P₁,₂ (P₂,₁ er kjent usann). Breeze i [2,1] gir P₂,₂ ∨ P₃,₁, siden [1,1] ikke har grop.\n\n| P₁,₂ | P₂,₂ | P₃,₁ | ¬B₁,₁ gir ¬P₁,₂ | B₂,₁ gir P₂,₂ ∨ P₃,₁ | KB | P₃,₁ | ¬P₃,₁ |\n|---|---|---|---|---|---|---|---|\n| F | F | F | T | F | F | F | T |\n| F | F | T | T | T | **T** | T | F |\n| F | T | F | T | T | **T** | **F** | T |\n| F | T | T | T | T | **T** | T | F |\n| T | F | F | F | F | F | F | T |\n| T | F | T | F | T | F | T | F |\n| T | T | F | F | T | F | F | T |\n| T | T | T | F | T | F | T | F |\n\nAntall modeller går fra 8 til 4 til 3. P₂,₂ ∨ P₃,₁ er nettopp breeze-kravet, så den er sann i hver KB-modell.\n\nVerken P₃,₁ eller ¬P₃,₁ følger, så agenten vet ikke om det er grop i [3,1]. KB ⊭ P₃,₁ betyr ikke KB ⊨ ¬P₃,₁.\n\n*Kilde: notatet til E11, Fasit Øv selv 5 (fig. 7.5).*"
+  },
+  {
+   "t": "Eksamen 2022, oppgave 5.3: gullboksene med proof by refutation",
+   "d": "**Propositional logic - Boxes with gold**\n\nThree boxes are presented to you. One contains gold, the other two are empty. Each box has imprinted on it a clue as to its contents. The clues are:\n\n- Box 1: *The gold is not here*\n- Box 2: *The gold is not here*\n- Box 3: *The gold is in Box 2*\n\nOnly one message is true, the other two are false. Which box has the gold? Solve the puzzle using propositional logic by completing the following steps:\n\n5.1) Let B<sub>i</sub> stand for the gold is in the i-th box, where i ∈ [1 : 3]. Formalize the following statements of the problem in propositional logic:\n\n- One box contains gold, the other two are empty\n- Only one message is true, the other two are false. Do the logical equivalent if needed.\n\n5.2) Compute the truth table for expressions S<sub>1</sub> and S<sub>2</sub>, and make an inference about which box has the gold.\n\n5.3) If you want to use inference procedure called proof by refutation (or contradiction), how would you define the knowledge base and the query? What should be unsatisfiable?\n\n*Merknad:* S₁ og S₂ er de to utsagnene i 5.1. Øv selv-punktet er 5.3; 5.1 og 5.2 er gjennomgått i notatet over.",
+   "f": [
+    [
+     "5.3 Kunnskapsbasen",
+     "text",
+     "KB = …"
+    ],
+    [
+     "5.3 Spørringen",
+     "text",
+     "α = …"
+    ],
+    [
+     "5.3 Hva skal være unsatisfiable?",
+     "text"
+    ],
+    [
+     "5.3 Sjekk mot sannhetstabellen fra 5.2",
+     "area"
+    ]
+   ],
+   "fasit": "**KB = S₁ ∧ S₂** (gjort om til CNF hvis du bruker resolution).\n\n**Spørringen α = B₁** (gullet er i boks 1).\n\n**KB ∧ ¬B₁ skal være unsatisfiable.** Da er KB ⊨ B₁.\n\nProof by refutation: legg den negerte spørringen ¬B₁ til KB. Finnes ingen modell der både KB og ¬B₁ er sanne, kan ikke B₁ være usann når KB holder.\n\nSjekk mot tabellen fra 5.2:\n\n| B₁ | B₂ | B₃ | S₁ | S₂ | KB | ¬B₁ | KB ∧ ¬B₁ |\n|---|---|---|---|---|---|---|---|\n| T | T | T | F | T | F | F | F |\n| T | T | F | F | T | F | F | F |\n| T | F | T | F | T | F | F | F |\n| T | F | F | T | T | **T** | F | F |\n| F | T | T | F | F | F | T | F |\n| F | T | F | T | F | F | T | F |\n| F | F | T | T | F | F | T | F |\n| F | F | F | F | F | F | T | F |\n\nKB er sann bare i raden B₁ = T, B₂ = F, B₃ = F, og der er ¬B₁ usann. Kolonnen KB ∧ ¬B₁ er F i alle 8 radene, så den er unsatisfiable.\n\nMed resolution: S₂ forenkles til B₁ (5.1), og B₁ mot den negerte spørringen ¬B₁ gir den tomme klausulen □ med en gang.\n\nFasiten sier at spørringen må være M₁, fordi M₁ skal være den eneste sanne beskjeden. Det er feil. I KB-modellen er M₁ = ¬B₁ = F og M₂ = ¬B₂ = T, så den sanne beskjeden er M₂. Med M₁ som spørring blir KB ∧ ¬M₁ = KB ∧ B₁ satisfiable, og beviset går ikke. Både B₁ og M₂ fungerer som spørring.\n\n*Kilde: løsningsforslaget til eksamen 2022, oppgave 5.3, rettet som i notatet til E11.*"
+  }
+ ]
+}

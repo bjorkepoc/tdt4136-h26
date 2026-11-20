@@ -1,0 +1,584 @@
+1
+00:00:00,450 --> 00:00:06,050
+Tre bøtter med tall. Du velger bøtte, og motstanderen velger hvilket tall du får.
+
+2
+00:00:06,050 --> 00:00:13,610
+A frister med femti, og C har best snitt. Hvilken tar du?
+
+3
+00:00:13,610 --> 00:00:19,610
+Ta B. Motstanderen gir deg minus femti i A og minus fem i C, men i B får du
+
+4
+00:00:19,610 --> 00:00:25,850
+minst én. Velg det beste av de verste utfallene. Det er hele ideen bak minimax.
+
+5
+00:00:27,217 --> 00:00:32,137
+Etter denne episoden kan du regne ut minimax og kjøre alpha-beta med alfa og
+
+6
+00:00:32,137 --> 00:00:37,977
+beta i hver node, slik eksamen vil ha det. Vi går fra spill som søkeproblem, via
+
+7
+00:00:37,977 --> 00:00:43,017
+minimax og alpha-beta, til rekkefølgen på trekkene, og løser til slutt eksamen
+
+8
+00:00:43,017 --> 00:00:45,377
+tjue tjuefem, oppgave åtte.
+
+9
+00:00:46,750 --> 00:00:50,190
+Hva er et spill, sett fra en søkealgoritme?
+
+10
+00:00:51,950 --> 00:00:57,590
+Dette er seksjon seks punkt én og seks punkt to i boka, som er fem punkt én og
+
+11
+00:00:57,590 --> 00:01:04,190
+fem punkt to i den amerikanske utgaven. Et spill ligner et vanlig søkeproblem. S
+
+12
+00:01:04,190 --> 00:01:10,030
+null er starten i bøttespillet fra forelesning åtte: velg bøtte. Actions gir
+
+13
+00:01:10,030 --> 00:01:16,670
+lovlige trekk, og result gir tilstanden etter trekket. Det nye er to-move: hvem
+
+14
+00:01:16,670 --> 00:01:22,403
+sin tur er det? Is-terminal erstatter måltesten, og utility gir poengene til
+
+15
+00:01:22,403 --> 00:01:24,670
+hver spiller når spillet er slutt.
+
+16
+00:01:26,050 --> 00:01:32,050
+Kurset handler mest om én slags spill. Deterministic: ingen terning. Perfect
+
+17
+00:01:32,050 --> 00:01:38,690
+information: du ser alt, som i sjakk og Go. Og zero-sum: det som er bra for den
+
+18
+00:01:38,690 --> 00:01:44,770
+ene, er like ille for den andre. Sjakk gir én, null eller en halv til hver, så
+
+19
+00:01:44,770 --> 00:01:50,290
+summen er alltid én. Boka innrømmer at constant-sum hadde vært riktigere navn.
+
+20
+00:01:50,290 --> 00:01:53,490
+Terning og skjulte kort tar vi i neste episode.
+
+21
+00:01:54,850 --> 00:01:59,890
+Alle trekkfølger danner til sammen et game tree. Tic-tac-toe har under tre
+
+22
+00:01:59,890 --> 00:02:05,677
+hundre og sekstito tusen sluttstillinger, og sjakk over ti i førtiende noder.
+
+23
+00:02:05,677 --> 00:02:11,770
+Men vanlig søk leter etter en sti, som «B, og så tre». Det andre steget er ikke
+
+24
+00:02:11,770 --> 00:02:17,597
+ditt. Motstanderen velger, og gir deg én. Du trenger en strategi: et svar på
+
+25
+00:02:17,597 --> 00:02:19,730
+hvert trekk motstanderen kan gjøre.
+
+26
+00:02:21,017 --> 00:02:31,137
+Din tur. Hvilket spill har perfect information, men er ikke deterministic?
+
+27
+00:02:31,137 --> 00:02:36,377
+Backgammon. Du ser hele brettet, men terningen avgjør. Poker og Battleship
+
+28
+00:02:36,377 --> 00:02:39,497
+skjuler noe, og sjakk har ingen tilfeldighet.
+
+29
+00:02:40,850 --> 00:02:43,890
+Hvordan velger du, når motstanderen også velger?
+
+30
+00:02:45,650 --> 00:02:52,890
+Her er treet fra figur seks punkt to i boka. Bladene er utility for max. B er en
+
+31
+00:02:52,890 --> 00:03:00,850
+min-node. Den ser tre, tolv og åtte, og tar det minste: tre. C ser to, fire og
+
+32
+00:03:00,850 --> 00:03:09,330
+seks: to. D ser fjorten, fem og to: også to. Roten er max og tar det største:
+
+33
+00:03:09,330 --> 00:03:15,170
+tre. Tallet i hver node heter minimax-verdien: hva noden er verdt når begge
+
+34
+00:03:15,170 --> 00:03:19,970
+spiller perfekt. Beste trekk er a én, mot B.
+
+35
+00:03:21,350 --> 00:03:27,230
+Det samme som formel: Er spillet slutt, er verdien utility. Er det max sin tur,
+
+36
+00:03:27,230 --> 00:03:32,590
+tar du største barn, og er det min sin tur, minste. Algoritmen går dybde først
+
+37
+00:03:32,590 --> 00:03:37,830
+og fyller inn verdiene på vei opp. Med b trekk i hver stilling og dybde m blir
+
+38
+00:03:37,830 --> 00:03:44,150
+tiden b opphøyd i m, men plassen bare b ganger m. Sjakk har b rundt trettifem og
+
+39
+00:03:44,150 --> 00:03:48,630
+m rundt åtti. Det er ti opphøyd i hundre og tjuetre stillinger.
+
+40
+00:03:49,983 --> 00:03:54,943
+Men hva om motstanderen ikke er perfekt? Da får du minst like mye.
+
+41
+00:03:54,943 --> 00:04:01,663
+Minimax-verdien er en garanti. Tar min tolv i B, får max tolv i stedet for tre.
+
+42
+00:04:01,663 --> 00:04:06,863
+Mot en svak motstander kan et risikabelt trekk likevel lønne seg. Boka nevner et
+
+43
+00:04:06,863 --> 00:04:11,943
+trekk som vinner ni av ti ganger, mot sikker remis. Og velger motstanderen
+
+44
+00:04:11,943 --> 00:04:17,383
+tilfeldig i bøttespillet, er C best. Det regner du med expectimax i neste
+
+45
+00:04:17,383 --> 00:04:18,183
+episode.
+
+46
+00:04:19,283 --> 00:04:25,283
+Din tur. Det siste bladet under D endres fra to til fire. Hva blir verdien i
+
+47
+00:04:25,283 --> 00:04:30,603
+roten?
+
+48
+00:04:30,603 --> 00:04:37,123
+Fire. Noden D blir den minste av fjorten, fem og fire. Roten tar den største av
+
+49
+00:04:37,123 --> 00:04:41,443
+tre, to og fire, og nå er a tre beste trekk.
+
+50
+00:04:42,817 --> 00:04:49,257
+Med tre spillere holder ikke ett tall. Hver node får en vektor med utility for A,
+
+51
+00:04:49,257 --> 00:04:56,377
+B og C. Dette står bare i boka, foreleser tok det ikke. I node X velger C, og
+
+52
+00:04:56,377 --> 00:05:03,457
+ser bare på sin egen plass: seks slår tre. Slik velger alle C-nodene. B-nodene
+
+53
+00:05:03,457 --> 00:05:09,377
+ser på andre plass, og A på første. Roten blir én, to, seks.
+
+54
+00:05:10,650 --> 00:05:16,650
+Det gir allianser. Er A og B svake og C sterk, lønner det seg for begge å
+
+55
+00:05:16,650 --> 00:05:23,050
+angripe C, helt til C er svekket og alliansen ryker. Er spillet ikke zero-sum,
+
+56
+00:05:23,050 --> 00:05:28,490
+kan selv to spillere samarbeide om et utfall som er best for begge. Eksamen tjue
+
+57
+00:05:28,490 --> 00:05:34,410
+tjueto spurte hvordan minimax brukes med tre spillere. Svaret er vektorer. Ta
+
+58
+00:05:34,410 --> 00:05:38,250
+med deg: hver spiller maksimerer sin egen plass.
+
+59
+00:05:39,617 --> 00:05:42,577
+Må du virkelig se på alle bladene?
+
+60
+00:05:44,350 --> 00:05:50,750
+Tilbake til treet. B er ferdig, så roten er verdt minst tre. Første blad under C
+
+61
+00:05:50,750 --> 00:05:57,070
+er to. Da er C verdt høyst to. Uansett hva de to siste bladene er, velger roten
+
+62
+00:05:57,070 --> 00:06:04,110
+aldri C. Så vi ser ikke på dem. Boka skriver det som max av tre, min av to, x og
+
+63
+00:06:04,110 --> 00:06:10,990
+y, og to. Svaret er tre, uansett x og y. Dette heter alpha-beta pruning.
+
+64
+00:06:12,350 --> 00:06:18,910
+Alfa er det beste max har funnet på stien ned hit. Tenk «minst». Beta er det
+
+65
+00:06:18,910 --> 00:06:24,990
+beste min har funnet. Tenk «høyst». Sammen danner de et vindu, og bare verdier
+
+66
+00:06:24,990 --> 00:06:30,950
+inni vinduet kan endre valget lenger opp. En max-node løfter alfa, og kutter når
+
+67
+00:06:30,950 --> 00:06:36,950
+v er større enn eller lik beta. En min-node senker beta, og kutter når v er
+
+68
+00:06:36,950 --> 00:06:42,110
+mindre enn eller lik alfa. Kuttet kommer altså når vinduet lukker seg.
+
+69
+00:06:43,383 --> 00:06:50,183
+Nå et dypere tre, fra venstre mot høyre. A starter med alfa minus uendelig og
+
+70
+00:06:50,183 --> 00:06:59,143
+beta uendelig. D ser tre og fem. D er max, så alfa blir fem, og D er fem. B er
+
+71
+00:06:59,143 --> 00:07:07,063
+min og får beta fem. E arver vinduet fra B: alfa minus uendelig, beta fem.
+
+72
+00:07:07,063 --> 00:07:14,143
+Første blad er seks, så E er minst seks. Seks er større enn eller lik beta fem.
+
+73
+00:07:14,143 --> 00:07:19,383
+Kutt! B ville aldri latt E skje, så bladet ni ses aldri.
+
+74
+00:07:20,750 --> 00:07:29,070
+B blir fem, og A får alfa fem. Max er sikret minst fem. C og F arver alfa fem. F
+
+75
+00:07:29,070 --> 00:07:35,870
+ser én og to, og blir to. C er min, og nå høyst to. To er mindre enn eller lik
+
+76
+00:07:35,870 --> 00:07:42,750
+alfa fem. Kutt! Hele G forsvinner. A velger B, med verdi fem, og vi så bare fem
+
+77
+00:07:42,750 --> 00:07:44,030
+av åtte blader.
+
+78
+00:07:45,383 --> 00:07:51,183
+Men kan ikke de kuttede bladene endre svaret? Sett inn hva du vil. E er minst
+
+79
+00:07:51,183 --> 00:07:57,783
+seks, så B velger fortsatt fem. C er høyst to, så A velger fortsatt fem.
+
+80
+00:07:57,783 --> 00:08:02,783
+Alpha-beta gir alltid samme verdi og trekk som minimax. Men tallene i kuttede
+
+81
+00:08:02,783 --> 00:08:08,903
+noder er bare grenser. Uten kutt er E ni og C null. Spør eksamen om
+
+82
+00:08:08,903 --> 00:08:11,783
+minimax-verdier, regner du uten kutt.
+
+83
+00:08:13,150 --> 00:08:20,950
+Tre feil går igjen. Én: F har sett én, og alfa er fem. Mange kutter her. Men F
+
+84
+00:08:20,950 --> 00:08:27,790
+er max. Neste blad kan være tusen, og da betyr F noe. Max sammenligner med beta,
+
+85
+00:08:27,790 --> 00:08:34,190
+min med alfa. To: kuttet fjerner bare resten av barna til noden som kutter. Her
+
+86
+00:08:34,190 --> 00:08:40,430
+er det C, så bare G forsvinner. Tre: boka kutter også ved likhet, så skriv
+
+87
+00:08:40,430 --> 00:08:42,350
+større enn eller lik.
+
+88
+00:08:43,717 --> 00:08:51,277
+Din tur, fra eksamen tjue tjuefire. Bøttene er A med to og tre, B med én og seks,
+
+89
+00:08:51,277 --> 00:08:57,957
+og C med minus to og minus én. Minste tall ses først. Hvilke tall ser alpha-beta
+
+90
+00:08:57,957 --> 00:09:04,037
+aldri?
+
+91
+00:09:04,037 --> 00:09:11,197
+Seks og minus én. A gir alfa to. I B er én mindre enn alfa, og i C er minus to
+
+92
+00:09:11,197 --> 00:09:16,317
+det. Ta med deg: en gren som ikke kan slå garantien, kuttes.
+
+93
+00:09:17,683 --> 00:09:22,483
+Hvorfor kutter samme tre noen ganger mye, og noen ganger ingenting?
+
+94
+00:09:24,250 --> 00:09:30,250
+Samme tre, i to rekkefølger. Til venstre kommer de dårligste trekkene først.
+
+95
+00:09:30,250 --> 00:09:36,490
+Alfa stiger sakte, og ingenting kuttes: alle ni bladene. Til høyre kommer B
+
+96
+00:09:36,490 --> 00:09:42,610
+først, og toeren først under C og D. Nå holder det med fem blader. Finner du det
+
+97
+00:09:42,610 --> 00:09:46,943
+beste trekket tidlig, blir garantien høy tidlig, og alt som er dårligere,
+
+98
+00:09:46,943 --> 00:09:47,930
+kuttes.
+
+99
+00:09:49,283 --> 00:09:56,603
+Dette står bare i boka, foreleser tok det ikke. Minimax ser b opphøyd i m noder.
+
+100
+00:09:56,603 --> 00:10:01,763
+Med perfekt rekkefølge holder b opphøyd i m halve. Med tilfeldig rekkefølge blir
+
+101
+00:10:01,763 --> 00:10:07,283
+det rundt b opphøyd i tre fjerdedels m. I sjakk føles trettifem valg per trekk
+
+102
+00:10:07,283 --> 00:10:12,083
+da som seks, og med tilfeldig rekkefølge som fjorten. På samme tid søker du
+
+103
+00:10:12,083 --> 00:10:13,763
+altså dobbelt så dypt.
+
+104
+00:10:15,117 --> 00:10:21,277
+Men perfekt rekkefølge krever at du vet svaret. En enkel regel hjelper: prøv
+
+105
+00:10:21,277 --> 00:10:27,917
+slag først, så trusler, så trekk fremover, så bakover. Enda bedre er iterative
+
+106
+00:10:27,917 --> 00:10:33,917
+deepening. Søk ett trekk dypt, ranger trekkene, og bruk rangeringen når du søker
+
+107
+00:10:33,917 --> 00:10:39,677
+ett trekk dypere. De beste trekkene heter killer moves, og å prøve dem først er
+
+108
+00:10:39,677 --> 00:10:41,277
+killer move heuristic.
+
+109
+00:10:42,550 --> 00:10:50,550
+Samme stilling kan nås i ulik rekkefølge. Hvit w én, svart b én, hvit w to,
+
+110
+00:10:50,550 --> 00:10:57,990
+svart b to, gir samme brett som w to og b to først. Det heter en transposition.
+
+111
+00:10:57,990 --> 00:11:02,710
+Lagre verdien i en transposition table, og slå den opp neste gang. Det er
+
+112
+00:11:02,710 --> 00:11:07,590
+reached-tabellen fra kapittel tre. I sjakk kan den doble søkedybden.
+
+113
+00:11:08,950 --> 00:11:14,790
+Din tur. Minimax rekker seks trekk dypt på tida du har. Hvor dypt rekker
+
+114
+00:11:14,790 --> 00:11:21,710
+alpha-beta med perfekt rekkefølge?
+
+115
+00:11:21,710 --> 00:11:27,470
+Tolv. Eksponenten halveres, så dybden dobles. Med tilfeldig rekkefølge blir det
+
+116
+00:11:27,470 --> 00:11:28,470
+åtte.
+
+117
+00:11:29,850 --> 00:11:32,650
+Klarer du en ekte eksamensoppgave?
+
+118
+00:11:34,417 --> 00:11:43,217
+Eksamen tjue tjuefem, oppgave åtte, ti poeng. a: Hva er minimax-verdien til A? b:
+
+119
+00:11:43,217 --> 00:11:48,897
+Hvilke noder besøkes ikke med alpha-beta, når barna tas i alfabetisk rekkefølge?
+
+120
+00:11:48,897 --> 00:11:59,657
+Forklar hver med alfa og beta. Sett på pause og løs den.
+
+121
+00:11:59,657 --> 00:12:00,657
+Klar?
+
+122
+00:12:02,017 --> 00:12:13,137
+a først, nedenfra. Fyll inn alt, uten kutt. G er min: to. E er max: to. C er min
+
+123
+00:12:13,137 --> 00:12:22,377
+av atten og to: to. På høyre side blir N to, L tjue, og J femten. A tar den
+
+124
+00:12:22,377 --> 00:12:29,617
+største av ti, to, femten og tolv. Svaret er femten, via J og K.
+
+125
+00:12:30,983 --> 00:12:40,583
+Så b. B gir A alfa ti. C arver alfa ti, og D gir C beta atten. E arver vinduet,
+
+126
+00:12:40,583 --> 00:12:48,263
+og F på én endrer ikke alfa. G arver det samme. G er min og ser H lik fem. Fem
+
+127
+00:12:48,263 --> 00:12:55,063
+er mindre enn alfa ti. Kutt! I besøkes aldri. Legg merke til at alfa ti kom helt
+
+128
+00:12:55,063 --> 00:12:57,063
+fra A, tre nivåer opp.
+
+129
+00:12:58,417 --> 00:13:07,057
+E og C blir høyst fem, og A beholder ti. J arver alfa ti, og K gir J beta femten.
+
+130
+00:13:07,057 --> 00:13:15,617
+L arver vinduet. M er tjue, og L er max. Tjue er større enn beta femten. Kutt! N,
+
+131
+00:13:15,617 --> 00:13:22,457
+og dermed O og P, besøkes aldri. J blir femten, A får alfa femten, og Q på tolv
+
+132
+00:13:22,457 --> 00:13:30,417
+endrer ingenting. Skriv som fasiten: I, fordi H er fem, mindre enn alfa ti. N,
+
+133
+00:13:30,417 --> 00:13:33,777
+fordi M er tjue, større enn beta femten.
+
+134
+00:13:35,150 --> 00:13:37,710
+Hvor møter du disse ideene igjen?
+
+135
+00:13:39,483 --> 00:13:45,963
+Minimax er dybde først-søk fra kapittel tre, episode to. Derfor er plassen b
+
+136
+00:13:45,963 --> 00:13:52,163
+ganger m. Iterative deepening og reached-tabellen kommer også derfra. Når treet
+
+137
+00:13:52,163 --> 00:13:57,203
+er for dypt, stopper du og bruker en evalueringsfunksjon, eller du spiller
+
+138
+00:13:57,203 --> 00:14:04,363
+tilfeldige partier med MCTS. Det er episode ni. Og i zero-sum-spill er minimax
+
+139
+00:14:04,363 --> 00:14:10,043
+det samme som maximin i spillteori: det beste av de verste utfallene. Det er
+
+140
+00:14:10,043 --> 00:14:15,083
+kapittel sytten punkt to, atten punkt to i den amerikanske utgaven, og episode
+
+141
+00:14:15,083 --> 00:14:15,883
+ti.
+
+142
+00:14:17,017 --> 00:14:23,577
+Hele kjeden: Et spill er et søk der du bare velger hvert andre trekk. Minimax
+
+143
+00:14:23,577 --> 00:14:30,297
+fyller inn verdier nedenfra: max tar største, min tar minste. Alpha-beta kutter
+
+144
+00:14:30,297 --> 00:14:36,297
+når vinduet lukker seg, og gir samme svar. God rekkefølge gir flere kutt. Husker
+
+145
+00:14:36,297 --> 00:14:42,817
+du bøttene? B var det beste av de verste. Hvis du bare husker én ting: max
+
+146
+00:14:42,817 --> 00:14:45,657
+sammenligner med beta, og min med alfa.
+

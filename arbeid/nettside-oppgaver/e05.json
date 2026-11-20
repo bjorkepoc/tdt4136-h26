@@ -1,0 +1,152 @@
+{
+ "tasks": [
+  {
+   "t": "Eksamen 2023, oppgave 7 (5 p): robot i labyrint",
+   "d": "**7 Partially observable environment (5 pts)**\n\nAssume a robot in a maze with walls, as shown in the Fig. 4. The robot can only see the walls but not its own locations (i.e-, which of the “squares” it is in the maze). A percept includes data about the existence of walls on the north, south, west and east of the square in which the robot currently is. For example. P1={North, South, NoWest, NoEast} means that the robot senses a wall in its north and south, and but not on east and west. The location of a square that the robot beliefs it may be in is shown with the row and column number of the square. For example, the robot in the figure is in location S = (r2, c3). It has possible actions: Right, Left, Up, and Down.\n\n1\\. If the robot’s perception, at time step 1, is P1= { North, South, West, NoEast}, what will be the belief state of the robot for its location? Show a belief state in this format:\n\nS = {(r − x, c − y), (), ...., ()} where r − x is the row number, e.g. r2, and c − y is the column number, c3 - according to the figure.\n\n2\\. If the robot takes action “Right”, and perceives P2={North, South, NoWest, NoEast}, what will its belief state S2 be for its location?\n\n3\\. Assume that action “Right” makes a move to left, and action “Left” does a move to right. What will be the agent’s belief state when it takes a “Right” action from its initial location?\n\n*Merknad:* Skriv antakelsen din i del 3.",
+   "img": [
+    "nettside-figurer/e05-2023-q7.png"
+   ],
+   "f": [
+    [
+     "1. Belief state S1",
+     "text",
+     "S1 = {(r…, c…), …}"
+    ],
+    [
+     "2. Belief state S2",
+     "text",
+     "S2 = {(r…, c…), …}"
+    ],
+    [
+     "3. Belief state etter «Right», med antakelsen din",
+     "area",
+     "Antakelse: …\nS = {(r…, c…), …}"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "1. Belief state S1": [
+      "(r0, c0), (r3, c0), (r0, c7)",
+      "(r0, c0), (r0, c7), (r3, c0)",
+      "(r3, c0), (r0, c0), (r0, c7)",
+      "(r3, c0), (r0, c7), (r0, c0)",
+      "(r0, c7), (r0, c0), (r3, c0)",
+      "(r0, c7), (r3, c0), (r0, c0)",
+      "S1 = (r0, c0), (r3, c0), (r0, c7)",
+      "S1 = (r0, c0), (r0, c7), (r3, c0)",
+      "S1 = (r3, c0), (r0, c0), (r0, c7)",
+      "S1 = (r3, c0), (r0, c7), (r0, c0)",
+      "S1 = (r0, c7), (r0, c0), (r3, c0)",
+      "S1 = (r0, c7), (r3, c0), (r0, c0)"
+     ],
+     "2. Belief state S2": [
+      "(r3, c1)",
+      "S2 = (r3, c1)"
+     ]
+    },
+    "merk": "Skriv cellene som (r0, c0), med eller uten krøllparenteser rundt mengden. Rekkefølgen på cellene er fri.",
+    "kilde": "2023Q&A.pdf, 7.1.1 Solution"
+   },
+   "fasit": "**1. S1 = {(r0, c0), (r3, c0), (r0, c7)}.**\n\n**2. S2 = {(r3, c1)}.**\n\n**3. Antakelse 1a: «initial location» er S1, og et trekk inn i en vegg lar roboten stå. Da blir S = {(r0, c0), (r3, c0), (r0, c7)}.**\n\n**Antakelse 1b: roboten starter i ruta i figuren, (r2, c3). Da blir S = {(r1, c8), (r2, c2)}.** Fasiten godtok begge.\n\nFiguren leses med r0 nederst og c0 til venstre. Kanten rundt er vegg. Veggrutene (brune) er:\n- r3: c4, c10\n- r2: c0, c1, c4, c6, c7, c9, c11\n- r1: c0, c4, c6, c7\n- r0: c2, c6, c11\n\n**Del 1 (bare update).** Du trenger ruter med vegg i nord, sør og vest og åpent i øst. Bare tre passer:\n- (r0, c0): kanten i sør og vest, vegg (r1, c0) i nord\n- (r3, c0): kanten i nord og vest, vegg (r2, c0) i sør\n- (r0, c7): kanten i sør, vegg (r0, c6) i vest og (r1, c7) i nord\n\n**Del 2 (predict, så update).** Right flytter alle tre kandidatene ett steg øst: {(r0, c1), (r3, c1), (r0, c8)}. P2 = {North, South, NoWest, NoEast}. (r0, c1) og (r0, c8) har åpent mot nord, (r1, c1) og (r1, c8), og faller bort. Bare (r3, c1) passer: kant i nord, vegg (r2, c1) i sør, åpent i vest og øst.\n\n**Del 3.** «Right» flytter nå roboten mot vest.\n- 1a: Alle tre rutene i S1 har vegg i vest. Fasiten antar at roboten blir stående og får samme percept, så S = S1.\n- 1b: Roboten vet ikke selv at den står i (r2, c3). Den havner i (r2, c2) og sanser {NoNorth, NoSouth, West, NoEast}. Bare to ruter gir den percepten: (r2, c2) og (r1, c8). Begge har vegg i vest og åpent i nord, sør og øst.\n\nVanlige feil: å gjøre bare update på hele labyrinten i del 2 (gir for mange ruter), og å bytte rad og kolonne. Her er r0 nederst.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 7.*"
+  },
+  {
+   "t": "Eksamen 2024, Q2 (4 p): hvilket utsagn er usant?",
+   "d": "**Which of the following sentences is FALSE?**\n\n**Select one alternative:**\n\n- A. In nondeterministic environments agent can apply AND-OR search to generate adversive plans\n- B. Consider that our simple vacuum cleaner has a suction mechanism that doesn’t suck properly. This is then a fully observable and nondeterministic environment\n- C. “Proof by refutation” can also be called proof by contradiction\n- D. A sentence is “satisfiable” if it is true in some models\n- E. Generalized Modus Ponens is complete for definite clauses\n- F. When the environment is partially observable, the belief state represents the set of possible states that the agent might be in.\n- G. Agent functions map the percepts to actions\n\nMaximum marks: 4",
+   "f": [
+    [
+     "Usant utsagn (bokstav)",
+     "text"
+    ],
+    [
+     "Begrunnelse",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Usant utsagn (bokstav)": [
+      "A",
+      "B"
+     ]
+    },
+    "merk": "Fasiten 2024 godtok både A og B. A er usann fordi AND-OR search gir contingency plans, ikke «adversive plans». B ble også godtatt fordi «our» vacuum cleaner kunne leses som agenten uten lokasjonssensor i Q1, og da er miljøet partially observable.",
+    "kilde": "2024Q&A.docx, Q2 – Mixture of chapters"
+   },
+   "fasit": "**Usant utsagn: A.** Fasiten godtok også B.\n\n**Begrunnelse:** AND-OR search i nondeterministic environments gir *contingency plans* (conditional plans, et tre med if-then-else), ikke «adversive plans».\n\n- **A** er usann. Riktig begrep er contingency plan.\n- **B** er sann slik den står. En støvsuger som ikke suger skikkelig, er bokas erratic vacuum world, som er fully observable og nondeterministic. Fasiten godtok likevel B, fordi «our» vacuum cleaner kunne leses som agenten i Q1 uten lokasjonssensor. Da er miljøet partially observable.\n- **C** er sann: proof by refutation er det samme som proof by contradiction (vis at KB ∧ ¬α er unsatisfiable).\n- **D** er sann: en setning er satisfiable hvis den er sann i minst én modell.\n- **E** er sann: Generalized Modus Ponens (forward og backward chaining) er complete for definite clauses.\n- **F** er sann: en belief state er mengden fysiske tilstander agenten kan være i.\n- **G** regnes som sann. Strengt tatt mapper agentfunksjonen en percept sequence til en handling, og fasiten nevner at ordlyden kan forvirre.\n\n*Kilde: løsningsforslaget til eksamen 2024, Q2.*"
+  },
+  {
+   "t": "Eksamen 2023, oppgave 1 (short questions): partially observable mot simple reflex",
+   "d": "This question is about the environment and agent matching. To behave intelligently in a partially observable environment, in which respects the agent should be different from a simple reflex agent?\n\n*Merknad:* Poeng for de enkelte kortspørsmålene er ikke oppgitt.",
+   "f": [
+    [
+     "Svar",
+     "area"
+    ]
+   ],
+   "fasit": "**Agenten trenger hukommelse (internal state) og en modell av verden, slik at den kan holde styr på en belief state i stedet for å reagere bare på nåværende percept.**\n\nEn simple reflex agent velger handling med condition-action rules ut fra nåværende percept alene. I et partially observable miljø bestemmer ikke percepten tilstanden: to ulike tilstander kan se like ut og kreve ulike handlinger. Agenten må derfor være model-based. Den lagrer det den har sett, har en transition model (hvordan verden endrer seg og hva handlingene gjør) og en sensor model, og oppdaterer en belief state (mengden mulige tilstander) med predict og update. Fasiten sier det slik: agenten trenger hukommelse, og overgangsfunksjonen virker på belief states, ikke på enkelttilstander.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 1 (short questions).*"
+  },
+  {
+   "t": "Eksamen 2025, oppgave 11 b) (3 p): classical og sensorless planning",
+   "d": "**b)** Describe briefly **classical planning** and **sensorless planning** and highlight the main differences between them. (3 pts.)\n\n*Merknad:* Del a (2 p) handler om High-Level Actions i hierarchical planning og er ikke med her.",
+   "f": [
+    [
+     "b) Classical planning",
+     "text"
+    ],
+    [
+     "b) Sensorless planning",
+     "text"
+    ],
+    [
+     "b) De viktigste forskjellene",
+     "area"
+    ]
+   ],
+   "fasit": "**Classical planning:** Miljøet er fully observable, deterministic, static og discrete. Agenten kjenner starttilstanden og hva hver handling gjør. Planen er en handlingssekvens som søkes i tilstandsrommet (state space), under closed-world assumption: det som ikke står i tilstanden, er usant.\n\n**Sensorless (conformant) planning:** Agenten får ingen observasjoner under utførelsen og kjenner ikke nødvendigvis starttilstanden. Den planlegger derfor over belief states, mengder av mulige tilstander. Planen er fortsatt en sekvens, uten if-setninger, men den må nå målet fra *alle* tilstandene i belief state. Agenten tvinger (coerces) verden inn i måltilstanden.\n\n**De viktigste forskjellene** (fasiten):\n- **Observability:** fully observable mot ingen observasjoner.\n- **World model:** closed world mot open world. I sensorless planning er en fluent som ikke er nevnt, ukjent, ikke usann.\n- **Planning space:** state space mot belief space. En plan må virke for én kjent tilstand mot for hele mengden.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 11 b.*"
+  },
+  {
+   "t": "Sensorless med erratic Suck",
+   "d": "Støvsugerverdenen har åtte tilstander. Roboten står til venstre (L) eller høyre (R), og hver rute er skitten eller ren:\n\n| Tilstand | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |\n|---|---|---|---|---|---|---|---|---|\n| Robot | L | R | L | R | L | R | L | R |\n| Venstre rute | skitten | skitten | skitten | skitten | ren | ren | ren | ren |\n| Høyre rute | skitten | skitten | ren | ren | skitten | skitten | ren | ren |\n\nMål: 7 og 8 (begge rutene rene).\n\nI *erratic vacuum world* er Right og Left deterministiske, men Suck er det ikke. Suck på en skitten rute renser den ruta og noen ganger naboruta også. Suck på en ren rute legger noen ganger igjen skitt.\n\nAgenten er sensorless og starter i belief state {1, 3}. Hva er PREDICT etter Suck, og hva etter Suck, Right?",
+   "f": [
+    [
+     "Etter Suck",
+     "text",
+     "{ … }"
+    ],
+    [
+     "Etter Suck, Right",
+     "text",
+     "{ … }"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Etter Suck": [
+      "{5, 7}"
+     ],
+     "Etter Suck, Right": [
+      "{6, 8}"
+     ]
+    },
+    "kilde": "videoer/notater/e05-usikre-miljoer.md, Fasit Øv selv 5"
+   },
+   "fasit": "**Etter Suck: {5, 7}.**\n\n**Etter Suck, Right: {6, 8}.**\n\nMed ikke-deterministiske handlinger tar PREDICT unionen av alle mulige utfall:\n\nPREDICT({1, 3}, Suck) = RESULTS(1, Suck) ∪ RESULTS(3, Suck) = {5, 7} ∪ {7} = {5, 7}\n\n- Tilstand 1 (robot i L, begge rutene skitne): Suck renser venstre rute (5), og noen ganger høyre rute også (7).\n- Tilstand 3 (robot i L, bare venstre skitten): Suck renser venstre rute (7).\n\nRight er deterministisk: 5 → 6 og 7 → 8, så PREDICT({5, 7}, Right) = {6, 8}. Det er ikke et mål ennå, siden høyre rute kan være skitten i 6.\n\nVanlig feil: å ta bare ett av utfallene til Suck. Prediction kan gjøre mengden større, mens update bare kan fjerne tilstander.\n\n*Kilde: notatet til E05, Fasit Øv selv 5.*"
+  },
+  {
+   "t": "Slippery vacuum world og cyclic plan",
+   "d": "Støvsugerverdenen har åtte tilstander. Roboten står til venstre (L) eller høyre (R), og hver rute er skitten eller ren:\n\n| Tilstand | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |\n|---|---|---|---|---|---|---|---|---|\n| Robot | L | R | L | R | L | R | L | R |\n| Venstre rute | skitten | skitten | skitten | skitten | ren | ren | ren | ren |\n| Høyre rute | skitten | skitten | ren | ren | skitten | skitten | ren | ren |\n\nMål: 7 og 8 (begge rutene rene).\n\nI *slippery vacuum world* kan Right og Left glippe, slik at roboten blir stående der den er. Suck er deterministisk.\n\nHvorfor finner AND-OR-SEARCH ingen plan fra tilstand 1? Skriv en cyclic plan.",
+   "f": [
+    [
+     "Hvorfor finner AND-OR-SEARCH ingen plan fra 1?",
+     "area"
+    ],
+    [
+     "Cyclic plan",
+     "text",
+     "[ … ]"
+    ]
+   ],
+   "fasit": "**Hvorfor ingen plan:** Fra 1 gir Right {1, 2} og Left {1}, begge med 1 på stien. Bare Suck fører videre, til 5. Fra 5 har hver handling et utfall som allerede står på stien: Suck og Left gir 5, og Right gir {5, 6}. OR-SEARCH returnerer failure på sykler, og en AND-node feiler hvis bare ett utfall feiler. Det finnes derfor ingen asyklisk plan.\n\n**Cyclic plan:** `[Suck, L1: Right, if State = 5 then L1 else Suck]`, eller `[Suck, while State = 5 do Right, Suck]`.\n\nAND-OR-SEARCH fra 1 med handlingsrekkefølgen Suck, Right, Left:\n\n| Kall | Hva skjer |\n|---|---|\n| OR(1), sti [ ] | Suck → AND {5} |\n| OR(5), sti [1] | Suck → {5}: 5 står på stien, failure. Right → {5, 6}: utfallet 5 står på stien, så AND-noden feiler. Left → {5}: failure. OR(5) feiler. |\n| OR(1), neste handling | Right → {1, 2}: 1 står på stien, failure. Left → {1}: failure. |\n\nAlle grener feiler, og AND-OR-SEARCH returnerer failure.\n\nDen sykliske planen prøver Right på nytt til roboten faktisk har flyttet seg. Den virker hvis glippen er tilfeldig, slik at Right lykkes før eller senere. Er hjulet ødelagt, slik at Right aldri lykkes, må problemet modelleres annerledes.\n\nVanlig feil: å tro at failure på en sykel betyr at tilstanden er uløselig. Det betyr bare at det ikke finnes noen asyklisk plan.\n\n*Kilde: notatet til E05, Fasit Øv selv 6.*"
+  }
+ ]
+}

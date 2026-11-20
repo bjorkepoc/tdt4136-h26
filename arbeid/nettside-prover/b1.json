@@ -1,0 +1,588 @@
+{
+ "id": "b1",
+ "ep": "B1",
+ "tittel": "Breddesett 1",
+ "kilde": "Egen prøveeksamen i 2025-formatet. Alle objektive svar er regnet to ganger: med motoren i nettside-algo og med egne skript eller for hånd.",
+ "om": "**Examination paper for TDT4136 Introduction to Artificial Intelligence**\n\n**Practice exam B1 (breadth set 1)**\n\nTime: 4 hours\n\nPermitted examination support material: D: No printed or hand-written support material is allowed. A specific basic calculator is allowed.\n\n**OTHER INFORMATION**\n\nThere are 13 questions in this exam. The first 4 are multiple choice questions. For questions about logic, there is a 'Formula Sheet' at the very end of the exam, after all the questions.\n\nRead the questions carefully and make your own assumptions. In your answers, explain clearly what assumptions you have made and how you have understood or limited the assignment.\n\n**SPECIFIC INFORMATION FOR YOUR COURSE**\n\nPaper drawings: For question 9 (Forward Chaining) and 10 (Resolution Inference Algorithm) you can answer on handwritten sheets. Other questions are answered in the answer fields.\n\nWeighting: Weights for questions and sub-questions are given in each question.\n\n---\n\n*Norsk:* Dette er et øvingssett vi har laget i formatet fra eksamen 2025, ikke en ekte eksamen. Breddesett 1 tar temaer som er forelest i 2026, men som ikke kom i 2025: Turing-testen og AI-historie, AND-OR-søk, globale constraints, regret matching, problemformulering, 8-puzzle-heuristikker, Sudoku med AC-3, MCTS, forward chaining i PL, oversetting til FOL med resolusjon, regresjon, CYK med PCFG, kategorier og målinger, disability og qualia.\n\n<details><summary>Formula sheet (appendix)</summary><img class=\"fig\" src=\"nettside-figurer/e14-2025-formelark.svg\" alt=\"Formelark\"></details>",
+ "intro": "Flervalg (1–4) og svar med ett objektivt svar kan sjekkes med «Sjekk» etter «Lever». Skriv lister med mellomrom eller komma, som i plassholderne. Tekstsvar rettes mot fasiten under hver oppgave.",
+ "tasks": [
+  {
+   "t": "Oppgave 1 (5 p): Foundations and History of AI",
+   "d": "Which of the following statements about the Turing test and the history and foundations of AI is **correct**?\n\n**Select one alternative:**\n\n- A. The Turing test is the standard example of the \"thinking humanly\" approach to AI, since it compares the machine's reasoning steps with those of a human.\n- B. The physical symbol system hypothesis, which says that intelligence depends on the material it is made of, was formulated by John Searle.\n- C. To pass the *total* Turing test, a computer needs, in addition to natural language processing, knowledge representation, automated reasoning and machine learning, also computer vision and speech recognition to perceive the world, and robotics to manipulate objects and move about.\n- D. The name \"Artificial Intelligence\" was adopted at the Dartmouth meeting in 1943, the same year as McCulloch and Pitts' Boolean circuit model of the brain.\n- E. The term \"AI winter\" refers to the years 1966–74, when the expert systems industry collapsed.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "C"
+     ]
+    },
+    "merk": "C: total Turing test legger til computer vision, speech recognition og robotics. A gjelder acting humanly, B er Newell og Simon, D er 1956, og AI winter er 1988–93.",
+    "kilde": "L1 (historie og Turing-test) og boka 1.1.1, kontrollert for hånd."
+   },
+   "fasit": "**Alternativ: C**\n\n- **A – usant.** Turing-testen er eksempelet på *acting humanly*: den måler oppførsel, ikke tankegang. *Thinking humanly* er cognitive modelling, der programmets resonnering sammenlignes med menneskers (Newell og Simons GPS).\n- **B – usant.** *Physical symbol system hypothesis* er Newell og Simons. Den sier at intelligens er *substrate neutral*: et fysisk symbolsystem har nødvendige og tilstrekkelige midler for generell intelligent handling. Searle mener det motsatte, at intelligens er *substrate dependent*.\n- **C – sant.** Den vanlige Turing-testen krever NLP, knowledge representation, automated reasoning og machine learning. *Total Turing test* krever samhandling med omverdenen, og dermed også computer vision og speech recognition, pluss robotics (L1, boka 1.1.1).\n- **D – usant.** Navnet ble tatt i bruk på Dartmouth-møtet i 1956. 1943 er året for McCulloch og Pitts' Boolean circuit model of the brain.\n- **E – usant.** 1966–74 var skuffelsen da AI oppdaget computational complexity og forskningen på nevrale nett nesten forsvant. «AI winter» er 1988–93, da expert systems-industrien sprakk etter boomen 1980–88.\n\nVanlig feil: å blande acting humanly og thinking humanly. Turing-testen ser bare på hva maskinen gjør.\n\n*Kilde: egen oppgave. Fakta fra L1 (historie, Turing-testen, substrate neutral og dependent) og boka 1.1.1.*"
+  },
+  {
+   "t": "Oppgave 2 (5 p): AND-OR Search",
+   "d": "A robot acts in a nondeterministic, fully observable environment with the states S, A, B, C and the goal state G. In every non-goal state the actions *a* and *b* can be used. RESULTS(s, action) is the set of possible outcome states:\n\n| s | RESULTS(s, a) | RESULTS(s, b) |\n|---|---|---|\n| S | {A, B} | {G} |\n| A | {G} | {B} |\n| B | {S, C} | {G, A} |\n| C | {C} | {G} |\n\nAND-OR-SEARCH (Fig. 4.11) is run from S. OR-SEARCH tries the actions in the order *a*, *b* and returns failure if the state is already on the path. AND-SEARCH handles the outcome states in the order listed in the table and writes its plan as [if State = s<sub>1</sub> then plan<sub>1</sub> else … plan<sub>n</sub>].\n\nWhich plan does AND-OR-SEARCH return?\n\n**Select one alternative:**\n\n- A. [b]\n- B. failure, since action a in state B can lead back to S (a cycle)\n- C. [a, if State = A then [a] else [b, a]]\n- D. [a, if State = A then [a] else [b, if State = G then [] else [a]]]",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C eller D"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "D"
+     ]
+    },
+    "merk": "D: a lykkes i S. I B gir a en sykel (S på stien), så OR-SEARCH prøver b, og AND-SEARCH lager en plan for både G og A.",
+    "kilde": "Eget Python-skript etter Fig. 4.11 og håndsporing."
+   },
+   "fasit": "**Alternativ: D**\n\nAND-OR-SEARCH er et rekursivt dybde først-søk. Sporing (stien står med siste tilstand først, som i Fig. 4.11):\n\n| Kall | Hva skjer |\n|---|---|\n| OR(S, []) | prøver *a* → AND-SEARCH over {A, B} |\n| OR(A, [S]) | prøver *a* → {G}, og OR(G) er mål → []. Planen for A er [a] |\n| OR(B, [S]) | prøver *a* → AND-SEARCH over {S, C} |\n| OR(S, [B, S]) | S står på stien → failure. AND-SEARCH gir opp med en gang, så C blir aldri undersøkt |\n| OR(B, [S]) | prøver *b* → AND-SEARCH over {G, A} |\n| OR(G, [B, S]) | mål → [] |\n| OR(A, [B, S]) | *a* → {G} → [a] |\n\nPlanen for B blir [b, if State = G then [] else [a]], og hele planen [a, if State = A then [a] else [b, if State = G then [] else [a]]].\n\n- **A – feil.** [b] er en kortere løsning, men AND-OR-SEARCH returnerer den første planen den finner, ikke den korteste. *a* prøves før *b* i S og lykkes. Med rekkefølgen *b*, *a* ville svaret blitt [b].\n- **B – feil.** Failure på en sykel gjelder bare den ene grenen (*a* i B). OR-SEARCH prøver neste handling, og *b* lykkes.\n- **C – feil.** *b* i B kan gi både G og A, så AND-SEARCH lager en plan for hvert utfall. I G er planen tom. [b, a] ville utført *a* også når roboten allerede står i målet.\n- **D – riktig.**\n\nVanlig feil: å tro at failure ved en løkke betyr at problemet er uløselig (E05, «Eksamensfeller»).\n\n*Kilde: egen oppgave. Sporet for hånd og med eget Python-skript etter Fig. 4.11. Motorens AND-OR-søk tar bare støvsugerverdenen.*"
+  },
+  {
+   "t": "Oppgave 3 (5 p): Global Constraints",
+   "d": "A CSP has the variables P<sub>1</sub>, P<sub>2</sub>, P<sub>3</sub>, P<sub>4</sub> with the domains D<sub>1</sub> = {1, 4, 5}, D<sub>2</sub> = {2, 3}, D<sub>3</sub> = {5, 6} and D<sub>4</sub> = {1, 6}, and two global constraints:\n\n- Atmost(12, P<sub>1</sub>, P<sub>2</sub>, P<sub>3</sub>, P<sub>4</sub>): the sum of the four values is at most 12.\n- Alldiff(P<sub>1</sub>, P<sub>2</sub>, P<sub>3</sub>, P<sub>4</sub>).\n\nPropagate the constraints as described in the book (Section 5.2.5). For Atmost, delete the maximum value of a domain whenever it is inconsistent with the minimum values of the other domains. For Alldiff, delete the value of every singleton domain from the other domains. Repeat until no domain changes. What is the result?\n\n**Select one alternative:**\n\n- A. D<sub>1</sub> = {1, 4}, D<sub>2</sub> = {2, 3}, D<sub>3</sub> = {5, 6}, D<sub>4</sub> = {1}\n- B. D<sub>1</sub> = {4}, D<sub>2</sub> = {2}, D<sub>3</sub> = {5}, D<sub>4</sub> = {1}\n- C. D<sub>1</sub> = {4}, D<sub>2</sub> = {2, 3}, D<sub>3</sub> = {5, 6}, D<sub>4</sub> = {1}\n- D. An inconsistency is detected at once, since the sum of the maximum values, 5 + 3 + 6 + 6 = 20, exceeds 12.\n- E. An inconsistency is detected, since 12 − (1 + 2 + 5 + 1) = 3 is smaller than both values in D<sub>3</sub>, so D<sub>3</sub> becomes empty.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "B"
+     ]
+    },
+    "merk": "B: Atmost stryker 5 fra D1 og 6 fra D4, Alldiff gir D1 = {4}, og da er slakken 0, så Atmost stryker 3 fra D2 og 6 fra D3.",
+    "kilde": "Eget Python-skript og håndregning."
+   },
+   "fasit": "**Alternativ: B**\n\n1. **Atmost.** Summen av minimumene er 1 + 2 + 5 + 1 = 9 ≤ 12, så ingen inkonsistens. En verdi v i D<sub>i</sub> er lovlig bare hvis v pluss minimumene til de andre er ≤ 12:\n   - D<sub>1</sub>: 5 + 2 + 5 + 1 = 13 > 12, så 5 strykes. 4 + 8 = 12 er lov. D<sub>1</sub> = {1, 4}.\n   - D<sub>2</sub>: 3 + 1 + 5 + 1 = 10, og D<sub>3</sub>: 6 + 1 + 2 + 1 = 10. Ingen endring.\n   - D<sub>4</sub>: 6 + 1 + 2 + 5 = 14 > 12, så 6 strykes. D<sub>4</sub> = {1}.\n2. **Alldiff.** D<sub>4</sub> = {1} er singleton, så 1 strykes fra de andre: D<sub>1</sub> = {4}. Ingen andre domener har 4.\n3. **Atmost igjen.** Minimumene er nå 4 + 2 + 5 + 1 = 12, så det er ingen slakk: D<sub>2</sub> mister 3 (3 + 4 + 5 + 1 = 13), og D<sub>3</sub> mister 6 (6 + 4 + 2 + 1 = 13).\n4. **Alldiff** endrer ingenting. Ferdig: P = (4, 2, 5, 1), den eneste løsningen (sum 12).\n\n- **A – feil.** Resultatet etter bare første Atmost-runde. Alldiff og den nye Atmost-runden mangler.\n- **B – riktig.**\n- **C – feil.** Stopper etter Alldiff. Når D<sub>1</sub> krymper, øker summen av minimumene, og Atmost må kjøres på nytt.\n- **D – feil.** Inkonsistens oppdages med summen av *minimumene* (9 ≤ 12), ikke maksimumene. Maksimumsummen 20 sier bare at ikke alle kombinasjoner er lovlige.\n- **E – feil.** Grensen for D<sub>3</sub> er 12 minus minimumene til de *andre* domenene, 12 − (1 + 2 + 1) = 8. Her er D<sub>3</sub>s eget minimum trukket fra i tillegg.\n\n*Kilde: egen oppgave. Regnet for hånd og med eget Python-skript (propagering og opptelling av alle løsninger).*"
+  },
+  {
+   "t": "Oppgave 4 (5 p): Regret Matching",
+   "d": "Two players play the same game in several rounds. The table shows the utilities of player 1 (P1), who has the actions A, B and C, against the actions X, Y and Z of player 2 (P2):\n\n| P1 | X | Y | Z |\n|---|---|---|---|\n| A | 0 | 2 | 1 |\n| B | 2 | −2 | 0 |\n| C | 2 | 2 | 3 |\n\nP1 uses regret matching. After each round, the regret for an action is the utility P1 would have got with that action against P2's actual action, minus the utility P1 actually got. The regrets are summed over all rounds so far. In the next round, P1 chooses each action with probability proportional to its summed regret, where a negative sum counts as 0. In round 1, P1 played uniformly at random.\n\nThe first three rounds were (B, Y), (C, X) and (A, Z), where the first letter is P1's action. Which mixed strategy (P(A), P(B), P(C)) does P1 use in round 4?\n\n**Select one alternative:**\n\n- A. (1/3, 0, 2/3)\n- B. (3/10, 0, 7/10)\n- C. (2/9, 1/9, 2/3)\n- D. (0, 0, 1)\n- E. (1/4, 0, 3/4)",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "E"
+     ]
+    },
+    "merk": "E: summert regret (2, −1, 6), negative til 0 gir (2, 0, 6), normalisert (1/4, 0, 3/4).",
+    "kilde": "Eget Node-skript og håndregning etter L8."
+   },
+   "fasit": "**Alternativ: E**\n\nRegret for handling a i en runde = u(a, P2s handling) − u(det P1 spilte, P2s handling).\n\n| Runde | P1, P2 | u(A), u(B), u(C) | P1 fikk | Regret (A, B, C) | Summert | Strategi neste runde |\n|---|---|---|---|---|---|---|\n| 1 | B, Y | 2, −2, 2 | −2 | (4, 0, 4) | (4, 0, 4) | (1/2, 0, 1/2) |\n| 2 | C, X | 0, 2, 2 | 2 | (−2, 0, 0) | (2, 0, 4) | (1/3, 0, 2/3) |\n| 3 | A, Z | 1, 0, 3 | 1 | (0, −1, 2) | (2, −1, 6) | (2/8, 0, 6/8) |\n\nNegative summer settes til 0: (2, −1, 6) → (2, 0, 6), normalisert (1/4, 0, 3/4). Hvert trekk P1 gjorde, hadde positiv sannsynlighet da det ble spilt.\n\n- **A – feil.** (1/3, 0, 2/3) er strategien i runde 3. Regreten fra runde 3 mangler.\n- **B – feil.** Summerer bare nytten av hver handling, (3, 0, 7), uten å trekke fra det P1 faktisk fikk.\n- **C – feil.** Bruker absoluttverdien av −1 i stedet for å sette negative summer til 0.\n- **D – feil.** Velger handlingen med størst summert regret, eller bruker bare regreten fra siste runde. Oppgaven sier proporsjonal med summen.\n- **E – riktig.**\n\nVanlig feil: feil fortegn, u(spilt) − u(alternativ). Da får B størst sum, og svaret blir (0, 1, 0).\n\n*Kilde: egen oppgave etter L8 (regret matching, eksempelet (−1, 1, 2) → (0, 1/3, 2/3)). Regnet for hånd og med eget Node-skript. Motoren har ikke regret matching.*"
+  },
+  {
+   "t": "Oppgave 5 (8 p): Problem Formulation and Uninformed Search",
+   "d": "Four lamps L1, L2, L3 and L4 stand in a row. Each lamp is either on (1) or off (0). There are four buttons, and pressing button *i* toggles lamp *i* and its immediate neighbours:\n\n| Button | Toggles |\n|---|---|\n| Press1 | L1, L2 |\n| Press2 | L1, L2, L3 |\n| Press3 | L2, L3, L4 |\n| Press4 | L3, L4 |\n\nAt the start all lamps are off. The goal is that L1 is on and all other lamps are off. Every press costs 1. Write a state as the bit string L1L2L3L4, for example 0110 (L2 and L3 on).\n\n**a)** Formulate the problem as a search problem: states, initial state, actions, transition model, goal test and action cost. How many states are there, and how many of them can be reached from the initial state? (3 pts.)\n\n**b)** Run breadth-first search (graph search, goal test when a node is generated, as in Fig. 3.9) from the initial state. Tie breaking: the children of a node are generated in increasing order of their bit strings read as binary numbers (0011 before 0111 before 1100). Give the order in which the nodes are expanded (the goal in parentheses), the solution path and its cost. (5 pts.)",
+   "f": [
+    [
+     "a) Formulering: states, initial state, actions, transition model, goal test, action cost",
+     "area",
+     ""
+    ],
+    [
+     "a) Antall tilstander og antall nåbare fra start",
+     "text",
+     "antall, antall"
+    ],
+    [
+     "b) Utvidelsesrekkefølge (målet i parentes)",
+     "text",
+     "0000, …"
+    ],
+    [
+     "b) Løsningsstien (tilstander)",
+     "text",
+     "0000 → …"
+    ],
+    [
+     "b) Kostnad",
+     "text",
+     "tall"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Antall tilstander og antall nåbare fra start": [
+      "16 16",
+      "16 og 16",
+      "16 and 16"
+     ],
+     "b) Utvidelsesrekkefølge (målet i parentes)": [
+      "0000 0011 0111 1100 1110 0100 (1000)",
+      "0000 0011 0111 1100 1110 0100"
+     ],
+     "b) Løsningsstien (tilstander)": [
+      "0000 0011 0100 1000"
+     ],
+     "b) Kostnad": [
+      "3"
+     ]
+    },
+    "merk": "BFS med early goal test stopper når 1000 genereres fra 0100. Stien er Press4, Press3, Press1.",
+    "kilde": "Motorens bfs (nettside-algo) og eget Python-skript."
+   },
+   "fasit": "**a) 16 tilstander, alle 16 nåbare.**\n\n**b) Utvidelsesrekkefølge: 0000, 0011, 0111, 1100, 1110, 0100, (1000).**\n\n**b) Sti: 0000 → 0011 → 0100 → 1000 (Press4, Press3, Press1). Kostnad 3.**\n\n**a)** (3 p)\n- *States:* bitstrengen L1L2L3L4, 2<sup>4</sup> = 16 tilstander.\n- *Initial state:* 0000.\n- *Actions:* Press1, Press2, Press3 og Press4, lovlige i alle tilstander.\n- *Transition model:* RESULT(s, Press*i*) = s XOR maske<sub>i</sub>, med maskene 1100, 1110, 0111 og 0011.\n- *Goal test:* s = 1000.\n- *Action cost:* 1 per trykk.\n- Alle 16 er nåbare: de fire maskene er lineært uavhengige, så hver tilstand er XOR av en delmengde av dem (1000 = 0011 XOR 0111 XOR 1100). BFS når også alle 16.\n\nPoeng: 2 p for formuleringen, 1 p for 16 og 16.\n\n**b)** (5 p) Målet testes når barnet genereres. Barna står sortert som binærtall.\n\n| Ekspanderer | Barna (sortert) | Nye i frontier | Frontier etterpå |\n|---|---|---|---|\n| 0000 | 0011, 0111, 1100, 1110 | alle fire | 0011, 0111, 1100, 1110 |\n| 0011 | 0000, 0100, 1101, 1111 | 0100, 1101, 1111 | 0111, 1100, 1110, 0100, 1101, 1111 |\n| 0111 | 0000, 0100, 1001, 1011 | 1001, 1011 | 1100, 1110, 0100, 1101, 1111, 1001, 1011 |\n| 1100 | 0000, 0010, 1011, 1111 | 0010 | 1110, 0100, 1101, 1111, 1001, 1011, 0010 |\n| 1110 | 0000, 0010, 1001, 1101 | ingen | 0100, 1101, 1111, 1001, 1011, 0010 |\n| 0100 | 0011, 0111, 1000, … | 1000 er målet: stopp | |\n\nStien følges bakover: 1000 kom fra 0100 (Press1), 0100 fra 0011 (Press3) og 0011 fra 0000 (Press4). Kostnad 3. BFS er optimal her fordi alle trykk koster det samme.\n\nPoeng: 3 p for utvidelsesrekkefølgen med riktig reached, 1 p for stien, 1 p for kostnaden.\n\nVanlige feil:\n- Late goal test gir også 1101, 1111, 1001, 1011 og 0010 før 1000, altså 11 utvidelser.\n- Barna i knapperekkefølge (Press1 først) gir 0000, 1100, 1110, 0111, 0011, 0010, 1011, (1000) og stien 0000 → 1100 → 1011 → 1000.\n\n*Kilde: egen oppgave. Regnet med motorens BFS (nettside-algo, de 16 tilstandene som graf) og med eget Python-skript.*"
+  },
+  {
+   "t": "Oppgave 6 (12 p): Heuristics and A* Search",
+   "d": "Consider the 8-puzzle with the start state S and the goal state G below (_ is the blank; G is the goal used in the book).\n\n<table><tr><th>S</th><th></th><th>G</th></tr><tr><td><pre>_ 1 2\n3 6 5\n7 4 8</pre></td><td>&nbsp;&nbsp;&nbsp;</td><td><pre>_ 1 2\n3 4 5\n6 7 8</pre></td></tr></table>\n\nh<sub>1</sub> is the number of misplaced tiles (the blank is not counted), and h<sub>2</sub> is the sum of the Manhattan distances of the tiles from their goal positions.\n\n**a)** Compute h<sub>1</sub>(S) and h<sub>2</sub>(S). (2 pts.)\n\n**b)** Both h<sub>1</sub> and h<sub>2</sub> are exact solution costs of relaxed versions of the 8-puzzle. Describe the relaxed problem for each of them, and explain why this makes them admissible and why h<sub>2</sub> dominates h<sub>1</sub>. (3 pts.)\n\n**c)** The optimal solution from S costs 6. Which of h<sub>3</sub> = max(h<sub>1</sub>, h<sub>2</sub>), h<sub>4</sub> = h<sub>1</sub> + h<sub>2</sub> and h<sub>5</sub> = (h<sub>1</sub> + h<sub>2</sub>)/2 are admissible? Justify briefly. (2 pts.)\n\n**d)** Run A\\* (graph search) from S with h<sub>2</sub>. The actions move the blank and are generated in the order Up, Down, Left, Right; every move costs 1. Tie breaking: among nodes with equal f, the node generated first is expanded first. Write a state row by row, for example `312/_65/748`. For every expanded node give g, h and f. How many nodes are expanded (not counting the goal), and what is the solution? (5 pts.)",
+   "f": [
+    [
+     "a) h1(S) og h2(S)",
+     "text",
+     "h1 = …, h2 = …"
+    ],
+    [
+     "b) Relakserte problemer, admissible og dominans",
+     "area",
+     ""
+    ],
+    [
+     "c) Hvilke av h3, h4 og h5 er admissible?",
+     "text",
+     "{…}"
+    ],
+    [
+     "c) Begrunnelse",
+     "area",
+     ""
+    ],
+    [
+     "d) Ekspanderte noder med g, h og f",
+     "area",
+     "_12/365/748: g = 0, h = 4, f = 4\n…"
+    ],
+    [
+     "d) Antall ekspanderte noder (uten målet)",
+     "text",
+     "tall"
+    ],
+    [
+     "d) Løsningen (trekk med blanken)",
+     "text",
+     "trekk, trekk, …"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) h1(S) og h2(S)": [
+      "3 4",
+      "h1 = 3, h2 = 4",
+      "h1=3, h2=4"
+     ],
+     "c) Hvilke av h3, h4 og h5 er admissible?": [
+      "{h3, h5}",
+      "{h3 og h5}",
+      "{h3 and h5}"
+     ],
+     "d) Antall ekspanderte noder (uten målet)": [
+      "7"
+     ],
+     "d) Løsningen (trekk med blanken)": [
+      "Down Right Down Left Up Up"
+     ]
+    },
+    "merk": "h4(S) = 7 > 6 = h*(S). A* med FIFO-likhet ekspanderer også 1_2/365/748 (f = 6), så det blir 7 ekspansjoner.",
+    "kilde": "Motorens astar (nettside-algo) og eget Python-skript; h*(S) med BFS."
+   },
+   "fasit": "**a) h<sub>1</sub>(S) = 3 og h<sub>2</sub>(S) = 4.**\n\n**c) h<sub>3</sub> og h<sub>5</sub> er admissible, h<sub>4</sub> er det ikke.**\n\n**d) 7 ekspanderte noder. Løsning: Down, Right, Down, Left, Up, Up (kostnad 6).**\n\n**a)** (2 p) Feilplasserte brikker: 6, 7 og 4, så h<sub>1</sub> = 3. Manhattan med (rad, kolonne): 6 står i (2, 2) og skal til (3, 1): 2. 7 står i (3, 1) og skal til (3, 2): 1. 4 står i (3, 2) og skal til (2, 2): 1. h<sub>2</sub> = 4.\n\n**b)** (3 p) Regelen er: en brikke kan flyttes fra rute X til rute Y hvis X og Y er naboer og Y er tom.\n- Fjerner vi «Y er tom», kan brikken gå til en nabo selv om den er opptatt. Da trenger hver brikke nøyaktig sin Manhattan-avstand: h<sub>2</sub>.\n- Fjerner vi begge vilkårene, kan en brikke hoppe rett til målruta i ett trekk: h<sub>1</sub>.\n- Det relakserte problemet har alle de gamle trekkene og flere til, så den optimale relakserte løsningen er aldri dyrere enn den ekte. Derfor er h<sub>1</sub> og h<sub>2</sub> admissible (og consistent, fordi de er eksakte kostnader i et problem).\n- Hver feilplassert brikke har Manhattan-avstand minst 1, så h<sub>2</sub>(n) ≥ h<sub>1</sub>(n) for alle n. h<sub>2</sub> dominerer h<sub>1</sub>, og A\\* med h<sub>2</sub> ekspanderer aldri flere noder (bortsett fra likheter).\n\nPoeng: 1 p per relaksering, 1 p for admissible og dominans.\n\n**c)** (2 p)\n- h<sub>3</sub>: maksimum av to admissible heuristikker er admissible, og dominerer begge.\n- h<sub>4</sub>: ikke admissible, fordi h<sub>4</sub>(S) = 3 + 4 = 7 > 6 = h\\*(S).\n- h<sub>5</sub> = (h<sub>1</sub> + h<sub>2</sub>)/2 ≤ max(h<sub>1</sub>, h<sub>2</sub>) ≤ h\\*, så den er admissible.\n\n**d)** (5 p) Barn som allerede er i reached med lik eller lavere g, er utelatt.\n\n| # | Ekspanderer | g | h | f | Nye barn (f) |\n|---|---|---|---|---|---|\n| 1 | `_12/365/748` (S) | 0 | 4 | 4 | Down `312/_65/748` (6), Right `1_2/365/748` (6) |\n| 2 | `312/_65/748` | 1 | 5 | 6 | Down `312/765/_48` (8), Right `312/6_5/748` (6) |\n| 3 | `1_2/365/748` | 1 | 5 | 6 | Down `162/3_5/748` (8), Right `12_/365/748` (8) |\n| 4 | `312/6_5/748` | 2 | 4 | 6 | Up `3_2/615/748` (8), Down `312/645/7_8` (6), Right `312/65_/748` (8) |\n| 5 | `312/645/7_8` | 3 | 3 | 6 | Left `312/645/_78` (6), Right `312/645/78_` (8) |\n| 6 | `312/645/_78` | 4 | 2 | 6 | Up `312/_45/678` (6) |\n| 7 | `312/_45/678` | 5 | 1 | 6 | Up `_12/345/678` (6, målet), Right `312/4_5/678` (8) |\n\nSå tas målet ut med f = 6. Node 3 ekspanderes fordi den ble generert før `312/6_5/748` og har samme f. Ingen node med f = 8 ekspanderes.\n\nPoeng: 3 p for ekspansjonene med g, h og f, 1 p for løsningen og 1 p for antallet.\n\nVanlige feil: å teste målet når det genereres (A\\* tester når noden tas ut), og å bryte likhet på lavest h. Det siste gir 6 ekspansjoner, fordi `1_2/365/748` da hoppes over.\n\n*Kilde: egen oppgave. Regnet med motorens A\\* (nettside-algo, tilstandsrommet ned til dybde 9 som graf) og med eget Python-skript. h\\*(S) = 6 er kontrollert med BFS.*"
+  },
+  {
+   "t": "Oppgave 7 (10 p): Constraint Satisfaction Problems",
+   "d": "A 4×4 Sudoku has rows A–D, columns 1–4 and four 2×2 boxes. Every row, every column and every box must contain the digits 1–4 exactly once. Consider the puzzle below (. is an empty cell):\n\n<table><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th></tr><tr><th>A</th><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr><th>B</th><td>.</td><td>.</td><td>1</td><td>2</td></tr><tr><th>C</th><td>.</td><td>1</td><td>.</td><td>3</td></tr><tr><th>D</th><td>2</td><td>.</td><td>.</td><td>1</td></tr></table>\n\n**a)** For a full 4×4 Sudoku with all 16 cells as variables, how many Alldiff constraints are there? If every Alldiff is replaced by binary ≠ constraints, how many different binary constraints do you get (count each pair of cells once), and how many arcs does AC-3 then start with? (2 pts.)\n\n**b)** Let the six empty cells B1, B2, C1, C3, D2 and D3 be the variables, and remove from each domain {1, 2, 3, 4} the digits already given in the same row, column or box. Give the six domains. (2 pts.)\n\n**c)** Run AC-3 (Fig. 5.3) on the binary ≠ constraints between the six empty cells, starting from the domains in b). The initial queue contains all arcs, sorted alphabetically: (B1, B2), (B1, C1), (B2, B1), (B2, D2), (C1, B1), (C1, C3), (C1, D2), (C3, C1), (C3, D3), (D2, B2), (D2, C1), (D2, D3), (D3, C3), (D3, D2). When D(X<sub>i</sub>) changes, (X<sub>k</sub>, X<sub>i</sub>) is added at the back of the queue for every neighbour X<sub>k</sub> ≠ X<sub>j</sub>, unless it is already in the queue. For every arc that removes a value, give the arc, the removed value and what is added to the queue. Give the final domains, the number of arcs taken from the queue and the value AC-3 returns. (6 pts.)",
+   "f": [
+    [
+     "a) Antall Alldiff, binære ≠-constraints og buer",
+     "text",
+     "…, …, …"
+    ],
+    [
+     "b) Startdomener (B1, B2, C1, C3, D2, D3)",
+     "text",
+     "B1: {…}, B2: {…}, …"
+    ],
+    [
+     "c) AC-3: buene som stryker verdier, og hva som legges i køen",
+     "area",
+     "(X, Y): stryker …, legger til …"
+    ],
+    [
+     "c) Endelige domener (B1, B2, C1, C3, D2, D3)",
+     "text",
+     "B1: {…}, B2: {…}, …"
+    ],
+    [
+     "c) Antall buer tatt ut av køen",
+     "text",
+     "tall"
+    ],
+    [
+     "c) AC-3 returnerer",
+     "text",
+     "true eller false"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Antall Alldiff, binære ≠-constraints og buer": [
+      "12 56 112"
+     ],
+     "b) Startdomener (B1, B2, C1, C3, D2, D3)": [
+      "B1 3 4 B2 3 4 C1 4 C3 2 4 D2 3 4 D3 4",
+      "3 4 3 4 4 2 4 3 4 4"
+     ],
+     "c) Endelige domener (B1, B2, C1, C3, D2, D3)": [
+      "B1 3 B2 4 C1 4 C3 2 D2 3 D3 4",
+      "3 4 4 2 3 4"
+     ],
+     "c) Antall buer tatt ut av køen": [
+      "15"
+     ],
+     "c) AC-3 returnerer": [
+      "true",
+      "sann"
+     ]
+    },
+    "merk": "Strykinger: (B1, C1) tar 4, (B2, B1) tar 3, (C3, C1) tar 4 og (D2, B2) tar 4, som legger (C1, D2) bakerst. 14 + 1 = 15 buer.",
+    "kilde": "Motorens ac-3 (nettside-algo) og eget Python-skript."
+   },
+   "fasit": "**a) 12 Alldiff, 56 binære constraints og 112 buer.**\n\n**b) B1: {3, 4}, B2: {3, 4}, C1: {4}, C3: {2, 4}, D2: {3, 4}, D3: {4}.**\n\n**c) B1 = {3}, B2 = {4}, C1 = {4}, C3 = {2}, D2 = {3}, D3 = {4}. 15 buer tas ut, og AC-3 returnerer true.**\n\n**a)** (2 p) 4 rader + 4 kolonner + 4 bokser = 12 Alldiff. Hver celle har 3 naboer i raden, 3 i kolonnen og 1 til i boksen (den på skrå), altså 7. 16 · 7 / 2 = 56 binære constraints, og hver gir to buer: 112. Den vanligste feilen er 12 · 6 = 72: da telles de 16 parene som deler både rad (eller kolonne) og boks, to ganger.\n\n**b)** (2 p) Gitte sifre som deler rad, kolonne eller boks med cellen:\n\n| Celle | Rad | Kolonne | Boks | Domene |\n|---|---|---|---|---|\n| B1 | 1, 2 | 1, 2 | 1, 2 | {3, 4} |\n| B2 | 1, 2 | 2, 1 | 1, 2 | {3, 4} |\n| C1 | 1, 3 | 1, 2 | 1, 2 | {4} |\n| C3 | 1, 3 | 3, 1 | 3, 1 | {2, 4} |\n| D2 | 2, 1 | 2, 1 | 1, 2 | {3, 4} |\n| D3 | 2, 1 | 3, 1 | 3, 1 | {4} |\n\nConstraints mellom de tomme cellene: B1–B2 (rad og boks), B1–C1 (kolonne), B2–D2 (kolonne), C1–C3 (rad), C1–D2 (boks), C3–D3 (kolonne og boks) og D2–D3 (rad). Det er 7 constraints og 14 buer.\n\n**c)** (6 p)\n\n| # | Bue | Stryker | D(X<sub>i</sub>) etter | Legges i køen |\n|---|---|---|---|---|\n| 1 | (B1, B2) | – | {3, 4} | |\n| 2 | (B1, C1) | 4 | {3} | (B2, B1) står alt i køen |\n| 3 | (B2, B1) | 3 | {4} | (D2, B2) står alt i køen |\n| 4 | (B2, D2) | – | {4} | |\n| 5 | (C1, B1) | – | {4} | |\n| 6 | (C1, C3) | – | {4} | |\n| 7 | (C1, D2) | – | {4} | |\n| 8 | (C3, C1) | 4 | {2} | (D3, C3) står alt i køen |\n| 9 | (C3, D3) | – | {2} | |\n| 10 | (D2, B2) | 4 | {3} | (C1, D2); (D3, D2) står alt i køen |\n| 11 | (D2, C1) | – | {3} | |\n| 12 | (D2, D3) | – | {3} | |\n| 13 | (D3, C3) | – | {4} | |\n| 14 | (D3, D2) | – | {4} | |\n| 15 | (C1, D2) | – | {4} | |\n\nKøen er tom etter 15 buer, ingen domener er tomme, og AC-3 returnerer true. Alle domener har nå én verdi, så her løser AC-3 hele oppgaven:\n\n<table><tr><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr><td>3</td><td>4</td><td>1</td><td>2</td></tr><tr><td>4</td><td>1</td><td>2</td><td>3</td></tr><tr><td>2</td><td>3</td><td>4</td><td>1</td></tr></table>\n\nPoeng: 3 p for de fire strykingene i riktig rekkefølge, 1 p for at (C1, D2) legges inn igjen, 1 p for domenene, 1 p for 15 buer og true.\n\nVanlige feil: å legge inn (X<sub>j</sub>, X<sub>i</sub>) også (samme domener, men flere buer), og å tro at true alltid betyr løst. Her er det løst fordi alle domener ble singletons.\n\n*Kilde: egen oppgave. Regnet med motorens ac-3 (nettside-algo) og med eget Python-skript, som også bekreftet at puslespillet har nøyaktig én løsning.*"
+  },
+  {
+   "t": "Oppgave 8 (10 p): Monte Carlo Tree Search",
+   "d": "The figure shows part of a Monte Carlo search tree for a two-player game between White and Black. The number next to each node is U/N, where N is the number of playouts through the node and U is the number of those playouts won by the player who made the move into the node (as in the book's Fig. 6.10 and L8). At the root R it is Black's turn, so R counts White's wins. A, B and C are Black's moves and count Black's wins; C1 and C2 are White's replies after C and count White's wins. The subtrees below A and B exist but are not shown, since they are not needed.\n\nSELECT follows the child with the highest UCB1(n) = U(n)/N(n) + C · √(ln N(Parent(n)) / N(n)), with C = √2 unless stated otherwise, until it reaches a node without children in the tree.\n\n**a)** Which path does SELECT follow from R? Show the UCB1 values at each level. (4 pts.)\n\n**b)** EXPAND adds a new child D below the selected leaf, and the playout from D is won by Black. Give U/N for R, every node on the path and D after BACK-PROPAGATE. (3 pts.)\n\n**c)** With C = 1 instead of √2, which child of R would SELECT choose? (1 pt.)\n\n**d)** Suppose the time runs out right after the iteration in b). Which move does MCTS return at R, and why is that not the move with the highest win ratio? (2 pts.)",
+   "f": [
+    [
+     "a) Stien SELECT følger",
+     "text",
+     "R → …"
+    ],
+    [
+     "a) UCB1-verdiene på hvert nivå",
+     "area",
+     ""
+    ],
+    [
+     "b) U/N etter back-propagation (R, C, C2, D)",
+     "text",
+     "R: …, C: …, C2: …, D: …"
+    ],
+    [
+     "c) Barnet av R med C = 1",
+     "text",
+     "A, B eller C"
+    ],
+    [
+     "d) Trekket MCTS returnerer",
+     "text",
+     "A, B eller C"
+    ],
+    [
+     "d) Hvorfor ikke høyest vinnerandel?",
+     "area",
+     ""
+    ]
+   ],
+   "g": {
+    "w": 460,
+    "h": 270,
+    "al": "MCTS-treet til oppgave 8",
+    "n": {
+     "R": [
+      230,
+      35,
+      "15/40",
+      44,
+      0
+     ],
+     "A": [
+      80,
+      130,
+      "15/24",
+      0,
+      32
+     ],
+     "B": [
+      230,
+      130,
+      "8/11",
+      0,
+      32
+     ],
+     "C": [
+      370,
+      130,
+      "2/5",
+      38,
+      0
+     ],
+     "C1": [
+      320,
+      225,
+      "1/3",
+      0,
+      32
+     ],
+     "C2": [
+      420,
+      225,
+      "2/2",
+      0,
+      32
+     ]
+    },
+    "e": [
+     [
+      "R",
+      "A",
+      ""
+     ],
+     [
+      "R",
+      "B",
+      ""
+     ],
+     [
+      "R",
+      "C",
+      ""
+     ],
+     [
+      "C",
+      "C1",
+      ""
+     ],
+     [
+      "C",
+      "C2",
+      ""
+     ]
+    ]
+   },
+   "sjekk": {
+    "f": {
+     "a) Stien SELECT følger": [
+      "R C C2"
+     ],
+     "b) U/N etter back-propagation (R, C, C2, D)": [
+      "R 15/41 C 3/6 C2 2/3 D 1/1",
+      "15/41 3/6 2/3 1/1"
+     ],
+     "c) Barnet av R med C = 1": [
+      "B"
+     ],
+     "d) Trekket MCTS returnerer": [
+      "A"
+     ]
+    },
+    "merk": "UCB1 i roten: A 1,179, B 1,546, C 1,615. Under C: C1 1,369, C2 2,269. Black vinner, så R og C2 får bare +1 playout.",
+    "kilde": "Motorens mcts (nettside-algo) med C = √2 og C = 1, og håndregning."
+   },
+   "fasit": "**a) Sti: R → C → C2.**\n\n**b) R 15/41, C 3/6, C2 2/3, D 1/1.**\n\n**c) B.**\n\n**d) A.**\n\n**a)** (4 p) Under R er N = 40 og ln 40 = 3,689. Black velger, og A, B og C teller Blacks seire:\n\n| Barn | U/N | Exploitation | C · √(ln 40 / N) | UCB1 |\n|---|---|---|---|---|\n| A | 15/24 | 0,625 | 0,554 | 1,179 |\n| B | 8/11 | 0,727 | 0,819 | 1,546 |\n| C | 2/5 | 0,400 | 1,215 | **1,615** |\n\nUnder C er N = 5 og ln 5 = 1,609. White velger, og C1 og C2 teller Whites seire:\n\n| Barn | U/N | Exploitation | C · √(ln 5 / N) | UCB1 |\n|---|---|---|---|---|\n| C1 | 1/3 | 0,333 | 1,036 | 1,369 |\n| C2 | 2/2 | 1,000 | 1,269 | **2,269** |\n\nC2 har ingen barn i treet, så SELECT stopper der. Poeng: 2 p per nivå.\n\n**b)** (3 p) D er Blacks trekk og teller Blacks seire. Alle noder på stien får +1 playout, og nodene som teller Blacks seire (C og D), får også +1 seier:\n\n| Node | Teller seire for | Før | Etter |\n|---|---|---|---|\n| R | White | 15/40 | 15/41 |\n| C | Black | 2/5 | 3/6 |\n| C2 | White | 2/2 | 2/3 |\n| D | Black | 0/0 | 1/1 |\n\n**c)** (1 p) Med C = 1 blir UCB1 for A 0,625 + 0,392 = 1,017, for B 0,727 + 0,579 = 1,306 og for C 0,400 + 0,859 = 1,259. B velges: mindre C gir mindre exploration, så vinnerandelen teller mer.\n\n**d)** (2 p) MCTS returnerer trekket med flest playouts: A med 24 (B har 11, C nå 6). B har høyest vinnerandel (8/11 ≈ 0,73), men den bygger på få playouts og er usikker. UCB1 sender flest playouts til trekkene som ser best ut over tid, så N er et mer robust mål enn U/N. L8: «return the move … whose node has highest number of playouts».\n\nVanlige feil:\n- Velge B i roten fordi den har høyest U/N. Da glemmer man exploration-leddet.\n- Regne Blacks andel (1 − U/N) under C. U teller allerede seire for White, som velger der. Med 1 − U/N ville C1 blitt valgt.\n- Gi +1 seier til alle nodene på stien.\n\n*Kilde: egen oppgave. Regnet med motorens mcts (nettside-algo, C = √2 og C = 1, roten teller Whites seire) og for hånd.*"
+  },
+  {
+   "t": "Oppgave 9 (5 p): Forward Chaining",
+   "d": "Consider the propositional Horn knowledge base below. The clauses are numbered 1–6, and A, B and C are facts.\n\n1. A ∧ B ⇒ L\n2. B ∧ C ⇒ M\n3. L ⇒ M\n4. L ∧ M ⇒ P\n5. D ∧ M ⇒ Q\n6. P ∧ A ⇒ Q\n\nFacts: A, B, C\n\nRun PL-FC-ENTAILS? (Fig. 7.15) with the query Q. The agenda is a FIFO queue that initially contains A, B, C in this order. When a symbol p is processed, the clauses with p in the premise are handled in the order 1–6, and a conclusion is added at the back of the agenda when the count of its clause reaches 0.\n\n**a)** Give the symbols in the order they are taken from the agenda until the algorithm returns. Include symbols that are taken out but skipped. (3 pts.)\n\n**b)** Give count[1], …, count[6] when the algorithm returns, and explain why the second M is skipped. (2 pts.)\n\nYou can answer this question on handwritten sheets.",
+   "f": [
+    [
+     "a) Symbolene i den rekkefølgen de tas ut av agendaen",
+     "text",
+     "A, …"
+    ],
+    [
+     "b) count[1] … count[6] når algoritmen returnerer",
+     "text",
+     "…, …, …, …, …, …"
+    ],
+    [
+     "b) Hvorfor hoppes den andre M over?",
+     "area",
+     ""
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Symbolene i den rekkefølgen de tas ut av agendaen": [
+      "A B C L M M P Q"
+     ],
+     "b) count[1] … count[6] når algoritmen returnerer": [
+      "0 0 0 0 1 0"
+     ]
+    },
+    "merk": "M legges inn to ganger (klausul 2 og 3). Den andre er allerede inferred og hoppes over, så count[5] stopper på 1.",
+    "kilde": "Motorens forward-chaining (nettside-algo) og håndsporing."
+   },
+   "fasit": "**a) A, B, C, L, M, M, P, Q.**\n\n**b) count = 0, 0, 0, 0, 1, 0.**\n\nStart: count = (2, 2, 1, 2, 2, 2) og agenda = [A, B, C].\n\n| Tar ut | Teller ned | count etterpå | Legger til | Agenda etterpå |\n|---|---|---|---|---|\n| A | 1, 6 | 1, 2, 1, 2, 2, 1 | – | B, C |\n| B | 1 (0), 2 | 0, 1, 1, 2, 2, 1 | L | C, L |\n| C | 2 (0) | 0, 0, 1, 2, 2, 1 | M | L, M |\n| L | 3 (0), 4 | 0, 0, 0, 1, 2, 1 | M | M, M |\n| M | 4 (0), 5 | 0, 0, 0, 0, 1, 1 | P | M, P |\n| M | allerede inferred, hoppes over | 0, 0, 0, 0, 1, 1 | – | P |\n| P | 6 (0) | 0, 0, 0, 0, 1, 0 | Q | Q |\n| Q | Q er spørsmålet: return true | | | |\n\n**a)** (3 p) A, B, C, L, M, M, P, Q, og KB ⊨ Q. Poeng: 3 p for hele rekkefølgen, −1 p per feil.\n\n**b)** (2 p) count[5] blir stående på 1, fordi D aldri utledes. M legges i agendaen to ganger, av klausul 2 og av klausul 3. Når den andre M tas ut, er inferred[M] allerede true, så den hoppes over. Uten den sjekken ville count[4] og count[5] blitt telt ned én gang til, og count[5] = 0 ville gitt Q fra D ∧ M ⇒ Q selv om D ikke er kjent. Poeng: 1 p for count, 1 p for forklaringen.\n\nVanlige feil: å teste spørsmålet når Q legges i agendaen (Fig. 7.15 tester når symbolet tas ut), å bruke agendaen som stakk og å telle ned for den andre M.\n\n*Kilde: egen oppgave. Regnet med motorens forward-chaining (nettside-algo) og for hånd.*"
+  },
+  {
+   "t": "Oppgave 10 (20 p): Resolution Inference Algorithm",
+   "d": "Consider the following sentences:\n\n1. Every student who attends every lecture of a course passes that course.\n2. Ada is a student, and Ada attends every lecture of every course.\n3. Some course is mandatory.\n4. Every student who passes a mandatory course is happy.\n\nUse the predicates Student(x), LectureOf(l, c) (l is a lecture of course c), Attends(x, l), Passes(x, c), Mandatory(c) (c is a mandatory course) and Happy(x), and the constant Ada. The variable c ranges over courses only, so you do not need a Course predicate.\n\n**a)** Translate sentences 1–4 and the goal \"Some student is happy\" into first-order logic. (6 pts.)\n\n**b)** Convert sentences 1–4 and the negated goal to conjunctive normal form. Name Skolem constants C1, C2, … and Skolem functions F1, F2, … in the order they appear. (6 pts.)\n\n**c)** Use the resolution inference algorithm, with proof by contradiction/refutation, to show that the goal follows. For each resolution step, it is sufficient to show which two clauses are used, with which substitution, and the result. (8 pts.)\n\nYou can answer this question on handwritten sheets.",
+   "f": [
+    [
+     "a) Setning 1–4 og målet i FOL",
+     "area",
+     "1. ∀…\n2. …\n3. …\n4. …\nMål: …"
+    ],
+    [
+     "b) Klausulene i CNF, nummerert",
+     "area",
+     "n  klausul  (CNF av …)"
+    ],
+    [
+     "c) Resolusjonsstegene",
+     "area",
+     "n  Resolve i, j, θ = {…}: resultat"
+    ]
+   ],
+   "fasit": "**a)**\n\n1. ∀s ∀c [Student(s) ∧ ∀l (LectureOf(l, c) ⇒ Attends(s, l))] ⇒ Passes(s, c)\n2. Student(Ada) ∧ ∀l ∀c (LectureOf(l, c) ⇒ Attends(Ada, l))\n3. ∃c Mandatory(c)\n4. ∀x ∀y [Student(x) ∧ Mandatory(y) ∧ Passes(x, y)] ⇒ Happy(x)\n\nMål: ∃x Student(x) ∧ Happy(x)\n\nFormel 1 bruker at c bare går over kurs, slik oppgaven sier. Uten den antakelsen ville premisset være vakuøst sant for et objekt uten forelesninger, og formelen ville gitt Passes for det. Da legger man til Course(c) i premisset til 1.\n\nPoeng: 2 p for setning 1 (∀l skal stå inne i premisset), 1 p hver for 2, 3, 4 og målet.\n\n**b)** Setning 1 steg for steg:\n- Fjern ⇒: ∀s ∀c ¬[Student(s) ∧ ∀l (¬LectureOf(l, c) ∨ Attends(s, l))] ∨ Passes(s, c)\n- Flytt ¬ inn: ∀s ∀c ¬Student(s) ∨ [∃l LectureOf(l, c) ∧ ¬Attends(s, l)] ∨ Passes(s, c)\n- Skolemiser: ∃l står inne i ∀s og ∀c, så l blir F1(s, c), ikke en konstant.\n- Dropp ∀ og distribuer ∨ over ∧: to klausuler, 1a og 1b.\n\n| Nr. | Klausul | Fra |\n|---|---|---|\n| 1a | ¬Student(s) ∨ LectureOf(F1(s, c), c) ∨ Passes(s, c) | 1 |\n| 1b | ¬Student(s) ∨ ¬Attends(s, F1(s, c)) ∨ Passes(s, c) | 1 |\n| 2a | Student(Ada) | 2 |\n| 2b | ¬LectureOf(l, k) ∨ Attends(Ada, l) | 2 |\n| 3 | Mandatory(C1) | 3, Skolem-konstant |\n| 4 | ¬Student(x) ∨ ¬Mandatory(y) ∨ ¬Passes(x, y) ∨ Happy(x) | 4 |\n| 5 | ¬Student(z) ∨ ¬Happy(z) | negert mål: ¬∃z (Student(z) ∧ Happy(z)) |\n\nVariablene er standardisert apart (k, x, y, z). Poeng: 3 p for 1a og 1b med F1(s, c), 1 p for 2a og 2b, 1 p for 3 og 4, 1 p for det negerte målet.\n\n**c)**\n\n| Steg | Klausuler | θ | Resolvent |\n|---|---|---|---|\n| 6 | 5, 4 | {z/x} | ¬Student(x) ∨ ¬Mandatory(y) ∨ ¬Passes(x, y) (factoring av ¬Student(x)) |\n| 7 | 6, 2a | {x/Ada} | ¬Mandatory(y) ∨ ¬Passes(Ada, y) |\n| 8 | 7, 3 | {y/C1} | ¬Passes(Ada, C1) |\n| 9 | 8, 1b | {s/Ada, c/C1} | ¬Student(Ada) ∨ ¬Attends(Ada, F1(Ada, C1)) |\n| 10 | 9, 2a | {} | ¬Attends(Ada, F1(Ada, C1)) |\n| 11 | 10, 2b | {l/F1(Ada, C1)} | ¬LectureOf(F1(Ada, C1), k) |\n| 12 | 11, 1a | {s/Ada, c/C1, k/C1} | ¬Student(Ada) ∨ Passes(Ada, C1) |\n| 13 | 12, 2a | {} | Passes(Ada, C1) |\n| 14 | 13, 8 | {} | □ |\n\nDen tomme klausulen viser at KB ∧ ¬mål er unsatisfiable, så KB ⊨ ∃x Student(x) ∧ Happy(x), med Ada som svar. Poeng: 8 p for et korrekt bevis med par, θ og resultat. Andre rekkefølger gir full uttelling.\n\nVanlige feil:\n- ∀l flyttet ut foran hele setning 1. Da sier setningen at én forelesning er nok, fordi ∀l (A(l) ⇒ B) er det samme som (∃l A(l)) ⇒ B.\n- Skolem-konstant i stedet for F1(s, c). Hvilken forelesning som mangler, avhenger av studenten og kurset.\n- «A mandatory course» i premisset til setning 4 blir ∀y foran hele setningen (eller ∃y inne i premisset), ikke ∃y foran hele setningen.\n- Målet negert etter at ∃ er fjernet: ¬Student(C2) ∨ ¬Happy(C2) er feil. Negér først, så blir ∃ til ∀.\n\n*Kilde: egen oppgave. CNF-en er gjort for hånd etter stegene i 9.5.1. Resolusjonsstegene er kjørt i motorens fol-resolusjon (nettside-algo), som regner ut θ og resolventene selv.*"
+  },
+  {
+   "t": "Oppgave 11 (5 p): Planning",
+   "d": "A delivery drone D carries packages between locations. The action schemas are (type predicates are left out):\n\n- Action(Fly(d, x, y), PRECOND: At(d, x) ∧ Charged(d), EFFECT: ¬At(d, x) ∧ At(d, y) ∧ ¬Charged(d))\n- Action(Charge(d, x), PRECOND: At(d, x) ∧ Station(x), EFFECT: Charged(d))\n- Action(Load(p, d, x), PRECOND: At(p, x) ∧ At(d, x) ∧ Empty(d), EFFECT: ¬At(p, x) ∧ ¬Empty(d) ∧ In(p, d))\n- Action(Unload(p, d, x), PRECOND: In(p, d) ∧ At(d, x), EFFECT: At(p, x) ∧ ¬In(p, d) ∧ Empty(d))\n\nInit: At(D, A) ∧ At(P, A) ∧ Charged(D) ∧ Empty(D) ∧ Station(B)\n\nGoal g: At(P, B) ∧ Charged(D)\n\n**a)** Which of these ground actions are relevant for g in backward (regression) search? 1. Fly(D, A, B), 2. Unload(P, D, B), 3. Charge(D, A), 4. Load(P, D, B), 5. Charge(D, B), 6. Unload(P, D, A). (2 pts.)\n\n**b)** Regress g through Unload(P, D, B) to get g<sub>1</sub>, and then g<sub>1</sub> through Charge(D, B) to get g<sub>2</sub>. Is Fly(D, A, B) relevant for g<sub>1</sub>? For g<sub>2</sub>? Explain. (3 pts.)",
+   "f": [
+    [
+     "a) Relevante handlinger (numrene)",
+     "text",
+     "{…}"
+    ],
+    [
+     "b) g1 og g2",
+     "area",
+     "g1 = …\ng2 = …"
+    ],
+    [
+     "b) Er Fly(D, A, B) relevant for g1? (ja/nei)",
+     "text",
+     "ja eller nei"
+    ],
+    [
+     "b) Er Fly(D, A, B) relevant for g2? (ja/nei)",
+     "text",
+     "ja eller nei"
+    ],
+    [
+     "b) Begrunnelse",
+     "area",
+     ""
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Relevante handlinger (numrene)": [
+      "{2, 3, 5}",
+      "{2, 3 og 5}",
+      "{2, 3 and 5}"
+     ],
+     "b) Er Fly(D, A, B) relevant for g1? (ja/nei)": [
+      "nei",
+      "no"
+     ],
+     "b) Er Fly(D, A, B) relevant for g2? (ja/nei)": [
+      "ja",
+      "yes"
+     ]
+    },
+    "merk": "Relevant = gir en del av målet og sletter ingen del. Fly sletter Charged(D), som står i g1, men ikke i g2.",
+    "kilde": "Motorens regresjon (nettside-algo) og håndregning."
+   },
+   "fasit": "**a) {2, 3, 5}: Unload(P, D, B), Charge(D, A) og Charge(D, B).**\n\n**b) g<sub>1</sub> = Charged(D) ∧ In(P, D) ∧ At(D, B) og g<sub>2</sub> = In(P, D) ∧ At(D, B) ∧ Station(B).**\n\n**b) Fly(D, A, B) er ikke relevant for g<sub>1</sub>, men relevant for g<sub>2</sub>.**\n\n**a)** (2 p) En handling er relevant når minst én effekt gir en del av målet og ingen effekt sletter en del av målet.\n1. Fly(D, A, B): gir ingen del av g og sletter Charged(D). Ikke relevant.\n2. Unload(P, D, B): gir At(P, B) og sletter ingenting i g. Relevant.\n3. Charge(D, A): gir Charged(D). Relevant, selv om g′ da krever Station(A), som aldri blir sann. Relevans ser bare på effektene; blindveien oppdages senere.\n4. Load(P, D, B): gir ingenting i g og sletter At(P, B). Ikke relevant.\n5. Charge(D, B): gir Charged(D). Relevant.\n6. Unload(P, D, A): gir At(P, A), som ikke er i g. Ikke relevant.\n\nPoeng: 2 p for nøyaktig {2, 3, 5}, 1 p hvis én er feil.\n\n**b)** (3 p) g′ = (g − ADD(a)) ∪ PRECOND(a):\n- g<sub>1</sub> = ({At(P, B), Charged(D)} − {At(P, B), Empty(D)}) ∪ {In(P, D), At(D, B)} = Charged(D) ∧ In(P, D) ∧ At(D, B).\n- g<sub>2</sub> = (g<sub>1</sub> − {Charged(D)}) ∪ {At(D, B), Station(B)} = In(P, D) ∧ At(D, B) ∧ Station(B).\n- Fly(D, A, B) gir At(D, B), men sletter Charged(D), som står i g<sub>1</sub>. Derfor er den ikke relevant for g<sub>1</sub>. I g<sub>2</sub> står ikke Charged(D) lenger, og ingenting annet slettes, så den er relevant for g<sub>2</sub>. Regresjonen gir g<sub>3</sub> = In(P, D) ∧ Station(B) ∧ At(D, A) ∧ Charged(D).\n- Over Load(P, D, A) blir g<sub>4</sub> = Station(B) ∧ At(D, A) ∧ Charged(D) ∧ At(P, A) ∧ Empty(D) ⊆ Init. Planen er Load(P, D, A), Fly(D, A, B), Charge(D, B), Unload(P, D, B).\n\nPoeng: 1 p for g<sub>1</sub>, 1 p for g<sub>2</sub>, 1 p for relevansen av Fly med begrunnelse.\n\nVanlige feil: å legge til EFFECT i stedet for PRECOND, å miste resten av målet, og å kalle Fly(D, A, B) relevant for g<sub>1</sub> fordi den gir At(D, B).\n\n*Kilde: egen oppgave. Regnet med motorens regresjon (nettside-algo), både relevansen av hver av de seks handlingene og hele kjeden g<sub>0</sub> … g<sub>4</sub>, og for hånd.*"
+  },
+  {
+   "t": "Oppgave 12 (5 p): Natural Language Processing",
+   "d": "Consider the probabilistic context-free grammar in Chomsky Normal Form:\n\n| Rule | P | Rule | P |\n|---|---|---|---|\n| S → NP VP | 1.0 | NP → kids | 0.3 |\n| VP → V NP | 0.6 | NP → birds | 0.3 |\n| VP → VP PP | 0.4 | NP → binoculars | 0.2 |\n| NP → NP PP | 0.2 | V → watch | 1.0 |\n| PP → P NP | 1.0 | P → with | 1.0 |\n\nThe sentence is *kids watch birds with binoculars* (words 1–5). In the CYK chart, P[X, i, k] is the probability of the most probable subtree with root X that covers the words i, …, k.\n\n**a)** Give P[VP, 2, 3] and P[NP, 3, 5]. (2 pts.)\n\n**b)** Give P[VP, 2, 5] and P[S, 1, 5], and show how P[VP, 2, 5] is found. In the most probable parse, is *with binoculars* attached to the VP (the kids use binoculars) or to the NP (the birds have binoculars)? (3 pts.)",
+   "f": [
+    [
+     "a) P[VP, 2, 3]",
+     "text",
+     "tall"
+    ],
+    [
+     "a) P[NP, 3, 5]",
+     "text",
+     "tall"
+    ],
+    [
+     "b) P[VP, 2, 5]",
+     "text",
+     "tall"
+    ],
+    [
+     "b) P[S, 1, 5]",
+     "text",
+     "tall"
+    ],
+    [
+     "b) PP-en festes til (VP eller NP)",
+     "text",
+     "VP eller NP"
+    ],
+    [
+     "b) Utregning og begrunnelse",
+     "area",
+     ""
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) P[VP, 2, 3]": [
+      "0.18"
+     ],
+     "a) P[NP, 3, 5]": [
+      "0.012"
+     ],
+     "b) P[VP, 2, 5]": [
+      "0.0144"
+     ],
+     "b) P[S, 1, 5]": [
+      "0.00432",
+      "4.32e-3"
+     ],
+     "b) PP-en festes til (VP eller NP)": [
+      "VP"
+     ]
+    },
+    "merk": "VP over «watch birds with binoculars»: max(0,6 · 0,012, 0,4 · 0,18 · 0,2) = 0,0144, altså VP-tilknytning. S = 0,3 · 0,0144.",
+    "kilde": "Motorens cyk (nettside-algo) og eget skript."
+   },
+   "fasit": "**a) P[VP, 2, 3] = 0,18 og P[NP, 3, 5] = 0,012.**\n\n**b) P[VP, 2, 5] = 0,0144 og P[S, 1, 5] = 0,00432. PP-en festes til VP.**\n\nChartet (bare cellene som ikke er tomme):\n\n| Spenn | Ord | Innhold |\n|---|---|---|\n| [1,1] … [5,5] | kids, watch, birds, with, binoculars | NP 0,3 · V 1 · NP 0,3 · P 1 · NP 0,2 |\n| [2,3] | watch birds | VP = 0,6 · 1 · 0,3 = 0,18 |\n| [4,5] | with binoculars | PP = 1,0 · 1 · 0,2 = 0,2 |\n| [1,3] | kids watch birds | S = 1,0 · 0,3 · 0,18 = 0,054 (blindvei) |\n| [3,5] | birds with binoculars | NP = 0,2 · 0,3 · 0,2 = 0,012 |\n| [2,5] | watch birds with binoculars | VP = max(0,6 · 1 · 0,012, 0,4 · 0,18 · 0,2) = max(0,0072, 0,0144) = 0,0144 |\n| [1,5] | hele setningen | S = 1,0 · 0,3 · 0,0144 = 0,00432 |\n\n**a)** (2 p) 1 p per verdi.\n\n**b)** (3 p) [2,5] har to split. Etter ord 2 gir VP → V NP, med NP over «birds with binoculars» (NP-tilknytning): 0,6 · 1 · 0,012 = 0,0072. Etter ord 3 gir VP → VP PP (VP-tilknytning): 0,4 · 0,18 · 0,2 = 0,0144. CYK beholder maksimum, 0,0144, så den beste parsen har PP-en under VP: barna bruker kikkert. Hele parsen med NP-tilknytning har sannsynlighet 0,3 · 0,0072 = 0,00216, halvparten av 0,00432.\n\nPoeng: 1 p for P[VP, 2, 5] med begge kandidatene, 1 p for P[S, 1, 5], 1 p for tilknytningen.\n\nVanlige feil: å glemme ordreglene i produktet, og å legge sammen de to kandidatene i stedet for å ta maksimum (summen gir sannsynligheten for setningen, ikke for den beste parsen). Med VP → V NP = 0,9 og VP → VP PP = 0,1 snur svaret: NP-tilknytning vinner med 0,00324.\n\n*Kilde: egen oppgave. Regnet med motorens cyk (nettside-algo, også varianten 0,9/0,1) og med eget skript som regner ut begge parsetrærne.*"
+  },
+  {
+   "t": "Oppgave 13 (5 p): Knowledge Representation and Philosophy of AI",
+   "d": "**a)** Write the following in first-order logic, with categories as objects (reification) and measures as in the book. (i) Bolt is a horse. (ii) Horses are mammals, written as a relation between the categories. (iii) Bolt's height is 1.6 metres, which is the same as 160 centimetres; also give the general axiom that relates the two units functions. (iv) Together, the three oranges O1, O2 and O3 weigh 600 grams. Write it so that the weight belongs to a physical object and not to a set. (2 pts.)\n\n**b)** (i) A critic says: \"A machine can never have a sense of humour, fall in love or do anything really new.\" Which objection to AI from the book is this, and how does the book answer it? (ii) What are *qualia*, and how did Turing reply to the claim that a machine must be conscious to really think? Is this a question about weak AI or strong AI? (3 pts.)",
+   "f": [
+    [
+     "a) FOL for (i)–(iv)",
+     "area",
+     "(i) …\n(ii) …\n(iii) …\n(iv) …"
+    ],
+    [
+     "b) Disability, qualia og Turings svar",
+     "area",
+     ""
+    ]
+   ],
+   "fasit": "**a) Bolt ∈ Horses. Horses ⊂ Mammals. Height(Bolt) = Metres(1.6) = Centimetres(160), med ∀x Centimetres(100 × x) = Metres(x). Weight(BunchOf({O1, O2, O3})) = Grams(600).**\n\n**b) Argument from disability. Qualia er hvordan en opplevelse føles innenfra. Turing svarte med «the polite convention». Spørsmålet gjelder strong AI.**\n\n**a)** (2 p, 0,5 p per del)\n- (i) Bolt ∈ Horses (Member): Bolt er et objekt i kategorien.\n- (ii) Horses ⊂ Mammals (Subset): en kategori er delmengde av en annen. Horses ∈ Mammals er feil, for kategorien Horses er ikke selv et pattedyr.\n- (iii) Et mål er et objekt med flere navn: Height(Bolt) = Metres(1.6) = Centimetres(160). Metres og Centimetres er *units functions*, og omregningen er ∀x Centimetres(100 × x) = Metres(x).\n- (iv) Weight(BunchOf({O1, O2, O3})) = Grams(600). Mengden {O1, O2, O3} er abstrakt og veier ingenting. BunchOf gir det fysiske objektet som har appelsinene som deler.\n\n**b)** (3 p)\n- (i) (1,5 p) Dette er *argument from disability*: «en maskin kan aldri gjøre X» (Turings liste: være snill, ha humor, forelske seg, gjøre noe nytt …). Bokas svar er at mange av X-ene er gjort: maskiner gjør feil, kan resonnere om sine egne beregninger og har gjort ekte oppdagelser og laget ny kunst. Det maskiner ikke kan, er å være *nøyaktig* som mennesker, men det er ikke det weak AI påstår.\n- (ii) (1,5 p) *Qualia* er den indre, subjektive kvaliteten ved en opplevelse, for eksempel hvordan det føles å se rødt eller å ha vondt. Når HAL 9000 sier «I can feel it», er det en følelse eller bare output? Turing svarte at vi heller ikke har direkte bevis for at andre *mennesker* tenker eller er bevisste. Vi følger «the polite convention» at alle som oppfører seg intelligent, tenker, og den bør gjelde maskiner også. Om en maskin virkelig tenker og er bevisst, er et spørsmål om *strong AI*. Weak AI spør bare om maskinen kan oppføre seg intelligent.\n\nVanlige feil: å blande Member og Subset, å gi en mengde vekt, og å svare om weak AI når spørsmålet gjelder bevissthet.\n\n*Kilde: egen oppgave etter boka 10.2.1–10.2.2 og 28.1–28.2, L12 (kategorier, målinger, disability, consciousness og qualia) og notatene E17 og E21.*"
+  }
+ ],
+ "fasit": "## Fasit og sensorveiledning, Breddesett 1\n\n| Oppgave | Svar |\n|---|---|\n| 1 | C |\n| 2 | D |\n| 3 | B |\n| 4 | E |\n| 5 | 16 tilstander, alle nåbare. 0000, 0011, 0111, 1100, 1110, 0100, (1000). Sti 0000 → 0011 → 0100 → 1000, kostnad 3 |\n| 6 | h<sub>1</sub> = 3, h<sub>2</sub> = 4. h<sub>3</sub> og h<sub>5</sub> admissible. 7 ekspansjoner, Down, Right, Down, Left, Up, Up |\n| 7 | 12, 56, 112. AC-3: B1 = 3, B2 = 4, C1 = 4, C3 = 2, D2 = 3, D3 = 4, 15 buer, true |\n| 8 | R → C → C2. R 15/41, C 3/6, C2 2/3, D 1/1. B med C = 1. A returneres |\n| 9 | A, B, C, L, M, M, P, Q. count 0, 0, 0, 0, 1, 0 |\n| 10 | Bevis i 9 steg med F1(s, c) og C1 |\n| 11 | {2, 3, 5}. Fly(D, A, B) ikke relevant for g<sub>1</sub>, relevant for g<sub>2</sub> |\n| 12 | 0,18 og 0,012. 0,0144 og 0,00432, VP-tilknytning |\n| 13 | Member og Subset, units functions, BunchOf. Disability. Qualia, polite convention, strong AI |\n\n### Oppgave 1 (5 p): Foundations and History of AI\n\n**Alternativ: C**\n\n- **A – usant.** Turing-testen er eksempelet på *acting humanly*: den måler oppførsel, ikke tankegang. *Thinking humanly* er cognitive modelling, der programmets resonnering sammenlignes med menneskers (Newell og Simons GPS).\n- **B – usant.** *Physical symbol system hypothesis* er Newell og Simons. Den sier at intelligens er *substrate neutral*: et fysisk symbolsystem har nødvendige og tilstrekkelige midler for generell intelligent handling. Searle mener det motsatte, at intelligens er *substrate dependent*.\n- **C – sant.** Den vanlige Turing-testen krever NLP, knowledge representation, automated reasoning og machine learning. *Total Turing test* krever samhandling med omverdenen, og dermed også computer vision og speech recognition, pluss robotics (L1, boka 1.1.1).\n- **D – usant.** Navnet ble tatt i bruk på Dartmouth-møtet i 1956. 1943 er året for McCulloch og Pitts' Boolean circuit model of the brain.\n- **E – usant.** 1966–74 var skuffelsen da AI oppdaget computational complexity og forskningen på nevrale nett nesten forsvant. «AI winter» er 1988–93, da expert systems-industrien sprakk etter boomen 1980–88.\n\nVanlig feil: å blande acting humanly og thinking humanly. Turing-testen ser bare på hva maskinen gjør.\n\n*Kilde: egen oppgave. Fakta fra L1 (historie, Turing-testen, substrate neutral og dependent) og boka 1.1.1.*\n\n### Oppgave 2 (5 p): AND-OR Search\n\n**Alternativ: D**\n\nAND-OR-SEARCH er et rekursivt dybde først-søk. Sporing (stien står med siste tilstand først, som i Fig. 4.11):\n\n| Kall | Hva skjer |\n|---|---|\n| OR(S, []) | prøver *a* → AND-SEARCH over {A, B} |\n| OR(A, [S]) | prøver *a* → {G}, og OR(G) er mål → []. Planen for A er [a] |\n| OR(B, [S]) | prøver *a* → AND-SEARCH over {S, C} |\n| OR(S, [B, S]) | S står på stien → failure. AND-SEARCH gir opp med en gang, så C blir aldri undersøkt |\n| OR(B, [S]) | prøver *b* → AND-SEARCH over {G, A} |\n| OR(G, [B, S]) | mål → [] |\n| OR(A, [B, S]) | *a* → {G} → [a] |\n\nPlanen for B blir [b, if State = G then [] else [a]], og hele planen [a, if State = A then [a] else [b, if State = G then [] else [a]]].\n\n- **A – feil.** [b] er en kortere løsning, men AND-OR-SEARCH returnerer den første planen den finner, ikke den korteste. *a* prøves før *b* i S og lykkes. Med rekkefølgen *b*, *a* ville svaret blitt [b].\n- **B – feil.** Failure på en sykel gjelder bare den ene grenen (*a* i B). OR-SEARCH prøver neste handling, og *b* lykkes.\n- **C – feil.** *b* i B kan gi både G og A, så AND-SEARCH lager en plan for hvert utfall. I G er planen tom. [b, a] ville utført *a* også når roboten allerede står i målet.\n- **D – riktig.**\n\nVanlig feil: å tro at failure ved en løkke betyr at problemet er uløselig (E05, «Eksamensfeller»).\n\n*Kilde: egen oppgave. Sporet for hånd og med eget Python-skript etter Fig. 4.11. Motorens AND-OR-søk tar bare støvsugerverdenen.*\n\n### Oppgave 3 (5 p): Global Constraints\n\n**Alternativ: B**\n\n1. **Atmost.** Summen av minimumene er 1 + 2 + 5 + 1 = 9 ≤ 12, så ingen inkonsistens. En verdi v i D<sub>i</sub> er lovlig bare hvis v pluss minimumene til de andre er ≤ 12:\n   - D<sub>1</sub>: 5 + 2 + 5 + 1 = 13 > 12, så 5 strykes. 4 + 8 = 12 er lov. D<sub>1</sub> = {1, 4}.\n   - D<sub>2</sub>: 3 + 1 + 5 + 1 = 10, og D<sub>3</sub>: 6 + 1 + 2 + 1 = 10. Ingen endring.\n   - D<sub>4</sub>: 6 + 1 + 2 + 5 = 14 > 12, så 6 strykes. D<sub>4</sub> = {1}.\n2. **Alldiff.** D<sub>4</sub> = {1} er singleton, så 1 strykes fra de andre: D<sub>1</sub> = {4}. Ingen andre domener har 4.\n3. **Atmost igjen.** Minimumene er nå 4 + 2 + 5 + 1 = 12, så det er ingen slakk: D<sub>2</sub> mister 3 (3 + 4 + 5 + 1 = 13), og D<sub>3</sub> mister 6 (6 + 4 + 2 + 1 = 13).\n4. **Alldiff** endrer ingenting. Ferdig: P = (4, 2, 5, 1), den eneste løsningen (sum 12).\n\n- **A – feil.** Resultatet etter bare første Atmost-runde. Alldiff og den nye Atmost-runden mangler.\n- **B – riktig.**\n- **C – feil.** Stopper etter Alldiff. Når D<sub>1</sub> krymper, øker summen av minimumene, og Atmost må kjøres på nytt.\n- **D – feil.** Inkonsistens oppdages med summen av *minimumene* (9 ≤ 12), ikke maksimumene. Maksimumsummen 20 sier bare at ikke alle kombinasjoner er lovlige.\n- **E – feil.** Grensen for D<sub>3</sub> er 12 minus minimumene til de *andre* domenene, 12 − (1 + 2 + 1) = 8. Her er D<sub>3</sub>s eget minimum trukket fra i tillegg.\n\n*Kilde: egen oppgave. Regnet for hånd og med eget Python-skript (propagering og opptelling av alle løsninger).*\n\n### Oppgave 4 (5 p): Regret Matching\n\n**Alternativ: E**\n\nRegret for handling a i en runde = u(a, P2s handling) − u(det P1 spilte, P2s handling).\n\n| Runde | P1, P2 | u(A), u(B), u(C) | P1 fikk | Regret (A, B, C) | Summert | Strategi neste runde |\n|---|---|---|---|---|---|---|\n| 1 | B, Y | 2, −2, 2 | −2 | (4, 0, 4) | (4, 0, 4) | (1/2, 0, 1/2) |\n| 2 | C, X | 0, 2, 2 | 2 | (−2, 0, 0) | (2, 0, 4) | (1/3, 0, 2/3) |\n| 3 | A, Z | 1, 0, 3 | 1 | (0, −1, 2) | (2, −1, 6) | (2/8, 0, 6/8) |\n\nNegative summer settes til 0: (2, −1, 6) → (2, 0, 6), normalisert (1/4, 0, 3/4). Hvert trekk P1 gjorde, hadde positiv sannsynlighet da det ble spilt.\n\n- **A – feil.** (1/3, 0, 2/3) er strategien i runde 3. Regreten fra runde 3 mangler.\n- **B – feil.** Summerer bare nytten av hver handling, (3, 0, 7), uten å trekke fra det P1 faktisk fikk.\n- **C – feil.** Bruker absoluttverdien av −1 i stedet for å sette negative summer til 0.\n- **D – feil.** Velger handlingen med størst summert regret, eller bruker bare regreten fra siste runde. Oppgaven sier proporsjonal med summen.\n- **E – riktig.**\n\nVanlig feil: feil fortegn, u(spilt) − u(alternativ). Da får B størst sum, og svaret blir (0, 1, 0).\n\n*Kilde: egen oppgave etter L8 (regret matching, eksempelet (−1, 1, 2) → (0, 1/3, 2/3)). Regnet for hånd og med eget Node-skript. Motoren har ikke regret matching.*\n\n### Oppgave 5 (8 p): Problem Formulation and Uninformed Search\n\n**a) 16 tilstander, alle 16 nåbare.**\n\n**b) Utvidelsesrekkefølge: 0000, 0011, 0111, 1100, 1110, 0100, (1000).**\n\n**b) Sti: 0000 → 0011 → 0100 → 1000 (Press4, Press3, Press1). Kostnad 3.**\n\n**a)** (3 p)\n- *States:* bitstrengen L1L2L3L4, 2<sup>4</sup> = 16 tilstander.\n- *Initial state:* 0000.\n- *Actions:* Press1, Press2, Press3 og Press4, lovlige i alle tilstander.\n- *Transition model:* RESULT(s, Press*i*) = s XOR maske<sub>i</sub>, med maskene 1100, 1110, 0111 og 0011.\n- *Goal test:* s = 1000.\n- *Action cost:* 1 per trykk.\n- Alle 16 er nåbare: de fire maskene er lineært uavhengige, så hver tilstand er XOR av en delmengde av dem (1000 = 0011 XOR 0111 XOR 1100). BFS når også alle 16.\n\nPoeng: 2 p for formuleringen, 1 p for 16 og 16.\n\n**b)** (5 p) Målet testes når barnet genereres. Barna står sortert som binærtall.\n\n| Ekspanderer | Barna (sortert) | Nye i frontier | Frontier etterpå |\n|---|---|---|---|\n| 0000 | 0011, 0111, 1100, 1110 | alle fire | 0011, 0111, 1100, 1110 |\n| 0011 | 0000, 0100, 1101, 1111 | 0100, 1101, 1111 | 0111, 1100, 1110, 0100, 1101, 1111 |\n| 0111 | 0000, 0100, 1001, 1011 | 1001, 1011 | 1100, 1110, 0100, 1101, 1111, 1001, 1011 |\n| 1100 | 0000, 0010, 1011, 1111 | 0010 | 1110, 0100, 1101, 1111, 1001, 1011, 0010 |\n| 1110 | 0000, 0010, 1001, 1101 | ingen | 0100, 1101, 1111, 1001, 1011, 0010 |\n| 0100 | 0011, 0111, 1000, … | 1000 er målet: stopp | |\n\nStien følges bakover: 1000 kom fra 0100 (Press1), 0100 fra 0011 (Press3) og 0011 fra 0000 (Press4). Kostnad 3. BFS er optimal her fordi alle trykk koster det samme.\n\nPoeng: 3 p for utvidelsesrekkefølgen med riktig reached, 1 p for stien, 1 p for kostnaden.\n\nVanlige feil:\n- Late goal test gir også 1101, 1111, 1001, 1011 og 0010 før 1000, altså 11 utvidelser.\n- Barna i knapperekkefølge (Press1 først) gir 0000, 1100, 1110, 0111, 0011, 0010, 1011, (1000) og stien 0000 → 1100 → 1011 → 1000.\n\n*Kilde: egen oppgave. Regnet med motorens BFS (nettside-algo, de 16 tilstandene som graf) og med eget Python-skript.*\n\n### Oppgave 6 (12 p): Heuristics and A* Search\n\n**a) h<sub>1</sub>(S) = 3 og h<sub>2</sub>(S) = 4.**\n\n**c) h<sub>3</sub> og h<sub>5</sub> er admissible, h<sub>4</sub> er det ikke.**\n\n**d) 7 ekspanderte noder. Løsning: Down, Right, Down, Left, Up, Up (kostnad 6).**\n\n**a)** (2 p) Feilplasserte brikker: 6, 7 og 4, så h<sub>1</sub> = 3. Manhattan med (rad, kolonne): 6 står i (2, 2) og skal til (3, 1): 2. 7 står i (3, 1) og skal til (3, 2): 1. 4 står i (3, 2) og skal til (2, 2): 1. h<sub>2</sub> = 4.\n\n**b)** (3 p) Regelen er: en brikke kan flyttes fra rute X til rute Y hvis X og Y er naboer og Y er tom.\n- Fjerner vi «Y er tom», kan brikken gå til en nabo selv om den er opptatt. Da trenger hver brikke nøyaktig sin Manhattan-avstand: h<sub>2</sub>.\n- Fjerner vi begge vilkårene, kan en brikke hoppe rett til målruta i ett trekk: h<sub>1</sub>.\n- Det relakserte problemet har alle de gamle trekkene og flere til, så den optimale relakserte løsningen er aldri dyrere enn den ekte. Derfor er h<sub>1</sub> og h<sub>2</sub> admissible (og consistent, fordi de er eksakte kostnader i et problem).\n- Hver feilplassert brikke har Manhattan-avstand minst 1, så h<sub>2</sub>(n) ≥ h<sub>1</sub>(n) for alle n. h<sub>2</sub> dominerer h<sub>1</sub>, og A\\* med h<sub>2</sub> ekspanderer aldri flere noder (bortsett fra likheter).\n\nPoeng: 1 p per relaksering, 1 p for admissible og dominans.\n\n**c)** (2 p)\n- h<sub>3</sub>: maksimum av to admissible heuristikker er admissible, og dominerer begge.\n- h<sub>4</sub>: ikke admissible, fordi h<sub>4</sub>(S) = 3 + 4 = 7 > 6 = h\\*(S).\n- h<sub>5</sub> = (h<sub>1</sub> + h<sub>2</sub>)/2 ≤ max(h<sub>1</sub>, h<sub>2</sub>) ≤ h\\*, så den er admissible.\n\n**d)** (5 p) Barn som allerede er i reached med lik eller lavere g, er utelatt.\n\n| # | Ekspanderer | g | h | f | Nye barn (f) |\n|---|---|---|---|---|---|\n| 1 | `_12/365/748` (S) | 0 | 4 | 4 | Down `312/_65/748` (6), Right `1_2/365/748` (6) |\n| 2 | `312/_65/748` | 1 | 5 | 6 | Down `312/765/_48` (8), Right `312/6_5/748` (6) |\n| 3 | `1_2/365/748` | 1 | 5 | 6 | Down `162/3_5/748` (8), Right `12_/365/748` (8) |\n| 4 | `312/6_5/748` | 2 | 4 | 6 | Up `3_2/615/748` (8), Down `312/645/7_8` (6), Right `312/65_/748` (8) |\n| 5 | `312/645/7_8` | 3 | 3 | 6 | Left `312/645/_78` (6), Right `312/645/78_` (8) |\n| 6 | `312/645/_78` | 4 | 2 | 6 | Up `312/_45/678` (6) |\n| 7 | `312/_45/678` | 5 | 1 | 6 | Up `_12/345/678` (6, målet), Right `312/4_5/678` (8) |\n\nSå tas målet ut med f = 6. Node 3 ekspanderes fordi den ble generert før `312/6_5/748` og har samme f. Ingen node med f = 8 ekspanderes.\n\nPoeng: 3 p for ekspansjonene med g, h og f, 1 p for løsningen og 1 p for antallet.\n\nVanlige feil: å teste målet når det genereres (A\\* tester når noden tas ut), og å bryte likhet på lavest h. Det siste gir 6 ekspansjoner, fordi `1_2/365/748` da hoppes over.\n\n*Kilde: egen oppgave. Regnet med motorens A\\* (nettside-algo, tilstandsrommet ned til dybde 9 som graf) og med eget Python-skript. h\\*(S) = 6 er kontrollert med BFS.*\n\n### Oppgave 7 (10 p): Constraint Satisfaction Problems\n\n**a) 12 Alldiff, 56 binære constraints og 112 buer.**\n\n**b) B1: {3, 4}, B2: {3, 4}, C1: {4}, C3: {2, 4}, D2: {3, 4}, D3: {4}.**\n\n**c) B1 = {3}, B2 = {4}, C1 = {4}, C3 = {2}, D2 = {3}, D3 = {4}. 15 buer tas ut, og AC-3 returnerer true.**\n\n**a)** (2 p) 4 rader + 4 kolonner + 4 bokser = 12 Alldiff. Hver celle har 3 naboer i raden, 3 i kolonnen og 1 til i boksen (den på skrå), altså 7. 16 · 7 / 2 = 56 binære constraints, og hver gir to buer: 112. Den vanligste feilen er 12 · 6 = 72: da telles de 16 parene som deler både rad (eller kolonne) og boks, to ganger.\n\n**b)** (2 p) Gitte sifre som deler rad, kolonne eller boks med cellen:\n\n| Celle | Rad | Kolonne | Boks | Domene |\n|---|---|---|---|---|\n| B1 | 1, 2 | 1, 2 | 1, 2 | {3, 4} |\n| B2 | 1, 2 | 2, 1 | 1, 2 | {3, 4} |\n| C1 | 1, 3 | 1, 2 | 1, 2 | {4} |\n| C3 | 1, 3 | 3, 1 | 3, 1 | {2, 4} |\n| D2 | 2, 1 | 2, 1 | 1, 2 | {3, 4} |\n| D3 | 2, 1 | 3, 1 | 3, 1 | {4} |\n\nConstraints mellom de tomme cellene: B1–B2 (rad og boks), B1–C1 (kolonne), B2–D2 (kolonne), C1–C3 (rad), C1–D2 (boks), C3–D3 (kolonne og boks) og D2–D3 (rad). Det er 7 constraints og 14 buer.\n\n**c)** (6 p)\n\n| # | Bue | Stryker | D(X<sub>i</sub>) etter | Legges i køen |\n|---|---|---|---|---|\n| 1 | (B1, B2) | – | {3, 4} | |\n| 2 | (B1, C1) | 4 | {3} | (B2, B1) står alt i køen |\n| 3 | (B2, B1) | 3 | {4} | (D2, B2) står alt i køen |\n| 4 | (B2, D2) | – | {4} | |\n| 5 | (C1, B1) | – | {4} | |\n| 6 | (C1, C3) | – | {4} | |\n| 7 | (C1, D2) | – | {4} | |\n| 8 | (C3, C1) | 4 | {2} | (D3, C3) står alt i køen |\n| 9 | (C3, D3) | – | {2} | |\n| 10 | (D2, B2) | 4 | {3} | (C1, D2); (D3, D2) står alt i køen |\n| 11 | (D2, C1) | – | {3} | |\n| 12 | (D2, D3) | – | {3} | |\n| 13 | (D3, C3) | – | {4} | |\n| 14 | (D3, D2) | – | {4} | |\n| 15 | (C1, D2) | – | {4} | |\n\nKøen er tom etter 15 buer, ingen domener er tomme, og AC-3 returnerer true. Alle domener har nå én verdi, så her løser AC-3 hele oppgaven:\n\n<table><tr><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr><td>3</td><td>4</td><td>1</td><td>2</td></tr><tr><td>4</td><td>1</td><td>2</td><td>3</td></tr><tr><td>2</td><td>3</td><td>4</td><td>1</td></tr></table>\n\nPoeng: 3 p for de fire strykingene i riktig rekkefølge, 1 p for at (C1, D2) legges inn igjen, 1 p for domenene, 1 p for 15 buer og true.\n\nVanlige feil: å legge inn (X<sub>j</sub>, X<sub>i</sub>) også (samme domener, men flere buer), og å tro at true alltid betyr løst. Her er det løst fordi alle domener ble singletons.\n\n*Kilde: egen oppgave. Regnet med motorens ac-3 (nettside-algo) og med eget Python-skript, som også bekreftet at puslespillet har nøyaktig én løsning.*\n\n### Oppgave 8 (10 p): Monte Carlo Tree Search\n\n**a) Sti: R → C → C2.**\n\n**b) R 15/41, C 3/6, C2 2/3, D 1/1.**\n\n**c) B.**\n\n**d) A.**\n\n**a)** (4 p) Under R er N = 40 og ln 40 = 3,689. Black velger, og A, B og C teller Blacks seire:\n\n| Barn | U/N | Exploitation | C · √(ln 40 / N) | UCB1 |\n|---|---|---|---|---|\n| A | 15/24 | 0,625 | 0,554 | 1,179 |\n| B | 8/11 | 0,727 | 0,819 | 1,546 |\n| C | 2/5 | 0,400 | 1,215 | **1,615** |\n\nUnder C er N = 5 og ln 5 = 1,609. White velger, og C1 og C2 teller Whites seire:\n\n| Barn | U/N | Exploitation | C · √(ln 5 / N) | UCB1 |\n|---|---|---|---|---|\n| C1 | 1/3 | 0,333 | 1,036 | 1,369 |\n| C2 | 2/2 | 1,000 | 1,269 | **2,269** |\n\nC2 har ingen barn i treet, så SELECT stopper der. Poeng: 2 p per nivå.\n\n**b)** (3 p) D er Blacks trekk og teller Blacks seire. Alle noder på stien får +1 playout, og nodene som teller Blacks seire (C og D), får også +1 seier:\n\n| Node | Teller seire for | Før | Etter |\n|---|---|---|---|\n| R | White | 15/40 | 15/41 |\n| C | Black | 2/5 | 3/6 |\n| C2 | White | 2/2 | 2/3 |\n| D | Black | 0/0 | 1/1 |\n\n**c)** (1 p) Med C = 1 blir UCB1 for A 0,625 + 0,392 = 1,017, for B 0,727 + 0,579 = 1,306 og for C 0,400 + 0,859 = 1,259. B velges: mindre C gir mindre exploration, så vinnerandelen teller mer.\n\n**d)** (2 p) MCTS returnerer trekket med flest playouts: A med 24 (B har 11, C nå 6). B har høyest vinnerandel (8/11 ≈ 0,73), men den bygger på få playouts og er usikker. UCB1 sender flest playouts til trekkene som ser best ut over tid, så N er et mer robust mål enn U/N. L8: «return the move … whose node has highest number of playouts».\n\nVanlige feil:\n- Velge B i roten fordi den har høyest U/N. Da glemmer man exploration-leddet.\n- Regne Blacks andel (1 − U/N) under C. U teller allerede seire for White, som velger der. Med 1 − U/N ville C1 blitt valgt.\n- Gi +1 seier til alle nodene på stien.\n\n*Kilde: egen oppgave. Regnet med motorens mcts (nettside-algo, C = √2 og C = 1, roten teller Whites seire) og for hånd.*\n\n### Oppgave 9 (5 p): Forward Chaining\n\n**a) A, B, C, L, M, M, P, Q.**\n\n**b) count = 0, 0, 0, 0, 1, 0.**\n\nStart: count = (2, 2, 1, 2, 2, 2) og agenda = [A, B, C].\n\n| Tar ut | Teller ned | count etterpå | Legger til | Agenda etterpå |\n|---|---|---|---|---|\n| A | 1, 6 | 1, 2, 1, 2, 2, 1 | – | B, C |\n| B | 1 (0), 2 | 0, 1, 1, 2, 2, 1 | L | C, L |\n| C | 2 (0) | 0, 0, 1, 2, 2, 1 | M | L, M |\n| L | 3 (0), 4 | 0, 0, 0, 1, 2, 1 | M | M, M |\n| M | 4 (0), 5 | 0, 0, 0, 0, 1, 1 | P | M, P |\n| M | allerede inferred, hoppes over | 0, 0, 0, 0, 1, 1 | – | P |\n| P | 6 (0) | 0, 0, 0, 0, 1, 0 | Q | Q |\n| Q | Q er spørsmålet: return true | | | |\n\n**a)** (3 p) A, B, C, L, M, M, P, Q, og KB ⊨ Q. Poeng: 3 p for hele rekkefølgen, −1 p per feil.\n\n**b)** (2 p) count[5] blir stående på 1, fordi D aldri utledes. M legges i agendaen to ganger, av klausul 2 og av klausul 3. Når den andre M tas ut, er inferred[M] allerede true, så den hoppes over. Uten den sjekken ville count[4] og count[5] blitt telt ned én gang til, og count[5] = 0 ville gitt Q fra D ∧ M ⇒ Q selv om D ikke er kjent. Poeng: 1 p for count, 1 p for forklaringen.\n\nVanlige feil: å teste spørsmålet når Q legges i agendaen (Fig. 7.15 tester når symbolet tas ut), å bruke agendaen som stakk og å telle ned for den andre M.\n\n*Kilde: egen oppgave. Regnet med motorens forward-chaining (nettside-algo) og for hånd.*\n\n### Oppgave 10 (20 p): Resolution Inference Algorithm\n\n**a)**\n\n1. ∀s ∀c [Student(s) ∧ ∀l (LectureOf(l, c) ⇒ Attends(s, l))] ⇒ Passes(s, c)\n2. Student(Ada) ∧ ∀l ∀c (LectureOf(l, c) ⇒ Attends(Ada, l))\n3. ∃c Mandatory(c)\n4. ∀x ∀y [Student(x) ∧ Mandatory(y) ∧ Passes(x, y)] ⇒ Happy(x)\n\nMål: ∃x Student(x) ∧ Happy(x)\n\nFormel 1 bruker at c bare går over kurs, slik oppgaven sier. Uten den antakelsen ville premisset være vakuøst sant for et objekt uten forelesninger, og formelen ville gitt Passes for det. Da legger man til Course(c) i premisset til 1.\n\nPoeng: 2 p for setning 1 (∀l skal stå inne i premisset), 1 p hver for 2, 3, 4 og målet.\n\n**b)** Setning 1 steg for steg:\n- Fjern ⇒: ∀s ∀c ¬[Student(s) ∧ ∀l (¬LectureOf(l, c) ∨ Attends(s, l))] ∨ Passes(s, c)\n- Flytt ¬ inn: ∀s ∀c ¬Student(s) ∨ [∃l LectureOf(l, c) ∧ ¬Attends(s, l)] ∨ Passes(s, c)\n- Skolemiser: ∃l står inne i ∀s og ∀c, så l blir F1(s, c), ikke en konstant.\n- Dropp ∀ og distribuer ∨ over ∧: to klausuler, 1a og 1b.\n\n| Nr. | Klausul | Fra |\n|---|---|---|\n| 1a | ¬Student(s) ∨ LectureOf(F1(s, c), c) ∨ Passes(s, c) | 1 |\n| 1b | ¬Student(s) ∨ ¬Attends(s, F1(s, c)) ∨ Passes(s, c) | 1 |\n| 2a | Student(Ada) | 2 |\n| 2b | ¬LectureOf(l, k) ∨ Attends(Ada, l) | 2 |\n| 3 | Mandatory(C1) | 3, Skolem-konstant |\n| 4 | ¬Student(x) ∨ ¬Mandatory(y) ∨ ¬Passes(x, y) ∨ Happy(x) | 4 |\n| 5 | ¬Student(z) ∨ ¬Happy(z) | negert mål: ¬∃z (Student(z) ∧ Happy(z)) |\n\nVariablene er standardisert apart (k, x, y, z). Poeng: 3 p for 1a og 1b med F1(s, c), 1 p for 2a og 2b, 1 p for 3 og 4, 1 p for det negerte målet.\n\n**c)**\n\n| Steg | Klausuler | θ | Resolvent |\n|---|---|---|---|\n| 6 | 5, 4 | {z/x} | ¬Student(x) ∨ ¬Mandatory(y) ∨ ¬Passes(x, y) (factoring av ¬Student(x)) |\n| 7 | 6, 2a | {x/Ada} | ¬Mandatory(y) ∨ ¬Passes(Ada, y) |\n| 8 | 7, 3 | {y/C1} | ¬Passes(Ada, C1) |\n| 9 | 8, 1b | {s/Ada, c/C1} | ¬Student(Ada) ∨ ¬Attends(Ada, F1(Ada, C1)) |\n| 10 | 9, 2a | {} | ¬Attends(Ada, F1(Ada, C1)) |\n| 11 | 10, 2b | {l/F1(Ada, C1)} | ¬LectureOf(F1(Ada, C1), k) |\n| 12 | 11, 1a | {s/Ada, c/C1, k/C1} | ¬Student(Ada) ∨ Passes(Ada, C1) |\n| 13 | 12, 2a | {} | Passes(Ada, C1) |\n| 14 | 13, 8 | {} | □ |\n\nDen tomme klausulen viser at KB ∧ ¬mål er unsatisfiable, så KB ⊨ ∃x Student(x) ∧ Happy(x), med Ada som svar. Poeng: 8 p for et korrekt bevis med par, θ og resultat. Andre rekkefølger gir full uttelling.\n\nVanlige feil:\n- ∀l flyttet ut foran hele setning 1. Da sier setningen at én forelesning er nok, fordi ∀l (A(l) ⇒ B) er det samme som (∃l A(l)) ⇒ B.\n- Skolem-konstant i stedet for F1(s, c). Hvilken forelesning som mangler, avhenger av studenten og kurset.\n- «A mandatory course» i premisset til setning 4 blir ∀y foran hele setningen (eller ∃y inne i premisset), ikke ∃y foran hele setningen.\n- Målet negert etter at ∃ er fjernet: ¬Student(C2) ∨ ¬Happy(C2) er feil. Negér først, så blir ∃ til ∀.\n\n*Kilde: egen oppgave. CNF-en er gjort for hånd etter stegene i 9.5.1. Resolusjonsstegene er kjørt i motorens fol-resolusjon (nettside-algo), som regner ut θ og resolventene selv.*\n\n### Oppgave 11 (5 p): Planning\n\n**a) {2, 3, 5}: Unload(P, D, B), Charge(D, A) og Charge(D, B).**\n\n**b) g<sub>1</sub> = Charged(D) ∧ In(P, D) ∧ At(D, B) og g<sub>2</sub> = In(P, D) ∧ At(D, B) ∧ Station(B).**\n\n**b) Fly(D, A, B) er ikke relevant for g<sub>1</sub>, men relevant for g<sub>2</sub>.**\n\n**a)** (2 p) En handling er relevant når minst én effekt gir en del av målet og ingen effekt sletter en del av målet.\n1. Fly(D, A, B): gir ingen del av g og sletter Charged(D). Ikke relevant.\n2. Unload(P, D, B): gir At(P, B) og sletter ingenting i g. Relevant.\n3. Charge(D, A): gir Charged(D). Relevant, selv om g′ da krever Station(A), som aldri blir sann. Relevans ser bare på effektene; blindveien oppdages senere.\n4. Load(P, D, B): gir ingenting i g og sletter At(P, B). Ikke relevant.\n5. Charge(D, B): gir Charged(D). Relevant.\n6. Unload(P, D, A): gir At(P, A), som ikke er i g. Ikke relevant.\n\nPoeng: 2 p for nøyaktig {2, 3, 5}, 1 p hvis én er feil.\n\n**b)** (3 p) g′ = (g − ADD(a)) ∪ PRECOND(a):\n- g<sub>1</sub> = ({At(P, B), Charged(D)} − {At(P, B), Empty(D)}) ∪ {In(P, D), At(D, B)} = Charged(D) ∧ In(P, D) ∧ At(D, B).\n- g<sub>2</sub> = (g<sub>1</sub> − {Charged(D)}) ∪ {At(D, B), Station(B)} = In(P, D) ∧ At(D, B) ∧ Station(B).\n- Fly(D, A, B) gir At(D, B), men sletter Charged(D), som står i g<sub>1</sub>. Derfor er den ikke relevant for g<sub>1</sub>. I g<sub>2</sub> står ikke Charged(D) lenger, og ingenting annet slettes, så den er relevant for g<sub>2</sub>. Regresjonen gir g<sub>3</sub> = In(P, D) ∧ Station(B) ∧ At(D, A) ∧ Charged(D).\n- Over Load(P, D, A) blir g<sub>4</sub> = Station(B) ∧ At(D, A) ∧ Charged(D) ∧ At(P, A) ∧ Empty(D) ⊆ Init. Planen er Load(P, D, A), Fly(D, A, B), Charge(D, B), Unload(P, D, B).\n\nPoeng: 1 p for g<sub>1</sub>, 1 p for g<sub>2</sub>, 1 p for relevansen av Fly med begrunnelse.\n\nVanlige feil: å legge til EFFECT i stedet for PRECOND, å miste resten av målet, og å kalle Fly(D, A, B) relevant for g<sub>1</sub> fordi den gir At(D, B).\n\n*Kilde: egen oppgave. Regnet med motorens regresjon (nettside-algo), både relevansen av hver av de seks handlingene og hele kjeden g<sub>0</sub> … g<sub>4</sub>, og for hånd.*\n\n### Oppgave 12 (5 p): Natural Language Processing\n\n**a) P[VP, 2, 3] = 0,18 og P[NP, 3, 5] = 0,012.**\n\n**b) P[VP, 2, 5] = 0,0144 og P[S, 1, 5] = 0,00432. PP-en festes til VP.**\n\nChartet (bare cellene som ikke er tomme):\n\n| Spenn | Ord | Innhold |\n|---|---|---|\n| [1,1] … [5,5] | kids, watch, birds, with, binoculars | NP 0,3 · V 1 · NP 0,3 · P 1 · NP 0,2 |\n| [2,3] | watch birds | VP = 0,6 · 1 · 0,3 = 0,18 |\n| [4,5] | with binoculars | PP = 1,0 · 1 · 0,2 = 0,2 |\n| [1,3] | kids watch birds | S = 1,0 · 0,3 · 0,18 = 0,054 (blindvei) |\n| [3,5] | birds with binoculars | NP = 0,2 · 0,3 · 0,2 = 0,012 |\n| [2,5] | watch birds with binoculars | VP = max(0,6 · 1 · 0,012, 0,4 · 0,18 · 0,2) = max(0,0072, 0,0144) = 0,0144 |\n| [1,5] | hele setningen | S = 1,0 · 0,3 · 0,0144 = 0,00432 |\n\n**a)** (2 p) 1 p per verdi.\n\n**b)** (3 p) [2,5] har to split. Etter ord 2 gir VP → V NP, med NP over «birds with binoculars» (NP-tilknytning): 0,6 · 1 · 0,012 = 0,0072. Etter ord 3 gir VP → VP PP (VP-tilknytning): 0,4 · 0,18 · 0,2 = 0,0144. CYK beholder maksimum, 0,0144, så den beste parsen har PP-en under VP: barna bruker kikkert. Hele parsen med NP-tilknytning har sannsynlighet 0,3 · 0,0072 = 0,00216, halvparten av 0,00432.\n\nPoeng: 1 p for P[VP, 2, 5] med begge kandidatene, 1 p for P[S, 1, 5], 1 p for tilknytningen.\n\nVanlige feil: å glemme ordreglene i produktet, og å legge sammen de to kandidatene i stedet for å ta maksimum (summen gir sannsynligheten for setningen, ikke for den beste parsen). Med VP → V NP = 0,9 og VP → VP PP = 0,1 snur svaret: NP-tilknytning vinner med 0,00324.\n\n*Kilde: egen oppgave. Regnet med motorens cyk (nettside-algo, også varianten 0,9/0,1) og med eget skript som regner ut begge parsetrærne.*\n\n### Oppgave 13 (5 p): Knowledge Representation and Philosophy of AI\n\n**a) Bolt ∈ Horses. Horses ⊂ Mammals. Height(Bolt) = Metres(1.6) = Centimetres(160), med ∀x Centimetres(100 × x) = Metres(x). Weight(BunchOf({O1, O2, O3})) = Grams(600).**\n\n**b) Argument from disability. Qualia er hvordan en opplevelse føles innenfra. Turing svarte med «the polite convention». Spørsmålet gjelder strong AI.**\n\n**a)** (2 p, 0,5 p per del)\n- (i) Bolt ∈ Horses (Member): Bolt er et objekt i kategorien.\n- (ii) Horses ⊂ Mammals (Subset): en kategori er delmengde av en annen. Horses ∈ Mammals er feil, for kategorien Horses er ikke selv et pattedyr.\n- (iii) Et mål er et objekt med flere navn: Height(Bolt) = Metres(1.6) = Centimetres(160). Metres og Centimetres er *units functions*, og omregningen er ∀x Centimetres(100 × x) = Metres(x).\n- (iv) Weight(BunchOf({O1, O2, O3})) = Grams(600). Mengden {O1, O2, O3} er abstrakt og veier ingenting. BunchOf gir det fysiske objektet som har appelsinene som deler.\n\n**b)** (3 p)\n- (i) (1,5 p) Dette er *argument from disability*: «en maskin kan aldri gjøre X» (Turings liste: være snill, ha humor, forelske seg, gjøre noe nytt …). Bokas svar er at mange av X-ene er gjort: maskiner gjør feil, kan resonnere om sine egne beregninger og har gjort ekte oppdagelser og laget ny kunst. Det maskiner ikke kan, er å være *nøyaktig* som mennesker, men det er ikke det weak AI påstår.\n- (ii) (1,5 p) *Qualia* er den indre, subjektive kvaliteten ved en opplevelse, for eksempel hvordan det føles å se rødt eller å ha vondt. Når HAL 9000 sier «I can feel it», er det en følelse eller bare output? Turing svarte at vi heller ikke har direkte bevis for at andre *mennesker* tenker eller er bevisste. Vi følger «the polite convention» at alle som oppfører seg intelligent, tenker, og den bør gjelde maskiner også. Om en maskin virkelig tenker og er bevisst, er et spørsmål om *strong AI*. Weak AI spør bare om maskinen kan oppføre seg intelligent.\n\nVanlige feil: å blande Member og Subset, å gi en mengde vekt, og å svare om weak AI når spørsmålet gjelder bevissthet.\n\n*Kilde: egen oppgave etter boka 10.2.1–10.2.2 og 28.1–28.2, L12 (kategorier, målinger, disability, consciousness og qualia) og notatene E17 og E21.*"
+}

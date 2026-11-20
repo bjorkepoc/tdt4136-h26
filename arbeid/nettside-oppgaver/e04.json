@@ -1,0 +1,237 @@
+{
+ "intro": "2019 oppgave 7 (short questions, hill climbing) er spart til fullprøven 01.12.",
+ "tasks": [
+  {
+   "t": "Fitness i GA-eksempelet (bokas figur 4.6)",
+   "d": "8-dronninger som genetisk algoritme. Hvert individ er åtte sifre: siffer c er raden til dronningen i kolonne c, og rad 1 er nederst. h er antall par dronninger som angriper hverandre (også når en annen dronning står imellom), og fitness = 28 − h.\n\nBarna etter crossover i figur 4.6(d): **32748552, 24752411, 32752124 og 24415411**.\n\nDe samme barna etter mutation i figur 4.6(e): **32748152, 24752411, 32252124 og 24415417**.\n\nRegn ut fitness for barna før og etter mutation. Ble alle bedre?",
+   "f": [
+    [
+     "Fitness før mutation, figur 4.6(d)",
+     "text",
+     "32748552: … | 24752411: … | 32752124: … | 24415411: …"
+    ],
+    [
+     "Fitness etter mutation, figur 4.6(e)",
+     "text",
+     "32748152: … | 24752411: … | 32252124: … | 24415417: …"
+    ],
+    [
+     "Ble alle bedre? (ja/nei)",
+     "text"
+    ],
+    [
+     "Hvorfor eller hvorfor ikke?",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Fitness før mutation, figur 4.6(d)": [
+      "23 22 21 20",
+      "23 22 21 og 20"
+     ],
+     "Fitness etter mutation, figur 4.6(e)": [
+      "24 22 18 22",
+      "24 22 18 og 22"
+     ],
+     "Ble alle bedre? (ja/nei)": [
+      "nei",
+      "no"
+     ]
+    },
+    "merk": "Barn 3 gikk fra 21 til 18: mutation er tilfeldig og kan gjøre et individ dårligere.",
+    "kilde": "videoer/notater/e04-lokalt-sok.md, Fasit Øv selv 1"
+   },
+   "fasit": "**Fitness før mutation (figur 4.6 d): 32748552: 23 | 24752411: 22 | 32752124: 21 | 24415411: 20.**\n\n**Fitness etter mutation (figur 4.6 e): 32748152: 24 | 24752411: 22 | 32252124: 18 | 24415417: 22.**\n\n**Ble alle bedre? Nei.** Barn 3 gikk fra 21 til 18. Mutation endrer et tilfeldig siffer til en tilfeldig verdi, så den kan like gjerne gjøre et individ dårligere som bedre.\n\n| Barn (4.6 d) | h | Fitness | Mutation | Etter (4.6 e) | h | Fitness |\n|---|---|---|---|---|---|---|\n| 32748552 | 5 | 23 | siffer 6: 5 → 1 | 32748152 | 4 | 24 |\n| 24752411 | 6 | 22 | ingen | 24752411 | 6 | 22 |\n| 32752124 | 7 | 21 | siffer 3: 7 → 2 | 32252124 | 10 | 18 |\n| 24415411 | 8 | 20 | siffer 8: 1 → 7 | 24415417 | 6 | 22 |\n\nFitness = 28 − h, der h er antall par som angriper hverandre. Eksempel: 32752124 har 3 par på rad 2 (kolonne 2, 5 og 7) og 4 par på skrå, h = 7. Mutation til 32252124 setter en fjerde dronning på rad 2 (kolonne 3). Rad 2 gir da 4 · 3/2 = 6 par, og h = 6 + 4 = 10.\n\nVanlig feil: å telle dronninger i stedet for par, eller å hoppe over et par fordi en annen dronning står imellom.\n\n*Kilde: notatet til E04, Fasit Øv selv 1 (bokas figur 4.6).*"
+  },
+  {
+   "t": "Crossover for hånd",
+   "d": "Samme representasjon som over: siffer c er raden til dronningen i kolonne c (rad 1 nederst), og fitness = 28 − h.\n\nKryss **24748552** med **32543213** med kutt etter fjerde siffer. Skriv begge barna og fitness for hvert.",
+   "f": [
+    [
+     "Barn 1 og fitness",
+     "text",
+     "barn: … | fitness: …"
+    ],
+    [
+     "Barn 2 og fitness",
+     "text",
+     "barn: … | fitness: …"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Barn 1 og fitness": [
+      "24743213 19",
+      "24743213 fitness 19",
+      "24743213 fitness = 19",
+      "24743213 f = 19"
+     ],
+     "Barn 2 og fitness": [
+      "32548552 20",
+      "32548552 fitness 20",
+      "32548552 fitness = 20",
+      "32548552 f = 20"
+     ]
+    },
+    "kilde": "videoer/notater/e04-lokalt-sok.md, Fasit Øv selv 2"
+   },
+   "fasit": "**Barn 1: 24743213, fitness 19.**\n\n**Barn 2: 32548552, fitness 20.**\n\nKutt etter fjerde siffer: 2474|8552 × 3254|3213.\n\n- Barn 1 = forelder 1 før kuttet + forelder 2 etter kuttet = 2474 + 3213 = 24743213.\n- Barn 2 = forelder 2 før kuttet + forelder 1 etter kuttet = 3254 + 8552 = 32548552.\n\n| Barn | Par på samme rad | Par på skrå | h | Fitness = 28 − h |\n|---|---|---|---|---|\n| 24743213 | 3: (1,6), (2,4), (5,8) | 6: (4,5), (4,6), (4,7), (5,6), (5,7), (6,7) | 9 | 19 |\n| 32548552 | 4: (2,8), (3,6), (3,7), (6,7) | 4: (1,2), (1,3), (2,4), (3,4) | 8 | 20 |\n\nParene er kolonnenumre. Foreldrene har fitness 24 og 11, og begge barna havner imellom.\n\n*Kilde: notatet til E04, Fasit Øv selv 2.*"
+  },
+  {
+   "t": "Simulated annealing ved høy og lav temperatur",
+   "d": "Simulated annealing har trukket en nabo som er dårligere enn nåværende tilstand: ΔE = Eval(neste) − Eval(nå) = −4.\n\nHva blir sannsynligheten P for å ta trekket med T = 1 og med T = 8? Hva sier det om høy og lav temperatur?",
+   "f": [
+    [
+     "P med T = 1",
+     "text"
+    ],
+    [
+     "P med T = 8",
+     "text"
+    ],
+    [
+     "Hva sier det om høy og lav temperatur?",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "P med T = 1": [
+      "0.018",
+      "0,018",
+      "0.0183",
+      "0,0183",
+      "0.02",
+      "0,02"
+     ],
+     "P med T = 8": [
+      "0.61",
+      "0,61",
+      "0.607",
+      "0,607",
+      "0.6065",
+      "0,6065",
+      "0.6",
+      "0,6"
+     ]
+    },
+    "merk": "P = e^(ΔE/T): T = 1 gir e^(−4) ≈ 0,018, og T = 8 gir e^(−0,5) ≈ 0,61. Skriv svaret som desimaltall.",
+    "kilde": "videoer/notater/e04-lokalt-sok.md, Fasit Øv selv 3"
+   },
+   "fasit": "**P med T = 1: e^(−4/1) = e^(−4) ≈ 0,018.**\n\n**P med T = 8: e^(−4/8) = e^(−0,5) ≈ 0,61.**\n\n**Høy og lav temperatur:** Ved høy T godtas et dårlig trekk ofte (her 61 %). Søket utforsker og kan slippe ut av lokale maksima, og når T er svært høy, oppfører det seg nesten som en random walk. Ved lav T godtas det samme trekket nesten aldri (2 %), og søket oppfører seg som vanlig hill climbing. Simulated annealing senker T etter en schedule, så det utforsker først og klatrer til slutt.\n\nFormelen er P = e^(ΔE/T) med ΔE = Eval(neste) − Eval(nå) = −4. Eksponenten skal være ≤ 0, så P ≤ 1. Det er forholdet ΔE/T som teller.\n\nVanlig feil: å snu fortegnet og få e^(4) > 1.\n\n*Kilde: notatet til E04, Fasit Øv selv 3 (trekket fra eksamen 2020 v2).*"
+  },
+  {
+   "t": "Random-restart hill climbing",
+   "d": "Hver hill climbing-klatring lykkes med sannsynlighet p = 0,25. En klatring bruker 4 steg når den lykkes og 3 steg når den bommer (setter seg fast).\n\nHvor mange forsøk og hvor mange steg trenger random-restart hill climbing i snitt?",
+   "f": [
+    [
+     "Forventet antall forsøk",
+     "text"
+    ],
+    [
+     "Forventet antall steg",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Forventet antall forsøk": [
+      "4"
+     ],
+     "Forventet antall steg": [
+      "13"
+     ]
+    },
+    "kilde": "videoer/notater/e04-lokalt-sok.md, Fasit Øv selv 4"
+   },
+   "fasit": "**Forventet antall forsøk: 1/p = 1/0,25 = 4.**\n\n**Forventet antall steg: 13.**\n\nI snitt får du 1 vellykket klatring og (1 − p)/p = 0,75/0,25 = 3 mislykkede før den.\n\nSteg = 1 · 4 + 3 · 3 = 4 + 9 = 13.\n\nVanlig feil: å regne alle fire forsøkene med 4 steg (16), eller å bruke p eller 1 − p i stedet for 1/p.\n\n*Kilde: notatet til E04, Fasit Øv selv 4.*"
+  },
+  {
+   "t": "Line search og Newton på f(x) = 6x − x²",
+   "d": "Du skal maksimere f(x) = 6x − x² og starter i x = 1.\n\nKjør line search med α = 0,25, 0,5 og 1. Hvor stopper du? Hvor havner ett Newton-steg fra x = 1?",
+   "f": [
+    [
+     "x og f(x) for hver α",
+     "area",
+     "α = 0,25: x = …, f = …\nα = 0,5: x = …, f = …\nα = 1: x = …, f = …"
+    ],
+    [
+     "Hvor stopper line search?",
+     "text"
+    ],
+    [
+     "Ett Newton-steg fra x = 1",
+     "text",
+     "x = …"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Hvor stopper line search?": [
+      "3",
+      "x = 3",
+      "x=3"
+     ],
+     "Ett Newton-steg fra x = 1": [
+      "3",
+      "x = 3",
+      "x=3"
+     ]
+    },
+    "kilde": "videoer/notater/e04-lokalt-sok.md, Fasit Øv selv 5"
+   },
+   "fasit": "**α = 0,25: x = 2, f = 8. α = 0,5: x = 3, f = 9. α = 1: x = 5, f = 5.**\n\n**Line search stopper i x = 3.**\n\n**Ett Newton-steg fra x = 1: x = 3.**\n\nf′(x) = 6 − 2x, så f′(1) = 4. Line search følger gradienten, x = 1 + α · f′(1) = 1 + 4α, og dobler α så lenge f øker.\n\n| α | x | f(x) = 6x − x² |\n|---|---|---|\n| 0,25 | 2 | 8 |\n| 0,5 | 3 | 9 |\n| 1 | 5 | 5 |\n\nf stiger fra 8 til 9 og synker så til 5 ved α = 1. Søket stopper derfor ved α = 0,5, i x = 3, som er toppen (f = 9).\n\nNewton–Raphson: f″(x) = −2, så x ← x − f′(x)/f″(x) = 1 − 4/(−2) = 3. Metoden tilpasser en parabel og hopper til toppen av den. Siden f selv er en parabel, havner den rett på maksimum i ett steg.\n\n*Kilde: notatet til E04, Fasit Øv selv 5.*"
+  },
+  {
+   "t": "Eksamen 2023, oppgave 1 (short questions): hill climbing som står fast",
+   "d": "Assume a Hill Climbing algorithm found a state from which none of the neighbour states produce an increase in the score value. What can this state be, if not a global maximum? What method/trick may be added to the algorithm in order to proceed from such states?\n\n*Merknad:* Poeng for de enkelte kortspørsmålene er ikke oppgitt.",
+   "f": [
+    [
+     "Hva kan tilstanden være?",
+     "text"
+    ],
+    [
+     "Triks for å komme videre",
+     "text"
+    ]
+   ],
+   "fasit": "**Tilstanden kan være en local maximum, eller et platå: en flat local maximum, eller en shoulder der det går oppover lenger borte.** Fasiten nevner platå.\n\n**Triks: random restart** (fasiten). Andre gode svar er sideways moves (med en grense for antall sidesteg på rad; hjelper bare på et platå eller en shoulder) og simulated annealing. Stochastic hill climbing hjelper ikke her: den trekker bare blant uphill moves, og når ingen nabo er bedre, stopper den også (AIMA 4.1.1).\n\nModellsvar: Steepest-ascent hill climbing stopper når ingen nabo er strengt bedre. Det skjer på en local maximum, på et platå og på en shoulder, fordi algoritmen bare ser ett steg fram. Random-restart hill climbing starter på nytt fra en tilfeldig tilstand og er complete med sannsynlighet 1. Sideways moves lar søket gå over platåer og shoulders. Simulated annealing godtar av og til dårligere trekk og kan dermed komme seg ut av lokale maksima.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 1 (short questions).*"
+  },
+  {
+   "t": "Eksamen 2022, oppgave 1.4–1.5 (teorispørsmål)",
+   "d": "1.4) What is the difference between incremental and local search?\n\n1.5) Why we have mutations in genetic algorithms?\n\n*Merknad:* Poeng er ikke oppgitt i eksamensfila.",
+   "f": [
+    [
+     "1.4 Inkrementelt mot lokalt søk",
+     "area"
+    ],
+    [
+     "1.5 Hvorfor mutation?",
+     "area"
+    ]
+   ],
+   "fasit": "**1.4: Lokalt søk husker bare nåværende tilstand og flytter til en nabo. Inkrementelt søk bygger løsningen steg for steg og husker stien.**\n\nEt inkrementelt søk (kapittel 3) starter med en tom eller delvis løsning og legger til ett steg om gangen, for eksempel én dronning om gangen (incremental formulation). Det husker frontier og stien tilbake, er systematisk og kan oppdage en blindvei tidlig, før løsningen er ferdig. Lokalt søk arbeider på komplette tilstander (complete-state formulation, for eksempel alle åtte dronningene på brettet). Det husker verken stien eller hvor det har vært, og ser bare på naboene. Det bruker nesten ikke minne og passer til store eller kontinuerlige tilstandsrom og optimeringsproblemer. Til gjengjeld er det ikke systematisk og kan sette seg fast i lokale optima.\n\n**1.5: Mutation gjør små tilfeldige endringer for å utforske nær gode løsninger og holde variasjon i populasjonen.**\n\nCrossover kan bare kombinere verdier som finnes i populasjonen. Når individene blir like, stopper utviklingen. Mutation endrer et tilfeldig siffer med liten sannsynlighet. Det gir nye verdier, utforsker nabolaget rundt gode individer og hjelper GA ut av lokale optima. Crossover tar store steg mellom foreldrene, mens mutation tar små steg (fasiten).\n\n*Kilde: løsningsforslaget til eksamen 2022, oppgave 1.4–1.5.*"
+  },
+  {
+   "t": "Eksamen 2015, problem 6 a) (2 p): svakheten ved hill climbing",
+   "d": "Problem 6(10 pts, 2 pts each question)\n\nChoose the correct answers (one for each question) to the questions below.\n\na) What is the primary drawback of hill-climbing search?\n\n- A. The search can get stuck in a local maximum\n- B. The algorithm requires a lot of memory\n- C. The search can get stuck in a global maximum\n- D. The result depends strongly on the temperature schedule",
+   "f": [
+    [
+     "Svar",
+     "text",
+     "Bokstav og kort begrunnelse"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Svar": [
+      "A"
+     ]
+    },
+    "kilde": "2015Q&A.docx, Problem 6 a"
+   },
+   "fasit": "**Svar: A.** Søket kan sette seg fast i en local maximum.\n\nHill climbing ser bare på naboene til nåværende tilstand og stopper når ingen er strengt bedre. Det stopper derfor på lokale maksima, platåer og ridges.\n\n- **B** er feil: hill climbing lagrer bare nåværende tilstand og bruker svært lite minne.\n- **C** er feil: å stoppe i et globalt maksimum er målet, ikke en svakhet.\n- **D** er feil: temperaturplanen hører til simulated annealing.\n\n*Kilde: løsningsforslaget til eksamen 2015, problem 6 a.*"
+  }
+ ]
+}

@@ -1,0 +1,452 @@
+1
+00:00:00,450 --> 00:00:06,370
+Femti symboler. En sannhetstabell har da to opphøyd i femti rader, over en
+
+2
+00:00:06,370 --> 00:00:12,290
+million milliarder. Klarer du en milliard rader i sekundet, tar det tretten døgn.
+
+3
+00:00:12,290 --> 00:00:17,890
+Likevel løser moderne SAT-løsere problemer med titalls millioner symboler.
+
+4
+00:00:17,890 --> 00:00:21,090
+Trikset er å la være å se på nesten alle radene.
+
+5
+00:00:22,450 --> 00:00:28,250
+Etter dette kan du kjøre DPLL for hånd, ta et steg med WalkSAT og si hvor de
+
+6
+00:00:28,250 --> 00:00:34,050
+vanskelige problemene ligger. Alt står i sju punkt seks, likt i begge utgavene.
+
+7
+00:00:34,050 --> 00:00:39,650
+Ærlig talt: dette er kun bok, ikke forelest, og eksamenene fra totusen og femten
+
+8
+00:00:39,650 --> 00:00:46,130
+til totusen og tjuefem har aldri spurt om DPLL eller WalkSAT. Men det er pensum.
+
+9
+00:00:46,130 --> 00:00:48,610
+Sju punkt sju er ikke pensum.
+
+10
+00:00:49,883 --> 00:00:54,923
+Hvorfor bry seg om satisfiability, når du vil vite om noe følger av KB?
+
+11
+00:00:56,683 --> 00:01:03,883
+Du kjenner trikset fra E12. KB entails alfa nøyaktig når «KB og ikke alfa» ikke
+
+12
+00:01:03,883 --> 00:01:09,123
+har noen modell. Det var en utfyllingsoppgave på eksamen i totusen og atten. Så
+
+13
+00:01:09,123 --> 00:01:13,883
+en maskin som svarer på «finnes det en modell?» finner løsninger, og beviser
+
+14
+00:01:13,883 --> 00:01:19,363
+entailment når den svarer nei. Det er en SAT-løser. Sannhetstabellen er den
+
+15
+00:01:19,363 --> 00:01:23,003
+dummeste: den sjekker alle to opphøyd i n modellene.
+
+16
+00:01:24,283 --> 00:01:27,483
+Hvordan leter du etter en modell uten å sjekke alle?
+
+17
+00:01:29,250 --> 00:01:36,050
+Gjennomgangseksempelet: fire klausuler over A, B og C. Prøver du alt, får du et
+
+18
+00:01:36,050 --> 00:01:42,210
+tre med åtte blader. Men sett A og B til true. Da er begge literalene i C to
+
+19
+00:01:42,210 --> 00:01:48,530
+usanne, så C to er usann, uansett C. Deltreet kan kuttes. Det heter early
+
+20
+00:01:48,530 --> 00:01:54,050
+termination: en klausul er sann så snart én literal er sann, og usann når alle
+
+21
+00:01:54,050 --> 00:01:55,010
+er usanne.
+
+22
+00:01:56,283 --> 00:02:02,843
+Neste triks, fra boka. Et pure symbol står med samme fortegn overalt. A står
+
+23
+00:02:02,843 --> 00:02:09,723
+bare positivt, B bare negativt. C står begge veier. Gjør den rene literalen sann,
+
+24
+00:02:09,723 --> 00:02:16,083
+så kan ingen klausul bli usann. B står bare negert, så B blir false. Nå er
+
+25
+00:02:16,083 --> 00:02:21,723
+klausul to sann, og sanne klausuler teller ikke lenger. Da står C bare positivt,
+
+26
+00:02:21,723 --> 00:02:23,483
+så C er også pure.
+
+27
+00:02:24,783 --> 00:02:31,183
+Så unit clause. Det er en klausul der alle literalene unntatt én er usanne.
+
+28
+00:02:31,183 --> 00:02:37,903
+Bokas eksempel: sett B til true. Literalen ikke B blir usann, så klausul to er
+
+29
+00:02:37,903 --> 00:02:44,943
+unit, og C må bli false. Da står A alene igjen i klausul tre, og A blir true. Én
+
+30
+00:02:44,943 --> 00:02:49,983
+tvungen verdi skaper den neste, som i sudoku når bare ett tall passer i en rute.
+
+31
+00:02:49,983 --> 00:02:52,863
+Kjedereaksjonen heter unit propagation.
+
+32
+00:02:54,150 --> 00:03:02,670
+Det er hele DPLL. Er alle klausulene sanne, svar true. Er én usann, svar false
+
+33
+00:03:02,670 --> 00:03:09,510
+og gå tilbake. Ellers: finnes et pure symbol, sett det. Ellers: finnes en unit
+
+34
+00:03:09,510 --> 00:03:15,750
+clause, sett den. Først når ingenting er tvunget, gjetter du: neste symbol, true
+
+35
+00:03:15,750 --> 00:03:21,350
+før false. Det er backtracking over delvise modeller, som for CSP i kapittel fem,
+
+36
+00:03:21,350 --> 00:03:23,350
+seks i den amerikanske utgaven.
+
+37
+00:03:24,650 --> 00:03:30,970
+Nå eksempelet, alfabetisk og true først. Ved start står alle symbolene begge
+
+38
+00:03:30,970 --> 00:03:38,730
+veier, og ingen klausul er unit. Så du må gjette: A blir true. C tre og C fire
+
+39
+00:03:38,730 --> 00:03:44,810
+blir sanne med en gang. B står fortsatt begge veier: ikke pure. Men i C én er
+
+40
+00:03:44,810 --> 00:03:51,130
+literalen ikke A usann, så C én er unit, og B blir true. Da er begge literalene
+
+41
+00:03:51,130 --> 00:03:56,810
+i C to usanne. Konflikt: grenen er død før C er satt.
+
+42
+00:03:58,183 --> 00:04:06,103
+Tilbake: A blir false. Nå er C én og C to sanne. Se nøye: C tre er en unit
+
+43
+00:04:06,103 --> 00:04:11,703
+clause, men pure sjekkes først. I klausulene som ikke er sanne ennå, står B bare
+
+44
+00:04:11,703 --> 00:04:18,823
+positivt. B er pure og blir true. Da er C fire sann, og C står bare positivt, i
+
+45
+00:04:18,823 --> 00:04:26,703
+C tre. C er pure. Alle fire er sanne. Modellen er A false, B true og C true.
+
+46
+00:04:26,703 --> 00:04:30,183
+Bare ett valg var en gjetning. Resten var tvunget.
+
+47
+00:04:31,550 --> 00:04:38,990
+Din tur. Kjør DPLL på disse fire klausulene, alfabetisk og true først. Hvilket
+
+48
+00:04:38,990 --> 00:04:49,590
+forløp får du?
+
+49
+00:04:49,590 --> 00:04:50,390
+A.
+
+50
+00:04:51,683 --> 00:05:00,483
+Med A true gir C to unit B, C tre gir unit C, og C fire blir usann. Med A false
+
+51
+00:05:00,483 --> 00:05:07,763
+er B ikke pure, for literalen ikke B står i C tre. Men C er pure, og så B.
+
+52
+00:05:07,763 --> 00:05:14,803
+Valgte du B, tok du unit før pure. Ta med deg rekkefølgen: sann, usann, pure,
+
+53
+00:05:14,803 --> 00:05:16,083
+unit, gjett.
+
+54
+00:05:17,450 --> 00:05:20,810
+Hvordan klarer ekte løsere millioner av symboler?
+
+55
+00:05:22,583 --> 00:05:28,863
+Ekte løsere legger fem kjente triks oppå skjelettet. Component analysis: faller
+
+56
+00:05:28,863 --> 00:05:33,983
+klausulene i grupper uten felles symboler, løser du hver for seg, som Tasmania i
+
+57
+00:05:33,983 --> 00:05:39,783
+kartfargingen. Degree heuristic: ta symbolet som står i flest klausuler. Hos oss
+
+58
+00:05:39,783 --> 00:05:45,023
+er det A, med fire. Intelligent backtracking hopper rett tilbake til valget som
+
+59
+00:05:45,023 --> 00:05:50,343
+skapte konflikten, og lagrer den som en ny klausul. Random restarts begynner på
+
+60
+00:05:50,343 --> 00:05:55,650
+nytt, men beholder de lærte klausulene. Og clever indexing finner fort hvilke
+
+61
+00:05:55,650 --> 00:05:57,543
+klausuler et symbol står i.
+
+62
+00:05:58,817 --> 00:06:01,937
+Hva om du gjetter en hel modell og retter på den?
+
+63
+00:06:03,717 --> 00:06:10,037
+WalkSAT starter med tilfeldige verdier på alt. Så, opptil max flips ganger: er
+
+64
+00:06:10,037 --> 00:06:15,397
+alle klausulene sanne, er du ferdig. Ellers velger du en tilfeldig usann klausul
+
+65
+00:06:15,397 --> 00:06:20,517
+og flipper ett symbol i den. Med sannsynlighet p et tilfeldig symbol, en random
+
+66
+00:06:20,517 --> 00:06:26,237
+walk. Ellers symbolet som gir flest sanne klausuler. Det grådige steget er
+
+67
+00:06:26,237 --> 00:06:30,597
+min-conflicts fra kapittel fem, og tilfeldigheten hjelper deg ut av lokale
+
+68
+00:06:30,597 --> 00:06:31,477
+minima.
+
+69
+00:06:32,750 --> 00:06:39,270
+Start med alt true. Bare C to er usann, så den blir valgt. Flipper du A, blir
+
+70
+00:06:39,270 --> 00:06:44,990
+alle fire sanne. Flipper du B, blir C én usann, og du har tre. Det grådige
+
+71
+00:06:44,990 --> 00:06:50,950
+steget tar A, og WalkSAT er ferdig etter ett flipp, med samme modell som DPLL
+
+72
+00:06:50,950 --> 00:06:55,470
+fant. Med p lik en halv tar den A tre av fire ganger.
+
+73
+00:06:56,850 --> 00:07:08,010
+Din tur. WalkSAT gir opp etter max flips og svarer failure. Hva vet du da?
+
+74
+00:07:08,010 --> 00:07:12,890
+B, ingenting sikkert. Kanskje finnes det ingen modell, kanskje trengte den mer
+
+75
+00:07:12,890 --> 00:07:18,490
+tid. Uten modell og uten grense stopper den aldri. Derfor kan ikke WalkSAT
+
+76
+00:07:18,490 --> 00:07:23,050
+bevise entailment. Bruk den når du venter at en løsning finnes.
+
+77
+00:07:24,350 --> 00:07:28,030
+Hvilke SAT-problemer er egentlig vanskelige?
+
+78
+00:07:29,783 --> 00:07:37,143
+Lag tilfeldige setninger: m klausuler med tre literaler, over n symboler. Med få
+
+79
+00:07:37,143 --> 00:07:42,823
+klausuler per symbol er problemet underconstrained: nesten alt er løsninger. Med
+
+80
+00:07:42,823 --> 00:07:48,143
+mange er det overconstrained, og løsninger finnes nesten aldri. Med femti
+
+81
+00:07:48,143 --> 00:07:53,623
+symboler stuper sjansen for satisfiable rundt m over n lik fire komma tre. Det
+
+82
+00:07:53,623 --> 00:07:59,823
+står i boka. Litteraturnotene sier fire komma to seks. At sjansen går fra én til
+
+83
+00:07:59,823 --> 00:08:05,383
+null ved et fast forhold når n vokser, er ikke bevist. Det heter satisfiability
+
+84
+00:08:05,383 --> 00:08:07,143
+threshold conjecture.
+
+85
+00:08:08,517 --> 00:08:15,077
+Og hvor er de vanskelige? Tell DPLL-kallene. Toppen ligger rundt terskelen. Til
+
+86
+00:08:15,077 --> 00:08:20,357
+venstre er det lett å gjette en løsning. Til høyre kommer motsigelsen fort. Ved
+
+87
+00:08:20,357 --> 00:08:25,797
+terskelen er problemet nesten løsbart, så søket må dypt før det vet svaret.
+
+88
+00:08:25,797 --> 00:08:30,557
+Ifølge boka er problemene ved fire komma tre omtrent tjue ganger vanskeligere
+
+89
+00:08:30,557 --> 00:08:35,477
+enn ved tre komma tre. Flere klausuler betyr altså ikke vanskeligere.
+
+90
+00:08:36,750 --> 00:08:39,150
+Hvordan kan dette se ut på eksamen?
+
+91
+00:08:40,917 --> 00:08:46,677
+Denne oppgaven er i eksamensstil, ikke fra en ekte eksamen. Klausulene er
+
+92
+00:08:46,677 --> 00:08:52,197
+kaninene fra eksamen i totusen og atten, oppgave seks, pluss det negerte målet B
+
+93
+00:08:52,197 --> 00:09:00,597
+én. Bruk DPLL til å avgjøre om kanin én er hvit. Og kunne WalkSAT svart? Prøv
+
+94
+00:09:00,597 --> 00:09:12,597
+selv før du ser løsningen.
+
+95
+00:09:13,883 --> 00:09:22,123
+Ingen symboler er pure. Men C fem er B fire alene, så B fire blir true. Da er C
+
+96
+00:09:22,123 --> 00:09:29,163
+fire unit, og B tre blir false. Nå er C to sann, og B to står bare positivt i
+
+97
+00:09:29,163 --> 00:09:37,403
+resten. B to er pure. C seks gir B én false, og da er C sju usann. Uten en
+
+98
+00:09:37,403 --> 00:09:44,003
+eneste gjetning: unsatisfiable. Altså følger det av KB at kanin én er hvit, som
+
+99
+00:09:44,003 --> 00:09:49,563
+med resolution i E12. WalkSAT kunne ikke vist dette, for det finnes ingen modell
+
+100
+00:09:49,563 --> 00:09:53,723
+å finne. På eksamen: navngi hvert steg.
+
+101
+00:09:55,083 --> 00:09:57,403
+Hvor møter du disse ideene igjen?
+
+102
+00:09:59,183 --> 00:10:05,663
+DPLL er backtracking fra kapittel fem, med true og false som domene. En unit
+
+103
+00:10:05,663 --> 00:10:11,823
+clause er en variabel med én lovlig verdi igjen: MRV ville tatt den først, og
+
+104
+00:10:11,823 --> 00:10:17,983
+unit propagation ligner forward checking. Degree heuristic er den samme. WalkSAT
+
+105
+00:10:17,983 --> 00:10:22,623
+er min-conflicts med tilfeldige steg, og random restarts kjenner du fra hill
+
+106
+00:10:22,623 --> 00:10:27,183
+climbing. Og på definite clauses er unit propagation det samme som forward
+
+107
+00:10:27,183 --> 00:10:31,663
+chaining fra E12. Planlegging som SAT er ikke pensum.
+
+108
+00:10:32,950 --> 00:10:39,990
+Hele kjeden: entailment blir et spørsmål om satisfiability. DPLL går dybde-først
+
+109
+00:10:39,990 --> 00:10:45,430
+over delvise modeller, stopper tidlig og tar pure og unit før den gjetter.
+
+110
+00:10:45,430 --> 00:10:50,110
+WalkSAT flipper seg mot en modell, men beviser aldri at ingen finnes. De
+
+111
+00:10:50,110 --> 00:10:54,790
+vanskeligste ligger ved terskelen, rundt fire komma tre. Derfor slipper løserne
+
+112
+00:10:54,790 --> 00:11:01,310
+en million milliarder rader. Hvis du bare husker én ting: DPLL kan si nei.
+
+113
+00:11:01,310 --> 00:11:03,190
+WalkSAT kan bare si ja.
+

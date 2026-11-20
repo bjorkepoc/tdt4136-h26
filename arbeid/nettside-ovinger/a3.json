@@ -1,0 +1,365 @@
+{
+ "id": "a3",
+ "ep": "A3",
+ "tittel": "Assignment 3: Adversarial Search",
+ "kilde": "../materiale/Files/Assignment_3.pdf",
+ "om": "Responsible for assignments this year: Aleksandra Jekic<br>\nAssignment created by Ole C. Eidheim and Xavier F.C. Sánchez-Díaz\n\n7th October 2026\n\nDeadline: 23.10.2026, 23:59 hrs\n\n**1 Overview**\n\nIn this assignment, you will implement the **Minimax** algorithm for adversarial search. We recommend following the pseudocode provided in **Figure 6.3 (p. 196)** of the textbook (AIMA 4th Ed., Global edition) Afterwards, you will extend such implementation to use **alpha-beta pruning** to speed up the search. Pseudocode for alpha-beta pruning is provided in **Figure 6.7 (p. 200)** of the textbook.\n\nYou will run **Minimax** on the halving game and the bucket game, and **Minimax** and **alpha-beta pruning** on Tic-tac-toe. Especially Tic-tac-toe will require **alpha-beta pruning** in order to avoid spending several seconds to find the first move.\n\nYou need the required functions for the different games such as `to_move(state)`, `actions(state)` and `result(state, action)`, in order to be able to run the algorithms **Minimax** and **alpha-beta pruning** on the games. These functions are provided below, and you are welcome to use and adapt this code in your submission, but it is not mandatory.\n\n**5 Deliverables**\n\n1. Source files containing the game classes, the algorithms **Minimax** and **alpha-beta pruning**, and the code for actually playing the games using the algorithms with outputs showing for example game states and actions.\n2. A **single** PDF report containing:\n   - (a) Text outputs showing the actual playing of the different games with the **Minimax** algorithm for both players. The output should include the state of the game at every turn, the action performed and by whom, and who won the game at the end or if the game ended in a draw.\n     - i. If you did the non-mandatory part for Tic-tac-toe, you can include these outputs here as well\n   - (b) The runtime of finding the first move for Tic-tac-toe with **Minimax** compared to **alpha-beta pruning**.\n\n**Recommendations**\n\nMake sure that your code is well documented. **Please upload the code files and PDF report as seperate files when delivering the assignment on Canvas. Do NOT put in zip.**\n\n---\n\n**Filer**\n\n- Startkoden: [halving_game.py](../materiale/Files/code_handout_A3/halving_game.py), [bucket_game.py](../materiale/Files/code_handout_A3/bucket_game.py), [tic_tac_toe.py](../materiale/Files/code_handout_A3/tic_tac_toe.py)\n- Pseudokoden fra boka, slik den ble vist i AL3 (slide 13 og 19): [Minimax, fig. 6.3](A3/pseudokode-minimax-fig6.3.png), [alpha-beta, fig. 6.7](A3/pseudokode-alphabeta-fig6.7.png)",
+ "intro": "Programmeringsøving i minimax og alpha-beta på halving game, bucket game og Tic-tac-toe. Den hører til E08 (AIMA Global 6.1–6.2). Selve koden skriver og kjører du i Python. Her svarer du med det som kan skrives som tekst: utskrifter, verdier, kjøretider og korte forklaringer. Under «Tegn og sjekk» ligger spilltrærne fra forelesning 8 ferdig tegnet for oppgave 2 og 3.",
+ "tasks": [
+  {
+   "t": "Oppgave 2: The halving game",
+   "d": "The halving game is a Nim game variant where the game starts with some number *N*, which can for example be the starting number of rocks on the ground. Players then take turns either decrementing *N* or replacing it with *N*/2 rounded down. The player that starts its turn with *N* = 0 wins.\n\nThe source code below contains a `Game` class where the halving game is defined for use with the **Minimax** algorithm, and a `while` loop in which the game is played through self-play where both players use the **Minimax** algorithm. You must implement the **Minimax** algorithm in the `minimax_search` function. The expected output of the code is shown in the comment at the end.\n\n<details><summary><code>halving_game.py</code> (koden fra oppgaven, klikk for å vise)</summary>\n\n```python\nimport math\n\nState = tuple[int, int] # Tuple of player (whose turn it is),\n                        # and the number to be decreased\nAction = str  # Decrement (number <- number-1) or halve (number <- number / 2)\n\nclass Game:\n    def __init__(self, N: int):\n        self.N = N\n\n    def initial_state(self) -> State:\n        return 0, self.N\n\n    def to_move(self, state: State) -> int:\n        player, _ = state\n        return player\n\n    def actions(self, state: State) -> list[Action]:\n        return ['--', '/2']\n\n    def result(self, state: State, action: Action) -> State:\n        _, number = state\n        if action == '--':\n            return (self.to_move(state) + 1) % 2, number - 1\n        else:\n            return (self.to_move(state) + 1) % 2, number // 2  # Floored division\n\n    def is_terminal(self, state: State) -> bool:\n        _, number = state\n        return number == 0\n\n    def utility(self, state: State, player: int) -> float:\n        assert self.is_terminal(state)\n        return 1 if self.to_move(state) == player else -1\n\n    def print(self, state: State):\n        _, number = state\n        print(f'The number is {number} and ', end='')\n        if self.is_terminal(state):\n            if self.utility(state, 0) > 0:\n                print(f'P1 won')\n            else:\n                print(f'P2 won')\n        else:\n            print(f'it is P{self.to_move(state)+1}\\'s turn')\n\ndef minimax_search(game: Game, state: State) -> Action | None:\n    # YOUR CODE HERE\n    assert False, \"Not implemented\"\n\ngame = Game(5)\n\nstate = game.initial_state()\ngame.print(state)\nwhile not game.is_terminal(state):\n    player = game.to_move(state)\n    action = minimax_search(game, state) # The player whose turn it is\n                                         # is the MAX player\n    print(f'P{player+1}\\'s action: {action}')\n    assert action is not None\n    state = game.result(state, action)\n    game.print(state)\n\n# Expected output:\n# The number is 5 and it is P1's turn\n# P1's action: --\n# The number is 4 and it is P2's turn\n# P2's action: --\n# The number is 3 and it is P1's turn\n# P1's action: /2\n# The number is 1 and it is P2's turn\n# P2's action: --\n# The number is 0 and P1 won\n```\n\n</details>\n\n[Last ned halving_game.py](../materiale/Files/code_handout_A3/halving_game.py)\n\nNote that if you would like, you can change the `while` loop such that you play against the **Minimax** algorithm yourself.",
+   "f": [
+    [
+     "minimax_search: koden din",
+     "area",
+     "def minimax_search(game: Game, state: State) -> Action | None:\n    ..."
+    ],
+    [
+     "Utskrift fra selvspillet med N = 5",
+     "area"
+    ],
+    [
+     "Minimax-verdien til starttilstanden (N = 5), sett fra P1",
+     "text",
+     "ett tall"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Minimax-verdien til starttilstanden (N = 5), sett fra P1": [
+      "1"
+     ]
+    },
+    "merk": "Rota (N = 5) har verdien 1, så P1 vinner, og «--» er beste første trekk.",
+    "kilde": "Lecture8-AS-Fall2026.pdf, slide 15/42 (Halving game tree, N = 5)"
+   },
+   "tegn": {
+    "type": "tre",
+    "data": {
+     "id": "R",
+     "type": "max",
+     "tekst": "5",
+     "barn": [
+      {
+       "id": "Rm",
+       "type": "min",
+       "tekst": "4",
+       "barn": [
+        {
+         "id": "Rmm",
+         "type": "max",
+         "tekst": "3",
+         "barn": [
+          {
+           "id": "Rmmm",
+           "type": "min",
+           "tekst": "2",
+           "barn": [
+            {
+             "id": "Rmmmm",
+             "type": "max",
+             "tekst": "1",
+             "barn": [
+              {
+               "id": "Rmmmmm",
+               "type": "blad",
+               "verdi": -1,
+               "tekst": "0"
+              },
+              {
+               "id": "Rmmmmh",
+               "type": "blad",
+               "verdi": -1,
+               "tekst": "0"
+              }
+             ]
+            },
+            {
+             "id": "Rmmmh",
+             "type": "max",
+             "tekst": "1",
+             "barn": [
+              {
+               "id": "Rmmmhm",
+               "type": "blad",
+               "verdi": -1,
+               "tekst": "0"
+              },
+              {
+               "id": "Rmmmhh",
+               "type": "blad",
+               "verdi": -1,
+               "tekst": "0"
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "id": "Rmmh",
+           "type": "min",
+           "tekst": "1",
+           "barn": [
+            {
+             "id": "Rmmhm",
+             "type": "blad",
+             "verdi": 1,
+             "tekst": "0"
+            },
+            {
+             "id": "Rmmhh",
+             "type": "blad",
+             "verdi": 1,
+             "tekst": "0"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "id": "Rmh",
+         "type": "max",
+         "tekst": "2",
+         "barn": [
+          {
+           "id": "Rmhm",
+           "type": "min",
+           "tekst": "1",
+           "barn": [
+            {
+             "id": "Rmhmm",
+             "type": "blad",
+             "verdi": 1,
+             "tekst": "0"
+            },
+            {
+             "id": "Rmhmh",
+             "type": "blad",
+             "verdi": 1,
+             "tekst": "0"
+            }
+           ]
+          },
+          {
+           "id": "Rmhh",
+           "type": "min",
+           "tekst": "1",
+           "barn": [
+            {
+             "id": "Rmhhm",
+             "type": "blad",
+             "verdi": 1,
+             "tekst": "0"
+            },
+            {
+             "id": "Rmhhh",
+             "type": "blad",
+             "verdi": 1,
+             "tekst": "0"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "Rh",
+       "type": "min",
+       "tekst": "2",
+       "barn": [
+        {
+         "id": "Rhm",
+         "type": "max",
+         "tekst": "1",
+         "barn": [
+          {
+           "id": "Rhmm",
+           "type": "blad",
+           "verdi": -1,
+           "tekst": "0"
+          },
+          {
+           "id": "Rhmh",
+           "type": "blad",
+           "verdi": -1,
+           "tekst": "0"
+          }
+         ]
+        },
+        {
+         "id": "Rhh",
+         "type": "max",
+         "tekst": "1",
+         "barn": [
+          {
+           "id": "Rhhm",
+           "type": "blad",
+           "verdi": -1,
+           "tekst": "0"
+          },
+          {
+           "id": "Rhhh",
+           "type": "blad",
+           "verdi": -1,
+           "tekst": "0"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "fasit": "**Minimax-verdien til starttilstanden er 1.** P1 vinner med perfekt spill, og «--» er beste første trekk.\n\n**minimax_search** etter fig. 6.3. `utility` får alltid spilleren som skal trekke i rota, altså MAX:\n\n```python\nimport math\n\ndef minimax_search(game, state):\n    player = game.to_move(state)          # den som skal trekke, er MAX\n\n    def max_value(state):\n        if game.is_terminal(state):\n            return game.utility(state, player), None\n        v, move = -math.inf, None\n        for a in game.actions(state):\n            v2, _ = min_value(game.result(state, a))\n            if v2 > v:\n                v, move = v2, a\n        return v, move\n\n    def min_value(state):\n        if game.is_terminal(state):\n            return game.utility(state, player), None\n        v, move = math.inf, None\n        for a in game.actions(state):\n            v2, _ = max_value(game.result(state, a))\n            if v2 < v:\n                v, move = v2, a\n        return v, move\n\n    value, move = max_value(state)\n    return move\n```\n\n**Utskrift** (som forventet utskrift i `halving_game.py`):\n\n```\nThe number is 5 and it is P1's turn\nP1's action: --\nThe number is 4 and it is P2's turn\nP2's action: --\nThe number is 3 and it is P1's turn\nP1's action: /2\nThe number is 1 and it is P2's turn\nP2's action: --\nThe number is 0 and P1 won\n```\n\n**Verdiene nedenfra**, sett fra den som skal trekke. Den som starter turen med 0, vinner.\n\n| N | «--» gir | «/2» gir | Verdi for den som trekker |\n|---|---|---|---|\n| 1 | 0 | 0 | −1 (motstanderen starter med 0) |\n| 2 | 1 | 1 | +1 |\n| 3 | 2 | 1 | +1 (bare med «/2») |\n| 4 | 3 | 2 | −1 (begge trekkene taper) |\n| 5 | 4 | 2 | +1 (bare med «--») |\n\nP2 står i en tapt stilling på N = 4. Når begge trekkene er like gode, beholder `if v2 > v` det første, så P2 spiller «--».\n\nVanlig feil: å regne utility fra spilleren som trekker i hver node i stedet for spilleren i rota.\n\n*Kilde: forventet utskrift i `halving_game.py` og treet i forelesning 8, slide 15/42. Kontroll: koden over og minimax i `nettside-algo/spill.js` gir verdien 1.*"
+  },
+  {
+   "t": "Oppgave 3: The bucket game",
+   "d": "In the bucket game, there are three buckets: *A* = {−50, 50}, *B* = {3, 1}, *C* = {−5, 15}. The first player chooses bucket *A*, *B* or *C*, and the second player then chooses one of the numbers in the chosen bucket. The goal of the first player is to maximize the selected number, while the goal of the second player is to minimize this number.\n\nThe source code for the bucket game is shown below. You can use the same **Minimax** function that you implemented for the halving game, as well as the `while` loop for self-play.\n\n<details><summary><code>bucket_game.py</code> (koden fra oppgaven, klikk for å vise)</summary>\n\n```python\nState = tuple[int, list[str | int]]  # Tuple of player (whose turn it is),\n                                     # and the buckets (as str)\n                                     # or the number in a bucket\nAction = str | int  # Bucket choice (as str) or choice of number\n\n\nclass Game:\n    def initial_state(self) -> State:\n        return 0, ['A', 'B', 'C']\n\n    def to_move(self, state: State) -> int:\n        player, _ = state\n        return player\n\n    def actions(self, state: State) -> list[Action]:\n        _, actions = state\n        return actions\n\n    def result(self, state: State, action: Action) -> State:\n        if action == 'A':\n            return (self.to_move(state) + 1) % 2, [-50, 50]\n        elif action == 'B':\n            return (self.to_move(state) + 1) % 2, [3, 1]\n        elif action == 'C':\n            return (self.to_move(state) + 1) % 2, [-5, 15]\n        assert type(action) is int\n        return (self.to_move(state) + 1) % 2, [action]\n\n    def is_terminal(self, state: State) -> bool:\n        _, actions = state\n        return len(actions) == 1\n\n    def utility(self, state: State, player: int) -> float:\n        assert self.is_terminal(state)\n        _, actions = state\n        assert type(actions[0]) is int\n        return actions[0] if player == self.to_move(state) else -actions[0]\n\n    def print(self, state):\n        print(f'The state is {state} and ', end='')\n        if self.is_terminal(state):\n            print(f'P1\\'s utility is {self.utility(state, 0)}')\n        else:\n            print(f'it is P{self.to_move(state)+1}\\'s turn')\n```\n\n</details>\n\n[Last ned bucket_game.py](../materiale/Files/code_handout_A3/bucket_game.py)",
+   "f": [
+    [
+     "Utskrift fra selvspillet",
+     "area"
+    ],
+    [
+     "Bøtta P1 velger",
+     "text",
+     "A, B eller C"
+    ],
+    [
+     "Tallet P2 velger",
+     "text"
+    ],
+    [
+     "Minimax-verdien for P1",
+     "text",
+     "ett tall"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Bøtta P1 velger": [
+      "B"
+     ],
+     "Tallet P2 velger": [
+      "1"
+     ],
+     "Minimax-verdien for P1": [
+      "1"
+     ]
+    },
+    "merk": "MIN-nodene får A = −50, B = 1 og C = −5. P1 velger B, P2 velger 1, og verdien er 1.",
+    "kilde": "Lecture8-AS-Fall2026.pdf, slide 11/42 (The minimax search algorithm, bucket game tree)"
+   },
+   "tegn": {
+    "type": "tre",
+    "data": {
+     "id": "R",
+     "type": "max",
+     "barn": [
+      {
+       "id": "A",
+       "type": "min",
+       "tekst": "A",
+       "barn": [
+        {
+         "id": "A1",
+         "type": "blad",
+         "verdi": -50
+        },
+        {
+         "id": "A2",
+         "type": "blad",
+         "verdi": 50
+        }
+       ]
+      },
+      {
+       "id": "B",
+       "type": "min",
+       "tekst": "B",
+       "barn": [
+        {
+         "id": "B1",
+         "type": "blad",
+         "verdi": 3
+        },
+        {
+         "id": "B2",
+         "type": "blad",
+         "verdi": 1
+        }
+       ]
+      },
+      {
+       "id": "C",
+       "type": "min",
+       "tekst": "C",
+       "barn": [
+        {
+         "id": "C1",
+         "type": "blad",
+         "verdi": -5
+        },
+        {
+         "id": "C2",
+         "type": "blad",
+         "verdi": 15
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "fasit": "**P1 velger bøtte B, P2 velger 1, og minimax-verdien for P1 er 1.**\n\nMIN-nodene (P2) tar minimum, og rota (P1) tar maksimum:\n\n| Bøtte | Tall | MIN-verdi |\n|---|---|---|\n| A | −50, 50 | −50 |\n| B | 3, 1 | 1 |\n| C | −5, 15 | −5 |\n\nRota får max(−50, 1, −5) = 1, altså B. A har det største tallet (50), men minimax antar at P2 spiller best mulig og ville valgt −50.\n\n**Utskrift** med samme `minimax_search` som i oppgave 2:\n\n```\nThe state is (0, ['A', 'B', 'C']) and it is P1's turn\nP1's action: B\nThe state is (1, [3, 1]) and it is P2's turn\nP2's action: 1\nThe state is (0, [1]) and P1's utility is 1\n```\n\n*Kilde: forelesning 8, slide 11/42 (bucket game-treet). Kontroll: egen kjøring av koden og minimax i `nettside-algo/spill.js`.*"
+  },
+  {
+   "t": "Oppgave 4: Tic-tac-toe",
+   "d": "The source code for the Tic-tac-toe game is shown below. You can use the same **Minimax** function that you implemented for the halving game, as well as the `while` loop for self-play. You must also implement **alpha-beta pruning** and try this algorithm instead of **Minimax**.\n\n<details><summary><code>tic_tac_toe.py</code> (koden fra oppgaven, klikk for å vise)</summary>\n\n```python\nfrom copy import deepcopy\n\nState = tuple[int, list[list[int | None]]]  # Tuple of player (whose turn it is),\n                                            # and board\nAction = tuple[int, int]  # Where to place the player's piece\n\nclass Game:\n    def initial_state(self) -> State:\n        return (0, [[None, None, None], [None, None, None], [None, None, None]])\n\n    def to_move(self, state: State) -> int:\n        player_index, _ = state\n        return player_index\n\n    def actions(self, state: State) -> list[Action]:\n        _, board = state\n        actions = []\n        for row in range(3):\n            for col in range(3):\n                if board[row][col] is None:\n                    actions.append((row, col))\n        return actions\n\n    def result(self, state: State, action: Action) -> State:\n        _, board = state\n        row, col = action\n        next_board = deepcopy(board)\n        next_board[row][col] = self.to_move(state)\n        return (self.to_move(state) + 1) % 2, next_board\n\n    def is_winner(self, state: State, player: int) -> bool:\n        _, board = state\n        for row in range(3):\n            if all(board[row][col] == player for col in range(3)):\n                return True\n        for col in range(3):\n            if all(board[row][col] == player for row in range(3)):\n                return True\n        if all(board[i][i] == player for i in range(3)):\n            return True\n        return all(board[i][2 - i] == player for i in range(3))\n\n    def is_terminal(self, state: State) -> bool:\n        _, board = state\n        if self.is_winner(state, (self.to_move(state) + 1) % 2):\n            return True\n        return all(board[row][col] is not None for row in range(3) for col in range(3))\n\n    def utility(self, state, player):\n        assert self.is_terminal(state)\n        if self.is_winner(state, player):\n            return 1\n        if self.is_winner(state, (player + 1) % 2):\n            return -1\n        return 0\n\n    def print(self, state: State):\n        _, board = state\n        print()\n        for row in range(3):\n            cells = [\n                ' ' if board[row][col] is None else 'x' if board[row][col] == 0 else 'o'\n                for col in range(3)\n            ]\n            print(f' {cells[0]} | {cells[1]} | {cells[2]}')\n            if row < 2:\n                print('---+---+---')\n        print()\n        if self.is_terminal(state):\n            if self.utility(state, 0) > 0:\n                print(f'P1 won')\n            elif self.utility(state, 1) > 0:\n                print(f'P2 won')\n            else:\n                print('The game is a draw')\n        else:\n            print(f'It is P{self.to_move(state)+1}\\'s turn to move')\n```\n\n</details>\n\n[Last ned tic_tac_toe.py](../materiale/Files/code_handout_A3/tic_tac_toe.py)",
+   "f": [
+    [
+     "Utskrift fra selvspillet med Minimax",
+     "area"
+    ],
+    [
+     "alpha_beta_search: koden din",
+     "area"
+    ],
+    [
+     "Kjøretid for første trekk med Minimax",
+     "text",
+     "f.eks. 2,0 s"
+    ],
+    [
+     "Kjøretid for første trekk med alpha-beta",
+     "text"
+    ],
+    [
+     "Hvordan endte spillet, og hvorfor er alpha-beta raskere?",
+     "area"
+    ]
+   ],
+   "fasit": "**Spillet endte uavgjort. Første trekk tok rundt 2 s med Minimax og rundt 0,07 s med alpha-beta** (egen kjøring: 2,1 s og 0,07 s; din innlevering: 1,983 s og 0,064 s). Alpha-beta er raskere fordi den kutter bort deltrær som ikke kan endre valget.\n\n**Utskrift med Minimax for begge**, kortet ned til trekkene og sluttstillingen. Med `actions` radvis og `if v2 > v` blir trekkene:\n\n```\nP1 (0, 0), P2 (1, 1), P1 (0, 1), P2 (0, 2), P1 (2, 0),\nP2 (1, 0), P1 (1, 2), P2 (2, 1), P1 (2, 2)\n\n x | x | o\n---+---+---\n o | o | x\n---+---+---\n x | o | x\n\nThe game is a draw\n```\n\nDen fulle utskriften viser brettet og «It is P…'s turn to move» etter hvert trekk. Alpha-beta gir de samme trekkene, fordi den gir samme verdi og beholder første beste trekk.\n\n**alpha_beta_search** etter fig. 6.7:\n\n```python\ndef alpha_beta_search(game, state):\n    player = game.to_move(state)\n\n    def max_value(state, alpha, beta):\n        if game.is_terminal(state):\n            return game.utility(state, player), None\n        v, move = -math.inf, None\n        for a in game.actions(state):\n            v2, _ = min_value(game.result(state, a), alpha, beta)\n            if v2 > v:\n                v, move = v2, a\n                alpha = max(alpha, v)\n            if v >= beta:\n                return v, move           # MIN over oss velger aldri denne\n        return v, move\n\n    def min_value(state, alpha, beta):\n        if game.is_terminal(state):\n            return game.utility(state, player), None\n        v, move = math.inf, None\n        for a in game.actions(state):\n            v2, _ = max_value(game.result(state, a), alpha, beta)\n            if v2 < v:\n                v, move = v2, a\n                beta = min(beta, v)\n            if v <= alpha:\n                return v, move           # MAX over oss velger aldri denne\n        return v, move\n\n    value, move = max_value(state, -math.inf, math.inf)\n    return move\n```\n\n**Hvorfor uavgjort:** Tic-tac-toe er uavgjort med perfekt spill fra begge, og minimax-verdien til det tomme brettet er 0.\n\n**Hvorfor alpha-beta er raskere:** Minimax går gjennom hele spilltreet, 549 946 noder fra tomt brett. Alpha-beta holder α (det beste MAX er sikret) og β (det beste MIN er sikret) og slutter å se på barna til en node når v ≥ β i MAX eller v ≤ α i MIN. Resten av den grenen kan ikke endre valget i rota. Med denne trekkrekkefølgen besøker alpha-beta 18 297 noder, rundt 30 ganger færre, og gir samme verdi og trekk. Med perfekt rekkefølge blir tiden O(b^(m/2)) i stedet for O(b^m).\n\n*Kilde: ingen offisiell løsning. Egen kjøring av fig. 6.3 og 6.7 på `tic_tac_toe.py`, og innleveringen din (vurdert «complete»).*"
+  },
+  {
+   "t": "Oppgave 4.1: Non-mandatory",
+   "d": "In this game:\n\nit is x’s turn, and **Minimax** may play middle square instead of bottom left. Why? Can you change the `Game` class for Tic-tac-toe such that **Minimax** instead plays to win right away?\n\nThis part of the assignment is non-mandatory, while the rest of the assignment in this document is mandatory.\n\n*Merknad:* Brettet («this game») står under teksten. I oppgaven står det mellom «In this game:» og «it is x’s turn».",
+   "img": [
+    "nettside-figurer/a3-4-1-brett.png"
+   ],
+   "f": [
+    [
+     "Hvorfor kan Minimax velge midtruta?",
+     "area"
+    ],
+    [
+     "Endringen i Game-klassen",
+     "area"
+    ]
+   ],
+   "fasit": "**Hvorfor midtruta:** Alle fem trekkene gir x sikker seier med perfekt spill, så alle får utility 1. `utility` skiller ikke mellom rask og sein seier. `actions` lister rutene radvis, og `if v2 > v` beholder det første av flere like gode trekk. Midtruta (1, 1) kommer før nederst til venstre (2, 0), så Minimax velger midtruta.\n\n**Endringen i Game-klassen:** La `utility` gi mer for en rask seier, for eksempel ved å gange med 1 + antall tomme ruter:\n\n```python\ndef utility(self, state, player):\n    _, board = state\n    empty = sum(cell is None for row in board for cell in row)\n    ...                      # som før: 1, −1 eller 0\n    return result * (1 + empty)\n```\n\nDa gir (2, 0) verdien 1 · (1 + 4) = 5, mens seieren etter midtruta kommer senere og gir høyst 3. Minimax velger (2, 0) og vinner med en gang. Et tap blir også mindre ille jo senere det kommer.\n\nMidtruta er ikke et dårlig trekk: x truer da tre ruter (diagonalen, midtre rad og venstre kolonne), og o kan bare blokkere én.\n\n*Kilde: AL3, slide 25, gir bare tipset «try to understand what this situation looks like in the code». Forklaringen er egen og kontrollert ved å kjøre fig. 6.3 på `tic_tac_toe.py` før og etter endringen.*"
+  }
+ ],
+ "fasit": "Den offisielle teksten gir bare forventet utskrift for halving game. Forelesning 8 regner ut bucket game og halving game. For Tic-tac-toe finnes ingen offisiell løsning.\n\n**Oppgave 2: The halving game.** Forventet utskrift står i kommentaren nederst i `halving_game.py`. Forelesning 8 (slide 15/42) tegner hele treet for *N* = 5. Hver node viser «tallet, minimax-verdien». Rota får 1, så P1 vinner med perfekt spill, og «--» er beste første trekk.\n\n<img class=\"fig\" src=\"nettside-figurer/a3-losning-halving.png\" alt=\"Halving game tree, N = 5 (forelesning 8, slide 15/42)\">\n\n**Oppgave 3: The bucket game.** Forelesning 8 (slide 11/42): MIN-nodene får A = −50, B = 1 og C = −5. Rota får 1, så P1 velger B og P2 velger 1. Utskriften blir da\n\n```\nThe state is (0, ['A', 'B', 'C']) and it is P1's turn\nP1's action: B\nThe state is (1, [3, 1]) and it is P2's turn\nP2's action: 1\nThe state is (0, [1]) and P1's utility is 1\n```\n\n<img class=\"fig\" src=\"nettside-figurer/a3-losning-bucket.png\" alt=\"Minimax på bucket game (forelesning 8, slide 11/42)\">\n\n**Oppgave 4: Tic-tac-toe.** Ingen offisiell løsning. Din egen innlevering er vurdert «complete» (kunngjøring 09.11): [A3_report.pdf](assignment3/A3_report.pdf), med koden i `arbeid/assignment3/`. Der endte selvspillet uavgjort, og første trekk tok 1,983 s med Minimax og 0,064 s med alpha-beta.\n\n**Oppgave 4.1 (frivillig).** AL3 (slide 25) gir bare et tips: finn ut hvordan situasjonen ser ut i koden. Forklaringen under er ikke offisiell. Den er sjekket ved å kjøre bokas minimax (fig. 6.3) på `tic_tac_toe.py`:\n\n- Alle fem trekkene gir x seier med perfekt spill, og alle får utility 1. `utility` skiller ikke mellom rask og sein seier.\n- `actions` lister rutene radvis, og `if v2 > v` beholder det første av flere like gode trekk. Midtruta (1, 1) kommer før nederst til venstre (2, 0), så Minimax velger midtruta.\n- La `utility` gi mer for en rask seier, for eksempel ved å gange med 1 + antall tomme ruter. Da velger Minimax (2, 0) og vinner med en gang."
+}

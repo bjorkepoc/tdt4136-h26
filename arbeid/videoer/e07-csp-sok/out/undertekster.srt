@@ -1,0 +1,672 @@
+1
+00:00:00,450 --> 00:00:06,210
+Tre farger, sju områder, og naboer kan ikke ha samme farge. Western Australia
+
+2
+00:00:06,210 --> 00:00:12,130
+blir rød. Queensland blir grønn. Victoria blir blå. Nå har South Australia ingen
+
+3
+00:00:12,130 --> 00:00:17,290
+farge igjen, og du må angre. Men på akkurat samme kart kan du komme gjennom uten
+
+4
+00:00:17,290 --> 00:00:21,010
+å angre et eneste valg. Det handler bare om rekkefølgen.
+
+5
+00:00:22,383 --> 00:00:28,983
+Du skal kunne kjøre backtracking med forward checking, MRV, degree og LCV for
+
+6
+00:00:28,983 --> 00:00:34,756
+hånd, se hva MAC fanger som forward checking overser, og kjøre min-conflicts.
+
+7
+00:00:34,756 --> 00:00:40,543
+Til slutt en ekte eksamensoppgave. Dette er seksjon fem punkt tre og fem punkt
+
+8
+00:00:40,543 --> 00:00:45,903
+fire, seks punkt tre og seks punkt fire i den amerikanske utgaven. Intelligent
+
+9
+00:00:45,903 --> 00:00:50,383
+backtracking, constraint learning og fem punkt fem er ikke pensum.
+
+10
+00:00:51,683 --> 00:00:55,603
+Hvorfor kan du ikke bare bruke et vanlig søk fra kapittel tre?
+
+11
+00:00:57,383 --> 00:01:03,143
+Et vanlig søk ser en delvis tilordning som en tilstand, og én ny verdi som en
+
+12
+00:01:03,143 --> 00:01:07,583
+handling. Fra roten kan du velge hvilken som helst av sju variabler og tre
+
+13
+00:01:07,583 --> 00:01:14,903
+farger: tjueen grener. Neste nivå atten, så femten, helt ned til sju nivåer. Det
+
+14
+00:01:14,903 --> 00:01:20,423
+gir n fakultet ganger d opphøyd i n blader, over elleve millioner. Men det
+
+15
+00:01:20,423 --> 00:01:24,103
+finnes bare to tusen hundre og åttisju forskjellige fargelegginger.
+
+16
+00:01:25,383 --> 00:01:30,983
+Hvor kommer resten fra? Rød på Western Australia og så grønn på Queensland gir
+
+17
+00:01:30,983 --> 00:01:36,183
+samme tilordning som grønn på Queensland først. Rekkefølgen spiller ingen rolle,
+
+18
+00:01:36,183 --> 00:01:42,183
+og det heter commutativity. Så det holder å se på én variabel per nivå i treet.
+
+19
+00:01:42,183 --> 00:01:47,250
+Da blir det tre grener per nivå og d opphøyd i n blader: to tusen hundre og
+
+20
+00:01:47,250 --> 00:01:48,183
+åttisju.
+
+21
+00:01:49,483 --> 00:01:55,563
+Det gjør funksjonen backtrack. Er tilordningen komplett, er du ferdig. Ellers
+
+22
+00:01:55,563 --> 00:02:01,003
+velger du én variabel og prøver verdiene én etter én. Passer verdien, gjør du
+
+23
+00:02:01,003 --> 00:02:06,243
+inferens og kaller deg selv ett nivå dypere. Går det galt, fjerner du verdien og
+
+24
+00:02:06,243 --> 00:02:11,643
+prøver neste. Er alle brukt opp, returnerer du failure, og nivået over prøver
+
+25
+00:02:11,643 --> 00:02:17,603
+sin neste verdi. Det er dybde-først-søk fra kapittel tre: gå dypt, snu ved
+
+26
+00:02:17,603 --> 00:02:18,843
+blindveier.
+
+27
+00:02:20,217 --> 00:02:25,977
+Din tur. Tre variabler med to verdier hver. Hvor mange blader får det vanlige
+
+28
+00:02:25,977 --> 00:02:33,457
+søketreet, og hvor mange får backtracking?
+
+29
+00:02:33,457 --> 00:02:40,697
+Førtiåtte mot åtte: tre fakultet er seks, ganger åtte. Ta med deg: backtracking
+
+30
+00:02:40,697 --> 00:02:44,217
+er dybde-først-søk med én variabel per nivå.
+
+31
+00:02:45,583 --> 00:02:50,783
+Backtracking lar to valg stå åpne: hvilken variabel tar du først, og hvilken
+
+32
+00:02:50,783 --> 00:02:52,703
+verdi prøver du først?
+
+33
+00:02:54,483 --> 00:03:00,083
+Ta eksempelet fra forelesning fire. Western Australia er rød, Northern Territory
+
+34
+00:03:00,083 --> 00:03:05,883
+er grønn, South Australia har bare blå igjen, og Queensland har rød og blå. Velg
+
+35
+00:03:05,883 --> 00:03:10,563
+variabelen med færrest lovlige verdier: South Australia. Det heter
+
+36
+00:03:10,563 --> 00:03:17,016
+minimum-remaining-values, MRV, eller most constrained variable, som foreleser sa.
+
+37
+00:03:17,016 --> 00:03:22,163
+Boka kaller den også fail-first: ta den som mest sannsynlig feiler, så finner du
+
+38
+00:03:22,163 --> 00:03:23,523
+blindveien tidlig.
+
+39
+00:03:24,817 --> 00:03:31,417
+Men i starten har alle sju områdene tre farger, og MRV står helt likt. Da bryter
+
+40
+00:03:31,417 --> 00:03:36,417
+du likheten med degree-heuristikken: velg variabelen med flest begrensninger mot
+
+41
+00:03:36,417 --> 00:03:42,017
+utilordnede variabler. South Australia har fem, de andre tre eller to, og
+
+42
+00:03:42,017 --> 00:03:47,297
+Tasmania null. Degree ble ikke forelest. Den står bare i boka.
+
+43
+00:03:48,583 --> 00:03:54,903
+Variabelen er valgt. Hvilken verdi først? Den som tar minst fra naboene. Tell
+
+44
+00:03:54,903 --> 00:03:59,823
+hvor mange verdier hver verdi fjerner hos de utilordnede naboene, og prøv lavest
+
+45
+00:03:59,823 --> 00:04:06,503
+først. Det heter least-constraining-value, LCV. Tenk på bordplasseringen fra
+
+46
+00:04:06,503 --> 00:04:12,530
+assignment-forelesning to: den mest kresne gjesten plasseres først, det er MRV.
+
+47
+00:04:12,530 --> 00:04:17,143
+Men hun får stolen som ødelegger minst for de andre. Det er LCV.
+
+48
+00:04:18,417 --> 00:04:23,817
+Din tur, med forelesningseksempelet. Du har valgt Queensland. Rød eller blå
+
+49
+00:04:23,817 --> 00:04:28,897
+først?
+
+50
+00:04:28,897 --> 00:04:34,097
+Rød. Blå ville tatt den siste verdien fra South Australia, så blå fjerner én
+
+51
+00:04:34,097 --> 00:04:35,937
+verdi og rød null.
+
+52
+00:04:37,317 --> 00:04:43,757
+Men vent: variabelen skal feile tidlig, og verdien skal feile sent? Ja. Alle
+
+53
+00:04:43,757 --> 00:04:48,917
+variablene må tilordnes uansett, så ta de vanskelige mens treet er lite, da
+
+54
+00:04:48,917 --> 00:04:53,557
+kuttes blindveiene høyt oppe. Men du trenger bare én løsning, så prøv den
+
+55
+00:04:53,557 --> 00:04:58,197
+verdien som mest sannsynlig fører fram. Ville du hatt alle løsningene, spilte
+
+56
+00:04:58,197 --> 00:05:04,517
+verdirekkefølgen ingen rolle. Ta med deg: variabel, fail-first. Verdi,
+
+57
+00:05:04,517 --> 00:05:05,877
+fail-last.
+
+58
+00:05:07,250 --> 00:05:10,690
+Hvordan ser det ut når alt kjører sammen, steg for steg?
+
+59
+00:05:12,450 --> 00:05:22,130
+Reglene: MRV, så degree, så alfabetisk. For verdiene LCV, så alfabetisk: blå,
+
+60
+00:05:22,130 --> 00:05:27,450
+grønn, rød. Og forward checking: når en variabel får en verdi, fjerner du hos
+
+61
+00:05:27,450 --> 00:05:33,970
+hver utilordnet nabo det som bryter en constraint, her samme farge. Steg én:
+
+62
+00:05:33,970 --> 00:05:39,570
+alle har tre verdier, og degree gir South Australia. Hver farge tar fem verdier
+
+63
+00:05:39,570 --> 00:05:44,850
+fra naboene, så blå vinner alfabetisk. Forward checking tar blått fra alle fem
+
+64
+00:05:44,850 --> 00:05:45,970
+naboene.
+
+65
+00:05:47,350 --> 00:05:56,230
+Din tur: fem områder har to verdier igjen. Hvem er neste?
+
+66
+00:05:56,230 --> 00:06:02,070
+New South Wales. Degree mot utilordnede naboer gir to for Northern Territory,
+
+67
+00:06:02,070 --> 00:06:07,030
+Queensland og New South Wales, men bare én for Western Australia, fordi South
+
+68
+00:06:07,030 --> 00:06:12,190
+Australia allerede er tilordnet. Det står likt mellom tre, og New South Wales er
+
+69
+00:06:12,190 --> 00:06:13,510
+først i alfabetet.
+
+70
+00:06:14,783 --> 00:06:21,183
+LCV for New South Wales: grønn og rød tar begge to verdier, fra Queensland og
+
+71
+00:06:21,183 --> 00:06:27,743
+Victoria. Likt, så grønn. Nå har Queensland og Victoria bare rød. Steg tre: de
+
+72
+00:06:27,743 --> 00:06:33,903
+to står likt på MRV, men Queensland har en utilordnet nabo og Victoria ingen.
+
+73
+00:06:33,903 --> 00:06:39,263
+Queensland blir rød, og Northern Territory mister rødt. Steg fire: Northern
+
+74
+00:06:39,263 --> 00:06:44,103
+Territory slår Victoria på degree, blir grønn, og Western Australia står igjen
+
+75
+00:06:44,103 --> 00:06:45,023
+med rød.
+
+76
+00:06:46,317 --> 00:06:52,557
+Steg fem: Victoria og Western Australia har én verdi og ingen utilordnede naboer.
+
+77
+00:06:52,557 --> 00:06:59,677
+Alfabetet gir Victoria. Rød. Så Western Australia, rød. Til slutt Tasmania: tre
+
+78
+00:06:59,677 --> 00:07:06,837
+farger, ingen naboer, så blå. Sju tilordninger, ikke ett tilbakesteg. På eksamen:
+
+79
+00:07:06,837 --> 00:07:12,677
+én rad per tilordning, med domenene etter forward checking. Ta med deg: MRV
+
+80
+00:07:12,677 --> 00:07:19,437
+velger, degree bryter likhet, LCV ordner verdiene, forward checking krymper.
+
+81
+00:07:20,717 --> 00:07:23,437
+Hva er det forward checking ikke ser?
+
+82
+00:07:25,217 --> 00:07:31,377
+Tilbake til kroken, bokas figur fem punkt sju. Western Australia blir rød, og
+
+83
+00:07:31,377 --> 00:07:36,577
+forward checking tar rødt fra naboene. Queensland blir grønn. Nå har Northern
+
+84
+00:07:36,577 --> 00:07:42,017
+Territory bare blå, og South Australia bare blå. Men de er naboer, og kan ikke
+
+85
+00:07:42,017 --> 00:07:46,737
+begge bli blå. Forward checking ser det ikke, den ser bare naboene til
+
+86
+00:07:46,737 --> 00:07:52,817
+variabelen du satte. Så Victoria blir blå, South Australia blir tom, og først nå
+
+87
+00:07:52,817 --> 00:07:53,777
+går du tilbake.
+
+88
+00:07:55,150 --> 00:08:01,950
+Husk AC-3 fra forrige episode. Buen fra X til Y er konsistent når hver verdi i X
+
+89
+00:08:01,950 --> 00:08:07,830
+har en verdi i Y den passer med. Ellers fjerner du verdien fra X. Buene ligger i
+
+90
+00:08:07,830 --> 00:08:13,950
+en kø, og krymper X, legger du tilbake alle buer inn mot X, unntatt den fra Y.
+
+91
+00:08:15,317 --> 00:08:22,037
+MAC, maintaining arc consistency, kjører AC-3 etter hver tilordning. Foreleser
+
+92
+00:08:22,037 --> 00:08:27,477
+viste det uten å bruke navnet. Køen starter med buene fra de utilordnede naboene
+
+93
+00:08:27,477 --> 00:08:32,437
+inn mot Queensland. New South Wales mister grønn, så buene inn mot den fra South
+
+94
+00:08:32,437 --> 00:08:37,437
+Australia og Victoria går i køen. Northern Territory mister grønn. Inn kommer
+
+95
+00:08:37,437 --> 00:08:41,957
+South Australia mot Northern Territory. South Australia mister grønn og har bare
+
+96
+00:08:41,957 --> 00:08:42,757
+blå.
+
+97
+00:08:43,883 --> 00:08:50,123
+De to neste buene endrer ingenting. Så South Australia mot Northern Territory:
+
+98
+00:08:50,123 --> 00:08:55,123
+blå trenger en annen farge hos naboen, men der finnes bare blå. South Australia
+
+99
+00:08:55,123 --> 00:09:00,043
+blir tom, og MAC går tilbake allerede etter Queensland, ett steg før forward
+
+100
+00:09:00,043 --> 00:09:05,963
+checking. Forward checking sier fra til naboene. MAC lar naboene si fra videre,
+
+101
+00:09:05,963 --> 00:09:08,043
+helt til ingenting endrer seg.
+
+102
+00:09:09,317 --> 00:09:17,637
+Din tur. Hvilken del av MAC gjør forward checking?
+
+103
+00:09:17,637 --> 00:09:23,157
+Bare startbuene, fra naboene inn mot variabelen. Den legger aldri til nye, så
+
+104
+00:09:23,157 --> 00:09:29,677
+MAC er sterkere. Ta med deg: forward checking ser ett steg, MAC sprer endringen
+
+105
+00:09:29,677 --> 00:09:30,837
+helt ut.
+
+106
+00:09:32,217 --> 00:09:36,857
+Hva om du starter med en komplett løsning med feil i, og reparerer den?
+
+107
+00:09:38,617 --> 00:09:44,617
+Åtte dronninger, og ingen får angripe hverandre. Som CSP har du én variabel per
+
+108
+00:09:44,617 --> 00:09:50,377
+kolonne, og verdien er raden. Lokalt søk starter med alle åtte på brettet, selv
+
+109
+00:09:50,377 --> 00:09:55,097
+om noen angriper hverandre. Dette er bokas eksempel, som også var i forelesning
+
+110
+00:09:55,097 --> 00:10:00,857
+fire. Kolonne fire og kolonne åtte angriper hverandre på skrå. Det er den eneste
+
+111
+00:10:00,857 --> 00:10:01,897
+konflikten.
+
+112
+00:10:03,183 --> 00:10:09,423
+Min-conflicts gjør to ting per runde. Velg tilfeldig en variabel i konflikt, her
+
+113
+00:10:09,423 --> 00:10:15,583
+fire eller åtte. Boka trekker åtte. Tell så for hver rad hvor mange dronninger
+
+114
+00:10:15,583 --> 00:10:25,103
+som ville angrepet: to, to, én, to, tre, én, to, og én der den står. Lavest er
+
+115
+00:10:25,103 --> 00:10:32,743
+én, i rad tre, seks og åtte. Likhet avgjøres tilfeldig, og boka tar rad tre.
+
+116
+00:10:32,743 --> 00:10:33,903
+Dronningen flytter.
+
+117
+00:10:35,283 --> 00:10:42,323
+Nå står kolonne seks og åtte på samme rad. Boka trekker seks. Tre, tre, én der
+
+118
+00:10:42,323 --> 00:10:49,883
+den står, to, tre, to, tre, og null i rad åtte. Dit går den, og brettet er løst
+
+119
+00:10:49,883 --> 00:10:55,563
+etter to runder. Det heter min-conflicts: velg en konfliktfylt variabel
+
+120
+00:10:55,563 --> 00:10:59,043
+tilfeldig, og gi den verdien med færrest konflikter.
+
+121
+00:11:00,417 --> 00:11:06,177
+Hvorfor så fort? Ifølge boka løser min-conflicts en million dronninger på i
+
+122
+00:11:06,177 --> 00:11:10,897
+snitt femti steg, etter startplasseringen. Løsningene ligger tett i
+
+123
+00:11:10,897 --> 00:11:16,017
+tilstandsrommet, så det er nesten alltid en like i nærheten. Og dette er hill
+
+124
+00:11:16,017 --> 00:11:20,497
+climbing fra kapittel fire, der antall konflikter er det du vil ha lavt.
+
+125
+00:11:21,850 --> 00:11:28,250
+Men se på første runde. Før trekket var det én konflikt, etterpå også én.
+
+126
+00:11:28,250 --> 00:11:34,090
+Trekket var sidelengs. Ikke ett enkelttrekk fra startbrettet gir null konflikter.
+
+127
+00:11:34,090 --> 00:11:39,050
+Du står på et platå, der naboene er like gode. Boka sier det kan finnes
+
+128
+00:11:39,050 --> 00:11:44,450
+millioner av tilordninger som er én konflikt fra en løsning. Derfor tillater du
+
+129
+00:11:44,450 --> 00:11:45,690
+sideways moves.
+
+130
+00:11:47,050 --> 00:11:53,050
+To triks for platået, som bare står i boka og ikke ble forelest. Tabu search
+
+131
+00:11:53,050 --> 00:11:58,410
+husker de siste tilstandene og forbyr å gå tilbake dit. Constraint weighting gir
+
+132
+00:11:58,410 --> 00:12:03,130
+hver begrensning en vekt, først én, og øker vekten på alle som er brutt etter
+
+133
+00:12:03,130 --> 00:12:08,410
+hvert steg. Har konflikten mellom fire og åtte fått vekt to, koster startbrettet
+
+134
+00:12:08,410 --> 00:12:13,250
+to, mens brettet etter trekket koster én. Platået har fått en bakke, og de
+
+135
+00:12:13,250 --> 00:12:15,850
+vanskelige begrensningene blir tyngst.
+
+136
+00:12:17,217 --> 00:12:25,537
+Din tur: eksamen 2024, spørsmål ni. Fire dronninger, og alle fire er i konflikt.
+
+137
+00:12:25,537 --> 00:12:33,777
+Hvilken variabel velger min-conflicts i første runde?
+
+138
+00:12:33,777 --> 00:12:39,977
+Tilfeldig, blant de konfliktfylte. Fella er å velge den med flest konflikter.
+
+139
+00:12:39,977 --> 00:12:45,937
+Del b: hvor mange runder i beste fall? Én: trekkes den fjerde dronningen, gir
+
+140
+00:12:45,937 --> 00:12:52,097
+rad tre null konflikter. Ta med deg: min-conflicts reparerer en hel tilordning,
+
+141
+00:12:52,097 --> 00:12:53,937
+én variabel om gangen.
+
+142
+00:12:55,317 --> 00:12:58,037
+Klarer du en ekte eksamensoppgave nå?
+
+143
+00:12:59,817 --> 00:13:08,257
+Eksamen 2018, problem én, del fem, tre poeng. Samme oppgave kom i 2023, oppgave
+
+144
+00:13:08,257 --> 00:13:15,377
+fire. Fem forelesninger, tre professorer, to dager. Verdien B1 betyr Berit på
+
+145
+00:13:15,377 --> 00:13:24,217
+dag én. Alle verdier er ulike, L1 er før L2, og L3 før L5. Domenene etter AC-3
+
+146
+00:13:24,217 --> 00:13:31,097
+er gitt. Kjør backtracking uten forward checking, MRV med tall-rekkefølge og LCV
+
+147
+00:13:31,097 --> 00:13:41,697
+med alfanumerisk rekkefølge ved likhet. Sett på pause og prøv.
+
+148
+00:13:41,697 --> 00:13:42,617
+Klar?
+
+149
+00:13:43,917 --> 00:13:53,917
+L1 og L3 har én verdi hver. Likt, så L1 blir B1. Så L3, som blir A1. Nå har L4
+
+150
+00:13:53,917 --> 00:14:03,437
+og L5 to lovlige verdier, L2 tre. L4 først. LCV: C1 tar ingenting fra naboene,
+
+151
+00:14:03,437 --> 00:14:14,037
+C2 tar C2 fra både L2 og L5. C1. L5: B2 og C2 tar én verdi hver fra L2. Likt, så
+
+152
+00:14:14,037 --> 00:14:21,117
+B2. L2 har A2 og C2 igjen, og ingen naboer er utilordnet, så A2.
+
+153
+00:14:22,483 --> 00:14:36,243
+Svaret: L1 B1, L3 A1, L4 C1, L5 B2 og L2 A2, akkurat som fasiten. Fella: uten
+
+154
+00:14:36,243 --> 00:14:40,403
+forward checking krymper ikke domenene av seg selv. Du må selv sjekke hvilke
+
+155
+00:14:40,403 --> 00:14:44,083
+verdier som fortsatt er lovlige før du teller MRV.
+
+156
+00:14:45,383 --> 00:14:47,303
+Hvor dukker dette opp igjen?
+
+157
+00:14:49,083 --> 00:14:56,603
+Backtracking er dybde-først-søk, kapittel tre og episode to. MAC er AC-3 fra
+
+158
+00:14:56,603 --> 00:15:02,843
+episode seks. Min-conflicts er hill climbing med platåer, kapittel fire, episode
+
+159
+00:15:02,843 --> 00:15:09,243
+fire. I kapittel sju bruker DPLL degree-heuristikken, og WalkSAT tar
+
+160
+00:15:09,243 --> 00:15:14,923
+min-conflicts-steg, episode tretten. I kapittel ni ordner boka konjunktene med
+
+161
+00:15:14,923 --> 00:15:17,323
+MRV, episode femten.
+
+162
+00:15:18,683 --> 00:15:25,363
+Hele kjeden: vanlig søk gir n fakultet ganger d opphøyd i n blader,
+
+163
+00:15:25,363 --> 00:15:32,683
+commutativity gir d opphøyd i n. Backtracking går dypt og snur. MRV og degree
+
+164
+00:15:32,683 --> 00:15:39,723
+velger variabel, LCV velger verdi. Forward checking krymper naboene, MAC sprer
+
+165
+00:15:39,723 --> 00:15:45,083
+det videre. Min-conflicts reparerer en hel tilordning. I kroken ble South
+
+166
+00:15:45,083 --> 00:15:49,723
+Australia tom fordi den kom sist. Tar du den mest begrensede først, skjer det
+
+167
+00:15:49,723 --> 00:15:55,043
+ikke. Så hvis du bare husker én ting: velg variabelen som feiler først, og
+
+168
+00:15:55,043 --> 00:15:56,683
+verdien som feiler sist.
+

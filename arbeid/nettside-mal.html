@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TDT4136 eksamensløp</title>
+<!-- Mal for nettside.html. Rediger her og kjør: uv run arbeid/lag-nettside.py -->
+<style>
+:root{--bg:#f7f6f2;--surface:#fff;--fg:#1f2328;--muted:#5f666e;--border:#dcd9d2;--accent:#1f5fbf;--accent-bg:#e6eefb;--ok:#1b7a3d;--ok-bg:#e1f3e6;--bad:#b42318;--today:#fdf0d5;--code:#efede8}
+@media (prefers-color-scheme:dark){:root{--bg:#15171a;--surface:#1d2024;--fg:#e7e6e3;--muted:#9aa1a8;--border:#33373d;--accent:#86b3ff;--accent-bg:#1c2b43;--ok:#71d394;--ok-bg:#16301f;--bad:#ff8a80;--today:#3a2d14;--code:#262a2f}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+a{color:var(--accent)}
+.wrap{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}
+nav{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border);padding:16px 10px 40px;background:var(--surface)}
+nav .top{font-weight:700;padding:4px 8px 10px 44px}
+#meny{position:fixed;top:12px;left:10px;z-index:5;width:34px;height:32px;padding:0;font-size:17px;line-height:1}
+.wrap.lukket{grid-template-columns:minmax(0,1fr)}.wrap.lukket nav{display:none}
+.wrap.lukket main:not(.ep),.wrap.lukket main.ep .lft{padding-left:60px}
+nav a{display:flex;gap:8px;align-items:baseline;padding:5px 8px;border-radius:6px;color:var(--fg);text-decoration:none;font-size:14px;line-height:1.35}
+nav a:hover{background:var(--code)}
+nav a.cur{background:var(--accent-bg);color:var(--accent)}
+nav a b{min-width:30px}
+nav a .tt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+nav a .pr{font-size:12px;color:var(--muted);white-space:nowrap}
+nav a .pr.seen{color:var(--ok)}
+nav .grp{font-size:12px;color:var(--muted);margin:16px 8px 4px;text-transform:uppercase;letter-spacing:.05em}
+main{max-width:900px;width:100%;padding:28px 36px 100px}
+main.wide{max-width:none}
+h1{font-size:28px;line-height:1.25;margin:4px 0 12px}
+h2{font-size:21px;margin:32px 0 8px;padding-top:8px;border-top:1px solid var(--border)}
+h3{font-size:17px;margin:20px 0 6px}
+.mut{color:var(--muted);font-size:14px}
+video{width:100%;border-radius:10px;background:#000;display:block}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.chap{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px}
+.chap button{font-size:13px}
+button{font:inherit;font-size:14px;padding:5px 11px;border:1px solid var(--border);border-radius:7px;background:var(--surface);color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--accent)}
+button.pri{background:var(--accent);border-color:var(--accent);color:var(--surface);font-weight:600}
+.btn{display:inline-block;padding:7px 14px;border-radius:8px;background:var(--accent);color:var(--surface);text-decoration:none;font-weight:600}
+table{border-collapse:collapse;font-size:14px;margin:12px 0;display:block;overflow-x:auto;max-width:100%}
+th,td{border:1px solid var(--border);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--code)}
+tr.idag td{background:var(--today)}
+code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:.88em}
+pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow-x:auto;font-size:13px;line-height:1.45}
+pre code{background:none;padding:0}
+blockquote{margin:10px 0;padding:2px 14px;border-left:3px solid var(--border);color:var(--muted)}
+details.fasit{border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin:28px 0;background:var(--surface)}
+details.fasit summary{cursor:pointer;font-weight:600}
+.task{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin:14px 0}
+.task.done{border-color:var(--ok)}
+.vb{border-color:var(--accent);color:var(--accent);font-weight:600}
+.tfasit{margin-top:10px;border-top:1px dashed var(--border);padding-top:8px}.tfasit summary{cursor:pointer;font-weight:600;color:var(--accent)}
+.eks-top,.eks-nav{position:sticky;z-index:3;display:flex;align-items:center;gap:6px 12px;flex-wrap:wrap;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:10px}
+.eks-top{top:0;margin-bottom:12px}.eks-top b{flex:1}.eks-nav{bottom:0;margin-top:12px;gap:4px}
+#tid{font-weight:600;font-variant-numeric:tabular-nums}#tid.ute{background:var(--today);padding:2px 8px;border-radius:6px}
+.eks-s{display:none;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px 26px;min-height:55vh}.eks-s.cur{display:block}
+.eks .task{background:none;border:0;padding:0;margin:0}.eks .task h3{font-size:1.3em;margin-bottom:14px}
+.maks{color:var(--muted);font-size:14px;margin:18px 0 8px}
+.alt label{display:flex;gap:10px;align-items:flex-start;padding:8px 12px;border:1px solid var(--border);border-radius:8px;margin:6px 0;cursor:pointer}
+.alt label:has(:checked){border-color:var(--accent);background:var(--accent-bg)}.alt input{margin-top:4px}
+.eks:not(.levert) :is(.sj,.vb,.rb,.sjm,.fb,.vk,.tfasit,.etter),.eks.levert #lever{display:none}
+.eks-nav button{min-width:36px;padding:5px 8px}.eks-nav button.ok{background:var(--accent-bg);border-color:var(--accent)}
+.eks-nav button[aria-current]{outline:2px solid var(--accent);outline-offset:1px;font-weight:700}
+.task h3{margin:0 0 6px}
+.task .d p:first-child{margin-top:0}
+.lab{font-size:13px;color:var(--muted);margin:12px 0 4px;display:block}
+.in{width:100%;font:inherit;font-size:14px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--fg)}
+/* Svarfeltene vokser med teksten (field-sizing) og kan dras større; eldre nettlesere får vanlig rullefelt. */
+#leksknapp{position:fixed;top:12px;right:12px;z-index:5}
+#leksdlg{width:min(760px,calc(100vw - 32px));max-height:85vh;padding:0 20px 20px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--fg)}#leksdlg::backdrop{background:rgb(0 0 0/.45)}
+#leksdlg .lukk{position:sticky;top:12px;float:right;margin-top:12px;z-index:1}
+.lsok{position:sticky;top:0;z-index:1;width:100%;font:inherit;padding:9px 12px;margin:4px 0 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--fg)}
+.lbody li{margin:3px 0}.lbody h2{margin:22px 0 6px}
+textarea.in{min-height:90px;resize:vertical;field-sizing:content}textarea.in.en{min-height:0}
+.tg[aria-pressed="true"]{background:var(--accent-bg);color:var(--accent);border-color:var(--accent)}
+.pn{display:flex;justify-content:space-between;margin-top:36px}
+.ov-g{display:block;margin:8px auto 12px;width:100%}
+.ov-g line,.ov-g path.e{stroke:var(--muted);stroke-width:1.3;fill:none}
+.ov-g .n{fill:var(--surface);stroke:var(--fg);stroke-width:1.3}
+.ov-g .nl{fill:var(--fg);font-size:13px;font-weight:600;text-anchor:middle;dominant-baseline:central}
+.ov-g .c{fill:var(--accent);font-size:13px;font-weight:600;text-anchor:middle;dominant-baseline:central}
+.ov-g .h{fill:var(--muted);font-size:12px;text-anchor:middle;dominant-baseline:central}
+.ov-g .ah{fill:var(--muted)}
+#copybox{width:100%;min-height:160px;margin-top:8px}
+.labrow{display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+.mic{font-size:12px;padding:2px 10px;margin-top:8px}
+.mic.rec{background:#c62828;border-color:#c62828;color:#fff}
+.fb{margin-top:10px;padding:10px 14px;border-radius:8px;background:var(--accent-bg);font-size:14px}
+.fb .fbt{white-space:pre-wrap;margin-top:4px}
+.sjr{font-size:13px;font-weight:600;margin-left:6px}.sjr.ja{color:var(--ok)}.sjr.nei{color:var(--bad)}
+.sjm{font-size:14px;margin-top:6px}.sjm:empty{display:none}
+main.ep{max-width:none;padding:0}
+main.ep .lft{padding:28px 36px 40px;min-width:0}
+main.ep .rgt{padding:0 36px 100px;min-width:0}
+.fig{display:block;max-width:100%;margin:10px auto;background:#fff;border-radius:8px;padding:6px}
+.drag{display:none}
+@media (min-width:1150px){
+main.ep{display:grid;grid-template-columns:minmax(0,1fr) 9px minmax(300px,var(--rw,40%))}
+main.ep .lft{padding-bottom:100px}
+main.ep .drag{display:block;position:sticky;top:0;height:100vh;padding:0;margin:0;border:0;border-left:1px solid var(--border);border-radius:0;background:var(--surface);cursor:col-resize;touch-action:none;-webkit-user-select:none;user-select:none}
+main.ep .drag::after{content:"";position:absolute;left:2px;top:50%;width:3px;height:44px;margin-top:-22px;border-radius:2px;background:var(--muted);opacity:.5}
+main.ep .drag:hover::after,main.ep .drag:focus-visible::after,main.ep .drag.on::after{background:var(--accent);opacity:1}
+main.ep .rgt{position:sticky;top:0;height:100vh;overflow-y:auto;padding:22px 24px 100px;background:var(--surface)}
+main.ep .rgt h2#ov{margin-top:0;border-top:0;padding-top:0}
+main.ep .rgt .task{background:var(--bg)}
+main.ep .goov{display:none}}
+@media (max-width:800px){main.ep .lft,main.ep .rgt{padding-left:16px;padding-right:16px}.wrap{grid-template-columns:minmax(0,1fr)}nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border)}main{padding:20px 16px 80px}#meny{position:absolute}.wrap.lukket main:not(.ep),.wrap.lukket main.ep .lft{padding-left:16px;padding-top:56px}}
+</style>
+<link rel="stylesheet" href="nettside-algo/motor.css">
+</head>
+<body>
+<button id="leksknapp" type="button" aria-haspopup="dialog" title="Slå opp et begrep (marker et ord først for å søke på det)">Leksikon</button><dialog id="leksdlg" closedby="any" aria-label="Leksikon"><button type="button" class="lukk">Lukk</button><div></div></dialog><div class="wrap"><button id="meny" type="button" aria-controls="nav"></button><nav id="nav"></nav><main id="main"></main></div>
+<script>const D = __DATA__;</script>
+<!-- Algoritmeanimasjoner og tegneverktøy, se nettside-algo/KONTRAKT.md -->
+<script src="nettside-algo/motor.js"></script><script src="nettside-algo/sok.js"></script><script src="nettside-algo/lokalt.js"></script><script src="nettside-algo/spill.js"></script><script src="nettside-algo/csp.js"></script><script src="nettside-algo/logikk.js"></script><script src="nettside-algo/plan.js"></script><script src="nettside-algo/sprak.js"></script>
+<script>
+// Grafene i E02/E03 er tegnet av fra eksamensfigurene. n = {navn: [x, y, h-tekst, dx, dy, mål?]}, e = [[fra, til, kost, side]].
+function graf(o){
+const R=15,N=o.n;let s=`<svg class="ov-g" viewBox="0 0 ${o.w} ${o.h}" style="max-width:${o.mw||o.w*1.25}px" role="img" aria-label="${o.al}">`;
+const arrow=(x,y,ux,uy)=>`<path class="ah" d="M${x} ${y}L${x-ux*9-uy*4} ${y-uy*9+ux*4}L${x-ux*9+uy*4} ${y-uy*9-ux*4}Z"/>`;
+o.e.forEach(([a,b,c,sd])=>{const[x1,y1]=N[a];
+if(a===b){s+=`<path class="e" d="M${x1-11} ${y1-10}C${x1-80} ${y1-55} ${x1-80} ${y1+55} ${x1-11} ${y1+10}"/>`+arrow(x1-R+1,y1+7,0.9,-0.45)+`<text class="c" x="${x1-70}" y="${y1}">${c}</text>`;return}
+const[x2,y2]=N[b],dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,r2=N[b][5]?R+3:R;
+const ex=x2-ux*r2,ey=y2-uy*r2;s+=`<line x1="${x1+ux*R}" y1="${y1+uy*R}" x2="${ex}" y2="${ey}"/>`;
+if(o.dir)s+=arrow(ex,ey,ux,uy);
+const k=13*(sd||1);s+=`<text class="c" x="${(x1+x2)/2-uy*k}" y="${(y1+y2)/2+ux*k}">${c}</text>`});
+if(o.st){const[x,y]=N[o.st];s+=`<line x1="${x+o.sx}" y1="${y+o.sy}" x2="${x+o.sx*0.42}" y2="${y+o.sy*0.42}"/>`+arrow(x+o.sx*0.42,y+o.sy*0.42,o.sx/Math.hypot(o.sx,o.sy),o.sy/Math.hypot(o.sx,o.sy))}
+Object.entries(N).forEach(([k,[x,y,h,hx,hy,g]])=>{
+if(g&&o.sq)s+=`<rect class="n" x="${x-R}" y="${y-R}" width="${2*R}" height="${2*R}"/>`;
+else{if(g)s+=`<circle class="n" cx="${x}" cy="${y}" r="${R+3}"/>`;s+=`<circle class="n" cx="${x}" cy="${y}" r="${R}"/>`}
+s+=`<text class="nl" x="${x}" y="${y}">${k}</text>`;if(h)s+=`<text class="h" x="${x+hx}" y="${y+hy}">${h}</text>`});
+return s+"</svg>"}
+const p25=(hh)=>({w:420,h:510,mw:440,st:"s",sx:50,sy:12,al:"Grafen fra eksamen 2025",n:{i:[81,40,hh&&"h=6",0,-22],j:[157,52,hh&&"h=5",0,-22],h:[33,82,hh&&"h=6",-2,28],f:[95,98,hh&&"h=5",36,0],k:[240,130,hh&&"h=3",38,-6],g:[208,252,hh&&"h=0",0,30,1],a:[389,275,hh&&"h=5",0,-24],e:[87,310,hh&&"h=4",-38,0],d:[103,405,hh&&"h=5",38,0],s:[343,398,hh&&"h=5",-36,-16],b:[279,435,hh&&"h=4",0,28],c:[169,475,hh&&"h=5",0,26]},e:[["h","i",1,-1],["i","j",1,-1],["h","f",1],["j","k",3,-1],["f","g",5],["k","g",3],["k","s",6,-1],["g","e",4],["e","d",2],["d","c",2],["c","b",2],["b","s",1],["s","a",4,-1]]});
+const GR={
+L23:{w:360,h:250,mw:420,dir:1,al:"Løkkegrafen fra eksamen 2023",n:{S:[200,28],A:[110,115,"h=3",34,24],B:[290,115,"h=3",40,0],C:[130,210,"h=3",-40,0],G:[300,212,"h=0",42,0,1]},e:[["S","A",4],["S","B",7,-1],["A","A",13],["A","C",4,-1],["B","G",10,-1],["C","G",4]]},
+P25:p25(0),P25H:p25(1),
+R20:{w:440,h:360,mw:460,dir:1,al:"Grafen fra eksamen 2020 kont",n:{S:[35,135],D:[150,25],E:[290,25],G3:[405,25,"",0,0,1],C:[150,140],F:[290,108],G2:[310,205,"",0,0,1],B:[150,245],A:[150,332],G1:[345,332,"",0,0,1]},e:[["S","D",6],["S","B",9,-1],["S","A",5],["C","S",6],["D","E",2,-1],["D","C",2,-1],["E","G3",7,-1],["F","D",20],["C","F",7,-1],["F","G3",8],["C","G2",5,-1],["B","C",1],["A","B",3],["A","G1",9]]},
+R21:{w:300,h:600,mw:320,dir:1,start:"A",al:"Grafen fra eksamen 2021",n:{A:[130,27,"h=366",-48,0],Z:[207,108,"h=374",50,0],O:[197,218,"h=380",50,0],S:[121,302,"h=253",-48,0],F:[203,384,"h=176",50,0],R:[45,394,"h=193",-6,28],P:[88,487,"h=100",-50,0],B:[136,574,"h=0",40,0,1]},e:[["A","Z",75,-1],["Z","O",71,-1],["O","S",151,-1],["A","S",140],["S","F",99,-1],["S","R",80],["R","P",97],["P","B",101],["F","B",211,-1]]},
+T18:{w:460,h:270,mw:500,dir:1,sq:1,al:"Treet fra eksamen 2018",n:{S:[225,28,"h=2",38,0],B:[80,120,"h=1",38,0],C:[225,120,"h=1",38,0],D:[370,120,"h=0",38,0,1],E:[30,222,"h=0",0,30],F:[120,222,"h=0",0,30,1],G:[190,222,"h=0",0,30,1],H:[265,222,"h=0",0,30],I:[345,222,"h=0",0,30],J:[420,222,"h=0",0,30]},e:[["S","B",2],["S","C",1],["S","D",3,-1],["B","E",2],["B","F",1,-1],["C","G",1],["C","H",3,-1],["D","I",1],["D","J",1,-1]]},
+TRI:{w:340,h:120,mw:380,dir:1,al:"Trekantgrafen",n:{S:[40,90],A:[170,28],G:[300,90,"",0,0,1]},e:[["S","A",2,-1],["A","G",3,-1],["S","G",6]]}
+};
+
+const KEY="tdt4136-side",$=s=>document.querySelector(s);
+// GR-grafene (node: [x, y, "h=…", dx, dy, mål]) som data til tegneverktøyet.
+const grafData=g=>g&&{type:"graf",data:{retning:!!g.dir,noder:Object.entries(g.n).map(([id,v])=>{const m=/h\s*=\s*(-?[\d.]+)/.exec(v[2]||"");return m?{id,x:v[0],y:v[1],h:+m[1]}:{id,x:v[0],y:v[1]}}),
+kanter:g.e.map(([fra,til,kost])=>({fra,til,kost})),start:g.start||g.st||(g.n.S?"S":Object.keys(g.n)[0]),mal:Object.keys(g.n).filter(id=>g.n[id][5])}};
+let S={seen:{},pos:{},svar:{},rett:{},sub:false,last:null};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY))||{})}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+// Menyen til venstre kan skjules; valget huskes.
+const visMeny=()=>{const l=!!S.lukket,b=$("#meny");$(".wrap").classList.toggle("lukket",l);b.textContent=l?"☰":"«";b.title=l?"Vis menyen":"Skjul menyen";b.setAttribute("aria-label",b.title);b.setAttribute("aria-expanded",!l)};
+$("#meny").onclick=()=>{S.lukket=!S.lukket;save();visMeny()};visMeny();
+// Via server.py: svarene speiles til arbeid/svar/svar.json, «Rett denne» går til arbeid/svar/ko.jsonl, tilbakemeldinger leses fra arbeid/svar/tilbakemelding.json.
+const API=location.protocol.startsWith("http"),SR=API&&(window.SpeechRecognition||window.webkitSpeechRecognition),now=()=>new Date().toLocaleString("sv-SE");
+let pt,FB={},rec=null;
+const feil=s=>{const m=$("#cmsg");if(m)m.textContent=s};
+const push=()=>fetch("/api/svar",{method:"POST",body:JSON.stringify(S.svar)}).then(r=>{if(!r.ok)throw 0}).catch(()=>feil("Fikk ikke lagret svarene i fila. Kjører serveren?"));
+const lagre=()=>{if(API){clearTimeout(pt);pt=setTimeout(push,500)}};
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+const fmt=t=>Math.floor(t/60)+":"+String(Math.floor(t%60)).padStart(2,"0");
+const filled=o=>Object.entries(o||{}).some(([k,v])=>k!=="Tegning"&&String(v).trim()); // en tegning alene er ikke et svar
+const svar=e=>S.svar[e.id]||(S.svar[e.id]={});
+const nDone=e=>e.tasks.filter((t,j)=>filled(svar(e)[j])).length;
+
+function nav(){
+const h=location.hash.slice(1)||"hjem",c=x=>h===x?' class="cur"':"";
+$("#nav").innerHTML=`<div class="top">TDT4136 eksamensløp</div><a href="#hjem"${c("hjem")}>Plan og fremdrift</a><a href="oversiktsark.pdf" target="_blank">Oversiktsark / cheat sheet (PDF) ↗</a><a href="#algoritmer"${h.startsWith("algoritmer")?' class="cur"':""}>Algoritmer animert</a><a href="#verksted"${c("verksted")}>Tegn og sjekk</a><a href="#leksikon"${c("leksikon")}>Leksikon</a><div class="grp">Episoder</div>`+
+D.eps.map(e=>`<a href="#${e.id}"${c(e.id)} title="${e.title}"><b>${e.ep}</b><span class="tt">${e.title}</span><span class="pr${S.seen[e.id]?" seen":""}">${S.seen[e.id]?"✓ ":""}${nDone(e)}/${e.tasks.length}</span></a>`).join("")+
+[...new Set(D.ov.map(e=>e.grp))].map(g=>`<div class="grp">${g}</div>`+D.ov.filter(e=>e.grp===g).map(e=>`<a href="#${e.id}"${c(e.id)} title="${e.title}"><b>${e.ep}</b><span class="tt">${e.title}</span><span class="pr">${nDone(e)}/${e.tasks.length}</span></a>`).join("")).join("")+
+`<div class="grp">Mer</div><a href="#feller"${c("feller")}>Alle eksamensfeller</a>${D.feil?`<a href="#feillogg"${c("feillogg")}>Feillogg</a>`:""}<a href="#eksamener"${c("eksamener")}>Eksamener</a>`}
+
+function home(){
+const d=new Date(),dager=Math.ceil((new Date(2026,11,7)-new Date(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);
+const sett=D.eps.filter(e=>S.seen[e.id]).length,last=D.eps.find(e=>e.id===S.last)||D.ov.find(e=>e.id===S.last);
+$("#main").className="";$("#main").innerHTML=`<h1>TDT4136: alt på ett sted</h1><p>Eksamen mandag 07.12.2026 kl. 15:00${dager>0?`, om ${dager} dager`:""}. Du har sett ${sett} av 21 videoer.</p>`+
+(last?`<p><a class="btn" href="#${last.id}">Fortsett med ${last.ep}: ${last.title} →</a></p>`:"")+D.plan+
+`<p class="mut">${D.plan?"Dagens rad i planen er markert. ":""}Svar og fremdrift lagres i denne nettleseren. Siden lages av <code>arbeid/lag-nettside.py</code>.</p>`;
+const k=String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0");
+document.querySelectorAll("#main tr").forEach(r=>{if(r.cells[0]&&r.cells[0].textContent.includes(k))r.classList.add("idag")})}
+
+// Knappen sier hva tegneverktøyet åpner: figuren fra oppgaven eller et tomt ark.
+const vbl=t=>"✎ "+(t.tre?"Åpne treet i tegneverktøyet":t.g||t.tegn?"Åpne grafen i tegneverktøyet":"Tegn i tegneverktøyet");
+function task(e,t,j){
+const a=svar(e)[j]||{},tg=(k,v,lab)=>`<button type="button" class="tg" data-j="${j}" data-k="${esc(k)}" data-v="${v}" aria-pressed="${a[k]===v}">${lab||v}</button>`;
+let h=`<div class="task${filled(a)?" done":""}" id="t${j}"><h3>${j+1}. ${esc(t.t)}</h3>`+(t.d?`<div class="d">${t.d}</div>`:"")+(t.g?graf(typeof t.g==="string"?GR[t.g]:t.g):"")+(t.tre&&window.ALGO&&ALGO.figur?ALGO.figur("tre",t.tre):"");
+(t.grid||[]).forEach(g=>["admissible","consistent"].forEach(p=>{h+=`<div class="row"><span style="min-width:160px">${g} ${p}?</span>${tg(g+" "+p,"ja")}${tg(g+" "+p,"nei")}<span class="sjr" data-g="${esc(g+" "+p)}"></span></div>`}));
+(t.tf||[]).forEach((s,i)=>{const k=s.slice(0,2);h+=`<p style="margin:12px 0 6px">${esc(s)}</p><div class="row" style="margin:0">${tg(k,"sant","Sant")}${tg(k,"usant","Usant")}<span class="sjr" data-tf="${i}"></span></div>`});
+(t.f||[]).forEach(([l,ty,ph],n)=>{const v=esc(a[l]||""),p=esc(ph||""),id=`f${j}_${n}`;h+=`<div class="labrow"><span><label class="lab" for="${id}" style="display:inline">${esc(l)}</label><span class="sjr" data-n="${n}"></span></span>${SR?`<button type="button" class="mic" data-for="${id}">Diktér</button>`:""}</div>`+(ty==="area"?`<textarea class="in" id="${id}" data-j="${j}" data-k="${esc(l)}" placeholder="${p}">${v}</textarea>`:`<textarea class="in en" rows="1" id="${id}" data-j="${j}" data-k="${esc(l)}" placeholder="${p}">${v}</textarea>`)});
+h+=`<div class="row">${t.sjekk?`<button type="button" class="sj" data-j="${j}">Sjekk</button>`:""}${window.ALGO&&ALGO.verksted?`<button type="button" class="vb" data-j="${j}" data-l="${vbl(t)}" title="Tegn en graf eller et spilltre, kjør en algoritme steg for steg og sjekk svaret ditt">${vbl(t)}</button>`:""}${API?`<button type="button" class="rb" data-j="${j}">Rett denne</button>`:""}<span class="mut rs"></span></div><div class="sjm" role="status"></div><div class="vk"></div>`+(t.fasit?`<details class="tfasit"><summary>Vis fasit</summary>${t.fasit}</details>`:"")+(API?`<div class="fb" hidden></div>`:"");
+return h+"</div>"}
+
+// Øyeblikkelig sjekk mot t.sjekk (fasit fra løsningsforslag/notat): tf-lista og korte felt. Se nettside-oppgaver for formatet.
+// Har fasit et kall (At(P1, Lab)), beholdes parentes rett etter et navn som ledd («AT(» … «)»), så At(Lab, P1) ≠ At(P1, Lab) og ariteten teller.
+// Ellers, og for andre parenteser, er de gruppering og faller bort («S, A, (G)»).
+const KALL=/\p{L}[\p{L}\p{N}_′']*\(/u,kall=s=>{const st=[];return s.replace(/[()]/g,(p,i)=>p==="("?(st.push(/\p{L}[\p{L}\p{N}_′']*$/u.test(s.slice(0,i))),st.at(-1)?"( ":" "):st.pop()?" ) ":" ")};
+const tok=(s,k)=>(t=>k?kall(t):t.replace(/[()]/g," "))(String(s||"").toUpperCase().replace(/<=>/g,"⇔").replace(/->/g,"→").replace(/=>/g,"⇒").replace(/>=/g,"≥").replace(/<=/g,"≤").replace(/\s*([=≤≥<>])\s*/g," $1 ").replace(/([A-ZÆØÅ0-9])[–—-](?=[A-ZÆØÅ(])/g,"$1 ").replace(/[−–—]/g,"-")).split(/->|[\s,;→⇒{}\[\]]+/).map(x=>x.replace(/[.:!?]+$/,"")).filter(x=>x&&!/^-+$/.test(x));
+// Mengdeelementer: et kall med argumentene er ett element.
+const elem=t=>{const u=[];let d=0;for(const x of t){if(d)u[u.length-1]+=" "+x;else u.push(x);d+=x.endsWith("(")-(x===")")}return u};
+const jn=x=>/^(JA|YES|SANT|TRUE)$/.test(x)?1:/^(NEI|NO|USANT|FALSE)$/.test(x)?-1:0;
+// Er fasit ett tall, leses «2,5» som desimaltall (ellers skiller komma ledd i lister og mengder).
+function likt(svar,fasit){const k=KALL.test(fasit),b=tok(fasit,k),a=tok(b.length===1&&/^-?\d+(\.\d+)?$/.test(b[0])?String(svar||"").replace(/(\d),(\d)/g,"$1.$2"):svar,k);if(String(fasit).trim().startsWith("{")){const A=new Set(elem(a)),B=new Set(elem(b));return A.size===B.size&&[...B].every(x=>A.has(x))}if(b.length>1)return a.join(" ")===b.join(" ");const n=/^-?\d+(\.\d+)?$/.test(b[0]);
+// Ett ord eller tall i fasit: forklaring etter svaret er lov, men ikke et alternativ («8 eller 99»), et annet tall eller et motsatt ja/nei først («no, yes»).
+return (n?+a[0]===+b[0]:a[0]===b[0])&&!a.some(x=>/^(ELLER|OR|\/)$/.test(x)||n&&/^-?\d+(\.\d+)?$/.test(x)&&+x!==+b[0])&&!(jn(b[0])&&a.slice(0,a.concat("").findIndex(x=>!jn(x))).some(x=>jn(x)!==jn(b[0])))}
+function sjekk(e,j,vis){const t=e.tasks[j],k=t.sjekk,a=svar(e)[j]||{},el=$("#t"+j);let ok=0,n=0;
+const mk=(m,s,r,fasit)=>{n++;if(r)ok++;m.className="sjr "+(s?(r?"ja":"nei"):"");m.textContent=(s?(r?"✓ riktig":"✗ feil"):"– ikke besvart")+(vis&&!r?` (riktig: ${fasit})`:"")};
+(k.tf||[]).forEach((f,i)=>{const m=el.querySelector(`.sjr[data-tf="${i}"]`);if(f==null||!m)return;const s=a[t.tf[i].slice(0,2)];mk(m,s,s===f,f)});
+Object.entries(k.grid||{}).forEach(([g,f])=>{const m=el.querySelector(`.sjr[data-g="${CSS.escape(g)}"]`);if(m)mk(m,a[g],a[g]===f,f)});
+(t.f||[]).forEach(([l],i)=>{const fa=(k.f||{})[l],m=el.querySelector(`.sjr[data-n="${i}"]`);if(!fa||!m)return;const s=a[l];mk(m,s,!!s&&fa.some(v=>likt(s,v)),fa[0])});
+el.querySelector(".sjm").innerHTML=`<b>${ok} av ${n} riktig.</b>`+(ok<n&&!vis?` <button type="button" class="vis" data-j="${j}">Vis riktig svar</button>`:"")+(k.merk?` <span class="mut">${esc(k.merk)}</span>`:"")}
+function visFB(){const id=location.hash.slice(1);document.querySelectorAll("#tasks .task").forEach(el=>{
+const j=el.id.slice(1),f=(FB[id]||{})[j],r=(S.rett[id]||{})[j],box=el.querySelector(".fb"),st=el.querySelector(".rs");if(!box)return;
+const ny=r&&!(f&&f.tid>=r),k=f?f.tid+f.tekst+ny:"";if(box.dataset.k!==k){box.dataset.k=k;box.hidden=!f;box.innerHTML=f?`<b>${ny?"Forrige tilbakemelding":"Tilbakemelding"}</b> <span class="mut">${esc(f.tid||"")}</span><div class="fbt">${esc(f.tekst)}</div>`:""}
+st.textContent=ny?`Sendt ${r.slice(11,16)}. Tilbakemeldingen kommer her.`:""})}
+const hentFB=()=>API&&fetch("svar/tilbakemelding.json",{cache:"no-store"}).then(r=>r.ok?r.json():{}).then(f=>{FB=f;visFB()}).catch(()=>{});
+
+function rett(e,js){if(!js.length)return feil("Ingen besvarte oppgaver å sende.");clearTimeout(pt);push();const r=S.rett[e.id]||(S.rett[e.id]={}),t=now();
+Promise.allSettled(js.map(j=>fetch("/api/rett",{method:"POST",body:JSON.stringify({eid:e.id,ep:e.ep,j,oppgave:e.tasks[j].t,svar:svar(e)[j]||{}})}).then(x=>{if(!x.ok)throw 0;r[j]=t}))).then(u=>{save();visFB();const n=u.filter(x=>x.status==="rejected").length;
+if(n)feil(n===js.length?"Fikk ikke sendt til retting. Kjører serveren?":`${n} av ${js.length} ble ikke sendt. Oppgavene uten «Sendt» kan sendes på nytt.`)})}
+
+function dikter(b){
+if(rec){const forrige=rec.b;rec.stop();if(forrige===b)return}
+const el=document.getElementById(b.dataset.for),r=new SR(),start=el.value&&!/\s$/.test(el.value)?el.value+" ":el.value;let fin="";
+r.lang="nb-NO";r.continuous=true;r.interimResults=true;r.b=b;rec=r;
+r.onresult=ev=>{let mid="";for(let i=ev.resultIndex;i<ev.results.length;i++){const s=ev.results[i][0].transcript;if(ev.results[i].isFinal)fin+=s;else mid+=s}el.value=start+fin+mid;el.dispatchEvent(new Event("input",{bubbles:true}))};
+r.onerror=ev=>feil(ev.error==="not-allowed"?"Nettleseren fikk ikke bruke mikrofonen.":"Dikteringen stoppet: "+ev.error);
+r.onend=()=>{b.classList.remove("rec");b.textContent="Diktér";if(rec===r)rec=null};
+b.classList.add("rec");b.textContent="Stopp";r.start()}
+
+function episode(e){
+// Øvingene (D.ov) bruker samme visning, bare uten video: oppgaveteksten står til venstre, oppgavene til høyre.
+const L=e.video?D.eps:D.ov.filter(x=>x.grp===e.grp),i=L.indexOf(e),pr=L[i-1],nx=L[i+1];
+const pv=e.art==="prøveeksamen";$("#main").className=pv?"":"ep";
+$("#main").innerHTML=pv?prove(e):`<div class="lft"><p class="mut">${e.ep}${e.pensum?" · "+e.pensum:" · "+e.art}</p><h1>${e.title}</h1>
+${e.video?`<video id="v" controls preload="metadata" src="${e.video}"></video>
+<div class="row"><label><input type="checkbox" id="seen"${S.seen[e.id]?" checked":""}> Sett</label><button id="cc"></button><span class="mut">${e.len}<span class="goov"> · <a href="javascript:void 0" onclick="document.getElementById('ov').scrollIntoView()">Gå til Øv selv</a></span></span></div>
+<div class="chap">${e.chap.map(([t,n])=>`<button data-t="${t}">${fmt(t)} ${esc(n)}</button>`).join("")}</div>`:`<p>${e.kilde?`<a href="${e.kilde}" target="_blank">Originalfila ↗</a> · `:""}<a href="javascript:void 0" onclick="document.getElementById('ov').scrollIntoView()" class="goov">Gå til oppgavene</a></p>`}
+${e.note}
+<div class="pn"><span>${pr?`<a href="#${pr.id}">← ${pr.ep} ${pr.title}</a>`:""}</span><span>${nx?`<a href="#${nx.id}">${nx.ep} ${nx.title} →</a>`:""}</span></div></div>
+<button type="button" class="drag" title="Dra for å endre bredden. Dobbeltklikk for å nullstille." aria-label="Skillelinje mellom video og oppgaver. Piltastene endrer bredden."></button>
+<aside class="rgt"><h2 id="ov">Øv selv</h2>${e.intro}
+<p class="mut">Oppgavene står som på eksamen; svar gjerne på norsk. Spor for hånd på papir og skriv svaret i feltet${SR?", eller trykk «Diktér» og snakk":""}. ${API?"Trykk «Rett denne» når du vil ha tilbakemelding, så dukker den opp under oppgaven. Svarene lagres i <code>arbeid/svar/svar.json</code>.":"Start <code>python3 arbeid/server.py</code> og åpne http://localhost:8765/ for diktering og retting rett på siden. Til da: trykk «Kopier svarene» og lim dem inn i chatten."} Er det lettere på papir, skriv «papir» og send et bilde i chatten.</p>
+<div id="tasks">${e.tasks.map((t,j)=>task(e,t,j)).join("")}</div>${e.outro}
+<div class="row">${API?'<button class="pri" id="rettalle">Send alle besvarte til retting</button>':""}<button${API?"":' class="pri"'} id="copy">Kopier svarene</button><span class="mut" id="cmsg"></span></div><div id="cbox"></div>
+${e.fasit?`<details class="fasit"><summary>Fasit til quizene i videoen</summary>${e.fasit}</details>`:""}</aside>`;
+const v=$("#v");if(v){const tr=v.addTextTrack("subtitles","Norsk","no");
+e.subs.forEach(([a,b,t])=>{try{tr.addCue(new VTTCue(a,b,t))}catch(x){}});
+const cc=()=>{tr.mode=S.sub?"showing":"hidden";$("#cc").textContent=S.sub?"Skjul undertekst":"Vis undertekst"};cc();
+$("#cc").onclick=()=>{S.sub=!S.sub;save();cc()};
+v.addEventListener("loadedmetadata",()=>{const p=S.pos[e.id];if(p&&p<v.duration-10)v.currentTime=p},{once:true});
+let lt=0;v.addEventListener("timeupdate",()=>{if(Math.abs(v.currentTime-lt)<5)return;lt=v.currentTime;S.pos[e.id]=lt;save()});
+v.addEventListener("ended",()=>{S.seen[e.id]=true;S.pos[e.id]=0;save();$("#seen").checked=true;nav()});
+$("#seen").onchange=x=>{S.seen[e.id]=x.target.checked;save();nav()}}
+const m=$("#main"),dg=$(".drag")||{},rw=p=>{S.rw=Math.round(Math.min(75,Math.max(20,p)));m.style.setProperty("--rw",S.rw+"%")};
+if(S.rw)rw(S.rw);
+dg.onpointerdown=x=>{if(x.button===0){dg.setPointerCapture(x.pointerId);dg.classList.add("on")}};
+dg.onpointermove=x=>{if(!dg.hasPointerCapture(x.pointerId))return;const r=m.getBoundingClientRect();rw((r.right-x.clientX)/r.width*100)};
+dg.onlostpointercapture=()=>{dg.classList.remove("on");save()};
+dg.onkeydown=x=>{const d={ArrowLeft:3,ArrowRight:-3}[x.key];if(d){x.preventDefault();rw((S.rw||40)+d);save()}};
+dg.ondblclick=()=>{delete S.rw;m.style.removeProperty("--rw");save()};
+if(v)$(".chap").onclick=x=>{const b=x.target.closest("button");if(!b)return;v.currentTime=+b.dataset.t;v.play();v.scrollIntoView({behavior:"smooth"})};
+const T=$("#tasks"),set=(j,k,val)=>{const a=svar(e);(a[j]||(a[j]={}))[k]=val;save();lagre();$("#t"+j).classList.toggle("done",filled(a[j]));nav()};
+T.addEventListener("click",x=>{const m=x.target.closest(".mic"),r=x.target.closest(".rb"),vb=x.target.closest(".vb"),sj=x.target.closest(".sj,.vis");if(m)dikter(m);if(r)rett(e,[+r.dataset.j]);if(sj)sjekk(e,+sj.dataset.j,sj.classList.contains("vis"));
+// Tegneverktøyet åpnes i oppgaven; tegningen lagres som en del av svaret («Tegning»), og grafen fra oppgaven brukes som start.
+if(vb){const j=+vb.dataset.j,el=$("#t"+j+" .vk"),t=e.tasks[j],lagret=(svar(e)[j]||{}).Tegning;if(el.firstChild){el.innerHTML="";vb.textContent=vb.dataset.l;return}vb.textContent="Lukk tegneverktøyet";
+// t.tegn: navnet på en GR-graf (eksamensgrafen tegnet ferdig) eller {type, data}.
+let start=typeof t.tegn==="string"?grafData(GR[t.tegn]):t.tegn||(t.tre&&{type:"tre",data:t.tre})||(t.g&&grafData(typeof t.g==="string"?GR[t.g]:t.g));try{if(lagret)start=JSON.parse(lagret)}catch(z){}
+ALGO.verksted(el,{type:start&&start.type,data:start&&start.data,endret:v=>set(j,"Tegning",JSON.stringify(v))})}});
+if(API)$("#rettalle").onclick=()=>rett(e,e.tasks.map((t,j)=>j).filter(j=>filled(svar(e)[j])));
+visFB();
+T.addEventListener("input",x=>{const d=x.target.dataset;if(d.k)set(d.j,d.k,x.target.value)});
+T.addEventListener("click",x=>{const b=x.target.closest(".tg");if(!b)return;const a=svar(e)[b.dataset.j]||{},v2=a[b.dataset.k]===b.dataset.v?"":b.dataset.v;set(b.dataset.j,b.dataset.k,v2);
+b.parentNode.querySelectorAll(".tg").forEach(y=>y.setAttribute("aria-pressed",y.dataset.v===v2))});
+$("#copy").onclick=()=>{
+let s=`Svar på Øv selv i ${e.ep} (${e.title}). Rett dem mot løsningsforslagene og gi fasit nå:\n`;
+e.tasks.forEach((t,j)=>{const a=svar(e)[j]||{},ks=Object.keys(a).filter(k=>String(a[k]).trim());s+=`\n${j+1}. ${t.s||t.t}`+(ks.length?"":" (tomt)");ks.forEach(k=>{s+=`\n- ${k}: ${String(a[k]).replace(/\n+/g," / ")}`})});
+const ok=()=>{$("#cmsg").textContent="Kopiert. Lim inn i chatten.";$("#cbox").innerHTML=""};
+const fb=()=>{$("#cmsg").textContent="Kopier teksten under og lim den inn i chatten.";$("#cbox").innerHTML=`<textarea id="copybox" class="in" readonly>${esc(s)}</textarea>`;$("#copybox").select()};
+navigator.clipboard?navigator.clipboard.writeText(s).then(ok,fb):fb()};if(pv)eksamen(e)}
+
+// Prøveeksamenene vises som på eksamen: forside, én oppgave om gangen, nummerlinje, nedtelling og «Lever».
+// Sjekk, fasit og retting skjules til settet er levert.
+const PT=4*3600e3;let tt;
+function prove(e){const n=e.tasks.length,b=(k,l)=>`<button type="button" data-k="${k}">${l}</button>`;
+return `<div class="eks"><div class="eks-top"><b>TDT4136 · ${e.ep} ${esc(e.title)}</b><span id="tid"></span><button type="button" id="lever">Lever</button></div>
+<section class="eks-s" id="s0">${e.note}${e.intro}<p><button type="button" class="pri" id="startp"></button></p></section>
+<div id="tasks">${e.tasks.map((t,j)=>`<section class="eks-s" id="s${j+1}">${task(e,t,j)}</section>`).join("")}</div>
+<section class="eks-s" id="s${n+1}"><h3>Formula sheet</h3><img class="fig" src="nettside-figurer/e14-2025-formelark.svg" alt="Formelarket fra eksamen 2025"></section>
+<div class="etter"><div class="row">${API?'<button class="pri" id="rettalle">Send alle besvarte til retting</button>':""}<button id="copy">Kopier svarene</button><span class="mut" id="cmsg"></span></div><div id="cbox"></div>
+<details class="fasit"><summary>Fasit og sensorveiledning</summary>${e.fasit}</details></div>
+<div class="eks-nav" role="navigation" aria-label="Oppgavene">${b("-","←")+b(0,"Forside")+e.tasks.map((t,j)=>b(j+1,j+1)).join("")+b(n+1,"Vedlegg")+b("+","→")}</div></div>`}
+function eksamen(e){const n=e.tasks.length,X=$(".eks"),p=(S.pv||(S.pv={}))[e.id]||(S.pv[e.id]={k:0});
+X.querySelectorAll("#tasks .task").forEach(el=>{const j=+el.id.slice(1),m=/^Oppgave\s+(\d+)\s*\((\d+)\s*p[^)]*\)\s*[:.–-]?\s*(.*)$/i.exec(e.tasks[j].t);
+if(m){el.querySelector("h3").textContent=m[1]+" "+m[3];el.querySelector(".sjm").previousElementSibling.insertAdjacentHTML("beforebegin",`<p class="maks">Maximum marks: ${m[2]}</p>`)}
+// Flervalg: alternativene «A. …» i teksten blir radioknapper, og tekstfeltet skjules.
+const inp=el.querySelector('.in[data-k="Alternativ"]'),ls=[...el.querySelectorAll(".d li")].filter(li=>/^[A-E][.)]\s/.test(li.textContent.trim()));
+if(inp&&ls.length){const v=(svar(e)[j]||{}).Alternativ;inp.style.display=inp.previousElementSibling.style.display="none";
+ls[0].parentNode.outerHTML=`<div class="alt">${ls.map(li=>{const l=li.textContent.trim()[0];return `<label><input type="radio" name="a${j}" data-j="${j}" data-k="Alternativ" value="${l}"${v===l?" checked":""}><span>${li.innerHTML}</span></label>`}).join("")}</div>`}});
+const merk=()=>X.querySelectorAll(".eks-nav [data-k]").forEach(b=>{const k=+b.dataset.k;b.classList.toggle("ok",k>0&&k<=n&&filled(svar(e)[k-1]));k===p.k?b.setAttribute("aria-current","step"):b.removeAttribute("aria-current")});
+const vis=k=>{p.k=Math.max(0,Math.min(n+1,k));save();X.querySelectorAll(".eks-s").forEach(s=>s.classList.toggle("cur",s.id==="s"+p.k));merk();scrollTo(0,0)};
+const tick=()=>{const t=$("#tid");if(!t)return clearInterval(tt);const r=PT-(p.start?Date.now()-p.start:0),z=x=>String(Math.floor(x)%60).padStart(2,"0");
+t.textContent=p.levert?"Levert":r>0?`${p.start?"Tid igjen ":""}${Math.floor(r/36e5)}:${z(r/6e4)}:${z(r/1e3)}`:"Tiden er ute";t.classList.toggle("ute",!p.levert&&r<=0)};
+const lev=()=>{X.classList.toggle("levert",!!p.levert);if(p.levert)e.tasks.forEach((t,j)=>t.sjekk&&sjekk(e,j,false));$("#startp").textContent=p.levert?"Se gjennom svarene":p.start?"Fortsett":"Start (4 timer)";tick()};
+X.querySelector(".eks-nav").onclick=x=>{const b=x.target.closest("button");if(b){const d=b.dataset.k;vis(d==="-"?p.k-1:d==="+"?p.k+1:+d)}};
+X.addEventListener("input",merk);X.addEventListener("click",merk);
+$("#startp").onclick=()=>{if(!p.start)p.start=Date.now();lev();vis(1)};
+$("#lever").onclick=()=>{if(confirm("Levere nå? Da kan du sjekke svarene, se fasit og sende alt til retting.")){p.levert=Date.now();save();lev()}};
+clearInterval(tt);tt=setInterval(tick,1000);lev();vis(p.k)}
+
+// Leksikon: siden #leksikon og dialogen bak knappen oppe til høyre bruker samme innhold og søk.
+function leks(el){el.innerHTML=`<h1>Leksikon</h1>${D.leks.intro}<input type="search" class="lsok" placeholder="Søk, for eksempel admissible eller b" aria-label="Søk i leksikonet"><p class="lingen" role="status"></p><div class="lbody">${D.leks.body}</div>`;
+const q=el.querySelector(".lsok"),B=el.querySelector(".lbody"),st=el.querySelector(".lingen");
+q.oninput=()=>{const s=q.value.trim().toLowerCase(),ord=new RegExp("(^|[^\\p{L}])"+s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"u");let n=0;
+B.querySelectorAll("li").forEach(li=>{const t=(li.querySelector("strong")||li).textContent.toLowerCase(),v=!s||(s.length<3?ord.test(t):t.includes(s)||li.textContent.toLowerCase().includes(s));li.hidden=!v;n+=v});
+B.querySelectorAll("h2").forEach(h=>{const ul=h.nextElementSibling;h.hidden=!!ul&&![...ul.children].some(li=>!li.hidden)});st.textContent=s?(n?`${n} treff`:"Ingen treff."):""};
+return q}
+{const d=$("#leksdlg"),b=$("#leksknapp");
+b.onclick=()=>{const sel=String(getSelection()).trim(),q=leks(d.lastElementChild);d.showModal();if(sel&&sel.length<40){q.value=sel;q.oninput()}q.focus()};
+d.querySelector(".lukk").onclick=()=>d.close();d.addEventListener("close",()=>b.focus());addEventListener("hashchange",()=>d.open&&d.close());
+// closedby="any" mangler i Safari: lukk ved klikk utenfor dialogen.
+if(!("closedBy" in HTMLDialogElement.prototype))d.addEventListener("click",e=>{if(e.target!==d)return;const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()})}
+function page(h){$("#main").className="";$("#main").innerHTML=h}
+function route(){
+const h=location.hash.slice(1)||"hjem",e=D.eps.find(x=>x.id===h)||D.ov.find(x=>x.id===h);
+if(rec)rec.stop();
+$("#leksknapp").hidden=!!e&&e.grp==="Prøveeksamener"; // som på eksamen: ingen hjelpemidler
+const A=window.ALGO,[h0,h1]=h.split("/");
+if(e){S.last=e.id;save();episode(e)}else if(h0==="algoritmer"&&A&&A.side){$("#main").className="wide";A.side($("#main"),h1)}else if(h==="verksted"&&A&&A.verksted){$("#main").className="wide";A.verksted($("#main"))}else if(h==="leksikon"){page("");leks($("#main")).focus()}else if(h==="feller")page(D.feller);else if(h==="feillogg")page(D.feil);else if(h==="eksamener")page(D.exams);else home();
+nav();scrollTo(0,0)}
+addEventListener("hashchange",route);
+// Fila på serveren er fasit for svarene (den lagres ved hver endring), felt for felt. Svar fra file:// fyller bare tomme oppgaver.
+const flett=(f,over)=>{for(const id in f)for(const j in f[id]){const a=svar({id});if(over)a[j]={...a[j],...f[id][j]};else if(!filled(a[j]))a[j]=f[id][j]}save()};
+// Åpnet som fil mens serveren kjører: hopp dit og ta med svarene i #-delen, som aldri sendes over nettet.
+const [h0,ut]=location.hash.split("&svar=");
+if(ut){history.replaceState(null,"",h0.length>1?h0:location.pathname);try{flett(JSON.parse(decodeURIComponent(ut)))}catch{}}
+if(API){setInterval(hentFB,8000);hentFB();
+fetch("/api/svar").then(r=>r.json()).then(f=>{flett(f,true);push()}).catch(()=>{}).finally(route)}else{route();
+const i=new Image();i.onload=()=>location.replace("http://localhost:8765/arbeid/nettside.html"+(location.hash||"#")+"&svar="+encodeURIComponent(JSON.stringify(S.svar)));i.src="http://localhost:8765/arbeid/nettside-figurer/a3-4-1-brett.png?"+Date.now()}
+</script>
+</body>
+</html>

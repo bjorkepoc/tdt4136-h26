@@ -1,0 +1,1185 @@
+{
+ "id": "p1",
+ "ep": "P1",
+ "tittel": "Prøveeksamen 1",
+ "om": "## TDT4136 Introduction to Artificial Intelligence\n\n### Practice exam P1\n\n**Time:** 4 hours<br>\n**Permitted examination support material:** D: No printed or hand-written support material is allowed. A specific basic calculator is allowed.\n\n**OTHER INFORMATION**\n\nThere are 13 questions in this exam. The first 4 are multiple choice questions. For questions about logic, there is a formula sheet at the very end of the exam.\n\nRead the questions carefully and make your own assumptions. In your answers, explain clearly what assumptions you have made and how you have understood or limited the assignment.\n\nFor question 9 (Generalized Modus Ponens) and 10 (Resolution) you can answer on handwritten sheets. Other questions are answered directly in the answer fields.\n\n**Weighting:** Weights for questions and sub-questions are given in each question. The total is 100 points.\n\n---\n\n*Laget for øving i 2025-formatet, ikke en ekte eksamen.* Settet dekker miljøegenskaper, simulated annealing, CSP-modellering, rene Nash-likevekter, BFS/DFS/UCS, greedy og A\\* med admissible/consistent heuristikk, AC-3, minimax og alpha-beta, Generalized Modus Ponens, FOL → CNF → resolusjon, HLA og forward/backward planning, bigram og Viterbi, kategorier og arv, og Chinese room.\n\n<details><summary>Formula sheet (appendix)</summary><img class=\"fig\" src=\"nettside-figurer/e14-2025-formelark.svg\" alt=\"Formelark\"></details>",
+ "intro": "Oppgave 1–4 er flervalg. Når settet er levert, kan alt med ett objektivt svar (flervalg, rekkefølger, stier, kostnader, verdier, domener, mengder) sjekkes med Sjekk, grafene i oppgave 5–7 og treet i oppgave 8 kan åpnes i «Tegn og sjekk», og fasiten med poengfordeling vises nederst.",
+ "tasks": [
+  {
+   "t": "Oppgave 1 (5 p): Intelligent Agents",
+   "d": "A program plays a two-player trick-taking card game against one human opponent. A match consists of several deals. Before each deal, the 52 cards are shuffled and dealt randomly, 13 to each player. The program sees its own hand and every card that has been played, but not the cards in the opponent's hand. A deal consists of 13 tricks, and the cards played in early tricks determine which cards are left for later tricks. The players use a chess clock: the time a player spends thinking is deducted from that player's score, but nothing on the table changes while a player is thinking. The program is given the complete rules of the game.\n\nWhich alternative describes the task environment of the program? The properties are listed in this order: observable, agents, deterministic, episodic, static, discrete, known.\n\nSelect one alternative:\n\n- A. Partially observable, multi-agent, deterministic, sequential, semidynamic, discrete, known\n- B. Partially observable, multi-agent, stochastic, sequential, semidynamic, discrete, known\n- C. Partially observable, multi-agent, stochastic, sequential, static, discrete, known\n- D. Partially observable, multi-agent, stochastic, episodic, semidynamic, discrete, known\n- E. Partially observable, multi-agent, stochastic, sequential, semidynamic, discrete, unknown",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "B"
+     ]
+    },
+    "merk": "Tilfeldig utdeling gir stochastic, tidlige stikk påvirker senere (sequential), sjakkuret trekker fra scoren uten at bordet endres (semidynamic), og reglene er gitt (known).",
+    "kilde": "Boka 2.3.2 (definisjonene, «chess with a clock» som semidynamic) og Fig. 2.6 (poker: partially, multi, stochastic). Hvert gale alternativ har nøyaktig én gal egenskap, sjekket for hånd."
+   },
+   "fasit": "**Svar: B.**\n\nRiktig beskrivelse: partially observable, multi-agent, stochastic, sequential, semidynamic, discrete, known.\n\n- **Partially observable:** motstanderens kort er skjult. Det står i alle alternativene.\n- **Multi-agent:** motspilleren prøver å vinne, så miljøet er competitive multiagent.\n- **Stochastic:** kortene stokkes og deles ut tilfeldig før hver giv, med kjente sannsynligheter. Fig. 2.6 klassifiserer poker på samme måte.\n- **Sequential:** kortene som spilles tidlig, bestemmer hva som er igjen senere.\n- **Semidynamic:** bordet endrer seg ikke mens programmet tenker, men scoren gjør det. Det er bokas definisjon, med «chess with a clock» som eksempel.\n- **Discrete:** endelig mange kort, stikk og trekk.\n- **Known:** reglene (utfallet av handlingene) er gitt. Known handler om reglene, ikke om hva agenten ser.\n\nGale alternativer:\n\n- **A** sier deterministic. Utdelingen er tilfeldig, så neste tilstand er ikke bestemt av tilstand og handling.\n- **C** sier static. Tenketid trekkes fra scoren, og da er miljøet semidynamic.\n- **D** sier episodic. Tidlige stikk påvirker senere stikk.\n- **E** sier unknown. Programmet kjenner reglene. At noe er skjult, gjør miljøet partially observable, ikke unknown.\n\nVanlige feil: å blande known med fully observable, og å overse at sjakkuret gjør miljøet semidynamic.\n\n*Kilde: egen oppgave i P1. Kontroll: Boka 2.3.2 (definisjonene, «chess with a clock» som semidynamic) og Fig. 2.6 (poker: partially, multi, stochastic). Hvert gale alternativ har nøyaktig én gal egenskap, sjekket for hånd.*"
+  },
+  {
+   "t": "Oppgave 2 (5 p): Local Search",
+   "d": "Simulated annealing (Figure 4.5 in the textbook) maximizes VALUE. In each iteration it picks a successor *next* of *current* and computes ΔE = VALUE(*next*) − VALUE(*current*). If ΔE > 0 it moves to *next*; otherwise it moves to *next* only with probability e<sup>ΔE/T</sup>, where T is given by the schedule.\n\nWhich statement is **false**?\n\nSelect one alternative:\n\n- A. When the schedule gives T = 0, the algorithm returns the best state it has visited so far.\n- B. The successor *next* is chosen at random among the successors of *current*, not as the best successor.\n- C. For a fixed T, a move with ΔE = −2d (d > 0) is accepted with the square of the probability of a move with ΔE = −d.\n- D. At a very high temperature almost every move is accepted, so the search behaves almost like a random walk.\n- E. If the schedule lowers T slowly enough, the algorithm finds a global optimum with probability approaching 1.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "A"
+     ]
+    },
+    "merk": "Fig. 4.5 returnerer current når T = 0, ikke den beste tilstanden som er besøkt. B, C, D og E er sanne.",
+    "kilde": "Fig. 4.5 og avsnitt 4.1.2 i boka. C regnet ut: e^(−2d/T) = (e^(−d/T))². D: e^(ΔE/T) → 1 når T → ∞."
+   },
+   "fasit": "**Svar: A.** Påstand A er den usanne.\n\n- **A er usann.** Fig. 4.5 returnerer *current* når T = 0, og det trenger ikke være den beste tilstanden som er besøkt. Å huske den beste er en vanlig utvidelse, men ikke algoritmen i boka.\n- **B er sann.** SA velger en tilfeldig etterfølger. Det er hill climbing som velger den beste.\n- **C er sann.** e^(−2d/T) = (e^(−d/T))².\n- **D er sann.** Når T er stor, er e^(ΔE/T) nær 1, så nesten alle trekk godtas, og søket blir nesten en random walk.\n- **E er sann.** Boka: senkes T sakte nok, finner algoritmen et globalt optimum med sannsynlighet som går mot 1.\n\nVanlige feil: å tro at et dårligere trekk aldri godtas ved lav T (sannsynligheten er liten, men positiv så lenge T > 0), og å blande SA med stochastic hill climbing, som bare tar oppoverbakke.\n\n*Kilde: egen oppgave i P1. Kontroll: Fig. 4.5 og avsnitt 4.1.2 i boka. C regnet ut: e^(−2d/T) = (e^(−d/T))². D: e^(ΔE/T) → 1 når T → ∞.*"
+  },
+  {
+   "t": "Oppgave 3 (5 p): Constraint Satisfaction Problems",
+   "d": "Four guests, Ada, Ben, Cleo and Dan, are to be seated on four chairs in a row, numbered 1 to 4, with exactly one guest on each chair. Each guest also orders one dish: Fish, Pasta or Soup. Several guests may order the same dish, and a dish may be ordered by nobody. The constraints are:\n\n- Ada sits on chair 1 or chair 4.\n- Ben and Cleo sit next to each other.\n- A guest who sits next to Dan does not order the same dish as Dan.\n- Exactly one guest orders Fish.\n\nWhich choice of variables and domains can represent every possible seating and ordering, so that all the constraints above (and \"one guest on each chair\") can be written as constraints on the variables?\n\nSelect one alternative:\n\n- A. Variables Chair1, Chair2, Chair3, Chair4 with domain {Ada, Ben, Cleo, Dan}, and variables Fish, Pasta, Soup with domain {Ada, Ben, Cleo, Dan}.\n- B. Variables Ada, Ben, Cleo, Dan, Fish, Pasta, Soup, all with domain {1, 2, 3, 4}.\n- C. Variables DishAda, DishBen, DishCleo, DishDan, all with domain {Fish, Pasta, Soup}.\n- D. Variables Seat1, Seat2, Seat3, Seat4, all with domain {Ada, Ben, Cleo, Dan, Fish, Pasta, Soup}.\n- E. Variables Ada, Ben, Cleo, Dan with domain {1, 2, 3, 4}, and variables DishAda, DishBen, DishCleo, DishDan with domain {Fish, Pasta, Soup}.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "E"
+     ]
+    },
+    "merk": "En plassvariabel og en rettvariabel per gjest. A og B gir hver rett nøyaktig én gjest eller stol, C mangler plasseringen, og D kan ikke holde både gjest og rett per stol.",
+    "kilde": "Håndsjekket: alle constraints skrevet ut med E-variablene (Alldiff, unary, |Ben − Cleo| = 1, betinget ≠, nøyaktig én Fish). A–D har hvert sitt moteksempel."
+   },
+   "fasit": "**Svar: E.**\n\nE har én plassvariabel per gjest med domene {1, 2, 3, 4} og én rettvariabel per gjest med domene {Fish, Pasta, Soup}. Alle kravene kan skrives som constraints:\n\n- Alldiff(Ada, Ben, Cleo, Dan): én gjest per stol.\n- Ada ∈ {1, 4} (unary constraint).\n- |Ben − Cleo| = 1.\n- For hver annen gjest X: |X − Dan| = 1 ⇒ DishX ≠ DishDan.\n- Nøyaktig én av DishAda, …, DishDan er Fish (global constraint).\n\nGale alternativer:\n\n- **A:** variablene Fish, Pasta og Soup kan bare peke på én gjest hver. Pasta kan bestilles av flere gjester eller av ingen, så mange gyldige løsninger kan ikke uttrykkes. (Stol-delen er i orden.)\n- **B:** samme feil med stoler: Pasta ∈ {1, 2, 3, 4} gir nøyaktig én stol per rett.\n- **C:** mangler plasseringen, så stol-kravene kan ikke uttrykkes.\n- **D:** hver stol får enten en gjest eller en rett, ikke begge.\n\nVanlig feil: å velge A fordi «nøyaktig én Fish» passer en variabel Fish ∈ gjester, uten å se at Pasta og Soup ikke gjør det.\n\n*Kilde: egen oppgave i P1. Kontroll: Håndsjekket: alle constraints skrevet ut med E-variablene (Alldiff, unary, |Ben − Cleo| = 1, betinget ≠, nøyaktig én Fish). A–D har hvert sitt moteksempel.*"
+  },
+  {
+   "t": "Oppgave 4 (5 p): Game Theory",
+   "d": "Two players play the game below once and choose their strategies simultaneously. The row player chooses Up, Middle or Down, and the column player chooses Left, Center or Right. Each cell gives (payoff to the row player, payoff to the column player).\n\n| | Left | Center | Right |\n|---|---|---|---|\n| **Up** | (3, 2) | (1, 2) | (0, 1) |\n| **Middle** | (3, 0) | (2, 3) | (2, 3) |\n| **Down** | (1, 1) | (2, 0) | (1, 4) |\n\nWhich alternative lists all the pure-strategy Nash equilibria of the game?\n\nSelect one alternative:\n\n- A. There is no pure-strategy Nash equilibrium.\n- B. One: (Middle, Center)\n- C. Two: (Middle, Center) and (Middle, Right)\n- D. Three: (Up, Left), (Middle, Center) and (Middle, Right)\n- E. Four: (Up, Left), (Middle, Left), (Middle, Center) and (Middle, Right)",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "D"
+     ]
+    },
+    "merk": "Begge spiller beste svar i (Up, Left), (Middle, Center) og (Middle, Right). C er det som overlever svak dominans, som her fjerner (Up, Left). I (Middle, Left) bytter kolonnespilleren.",
+    "kilde": "Motoren (dominans-nash i spill.js) og eget Python-skript gir de samme tre likevektene. Ingen strategi er strengt dominert; svak eliminering etterlater (Middle, Center) og (Middle, Right)."
+   },
+   "fasit": "**Svar: D.** Tre rene Nash-likevekter: (Up, Left), (Middle, Center) og (Middle, Right).\n\nBeste svar for radspilleren i hver kolonne: Left → Up og Middle (3), Center → Middle og Down (2), Right → Middle (2).\nBeste svar for kolonnespilleren i hver rad: Up → Left og Center (2), Middle → Center og Right (3), Down → Right (4).\n\nCellene der begge spiller et beste svar, er (Up, Left), (Middle, Center) og (Middle, Right). Det gir tre rene Nash-likevekter.\n\n- **A:** feil, det finnes tre.\n- **B:** (Middle, Center) er bare én av dem.\n- **C:** dette er det som overlever iterated elimination of **weakly** dominated strategies: Middle dominerer Up og Down svakt, og deretter er Left dominert. Svak eliminering kan fjerne likevekter, her (Up, Left). Ingen strategi er strengt dominert, så IESDS fjerner ingenting.\n- **E:** (Middle, Left) er ingen likevekt. Radspilleren får 3 og er fornøyd, men kolonnespilleren får 0 og bytter til Center eller Right (3).\n\nVanlige feil: å sjekke bare den ene spilleren, og å tro at svak dominans bevarer alle likevekter.\n\n*Kilde: egen oppgave i P1. Kontroll: Motoren (dominans-nash i spill.js) og eget Python-skript gir de samme tre likevektene. Ingen strategi er strengt dominert; svak eliminering etterlater (Middle, Center) og (Middle, Right).*"
+  },
+  {
+   "t": "Oppgave 5 (8 p): Uninformed Search",
+   "d": "Consider the undirected graph in the figure. S is the start state and G is the only goal state. The numbers on the edges are step costs.\n\nAll algorithms use **graph search**: a state is added to the frontier only if it has not been reached before, or if a cheaper path to it is found (the new node then replaces any node for the same state in the frontier). Breadth-first search follows Figure 3.9 and tests for the goal when a node is generated. Depth-first search and uniform-cost search are BEST-FIRST-SEARCH (Figure 3.7) with f(n) = −depth(n) and f(n) = g(n), and they test for the goal when a node is popped from the frontier.\n\nTie breaking: alphabetical order, both when nodes have the same priority and when successors are generated.\n\nFor a), b) and c), give the expansion order (include S, and write the goal last in parentheses), the path found and its cost.\n\na) Breadth-first search. (2 pts.)\n\nb) Depth-first search. (2 pts.)\n\nc) Uniform-cost search. (3 pts.)\n\nd) Suppose uniform-cost search instead tested for the goal when a node is generated, as BFS does. Which path would it return, and what is the cost? What does this show? (1 pt.)",
+   "g": {
+    "w": 540,
+    "h": 350,
+    "al": "Graf til oppgave 5",
+    "mw": 620,
+    "n": {
+     "S": [
+      60,
+      150,
+      "",
+      0,
+      0
+     ],
+     "A": [
+      160,
+      70,
+      "",
+      0,
+      0
+     ],
+     "B": [
+      220,
+      320,
+      "",
+      0,
+      0
+     ],
+     "C": [
+      160,
+      210,
+      "",
+      0,
+      0
+     ],
+     "D": [
+      280,
+      30,
+      "",
+      0,
+      0
+     ],
+     "E": [
+      250,
+      140,
+      "",
+      0,
+      0
+     ],
+     "F": [
+      330,
+      230,
+      "",
+      0,
+      0
+     ],
+     "G": [
+      490,
+      160,
+      "",
+      0,
+      0,
+      1
+     ],
+     "H": [
+      410,
+      50,
+      "",
+      0,
+      0
+     ]
+    },
+    "e": [
+     [
+      "S",
+      "A",
+      1,
+      -1
+     ],
+     [
+      "S",
+      "B",
+      4,
+      1
+     ],
+     [
+      "S",
+      "C",
+      3,
+      -1
+     ],
+     [
+      "A",
+      "D",
+      6,
+      -1
+     ],
+     [
+      "A",
+      "E",
+      2,
+      1
+     ],
+     [
+      "B",
+      "G",
+      9,
+      1
+     ],
+     [
+      "C",
+      "F",
+      2,
+      1
+     ],
+     [
+      "D",
+      "H",
+      2,
+      -1
+     ],
+     [
+      "H",
+      "G",
+      3,
+      -1
+     ],
+     [
+      "E",
+      "F",
+      1,
+      -1
+     ],
+     [
+      "F",
+      "G",
+      4,
+      -1
+     ]
+    ],
+    "st": "S",
+    "sx": -45,
+    "sy": 0
+   },
+   "f": [
+    [
+     "a) BFS: expansion order",
+     "text",
+     "S, …, (G)"
+    ],
+    [
+     "a) BFS: path",
+     "text",
+     "S → … → G"
+    ],
+    [
+     "a) BFS: cost",
+     "text"
+    ],
+    [
+     "b) DFS: expansion order",
+     "text",
+     "S, …, (G)"
+    ],
+    [
+     "b) DFS: path",
+     "text",
+     "S → … → G"
+    ],
+    [
+     "b) DFS: cost",
+     "text"
+    ],
+    [
+     "c) UCS: expansion order",
+     "text",
+     "S, …, (G)"
+    ],
+    [
+     "c) UCS: path",
+     "text",
+     "S → … → G"
+    ],
+    [
+     "c) UCS: cost",
+     "text"
+    ],
+    [
+     "d) Path",
+     "text",
+     "S → … → G"
+    ],
+    [
+     "d) Cost",
+     "text"
+    ],
+    [
+     "d) What this shows",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) BFS: expansion order": [
+      "S, A, B, (G)",
+      "S, A, B"
+     ],
+     "a) BFS: path": [
+      "S, B, G"
+     ],
+     "a) BFS: cost": [
+      "13"
+     ],
+     "b) DFS: expansion order": [
+      "S, A, D, H, (G)",
+      "S, A, D, H"
+     ],
+     "b) DFS: path": [
+      "S, A, D, H, G"
+     ],
+     "b) DFS: cost": [
+      "12"
+     ],
+     "c) UCS: expansion order": [
+      "S, A, C, E, B, F, D, (G)",
+      "S, A, C, E, B, F, D"
+     ],
+     "c) UCS: path": [
+      "S, A, E, F, G"
+     ],
+     "c) UCS: cost": [
+      "8"
+     ],
+     "d) Path": [
+      "S, B, G"
+     ],
+     "d) Cost": [
+      "13"
+     ]
+    },
+    "merk": "BFS stopper når G genereres fra B. DFS går A, D, H. UCS: F får billigere vei via E (4 < 5), G via F (8 < 13), og D (7) ekspanderes før G (8). Med early goal test ville UCS returnert S → B → G (13).",
+    "kilde": "Motoren (bfs, dfs, ucs i sok.js, graph search) og eget Python-skript etter Fig. 3.9 og 3.7 gir samme rekkefølger, stier og kostnader. d) håndsporet: G genereres første gang fra B med g = 13."
+   },
+   "fasit": "- **a) BFS: S, A, B, (G). Sti S → B → G, kostnad 13.**\n- **b) DFS: S, A, D, H, (G). Sti S → A → D → H → G, kostnad 12.**\n- **c) UCS: S, A, C, E, B, F, D, (G). Sti S → A → E → F → G, kostnad 8.**\n- **d) S → B → G, kostnad 13.** Den første veien til målet som genereres, er ikke nødvendigvis den billigste, så UCS må teste målet når noden tas ut.\n\n| | Expansion order | Path | Cost |\n|---|---|---|---|\n| a) BFS | S, A, B, (G) | S → B → G | 13 |\n| b) DFS | S, A, D, H, (G) | S → A → D → H → G | 12 |\n| c) UCS | S, A, C, E, B, F, D, (G) | S → A → E → F → G | 8 |\n| d) UCS med early goal test | | S → B → G | 13 |\n\n- **BFS:** S genererer A, B og C. A genererer D og E. B genererer G, og G er mål når den genereres, så søket stopper. C ekspanderes aldri.\n- **DFS (f = −depth):** A, B og C har dybde 1, og A velges alfabetisk. A gir D og E på dybde 2, og D velges. D gir H, og H gir G på dybde 4. G tas ut og er mål.\n- **UCS:** etter S er frontier A 1, C 3, B 4. A gir E 3 og D 7. C og E har g = 3, og C tas først (alfabetisk). C gir F 5. E gir F via E med g = 4 < 5, og den nye noden erstatter den gamle. B gir G 13. F (4) gir G via F med g = 8 < 13, som erstatter den gamle. D (7) ekspanderes før G (8). G tas ut med g = 8.\n- **d)** Med early goal test stopper UCS første gang G genereres, og det skjer fra B med g = 13. Den første veien til målet som genereres, er ikke nødvendigvis den billigste. Derfor tester UCS (og A\\*) målet når noden tas ut.\n\nPoeng: a) 2 (rekkefølge 1, sti og kostnad 1). b) 2 (samme fordeling). c) 3 (rekkefølge 1,5, sti og kostnad 1,5). d) 1.\n\nVanlige feil: BFS som tester målet når noden tas ut, og da får S, A, B, C, D, E, (G). DFS uten alfabetisk tie-break. UCS som ikke oppdaterer F via E, eller som stopper når G legges i frontier.\n\n*Kilde: egen oppgave i P1. Kontroll: Motoren (bfs, dfs, ucs i sok.js, graph search) og eget Python-skript etter Fig. 3.9 og 3.7 gir samme rekkefølger, stier og kostnader. d) håndsporet: G genereres første gang fra B med g = 13.*"
+  },
+  {
+   "t": "Oppgave 6 (12 p): Informed Search",
+   "d": "Consider the directed graph in the figure. S is the start state and G is the only goal state. The numbers on the edges are step costs, and the heuristic value h(n) is written next to each node.\n\nThe search algorithms are BEST-FIRST-SEARCH (Figure 3.7) as **graph search**: the goal test is done when a node is popped from the frontier, and a state is added to the frontier again whenever a cheaper path to it is found, **also if the state has already been expanded**. A new, cheaper node replaces an older node for the same state in the frontier. Tie breaking: alphabetical order.\n\na) Is h admissible? Justify your answer. (2 pts.)\n\nb) Is h consistent? If not, give an edge that violates consistency. (2 pts.)\n\nc) Run greedy best-first search. Give the expansion order (include S, and write the goal last in parentheses), the path found and its cost. (2 pts.)\n\nd) Run A\\* search. Give the expansion order, the path found and its cost. Which state is expanded twice, and why? Which path and cost would A\\* return if a state that has already been expanded were never added to the frontier again? (6 pts.)",
+   "g": {
+    "w": 600,
+    "h": 340,
+    "dir": 1,
+    "al": "Graf til oppgave 6",
+    "mw": 680,
+    "n": {
+     "S": [
+      70,
+      160,
+      "h=4",
+      0,
+      -26
+     ],
+     "A": [
+      190,
+      60,
+      "h=5",
+      0,
+      -26
+     ],
+     "B": [
+      190,
+      260,
+      "h=2",
+      0,
+      30
+     ],
+     "C": [
+      320,
+      160,
+      "h=1",
+      0,
+      -26
+     ],
+     "D": [
+      440,
+      60,
+      "h=2",
+      0,
+      -26
+     ],
+     "E": [
+      410,
+      290,
+      "h=3",
+      0,
+      30
+     ],
+     "G": [
+      550,
+      160,
+      "h=0",
+      0,
+      -28,
+      1
+     ]
+    },
+    "e": [
+     [
+      "S",
+      "A",
+      1,
+      1
+     ],
+     [
+      "S",
+      "B",
+      2,
+      -1
+     ],
+     [
+      "A",
+      "C",
+      1,
+      1
+     ],
+     [
+      "B",
+      "C",
+      2,
+      1
+     ],
+     [
+      "C",
+      "D",
+      2,
+      1
+     ],
+     [
+      "D",
+      "G",
+      2,
+      1
+     ],
+     [
+      "C",
+      "G",
+      6,
+      -1
+     ],
+     [
+      "B",
+      "E",
+      4,
+      -1
+     ],
+     [
+      "E",
+      "G",
+      3,
+      -1
+     ]
+    ],
+    "st": "S",
+    "sx": -45,
+    "sy": 0
+   },
+   "f": [
+    [
+     "a) Admissible? (yes/no)",
+     "text"
+    ],
+    [
+     "b) Consistent? (yes/no)",
+     "text"
+    ],
+    [
+     "b) Edge that violates consistency",
+     "text",
+     "X → Y"
+    ],
+    [
+     "a) and b) Justification",
+     "area"
+    ],
+    [
+     "c) Greedy: expansion order",
+     "text",
+     "S, …, (G)"
+    ],
+    [
+     "c) Greedy: path",
+     "text",
+     "S → … → G"
+    ],
+    [
+     "c) Greedy: cost",
+     "text"
+    ],
+    [
+     "d) A*: expansion order",
+     "text",
+     "S, …, (G)"
+    ],
+    [
+     "d) A*: path",
+     "text",
+     "S → … → G"
+    ],
+    [
+     "d) A*: cost",
+     "text"
+    ],
+    [
+     "d) State expanded twice",
+     "text"
+    ],
+    [
+     "d) Path if expanded states are never re-added",
+     "text",
+     "S → … → G"
+    ],
+    [
+     "d) Cost if expanded states are never re-added",
+     "text"
+    ],
+    [
+     "d) Explanation",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Admissible? (yes/no)": [
+      "yes",
+      "ja"
+     ],
+     "b) Consistent? (yes/no)": [
+      "no",
+      "nei"
+     ],
+     "b) Edge that violates consistency": [
+      "A, C"
+     ],
+     "c) Greedy: expansion order": [
+      "S, B, C, (G)",
+      "S, B, C"
+     ],
+     "c) Greedy: path": [
+      "S, B, C, G"
+     ],
+     "c) Greedy: cost": [
+      "10"
+     ],
+     "d) A*: expansion order": [
+      "S, B, C, A, C, D, (G)",
+      "S, B, C, A, C, D"
+     ],
+     "d) A*: path": [
+      "S, A, C, D, G"
+     ],
+     "d) A*: cost": [
+      "6"
+     ],
+     "d) State expanded twice": [
+      "C"
+     ],
+     "d) Path if expanded states are never re-added": [
+      "S, B, C, D, G"
+     ],
+     "d) Cost if expanded states are never re-added": [
+      "8"
+     ]
+    },
+    "merk": "h* = (S 6, A 5, B 6, C 4, D 2, E 3), så h er admissible. A → C bryter consistency: 5 > 1 + 1. A* ekspanderer C først via B (g = 4) og igjen via A (g = 2). Uten gjenåpning blir svaret S → B → C → D → G med kostnad 8.",
+    "kilde": "Motoren (greedy og astar i sok.js, også valget som aldri åpner igjen) og eget Python-skript (Fig. 3.7, h* fra Dijkstra baklengs fra G, consistency kant for kant) gir det samme."
+   },
+   "fasit": "- **a) Ja, admissible.**\n- **b) Nei, ikke consistent. Kanten A → C** bryter kravet (5 > 1 + 1).\n- **c) Greedy: S, B, C, (G). Sti S → B → C → G, kostnad 10.**\n- **d) A\\*: S, B, C, A, C, D, (G). Sti S → A → C → D → G, kostnad 6. C ekspanderes to ganger. Uten gjenåpning: S → B → C → D → G, kostnad 8.**\n\nh\\* (billigste vei til G): S 6, A 5, B 6, C 4, D 2, E 3, G 0.\n\n**a) Ja, admissible.** h(n) ≤ h\\*(n) for alle noder: 4 ≤ 6, 5 ≤ 5, 2 ≤ 6, 1 ≤ 4, 2 ≤ 2, 3 ≤ 3, 0 ≤ 0.\n\n**b) Nei, ikke consistent.** Kanten A → C: h(A) = 5 > c(A, C) + h(C) = 1 + 1 = 2. Alle de andre kantene oppfyller h(n) ≤ c(n, n′) + h(n′).\n\n**c) Greedy:** S, B, C, (G). Sti S → B → C → G, kostnad 10. Greedy ser bare på h og tar C → G (h = 0) selv om kanten koster 6.\n\n**d) A\\*:**\n\n| Tas ut (f = g + h) | Nye eller oppdaterte noder |\n|---|---|\n| S (0 + 4 = 4) | A 1 + 5 = 6, B 2 + 2 = 4 |\n| B (4) | C 4 + 1 = 5, E 6 + 3 = 9 |\n| C (5) | D 6 + 2 = 8, G 10 + 0 = 10 |\n| A (6) | C 2 + 1 = 3: billigere vei, legges inn igjen selv om C er ekspandert |\n| C (3) | D 4 + 2 = 6 erstatter D 8, G 8 erstatter G 10 |\n| D (6) | G 6 erstatter G 8 |\n| G (6) | mål |\n\nExpansion order S, B, C, A, C, D, (G). Sti S → A → C → D → G, kostnad 6, som er optimal.\n\nC ekspanderes to ganger fordi h ikke er consistent: C nås først via B med g = 4, og den billigere veien via A (g = 2) blir funnet etterpå, fordi den høye h(A) = 5 holder A tilbake. Med consistent h er g optimal første gang en node ekspanderes.\n\nUten gjenåpning blir C fra A forkastet. Da blir rekkefølgen S, B, C, A, D, (G), med sti S → B → C → D → G og kostnad 8, som ikke er optimal. Admissible h gir optimal A\\* i tree-like search og i graph search som åpner noder på nytt, men graph search som aldri åpner på nytt trenger consistent h.\n\nPoeng: a) 2 (svar 1, begrunnelse med h\\* 1). b) 2 (svar og kant). c) 2. d) 6 (rekkefølge 2, sti og kostnad 1, C to ganger med forklaring 1,5, variant uten gjenåpning 1,5).\n\nVanlige feil: å sjekke consistency bare langs den optimale stien, å stoppe når G legges i frontier med f = 10, og å glemme at C må åpnes igjen.\n\n*Kilde: egen oppgave i P1. Kontroll: Motoren (greedy og astar i sok.js, også valget som aldri åpner igjen) og eget Python-skript (Fig. 3.7, h\\* fra Dijkstra baklengs fra G, consistency kant for kant) gir det samme.*"
+  },
+  {
+   "t": "Oppgave 7 (10 p): Constraint Satisfaction Problems",
+   "d": "Five exams A, B, C, D and E are to be placed in time slots 1, 2 and 3. Two exams that share students must be in different slots. The pairs that share students are\n\nA–B, A–C, B–C, B–D, C–E and D–E.\n\nIn addition, exam A must be in slot 1, exam B cannot be in slot 3, and exam E cannot be in slot 1. Every variable starts with domain {1, 2, 3}.\n\na) Make the problem node consistent. Give the domains of A, B and E. (1 pt.)\n\nb) Run AC-3 (Figure 5.3) on the node-consistent problem. The queue is FIFO and starts as\n\n(A, B), (A, C), (B, A), (B, C), (B, D), (C, A), (C, B), (C, E), (D, B), (D, E), (E, C), (E, D).\n\nWhen REVISE(X<sub>i</sub>, X<sub>j</sub>) removes a value, add (X<sub>k</sub>, X<sub>i</sub>) at the back of the queue for every neighbour X<sub>k</sub> ≠ X<sub>j</sub> of X<sub>i</sub>, in alphabetical order, unless that arc is already in the queue. For each arc taken from the queue, write the arc, the values removed and the arcs added. (7 pts.)\n\nc) Give the domains after AC-3. Has AC-3 solved the problem? How many solutions does the CSP have? (2 pts.)",
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "A",
+       "x": 150,
+       "y": 30,
+       "domene": [
+        "1"
+       ]
+      },
+      {
+       "id": "B",
+       "x": 60,
+       "y": 130,
+       "domene": [
+        "1",
+        "2"
+       ]
+      },
+      {
+       "id": "C",
+       "x": 240,
+       "y": 130,
+       "domene": [
+        "1",
+        "2",
+        "3"
+       ]
+      },
+      {
+       "id": "D",
+       "x": 60,
+       "y": 250,
+       "domene": [
+        "1",
+        "2",
+        "3"
+       ]
+      },
+      {
+       "id": "E",
+       "x": 240,
+       "y": 250,
+       "domene": [
+        "2",
+        "3"
+       ]
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "B"
+      },
+      {
+       "fra": "A",
+       "til": "C"
+      },
+      {
+       "fra": "B",
+       "til": "C"
+      },
+      {
+       "fra": "B",
+       "til": "D"
+      },
+      {
+       "fra": "C",
+       "til": "E"
+      },
+      {
+       "fra": "D",
+       "til": "E"
+      }
+     ]
+    }
+   },
+   "f": [
+    [
+     "a) D(A)",
+     "text",
+     "{…}"
+    ],
+    [
+     "a) D(B)",
+     "text",
+     "{…}"
+    ],
+    [
+     "a) D(E)",
+     "text",
+     "{…}"
+    ],
+    [
+     "b) AC-3 trace",
+     "area",
+     "1. (A, B): removed –, added –\n2. (A, C): …"
+    ],
+    [
+     "b) Arcs that remove a value, in order",
+     "text",
+     "(X, Y), …"
+    ],
+    [
+     "b) Number of arcs taken from the queue",
+     "text"
+    ],
+    [
+     "c) D(B)",
+     "text",
+     "{…}"
+    ],
+    [
+     "c) D(C)",
+     "text",
+     "{…}"
+    ],
+    [
+     "c) D(D)",
+     "text",
+     "{…}"
+    ],
+    [
+     "c) D(E)",
+     "text",
+     "{…}"
+    ],
+    [
+     "c) Solved by AC-3? (yes/no)",
+     "text"
+    ],
+    [
+     "c) Number of solutions",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) D(A)": [
+      "{1}"
+     ],
+     "a) D(B)": [
+      "{1, 2}"
+     ],
+     "a) D(E)": [
+      "{2, 3}"
+     ],
+     "b) Arcs that remove a value, in order": [
+      "(B, A), (C, A), (C, B), (D, B), (E, C)"
+     ],
+     "b) Number of arcs taken from the queue": [
+      "15"
+     ],
+     "c) D(B)": [
+      "{2}"
+     ],
+     "c) D(C)": [
+      "{3}"
+     ],
+     "c) D(D)": [
+      "{1, 3}"
+     ],
+     "c) D(E)": [
+      "{2}"
+     ],
+     "c) Solved by AC-3? (yes/no)": [
+      "no",
+      "nei"
+     ],
+     "c) Number of solutions": [
+      "2"
+     ]
+    },
+    "merk": "(B, A) fjerner 1, (C, A) fjerner 1 og legger inn (B, C), (C, B) fjerner 2 og legger inn (A, C), (D, B) fjerner 2, (E, C) fjerner 3 og legger inn (D, E). Tre buer til, så tom kø etter 15. D = {1, 3} gir to løsninger.",
+    "kilde": "Motoren (ac-3 i csp.js) og eget Python-skript etter Fig. 5.3 gir de samme 15 radene og domenene. Antall løsninger talt med brute force."
+   },
+   "fasit": "- **a) D(A) = {1}, D(B) = {1, 2}, D(E) = {2, 3}.**\n- **b) Buene som fjerner verdier: (B, A), (C, A), (C, B), (D, B), (E, C). 15 buer tas ut av køen.**\n- **c) A = {1}, B = {2}, C = {3}, D = {1, 3}, E = {2}. Ikke løst av AC-3. 2 løsninger.**\n\n**a)** Node consistency fjerner verdier som bryter unary constraints: D(A) = {1}, D(B) = {1, 2}, D(E) = {2, 3}. D(C) = D(D) = {1, 2, 3}.\n\n**b)** AC-3. Naboer: A: B, C. B: A, C, D. C: A, B, E. D: B, E. E: C, D.\n\n| # | Bue | Fjernet | Lagt inn | Kommentar |\n|---|---|---|---|---|\n| 1 | (A, B) | – | – | 1 har støtte i 2 |\n| 2 | (A, C) | – | – | |\n| 3 | (B, A) | 1 fra B | – | (C, B) og (D, B) står allerede i køen. B = {2} |\n| 4 | (B, C) | – | – | |\n| 5 | (B, D) | – | – | |\n| 6 | (C, A) | 1 fra C | (B, C) | (E, C) står allerede i køen. C = {2, 3} |\n| 7 | (C, B) | 2 fra C | (A, C) | (E, C) står allerede i køen. C = {3} |\n| 8 | (C, E) | – | – | 3 har støtte i 2 |\n| 9 | (D, B) | 2 fra D | – | (E, D) står allerede i køen. D = {1, 3} |\n| 10 | (D, E) | – | – | |\n| 11 | (E, C) | 3 fra E | (D, E) | E = {2} |\n| 12 | (E, D) | – | – | |\n| 13 | (B, C) | – | – | |\n| 14 | (A, C) | – | – | |\n| 15 | (D, E) | – | – | Køen er tom, AC-3 returnerer true |\n\n**c)** A = {1}, B = {2}, C = {3}, D = {1, 3}, E = {2}. AC-3 har ikke løst problemet, fordi D fortsatt har to verdier. Begge fungerer (D ≠ B = 2 og D ≠ E = 2), så CSP-en har 2 løsninger. AC-3 gjør problemet arc consistent, men det betyr ikke at det er løst.\n\nPoeng: a) 1. b) 7 (de fem fjerningene i riktig rekkefølge 4, riktige buer lagt inn og ingen duplikater 2, tom kø og true 1). c) 2 (domener 1, ikke løst og 2 løsninger 1).\n\nVanlige feil: å legge inn (X<sub>j</sub>, X<sub>i</sub>) også, å legge inn buer som allerede står i køen, å revidere i feil retning (REVISE(X<sub>i</sub>, X<sub>j</sub>) fjerner bare fra X<sub>i</sub>), og å tro at arc consistency betyr at problemet er løst.\n\n*Kilde: egen oppgave i P1. Kontroll: Motoren (ac-3 i csp.js) og eget Python-skript etter Fig. 5.3 gir de samme 15 radene og domenene. Antall løsninger talt med brute force.*"
+  },
+  {
+   "t": "Oppgave 8 (10 p): Adversarial Search",
+   "d": "Consider the game tree in the figure. A, C, F, J, O, S and V are MAX nodes, B, I, L and R are MIN nodes, and the numbers at the leaves are utilities for MAX. Note that J has one leaf child (K) and one MIN child (L).\n\na) Compute the minimax value of every inner node. Which move should MAX choose at A? (4 pts.)\n\nb) Run alpha-beta search (Figure 6.7) with the children visited from left to right. A node is cut off when v ≥ β in a MAX node or v ≤ α in a MIN node. Which leaves are never evaluated? For every cut, give the node where it happens, the value v at that moment and the α or β that causes the cut. (6 pts.)",
+   "tre": {
+    "id": "A",
+    "type": "max",
+    "tekst": "A",
+    "barn": [
+     {
+      "id": "B",
+      "type": "min",
+      "tekst": "B",
+      "barn": [
+       {
+        "id": "C",
+        "type": "max",
+        "tekst": "C",
+        "barn": [
+         {
+          "id": "D",
+          "type": "blad",
+          "tekst": "D",
+          "verdi": 4
+         },
+         {
+          "id": "E",
+          "type": "blad",
+          "tekst": "E",
+          "verdi": 7
+         }
+        ]
+       },
+       {
+        "id": "F",
+        "type": "max",
+        "tekst": "F",
+        "barn": [
+         {
+          "id": "G",
+          "type": "blad",
+          "tekst": "G",
+          "verdi": 9
+         },
+         {
+          "id": "H",
+          "type": "blad",
+          "tekst": "H",
+          "verdi": 2
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "id": "I",
+      "type": "min",
+      "tekst": "I",
+      "barn": [
+       {
+        "id": "J",
+        "type": "max",
+        "tekst": "J",
+        "barn": [
+         {
+          "id": "K",
+          "type": "blad",
+          "tekst": "K",
+          "verdi": 2
+         },
+         {
+          "id": "L",
+          "type": "min",
+          "tekst": "L",
+          "barn": [
+           {
+            "id": "M",
+            "type": "blad",
+            "tekst": "M",
+            "verdi": 6
+           },
+           {
+            "id": "N",
+            "type": "blad",
+            "tekst": "N",
+            "verdi": 12
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "id": "O",
+        "type": "max",
+        "tekst": "O",
+        "barn": [
+         {
+          "id": "P",
+          "type": "blad",
+          "tekst": "P",
+          "verdi": 5
+         },
+         {
+          "id": "Q",
+          "type": "blad",
+          "tekst": "Q",
+          "verdi": 8
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "id": "R",
+      "type": "min",
+      "tekst": "R",
+      "barn": [
+       {
+        "id": "S",
+        "type": "max",
+        "tekst": "S",
+        "barn": [
+         {
+          "id": "T",
+          "type": "blad",
+          "tekst": "T",
+          "verdi": 8
+         },
+         {
+          "id": "U",
+          "type": "blad",
+          "tekst": "U",
+          "verdi": 3
+         }
+        ]
+       },
+       {
+        "id": "V",
+        "type": "max",
+        "tekst": "V",
+        "barn": [
+         {
+          "id": "W",
+          "type": "blad",
+          "tekst": "W",
+          "verdi": 5
+         },
+         {
+          "id": "X",
+          "type": "blad",
+          "tekst": "X",
+          "verdi": 11
+         },
+         {
+          "id": "Y",
+          "type": "blad",
+          "tekst": "Y",
+          "verdi": 1
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "f": [
+    [
+     "a) Minimax value of A",
+     "text"
+    ],
+    [
+     "a) Best move at A (B, I or R)",
+     "text"
+    ],
+    [
+     "a) Values of the inner nodes",
+     "area",
+     "B = …, C = …, F = …"
+    ],
+    [
+     "b) Leaves never evaluated",
+     "text",
+     "{…}"
+    ],
+    [
+     "b) Number of leaves evaluated",
+     "text"
+    ],
+    [
+     "b) Cuts: node, v and α/β",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Minimax value of A": [
+      "8"
+     ],
+     "a) Best move at A (B, I or R)": [
+      "R",
+      "A, R"
+     ],
+     "b) Leaves never evaluated": [
+      "{H, N, P, Q, Y}"
+     ],
+     "b) Number of leaves evaluated": [
+      "9"
+     ]
+    },
+    "merk": "Minimax: B 7, I 6, R 8, så A = 8 via R. Alpha-beta kutter H (F: 9 ≥ β = 7), N (L: 6 ≤ α = 7 fra roten), O med P og Q (I: 6 ≤ α = 7) og Y (V: 11 ≥ β = 8).",
+    "kilde": "Motoren (minimax og alfa-beta i spill.js) og eget Python-skript med kutt på likhet gir samme verdier og samme kutt."
+   },
+   "fasit": "- **a) Minimax-verdien til A er 8, og MAX velger R.**\n- **b) Bladene H, N, P, Q og Y evalueres aldri (O besøkes ikke). 9 blader evalueres.**\n\n**a)** C = 7, F = 9, B = 7. L = 6, J = 6, O = 8, I = 6. S = 8, V = 11, R = 8. A = max(7, 6, 8) = 8, så MAX velger R.\n\n**b)** Alpha-beta, venstre mot høyre:\n\n- C: D = 4, E = 7, så C = 7. I B: v = 7, β = 7.\n- F (α = −∞, β = 7): G = 9 gir v = 9 ≥ β = 7. **Kutt, H evalueres ikke.** F returnerer 9. B = 7. I A: v = 7, α = 7.\n- I (α = 7, β = ∞) og J (α = 7, β = ∞): K = 2 gir v = 2. Ingen kutt, fordi β = ∞.\n- L (MIN, α = 7, β = ∞): M = 6 gir v = 6 ≤ α = 7. **Kutt, N evalueres ikke.** α = 7 kommer fra roten, tre nivåer opp (deep cutoff). L returnerer 6, og J = 6.\n- I: v = 6 ≤ α = 7. **Kutt, O besøkes ikke, så P og Q evalueres ikke.** I returnerer 6.\n- R (α = 7, β = ∞) og S: T = 8 gir v = 8 og α = 8. U = 3, så S = 8. I R: v = 8, β = 8.\n- V (α = 7, β = 8): W = 5, og X = 11 gir v = 11 ≥ β = 8. **Kutt, Y evalueres ikke.** V returnerer 11. R = min(8, 11) = 8. A = 8.\n\nBlader som aldri evalueres: H, N, P, Q, Y. 9 av 14 blader evalueres (D, E, G, K, M, T, U, W, X). Verdiene F ≥ 9, L ≤ 6, J ≤ 6, I ≤ 6 og V ≥ 11 er grenser, ikke eksakte verdier. Rotverdien 8 er den samme som med minimax.\n\nPoeng: a) 4 (verdiene 3, trekket 1). b) 6 (1,5 per kutt med riktig v og α eller β). Trekk for kutt som ikke skjer.\n\nVanlige feil: å glemme at α = 7 fra roten sendes ned til L, å tro at K = 2 gir kutt i J, og å kutte i V før X er sett.\n\n*Kilde: egen oppgave i P1. Kontroll: Motoren (minimax og alfa-beta i spill.js) og eget Python-skript med kutt på likhet gir samme verdier og samme kutt.*"
+  },
+  {
+   "t": "Oppgave 9 (5 p): Generalized Modus Ponens",
+   "d": "*You can answer this question on handwritten sheets.*\n\nThe knowledge base contains these sentences. Advisor is a function symbol, and Ola, Kari, Per, AI and Logic are constants.\n\n1. ∀x, y, z Teaches(x, y) ∧ Takes(z, y) ∧ Likes(z, Advisor(x)) ⇒ Recommends(z, x)\n2. Teaches(Ola, AI)\n3. Takes(Kari, AI)\n4. Takes(Per, Logic)\n5. ∀x Likes(x, Advisor(Ola))\n\na) Use Generalized Modus Ponens to derive Recommends(Kari, Ola). Standardize apart by renaming the variable in sentence 5 to w. Give the unifier θ and show what SUBST(θ, ·) gives for the premises and the conclusion. Why would the unification fail if sentence 5 were not standardized apart? (3 pts.)\n\nb) Does the knowledge base entail Recommends(Per, Ola)? Justify your answer. (2 pts.)",
+   "f": [
+    [
+     "a) θ",
+     "text",
+     "{x/…, …}"
+    ],
+    [
+     "a) Derivation",
+     "area"
+    ],
+    [
+     "b) Entailed? (yes/no)",
+     "text"
+    ],
+    [
+     "b) Justification",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) θ": [
+      "{x/Ola, y/AI, z/Kari, w/Kari}",
+      "{x/Ola, y/AI, z/Kari}"
+     ],
+     "b) Entailed? (yes/no)": [
+      "no",
+      "nei"
+     ]
+    },
+    "merk": "θ = {x/Ola, y/AI, z/Kari, w/Kari}. Uten standardizing apart må x være både Ola og Kari. For Per gir Teaches y/AI, men Per tar Logic.",
+    "kilde": "Motoren (unifikasjon i logikk.js: θ som over, failure uten standardizing apart og for Per; fol-forward-chaining når fixed point med Recommends(Kari, Ola) som eneste nye faktum) og håndregning."
+   },
+   "fasit": "- **a) θ = {x/Ola, y/AI, z/Kari, w/Kari}, som gir Recommends(Kari, Ola).**\n- **b) Nei, Recommends(Per, Ola) er ikke entailed.**\n\n**a)** Standardize apart: setning 5 blir ∀w Likes(w, Advisor(Ola)).\n\nGMP med p₁ = Teaches(x, y), p₂ = Takes(z, y), p₃ = Likes(z, Advisor(x)), q = Recommends(z, x) og faktaene p₁′ = Teaches(Ola, AI), p₂′ = Takes(Kari, AI), p₃′ = Likes(w, Advisor(Ola)).\n\nθ = {x/Ola, y/AI, z/Kari, w/Kari}.\n\nSUBST(θ, pᵢ′) = SUBST(θ, pᵢ) for alle i: Teaches(Ola, AI), Takes(Kari, AI) og Likes(Kari, Advisor(Ola)). Konklusjonen er SUBST(θ, q) = Recommends(Kari, Ola).\n\nUten standardizing apart blir x i setning 5 og x i regelen samme variabel. Teaches gir x/Ola og Takes gir z/Kari. Da må Likes(Kari, Advisor(Ola)) unifiseres med Likes(Ola, Advisor(Ola)), og Kari ≠ Ola gir failure. Variablene er bundet av hver sin ∀ og er uavhengige, så de skal ha forskjellige navn.\n\n**b) Nei.** Den eneste regelen som konkluderer Recommends, trenger Teaches(Ola, y) ∧ Takes(Per, y). Det eneste Teaches-faktumet gir y = AI, men Per tar Logic. KB består av definite clauses, og forward chaining, som er komplett for definite clauses, når et fixed point der Recommends(Kari, Ola) er det eneste nye faktumet. Derfor er Recommends(Per, Ola) ikke entailed. Det betyr ikke at KB entails ¬Recommends(Per, Ola). Uten closed-world assumption vet vi ingenting om det.\n\nPoeng: a) 3 (θ 1,5, SUBST og konklusjon 0,5, standardizing apart 1). b) 2 (svar 0,5, begrunnelse 1,5).\n\n*Kilde: egen oppgave i P1. Kontroll: Motoren (unifikasjon i logikk.js: θ som over, failure uten standardizing apart og for Per; fol-forward-chaining når fixed point med Recommends(Kari, Ola) som eneste nye faktum) og håndregning.*"
+  },
+  {
+   "t": "Oppgave 10 (20 p): Resolution",
+   "d": "*You can answer this question on handwritten sheets.*\n\nUse the predicates Student(x), Lecture(x), Morning(x) (x is given in the morning), Attends(x, y) (x attends y) and Passes(x).\n\n- S1: Every student who attends every lecture passes.\n- S2: There is a student who attends every lecture that is given in the morning.\n- S3: All lectures are given in the morning.\n- Goal: Some student passes.\n\na) Translate S1, S2, S3 and the goal into first-order logic. (6 pts.)\n\nb) Convert S1, S2, S3 and the negated goal into conjunctive normal form (CNF). Name each conversion step, and use Skolem constants or Skolem functions where needed. (8 pts.)\n\nc) Use resolution to prove that the goal follows from S1, S2 and S3. For each step, give the two parent clauses, the unifier and the resolvent. (6 pts.)",
+   "f": [
+    [
+     "a) FOL",
+     "area"
+    ],
+    [
+     "b) CNF with named steps",
+     "area"
+    ],
+    [
+     "b) Number of clauses (S1–S3 and the negated goal)",
+     "text"
+    ],
+    [
+     "b) Which sentence needs a Skolem function, not a constant?",
+     "text",
+     "S1, S2, S3 or Goal"
+    ],
+    [
+     "c) Resolution proof",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "b) Number of clauses (S1–S3 and the negated goal)": [
+      "6"
+     ],
+     "b) Which sentence needs a Skolem function, not a constant?": [
+      "S1",
+      "1"
+     ]
+    },
+    "merk": "S1 gir to klausuler med Skolem-funksjon F(x) (∃y står inne i ∀x), S2 gir to klausuler med en Skolem-konstant, S3 og det negerte målet gir én hver.",
+    "kilde": "Motoren (fol-resolusjon i logikk.js) godtar alle åtte stegene i fasiten og når □. CNF-en er kontrollert med et eget skript: Skolemiseringen bevarer satisfiability, ikke ekvivalens: hver modell av S1 og S2 kan utvides med en passende tolkning av F og K til en modell av Skolem-klausulene, og hver modell av klausulene er en modell av S1 og S2 (alle tolkninger med domene på 1, 2 og 3 elementer)."
+   },
+   "fasit": "- **a) FOL og c) resolusjonsbeviset: se modellsvaret under.**\n- **b) 6 klausuler (S1 og S2 gir to hver, S3 og det negerte målet én hver). Bare S1 trenger en Skolem-funksjon, F(x).**\n\n**a) FOL**\n\n- S1: ∀x [Student(x) ∧ ∀y (Lecture(y) ⇒ Attends(x, y))] ⇒ Passes(x)\n- S2: ∃x Student(x) ∧ ∀y [(Lecture(y) ∧ Morning(y)) ⇒ Attends(x, y)]\n- S3: ∀y Lecture(y) ⇒ Morning(y)\n- Mål: ∃x Student(x) ∧ Passes(x)\n\nI S1 må ∀y stå inne i premisset. ∀x ∀y [Student(x) ∧ (Lecture(y) ⇒ Attends(x, y))] ⇒ Passes(x) betyr noe annet: da holder det at én y oppfyller parentesen, og finnes det noe som ikke er en forelesning, består alle studenter. I S2 hører ∃ sammen med ∧, ikke ⇒.\n\n**b) CNF**\n\nS1:\n\n1. Eliminate implications (indre, så ytre): ∀x ¬[Student(x) ∧ ∀y (¬Lecture(y) ∨ Attends(x, y))] ∨ Passes(x)\n2. Move ¬ inwards (De Morgan, ¬∀y = ∃y ¬): ∀x [¬Student(x) ∨ ∃y (Lecture(y) ∧ ¬Attends(x, y))] ∨ Passes(x)\n3. Standardize variables: allerede unike.\n4. Skolemize: ∃y står inne i ∀x, så y erstattes av Skolem-funksjonen F(x): ∀x ¬Student(x) ∨ (Lecture(F(x)) ∧ ¬Attends(x, F(x))) ∨ Passes(x)\n5. Drop universal quantifiers: ¬Student(x) ∨ (Lecture(F(x)) ∧ ¬Attends(x, F(x))) ∨ Passes(x)\n6. Distribute ∨ over ∧:\n   - C1: ¬Student(x) ∨ Lecture(F(x)) ∨ Passes(x)\n   - C2: ¬Student(x) ∨ ¬Attends(x, F(x)) ∨ Passes(x)\n\nS2:\n\n1. Eliminate implications: ∃x Student(x) ∧ ∀y [¬(Lecture(y) ∧ Morning(y)) ∨ Attends(x, y)]\n2. Move ¬ inwards: ∃x Student(x) ∧ ∀y [¬Lecture(y) ∨ ¬Morning(y) ∨ Attends(x, y)]\n3. Skolemize: ∃x står ikke inne i noen ∀, så x erstattes av Skolem-konstanten K.\n4. Drop ∀ og del opp ∧:\n   - C3: Student(K)\n   - C4: ¬Lecture(y) ∨ ¬Morning(y) ∨ Attends(K, y)\n\nS3: C5: ¬Lecture(y) ∨ Morning(y)\n\nNegert mål: ¬∃x [Student(x) ∧ Passes(x)] ≡ ∀x ¬Student(x) ∨ ¬Passes(x), som gir C6: ¬Student(x) ∨ ¬Passes(x)\n\nSeks klausuler. Variablene i ulike klausuler er uavhengige (standardized apart). Bare S1 trenger en Skolem-funksjon.\n\n**c) Resolusjon**\n\n| # | Foreldre | θ | Resolvent |\n|---|---|---|---|\n| 7 | C3, C6 | {x/K} | ¬Passes(K) |\n| 8 | C1, C3 | {x/K} | Lecture(F(K)) ∨ Passes(K) |\n| 9 | 8, 7 | {} | Lecture(F(K)) |\n| 10 | C2, C3 | {x/K} | ¬Attends(K, F(K)) ∨ Passes(K) |\n| 11 | 10, 7 | {} | ¬Attends(K, F(K)) |\n| 12 | C4, 11 | {y/F(K)} | ¬Lecture(F(K)) ∨ ¬Morning(F(K)) |\n| 13 | C5, 12 | {y/F(K)} | ¬Lecture(F(K)) (factoring slår sammen to like literaler) |\n| 14 | 9, 13 | {} | □ |\n\nDen tomme klausulen viser at KB ∧ ¬mål er unsatisfiable, så målet følger. Intuitivt: K går på alle morgenforelesninger, og alle forelesninger er om morgenen, så K går på alle forelesninger og består. Andre rekkefølger er like gode, så lenge hvert steg er en gyldig binær resolusjon med riktig θ.\n\nPoeng: a) 6 (S1 2, S2 2, S3 1, mål 1). b) 8 (S1 4: negasjon innover 1, F(x) 1,5, distribusjon til to klausuler 1,5. S2 2 med Skolem-konstant. S3 0,5. Negert mål 1,5). c) 6 (gyldige steg med θ 4, □ 1, negert mål brukt 1).\n\nVanlige feil: Skolem-konstant i stedet for F(x) i S1, å Skolemisere før negasjonen er flyttet inn, å glemme å negere målet før CNF, ∃x Student(x) ⇒ … i S2, samme Skolem-symbol i to setninger, og å resolvere bort to literalpar i samme steg.\n\n*Kilde: egen oppgave i P1. Kontroll: Motoren (fol-resolusjon i logikk.js) godtar alle åtte stegene i fasiten og når □. CNF-en er kontrollert med et eget skript: Skolemiseringen bevarer satisfiability, ikke ekvivalens: hver modell av S1 og S2 kan utvides med en passende tolkning av F og K til en modell av Skolem-klausulene, og hver modell av klausulene er en modell av S1 og S2 (alle tolkninger med domene på 1, 2 og 3 elementer).*"
+  },
+  {
+   "t": "Oppgave 11 (5 p): Planning",
+   "d": "a) The high-level action Go(Home, Airport) has three refinements:\n\n- R1: [Walk(Home, BusStop), Bus(BusStop, Airport)]\n- R2: [Taxi(Home, Airport)]\n- R3: [Go(Home, Station), Train(Station, Airport)]\n\nWalk, Bus, Taxi and Train are primitive actions, and Go is a high-level action. Which of R1, R2 and R3 are implementations of Go(Home, Airport)? When does a high-level plan achieve a goal from a given state? (2 pts.)\n\nb) A robot R can carry a package P1. The goal is g = At(P1, Lab) ∧ At(R, Hall). Three ground actions are given:\n\n```\na1: Drop(R, P1, Lab)    PRECOND: Holding(R, P1) ∧ At(R, Lab)   EFFECT: ¬Holding(R, P1) ∧ At(P1, Lab)\na2: Move(R, Lab, Hall)  PRECOND: At(R, Lab)                    EFFECT: ¬At(R, Lab) ∧ At(R, Hall)\na3: Move(R, Hall, Lab)  PRECOND: At(R, Hall)                   EFFECT: ¬At(R, Hall) ∧ At(R, Lab)\n```\n\nWhich of the actions are relevant for g in backward (regression) search? Give the regressed goal g′ for each relevant action. Give one reason why most current planners favor forward search. (3 pts.)",
+   "f": [
+    [
+     "a) Implementations of Go(Home, Airport)",
+     "text",
+     "{…}"
+    ],
+    [
+     "a) Explanation",
+     "area"
+    ],
+    [
+     "b) Relevant actions",
+     "text",
+     "{…}"
+    ],
+    [
+     "b) Regression of g through a2",
+     "text"
+    ],
+    [
+     "b) Regression through a1, and why forward search",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Implementations of Go(Home, Airport)": [
+      "{R1, R2}"
+     ],
+     "b) Relevant actions": [
+      "{a1, a2}"
+     ],
+     "b) Regression of g through a2": [
+      "{At(P1, Lab), At(R, Lab)}",
+      "{At(P1, Lab) ∧ At(R, Lab)}",
+      "{At(P1, Lab) ^ At(R, Lab)}",
+      "{At(P1, Lab) and At(R, Lab)}"
+     ]
+    },
+    "merk": "R1 og R2 er bare primitive handlinger; R3 inneholder HLA-en Go. a1 og a2 gir hver sin del av g uten å slette noe av g; a3 sletter At(R, Hall). g′(a2) = At(P1, Lab) ∧ At(R, Lab).",
+    "kilde": "Motoren (regresjon i plan.js: relevant a1 og a2, g′ for begge) og regresjonsformelen i 11.2.2 for hånd. a) etter definisjonen i 11.4.1."
+   },
+   "fasit": "- **a) R1 og R2 er implementations. En high-level plan når målet hvis minst én av dens implementations gjør det.**\n- **b) Relevante handlinger: a1 og a2. g′ via a2: At(P1, Lab) ∧ At(R, Lab).** Via a1: At(R, Hall) ∧ Holding(R, P1) ∧ At(R, Lab).\n\n**a)** R1 og R2 er implementations, fordi de bare består av primitive handlinger. R3 inneholder HLA-en Go(Home, Station) og må forfines videre før den gir implementations. En high-level plan achieves the goal fra en tilstand hvis **minst én** av dens implementations når målet fra den tilstanden. Agenten velger selv hvilken implementation den utfører. I nondeterministic planning må planen derimot virke for alle utfall, fordi naturen velger utfallet.\n\n**b)** En handling er relevant hvis en effekt gir en del av målet og ingen effekt sletter en annen del.\n\n- a1 er relevant: den gir At(P1, Lab) og sletter bare Holding(R, P1).\n- a2 er relevant: den gir At(R, Hall) og sletter bare At(R, Lab).\n- a3 er ikke relevant: den gir ingen del av g og sletter At(R, Hall).\n\nRegresjon: g′ = (g − ADD(a)) ∪ PRECOND(a).\n\n- Via a2: g′ = At(P1, Lab) ∧ At(R, Lab).\n- Via a1: g′ = At(R, Hall) ∧ Holding(R, P1) ∧ At(R, Lab).\n\nDet siste delmålet er en umulig tilstand, for roboten kan ikke være to steder samtidig. Backward search vet ikke det uten ekstra kunnskap og kan bruke tid på å regressere videre fra den. Bokas hovedgrunn til at de fleste planleggere i dag bruker forward search: backward search arbeider med tilstandsbeskrivelser (mengder av tilstander, ofte med variabler) i stedet for konkrete tilstander, og da er det vanskeligere å lage gode heuristikker. Begge forklaringene gir poeng.\n\nPoeng: a) 2 (implementations 1, «minst én» 1). b) 3 (relevante handlinger 1, regresjonene 1, forklaring 1).\n\n*Kilde: egen oppgave i P1. Kontroll: Motoren (regresjon i plan.js: relevant a1 og a2, g′ for begge) og regresjonsformelen i 11.2.2 for hånd. a) etter definisjonen i 11.4.1.*"
+  },
+  {
+   "t": "Oppgave 12 (5 p): Natural Language Processing",
+   "d": "a) A bigram model is trained on this corpus, where &lt;S&gt; marks the start of a sentence and no end symbol is used:\n\n```\n<S> the robot sees the box\n<S> the robot moves\n<S> a robot sees a ball\n```\n\nCompute P(&lt;S&gt; the robot sees a box) = P(the | &lt;S&gt;) · P(robot | the) · P(sees | robot) · P(a | sees) · P(box | a) with (i) maximum likelihood estimates and (ii) add-one (Laplace) smoothing, P(w | v) = (c(v w) + 1) / (c(v) + V). Here c(v) is the number of bigrams that start with v, and V is the number of word types in the corpus, not counting &lt;S&gt;. Give exact fractions. (2 pts.)\n\nb) An HMM part-of-speech tagger has the two tags N and V. The tables give the transition probabilities P(next tag | previous tag) and the emission probabilities P(word | tag). Each emission row is a distribution over the whole vocabulary; only the three words used here are shown.\n\n| previous \\ next | N | V |\n|---|---|---|\n| &lt;S&gt; | 0.7 | 0.3 |\n| N | 0.4 | 0.6 |\n| V | 0.9 | 0.1 |\n\n| tag \\ word | dogs | watch | ducks |\n|---|---|---|---|\n| N | 0.2 | 0.5 | 0.2 |\n| V | 0.1 | 0.25 | 0.05 |\n\nUse the Viterbi algorithm to find the most likely tag sequence for \"dogs watch ducks\" and its probability P(tags, words). Which sequence does a greedy tagger choose if it picks the most likely next tag word by word, and why does Viterbi find a better sequence? (3 pts.)",
+   "f": [
+    [
+     "a) P with MLE",
+     "text"
+    ],
+    [
+     "a) P with add-one",
+     "text",
+     "fraction"
+    ],
+    [
+     "b) Most likely tag sequence",
+     "text",
+     "N/V N/V N/V"
+    ],
+    [
+     "b) Its probability",
+     "text"
+    ],
+    [
+     "b) Greedy tag sequence",
+     "text"
+    ],
+    [
+     "b) Viterbi table and explanation",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) P with MLE": [
+      "0"
+     ],
+     "a) P with add-one": [
+      "1/1500",
+      "54/81000"
+     ],
+     "b) Most likely tag sequence": [
+      "N V N"
+     ],
+     "b) Its probability": [
+      "0.00378",
+      "189/50000",
+      "3.78e-3",
+      "3.78·10^-3"
+     ],
+     "b) Greedy tag sequence": [
+      "N N N"
+     ]
+    },
+    "merk": "MLE: P(box | a) = 0/2 gjør hele produktet 0. Add-one med V = 7: 3/10 · 3/10 · 3/10 · 2/9 · 1/9 = 1/1500. Viterbi: δ3(N) = 0.00378 via V; grådig N N N gir bare 0.00224. Add-one skal oppgis som eksakt brøk.",
+    "kilde": "Motoren (bigram og viterbi i sprak.js) og eget Python-skript (telling med brøker, og alle 8 taggsekvenser regnet ut) gir de samme tallene."
+   },
+   "fasit": "- **a) MLE: 0. Add-one: 1/1500 ≈ 0.000667.**\n- **b) Viterbi: N V N med P(tags, words) = 0.00378. Grådig tagger: N N N (0.00224).**\n\n**a)** Tellinger: c(&lt;S&gt;) = 3, c(the) = 3, c(robot) = 3, c(sees) = 2, c(a) = 2. Bigrammene i setningen: c(&lt;S&gt; the) = 2, c(the robot) = 2, c(robot sees) = 2, c(sees a) = 1, c(a box) = 0. V = 7 (the, robot, sees, box, moves, a, ball).\n\n- MLE: 2/3 · 2/3 · 2/3 · 1/2 · 0/2 = **0**. «a box» finnes ikke i korpuset.\n- Add-one: 3/10 · 3/10 · 3/10 · 2/9 · 1/9 = 54/81000 = **1/1500** ≈ 0.000667.\n\n**b)** Viterbi, δ<sub>t</sub>(tag) = max over forrige tag av δ<sub>t−1</sub> · P(tag fra forrige tag) · P(ord gitt tag):\n\n| | N | V |\n|---|---|---|\n| dogs | 0.7 · 0.2 = 0.14 | 0.3 · 0.1 = 0.03 |\n| watch | max(0.14 · 0.4, 0.03 · 0.9) · 0.5 = 0.028 (fra N) | max(0.14 · 0.6, 0.03 · 0.1) · 0.25 = 0.021 (fra N) |\n| ducks | max(0.028 · 0.4, 0.021 · 0.9) · 0.2 = 0.00378 (fra V) | max(0.028 · 0.6, 0.021 · 0.1) · 0.05 = 0.00084 (fra N) |\n\nStørst til slutt er δ<sub>3</sub>(N) = 0.00378. Backpointerne gir **N V N** med P(tags, words) = 0.00378.\n\nEn grådig tagger velger N for dogs (0.14 > 0.03), deretter N for watch (0.4 · 0.5 = 0.2 > 0.6 · 0.25 = 0.15) og N for ducks (0.4 · 0.2 = 0.08 > 0.6 · 0.05 = 0.03). N N N har sannsynlighet 0.14 · 0.2 · 0.08 = 0.00224. Viterbi holder på den beste veien til hver tag ved hvert ord. V for watch ser dårligere ut lokalt (0.021 < 0.028), men overgangen V → N er 0.9, så totalt blir den bedre. Dynamisk programmering gir dette i O(n · k²) i stedet for å prøve alle kⁿ sekvenser.\n\nPoeng: a) 2 (MLE 1, add-one 1). b) 3 (sekvens 1, sannsynlighet med tabell 1, grådig og forklaring 1).\n\nVanlige feil: å telle &lt;S&gt; med i V, å bruke antall forekomster av ordet i stedet for antall bigrammer som starter med det (her blir det det samme), og å stoppe ved den lokalt beste taggen.\n\n*Kilde: egen oppgave i P1. Kontroll: Motoren (bigram og viterbi i sprak.js) og eget Python-skript (telling med brøker, og alle 8 taggsekvenser regnet ut) gir de samme tallene.*"
+  },
+  {
+   "t": "Oppgave 13 (5 p): Knowledge Representation and Philosophy",
+   "d": "a) A knowledge base contains these sentences:\n\n- Bikes ⊂ Vehicles\n- EBikes ⊂ Bikes\n- MyBike ∈ EBikes\n- ∀x x ∈ Vehicles ⇒ HasWheels(x)\n- ∀x x ∈ EBikes ⇒ HasBattery(x)\n- Partition({EBikes, PedalBikes}, Bikes)\n\nWhich of these sentences are entailed by the knowledge base? Give the set and justify briefly. (2 pts.)\n\n- (i) HasWheels(MyBike)\n- (ii) MyBike ∈ Vehicles\n- (iii) ¬(MyBike ∈ PedalBikes)\n- (iv) EBikes ∈ Vehicles\n- (v) ∀x x ∈ Bikes ⇒ HasBattery(x)\n- (vi) HasWheels(EBikes)\n\nb) Describe Searle's Chinese room argument. What does Searle conclude about a computer that runs a program, and what is his own view of where understanding comes from? Give one objection to the argument. (3 pts.)",
+   "f": [
+    [
+     "a) Entailed sentences",
+     "text",
+     "{i, …}"
+    ],
+    [
+     "a) Justification",
+     "area"
+    ],
+    [
+     "b) Chinese room",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Entailed sentences": [
+      "{i, ii, iii}",
+      "{1, 2, 3}"
+     ]
+    },
+    "merk": "Medlemskap arves nedover gjennom ⊂, og Partition gir disjunkte kategorier. (iv) blander ⊂ og ∈, (v) arver oppover, og (vi) gir kategorien en egenskap som KB bare gir medlemmene.",
+    "kilde": "Håndsjekket etter 10.2.1 (subclass, member, Partition = disjoint og exhaustive decomposition); for (iv)–(vi) finnes en modell av KB der setningen er usann."
+   },
+   "fasit": "- **a) {i, ii, iii}.**\n- **b) Modellsvar under.**\n\n**a) {i, ii, iii}.**\n\n- (i) og (ii): MyBike ∈ EBikes, EBikes ⊂ Bikes og Bikes ⊂ Vehicles gir MyBike ∈ Vehicles, og da HasWheels(MyBike). Egenskapen arves nedover.\n- (iii): Partition betyr disjoint og exhaustive decomposition, så EBikes og PedalBikes har ingen felles medlemmer.\n- (iv) følger ikke: KB gir EBikes ⊂ Vehicles (delmengde), men EBikes ∈ Vehicles ville si at kategorien selv er et kjøretøy. KB sier verken det eller det motsatte.\n- (v) følger ikke: batteriet arves fra EBikes til medlemmene, ikke oppover til alle Bikes. En PedalBike uten batteri er i tråd med KB.\n- (vi) følger ikke: KB gir HasWheels bare til medlemmer av Vehicles, og KB sier ikke at kategorien EBikes er et medlem (se iv). En modell der EBikes ∉ Vehicles og HasWheels(EBikes) er usann, oppfyller hele KB.\n\nPoeng: 2 for riktig mengde med kort begrunnelse, 1 med én feil.\n\n**b) Chinese room (Searle).** En person som bare kan engelsk, sitter i et rom med en regelbok på engelsk og bunker med papir. Lapper med kinesiske tegn skyves inn, personen følger reglene og sender ut nye tegn. Utenfra ser det ut som flytende kinesisk. Searle sier at personen ikke forstår kinesisk, og at boka og papirene heller ikke gjør det. Rommet gjør det samme som en datamaskin som kjører et program, så å kjøre riktig program er ikke nok for forståelse. Argumentet er rettet mot strong AI. Searles eget syn er *biological naturalism*: mentale tilstander er emergente egenskaper skapt av fysiske prosesser i nevronene, og det er egenskapene til nevronene som teller.\n\nInnvending (én holder): boka påpeker at samme argument kan brukes mot mennesker. Hver celle i hjernen forstår ingenting, så etter samme logikk finnes det ingen forståelse hos oss heller. Den kjente *systems reply* sier at det er hele systemet (person, bok og papirer), ikke personen, som forstår. Searle svarer at personen kan pugge boka og gjøre alt i hodet, og fortsatt ikke forstå. Spørsmålet er ikke avgjort.\n\nPoeng: oppsettet 1, konklusjonen og biological naturalism 1, en innvending 1.\n\n*Kilde: egen oppgave i P1. Kontroll: Håndsjekket etter 10.2.1 (subclass, member, Partition = disjoint og exhaustive decomposition); for (iv)–(vi) finnes en modell av KB der setningen er usann. b) etter boka 28.2.1 og notatet til E21.*"
+  }
+ ],
+ "fasit": "**Fasit og sensorveiledning for Prøveeksamen 1.** Settet er laget for øving og har ingen offisiell fasit. Alle objektive svar er regnet ut to ganger: med motoren i `nettside-algo/` (Node) og med egne skript eller for hånd. Konvensjonene er kursets: BFS etter Fig. 3.9 med early goal test, DFS, UCS, greedy og A\\* som BEST-FIRST-SEARCH (Fig. 3.7) med late goal test, alpha-beta etter Fig. 6.7 og AC-3 etter Fig. 5.3.\n\n| Oppgave | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | Sum |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| Poeng | 5 | 5 | 5 | 5 | 8 | 12 | 10 | 10 | 5 | 20 | 5 | 5 | 5 | 100 |\n\n### Oppgave 1 (5 p): B\n\nRiktig beskrivelse: partially observable, multi-agent, stochastic, sequential, semidynamic, discrete, known.\n\n- **Partially observable:** motstanderens kort er skjult. Det står i alle alternativene.\n- **Multi-agent:** motspilleren prøver å vinne, så miljøet er competitive multiagent.\n- **Stochastic:** kortene stokkes og deles ut tilfeldig før hver giv, med kjente sannsynligheter. Fig. 2.6 klassifiserer poker på samme måte.\n- **Sequential:** kortene som spilles tidlig, bestemmer hva som er igjen senere.\n- **Semidynamic:** bordet endrer seg ikke mens programmet tenker, men scoren gjør det. Det er bokas definisjon, med «chess with a clock» som eksempel.\n- **Discrete:** endelig mange kort, stikk og trekk.\n- **Known:** reglene (utfallet av handlingene) er gitt. Known handler om reglene, ikke om hva agenten ser.\n\nGale alternativer:\n\n- **A** sier deterministic. Utdelingen er tilfeldig, så neste tilstand er ikke bestemt av tilstand og handling.\n- **C** sier static. Tenketid trekkes fra scoren, og da er miljøet semidynamic.\n- **D** sier episodic. Tidlige stikk påvirker senere stikk.\n- **E** sier unknown. Programmet kjenner reglene. At noe er skjult, gjør miljøet partially observable, ikke unknown.\n\nVanlige feil: å blande known med fully observable, og å overse at sjakkuret gjør miljøet semidynamic.\n\n### Oppgave 2 (5 p): A\n\n- **A er usann.** Fig. 4.5 returnerer *current* når T = 0, og det trenger ikke være den beste tilstanden som er besøkt. Å huske den beste er en vanlig utvidelse, men ikke algoritmen i boka.\n- **B er sann.** SA velger en tilfeldig etterfølger. Det er hill climbing som velger den beste.\n- **C er sann.** e^(−2d/T) = (e^(−d/T))².\n- **D er sann.** Når T er stor, er e^(ΔE/T) nær 1, så nesten alle trekk godtas, og søket blir nesten en random walk.\n- **E er sann.** Boka: senkes T sakte nok, finner algoritmen et globalt optimum med sannsynlighet som går mot 1.\n\nVanlige feil: å tro at et dårligere trekk aldri godtas ved lav T (sannsynligheten er liten, men positiv så lenge T > 0), og å blande SA med stochastic hill climbing, som bare tar oppoverbakke.\n\n### Oppgave 3 (5 p): E\n\nE har én plassvariabel per gjest med domene {1, 2, 3, 4} og én rettvariabel per gjest med domene {Fish, Pasta, Soup}. Alle kravene kan skrives som constraints:\n\n- Alldiff(Ada, Ben, Cleo, Dan): én gjest per stol.\n- Ada ∈ {1, 4} (unary constraint).\n- |Ben − Cleo| = 1.\n- For hver annen gjest X: |X − Dan| = 1 ⇒ DishX ≠ DishDan.\n- Nøyaktig én av DishAda, …, DishDan er Fish (global constraint).\n\nGale alternativer:\n\n- **A:** variablene Fish, Pasta og Soup kan bare peke på én gjest hver. Pasta kan bestilles av flere gjester eller av ingen, så mange gyldige løsninger kan ikke uttrykkes. (Stol-delen er i orden.)\n- **B:** samme feil med stoler: Pasta ∈ {1, 2, 3, 4} gir nøyaktig én stol per rett.\n- **C:** mangler plasseringen, så stol-kravene kan ikke uttrykkes.\n- **D:** hver stol får enten en gjest eller en rett, ikke begge.\n\nVanlig feil: å velge A fordi «nøyaktig én Fish» passer en variabel Fish ∈ gjester, uten å se at Pasta og Soup ikke gjør det.\n\n### Oppgave 4 (5 p): D\n\nBeste svar for radspilleren i hver kolonne: Left → Up og Middle (3), Center → Middle og Down (2), Right → Middle (2).\nBeste svar for kolonnespilleren i hver rad: Up → Left og Center (2), Middle → Center og Right (3), Down → Right (4).\n\nCellene der begge spiller et beste svar, er (Up, Left), (Middle, Center) og (Middle, Right). Det gir tre rene Nash-likevekter.\n\n- **A:** feil, det finnes tre.\n- **B:** (Middle, Center) er bare én av dem.\n- **C:** dette er det som overlever iterated elimination of **weakly** dominated strategies: Middle dominerer Up og Down svakt, og deretter er Left dominert. Svak eliminering kan fjerne likevekter, her (Up, Left). Ingen strategi er strengt dominert, så IESDS fjerner ingenting.\n- **E:** (Middle, Left) er ingen likevekt. Radspilleren får 3 og er fornøyd, men kolonnespilleren får 0 og bytter til Center eller Right (3).\n\nVanlige feil: å sjekke bare den ene spilleren, og å tro at svak dominans bevarer alle likevekter.\n\n### Oppgave 5 (8 p)\n\n| | Expansion order | Path | Cost |\n|---|---|---|---|\n| a) BFS | S, A, B, (G) | S → B → G | 13 |\n| b) DFS | S, A, D, H, (G) | S → A → D → H → G | 12 |\n| c) UCS | S, A, C, E, B, F, D, (G) | S → A → E → F → G | 8 |\n| d) UCS med early goal test | | S → B → G | 13 |\n\n- **BFS:** S genererer A, B og C. A genererer D og E. B genererer G, og G er mål når den genereres, så søket stopper. C ekspanderes aldri.\n- **DFS (f = −depth):** A, B og C har dybde 1, og A velges alfabetisk. A gir D og E på dybde 2, og D velges. D gir H, og H gir G på dybde 4. G tas ut og er mål.\n- **UCS:** etter S er frontier A 1, C 3, B 4. A gir E 3 og D 7. C og E har g = 3, og C tas først (alfabetisk). C gir F 5. E gir F via E med g = 4 < 5, og den nye noden erstatter den gamle. B gir G 13. F (4) gir G via F med g = 8 < 13, som erstatter den gamle. D (7) ekspanderes før G (8). G tas ut med g = 8.\n- **d)** Med early goal test stopper UCS første gang G genereres, og det skjer fra B med g = 13. Den første veien til målet som genereres, er ikke nødvendigvis den billigste. Derfor tester UCS (og A\\*) målet når noden tas ut.\n\nPoeng: a) 2 (rekkefølge 1, sti og kostnad 1). b) 2 (samme fordeling). c) 3 (rekkefølge 1,5, sti og kostnad 1,5). d) 1.\n\nVanlige feil: BFS som tester målet når noden tas ut, og da får S, A, B, C, D, E, (G). DFS uten alfabetisk tie-break. UCS som ikke oppdaterer F via E, eller som stopper når G legges i frontier.\n\n### Oppgave 6 (12 p)\n\nh\\* (billigste vei til G): S 6, A 5, B 6, C 4, D 2, E 3, G 0.\n\n**a) Ja, admissible.** h(n) ≤ h\\*(n) for alle noder: 4 ≤ 6, 5 ≤ 5, 2 ≤ 6, 1 ≤ 4, 2 ≤ 2, 3 ≤ 3, 0 ≤ 0.\n\n**b) Nei, ikke consistent.** Kanten A → C: h(A) = 5 > c(A, C) + h(C) = 1 + 1 = 2. Alle de andre kantene oppfyller h(n) ≤ c(n, n′) + h(n′).\n\n**c) Greedy:** S, B, C, (G). Sti S → B → C → G, kostnad 10. Greedy ser bare på h og tar C → G (h = 0) selv om kanten koster 6.\n\n**d) A\\*:**\n\n| Tas ut (f = g + h) | Nye eller oppdaterte noder |\n|---|---|\n| S (0 + 4 = 4) | A 1 + 5 = 6, B 2 + 2 = 4 |\n| B (4) | C 4 + 1 = 5, E 6 + 3 = 9 |\n| C (5) | D 6 + 2 = 8, G 10 + 0 = 10 |\n| A (6) | C 2 + 1 = 3: billigere vei, legges inn igjen selv om C er ekspandert |\n| C (3) | D 4 + 2 = 6 erstatter D 8, G 8 erstatter G 10 |\n| D (6) | G 6 erstatter G 8 |\n| G (6) | mål |\n\nExpansion order S, B, C, A, C, D, (G). Sti S → A → C → D → G, kostnad 6, som er optimal.\n\nC ekspanderes to ganger fordi h ikke er consistent: C nås først via B med g = 4, og den billigere veien via A (g = 2) blir funnet etterpå, fordi den høye h(A) = 5 holder A tilbake. Med consistent h er g optimal første gang en node ekspanderes.\n\nUten gjenåpning blir C fra A forkastet. Da blir rekkefølgen S, B, C, A, D, (G), med sti S → B → C → D → G og kostnad 8, som ikke er optimal. Admissible h gir optimal A\\* i tree-like search og i graph search som åpner noder på nytt, men graph search som aldri åpner på nytt trenger consistent h.\n\nPoeng: a) 2 (svar 1, begrunnelse med h\\* 1). b) 2 (svar og kant). c) 2. d) 6 (rekkefølge 2, sti og kostnad 1, C to ganger med forklaring 1,5, variant uten gjenåpning 1,5).\n\nVanlige feil: å sjekke consistency bare langs den optimale stien, å stoppe når G legges i frontier med f = 10, og å glemme at C må åpnes igjen.\n\n### Oppgave 7 (10 p)\n\n**a)** Node consistency fjerner verdier som bryter unary constraints: D(A) = {1}, D(B) = {1, 2}, D(E) = {2, 3}. D(C) = D(D) = {1, 2, 3}.\n\n**b)** AC-3. Naboer: A: B, C. B: A, C, D. C: A, B, E. D: B, E. E: C, D.\n\n| # | Bue | Fjernet | Lagt inn | Kommentar |\n|---|---|---|---|---|\n| 1 | (A, B) | – | – | 1 har støtte i 2 |\n| 2 | (A, C) | – | – | |\n| 3 | (B, A) | 1 fra B | – | (C, B) og (D, B) står allerede i køen. B = {2} |\n| 4 | (B, C) | – | – | |\n| 5 | (B, D) | – | – | |\n| 6 | (C, A) | 1 fra C | (B, C) | (E, C) står allerede i køen. C = {2, 3} |\n| 7 | (C, B) | 2 fra C | (A, C) | (E, C) står allerede i køen. C = {3} |\n| 8 | (C, E) | – | – | 3 har støtte i 2 |\n| 9 | (D, B) | 2 fra D | – | (E, D) står allerede i køen. D = {1, 3} |\n| 10 | (D, E) | – | – | |\n| 11 | (E, C) | 3 fra E | (D, E) | E = {2} |\n| 12 | (E, D) | – | – | |\n| 13 | (B, C) | – | – | |\n| 14 | (A, C) | – | – | |\n| 15 | (D, E) | – | – | Køen er tom, AC-3 returnerer true |\n\n**c)** A = {1}, B = {2}, C = {3}, D = {1, 3}, E = {2}. AC-3 har ikke løst problemet, fordi D fortsatt har to verdier. Begge fungerer (D ≠ B = 2 og D ≠ E = 2), så CSP-en har 2 løsninger. AC-3 gjør problemet arc consistent, men det betyr ikke at det er løst.\n\nPoeng: a) 1. b) 7 (de fem fjerningene i riktig rekkefølge 4, riktige buer lagt inn og ingen duplikater 2, tom kø og true 1). c) 2 (domener 1, ikke løst og 2 løsninger 1).\n\nVanlige feil: å legge inn (X<sub>j</sub>, X<sub>i</sub>) også, å legge inn buer som allerede står i køen, å revidere i feil retning (REVISE(X<sub>i</sub>, X<sub>j</sub>) fjerner bare fra X<sub>i</sub>), og å tro at arc consistency betyr at problemet er løst.\n\n### Oppgave 8 (10 p)\n\n**a)** C = 7, F = 9, B = 7. L = 6, J = 6, O = 8, I = 6. S = 8, V = 11, R = 8. A = max(7, 6, 8) = 8, så MAX velger R.\n\n**b)** Alpha-beta, venstre mot høyre:\n\n- C: D = 4, E = 7, så C = 7. I B: v = 7, β = 7.\n- F (α = −∞, β = 7): G = 9 gir v = 9 ≥ β = 7. **Kutt, H evalueres ikke.** F returnerer 9. B = 7. I A: v = 7, α = 7.\n- I (α = 7, β = ∞) og J (α = 7, β = ∞): K = 2 gir v = 2. Ingen kutt, fordi β = ∞.\n- L (MIN, α = 7, β = ∞): M = 6 gir v = 6 ≤ α = 7. **Kutt, N evalueres ikke.** α = 7 kommer fra roten, tre nivåer opp (deep cutoff). L returnerer 6, og J = 6.\n- I: v = 6 ≤ α = 7. **Kutt, O besøkes ikke, så P og Q evalueres ikke.** I returnerer 6.\n- R (α = 7, β = ∞) og S: T = 8 gir v = 8 og α = 8. U = 3, så S = 8. I R: v = 8, β = 8.\n- V (α = 7, β = 8): W = 5, og X = 11 gir v = 11 ≥ β = 8. **Kutt, Y evalueres ikke.** V returnerer 11. R = min(8, 11) = 8. A = 8.\n\nBlader som aldri evalueres: H, N, P, Q, Y. 9 av 14 blader evalueres (D, E, G, K, M, T, U, W, X). Verdiene F ≥ 9, L ≤ 6, J ≤ 6, I ≤ 6 og V ≥ 11 er grenser, ikke eksakte verdier. Rotverdien 8 er den samme som med minimax.\n\nPoeng: a) 4 (verdiene 3, trekket 1). b) 6 (1,5 per kutt med riktig v og α eller β). Trekk for kutt som ikke skjer.\n\nVanlige feil: å glemme at α = 7 fra roten sendes ned til L, å tro at K = 2 gir kutt i J, og å kutte i V før X er sett.\n\n### Oppgave 9 (5 p)\n\n**a)** Standardize apart: setning 5 blir ∀w Likes(w, Advisor(Ola)).\n\nGMP med p₁ = Teaches(x, y), p₂ = Takes(z, y), p₃ = Likes(z, Advisor(x)), q = Recommends(z, x) og faktaene p₁′ = Teaches(Ola, AI), p₂′ = Takes(Kari, AI), p₃′ = Likes(w, Advisor(Ola)).\n\nθ = {x/Ola, y/AI, z/Kari, w/Kari}.\n\nSUBST(θ, pᵢ′) = SUBST(θ, pᵢ) for alle i: Teaches(Ola, AI), Takes(Kari, AI) og Likes(Kari, Advisor(Ola)). Konklusjonen er SUBST(θ, q) = Recommends(Kari, Ola).\n\nUten standardizing apart blir x i setning 5 og x i regelen samme variabel. Teaches gir x/Ola og Takes gir z/Kari. Da må Likes(Kari, Advisor(Ola)) unifiseres med Likes(Ola, Advisor(Ola)), og Kari ≠ Ola gir failure. Variablene er bundet av hver sin ∀ og er uavhengige, så de skal ha forskjellige navn.\n\n**b) Nei.** Den eneste regelen som konkluderer Recommends, trenger Teaches(Ola, y) ∧ Takes(Per, y). Det eneste Teaches-faktumet gir y = AI, men Per tar Logic. KB består av definite clauses, og forward chaining, som er komplett for definite clauses, når et fixed point der Recommends(Kari, Ola) er det eneste nye faktumet. Derfor er Recommends(Per, Ola) ikke entailed. Det betyr ikke at KB entails ¬Recommends(Per, Ola). Uten closed-world assumption vet vi ingenting om det.\n\nPoeng: a) 3 (θ 1,5, SUBST og konklusjon 0,5, standardizing apart 1). b) 2 (svar 0,5, begrunnelse 1,5).\n\n### Oppgave 10 (20 p)\n\n**a) FOL**\n\n- S1: ∀x [Student(x) ∧ ∀y (Lecture(y) ⇒ Attends(x, y))] ⇒ Passes(x)\n- S2: ∃x Student(x) ∧ ∀y [(Lecture(y) ∧ Morning(y)) ⇒ Attends(x, y)]\n- S3: ∀y Lecture(y) ⇒ Morning(y)\n- Mål: ∃x Student(x) ∧ Passes(x)\n\nI S1 må ∀y stå inne i premisset. ∀x ∀y [Student(x) ∧ (Lecture(y) ⇒ Attends(x, y))] ⇒ Passes(x) betyr noe annet: da holder det at én y oppfyller parentesen, og finnes det noe som ikke er en forelesning, består alle studenter. I S2 hører ∃ sammen med ∧, ikke ⇒.\n\n**b) CNF**\n\nS1:\n\n1. Eliminate implications (indre, så ytre): ∀x ¬[Student(x) ∧ ∀y (¬Lecture(y) ∨ Attends(x, y))] ∨ Passes(x)\n2. Move ¬ inwards (De Morgan, ¬∀y = ∃y ¬): ∀x [¬Student(x) ∨ ∃y (Lecture(y) ∧ ¬Attends(x, y))] ∨ Passes(x)\n3. Standardize variables: allerede unike.\n4. Skolemize: ∃y står inne i ∀x, så y erstattes av Skolem-funksjonen F(x): ∀x ¬Student(x) ∨ (Lecture(F(x)) ∧ ¬Attends(x, F(x))) ∨ Passes(x)\n5. Drop universal quantifiers: ¬Student(x) ∨ (Lecture(F(x)) ∧ ¬Attends(x, F(x))) ∨ Passes(x)\n6. Distribute ∨ over ∧:\n   - C1: ¬Student(x) ∨ Lecture(F(x)) ∨ Passes(x)\n   - C2: ¬Student(x) ∨ ¬Attends(x, F(x)) ∨ Passes(x)\n\nS2:\n\n1. Eliminate implications: ∃x Student(x) ∧ ∀y [¬(Lecture(y) ∧ Morning(y)) ∨ Attends(x, y)]\n2. Move ¬ inwards: ∃x Student(x) ∧ ∀y [¬Lecture(y) ∨ ¬Morning(y) ∨ Attends(x, y)]\n3. Skolemize: ∃x står ikke inne i noen ∀, så x erstattes av Skolem-konstanten K.\n4. Drop ∀ og del opp ∧:\n   - C3: Student(K)\n   - C4: ¬Lecture(y) ∨ ¬Morning(y) ∨ Attends(K, y)\n\nS3: C5: ¬Lecture(y) ∨ Morning(y)\n\nNegert mål: ¬∃x [Student(x) ∧ Passes(x)] ≡ ∀x ¬Student(x) ∨ ¬Passes(x), som gir C6: ¬Student(x) ∨ ¬Passes(x)\n\nSeks klausuler. Variablene i ulike klausuler er uavhengige (standardized apart). Bare S1 trenger en Skolem-funksjon.\n\n**c) Resolusjon**\n\n| # | Foreldre | θ | Resolvent |\n|---|---|---|---|\n| 7 | C3, C6 | {x/K} | ¬Passes(K) |\n| 8 | C1, C3 | {x/K} | Lecture(F(K)) ∨ Passes(K) |\n| 9 | 8, 7 | {} | Lecture(F(K)) |\n| 10 | C2, C3 | {x/K} | ¬Attends(K, F(K)) ∨ Passes(K) |\n| 11 | 10, 7 | {} | ¬Attends(K, F(K)) |\n| 12 | C4, 11 | {y/F(K)} | ¬Lecture(F(K)) ∨ ¬Morning(F(K)) |\n| 13 | C5, 12 | {y/F(K)} | ¬Lecture(F(K)) (factoring slår sammen to like literaler) |\n| 14 | 9, 13 | {} | □ |\n\nDen tomme klausulen viser at KB ∧ ¬mål er unsatisfiable, så målet følger. Intuitivt: K går på alle morgenforelesninger, og alle forelesninger er om morgenen, så K går på alle forelesninger og består. Andre rekkefølger er like gode, så lenge hvert steg er en gyldig binær resolusjon med riktig θ.\n\nPoeng: a) 6 (S1 2, S2 2, S3 1, mål 1). b) 8 (S1 4: negasjon innover 1, F(x) 1,5, distribusjon til to klausuler 1,5. S2 2 med Skolem-konstant. S3 0,5. Negert mål 1,5). c) 6 (gyldige steg med θ 4, □ 1, negert mål brukt 1).\n\nVanlige feil: Skolem-konstant i stedet for F(x) i S1, å Skolemisere før negasjonen er flyttet inn, å glemme å negere målet før CNF, ∃x Student(x) ⇒ … i S2, samme Skolem-symbol i to setninger, og å resolvere bort to literalpar i samme steg.\n\n### Oppgave 11 (5 p)\n\n**a)** R1 og R2 er implementations, fordi de bare består av primitive handlinger. R3 inneholder HLA-en Go(Home, Station) og må forfines videre før den gir implementations. En high-level plan achieves the goal fra en tilstand hvis **minst én** av dens implementations når målet fra den tilstanden. Agenten velger selv hvilken implementation den utfører. I nondeterministic planning må planen derimot virke for alle utfall, fordi naturen velger utfallet.\n\n**b)** En handling er relevant hvis en effekt gir en del av målet og ingen effekt sletter en annen del.\n\n- a1 er relevant: den gir At(P1, Lab) og sletter bare Holding(R, P1).\n- a2 er relevant: den gir At(R, Hall) og sletter bare At(R, Lab).\n- a3 er ikke relevant: den gir ingen del av g og sletter At(R, Hall).\n\nRegresjon: g′ = (g − ADD(a)) ∪ PRECOND(a).\n\n- Via a2: g′ = At(P1, Lab) ∧ At(R, Lab).\n- Via a1: g′ = At(R, Hall) ∧ Holding(R, P1) ∧ At(R, Lab).\n\nDet siste delmålet er en umulig tilstand, for roboten kan ikke være to steder samtidig. Backward search vet ikke det uten ekstra kunnskap og kan bruke tid på å regressere videre fra den. Bokas hovedgrunn til at de fleste planleggere i dag bruker forward search: backward search arbeider med tilstandsbeskrivelser (mengder av tilstander, ofte med variabler) i stedet for konkrete tilstander, og da er det vanskeligere å lage gode heuristikker. Begge forklaringene gir poeng.\n\nPoeng: a) 2 (implementations 1, «minst én» 1). b) 3 (relevante handlinger 1, regresjonene 1, forklaring 1).\n\n### Oppgave 12 (5 p)\n\n**a)** Tellinger: c(&lt;S&gt;) = 3, c(the) = 3, c(robot) = 3, c(sees) = 2, c(a) = 2. Bigrammene i setningen: c(&lt;S&gt; the) = 2, c(the robot) = 2, c(robot sees) = 2, c(sees a) = 1, c(a box) = 0. V = 7 (the, robot, sees, box, moves, a, ball).\n\n- MLE: 2/3 · 2/3 · 2/3 · 1/2 · 0/2 = **0**. «a box» finnes ikke i korpuset.\n- Add-one: 3/10 · 3/10 · 3/10 · 2/9 · 1/9 = 54/81000 = **1/1500** ≈ 0.000667.\n\n**b)** Viterbi, δ<sub>t</sub>(tag) = max over forrige tag av δ<sub>t−1</sub> · P(tag fra forrige tag) · P(ord gitt tag):\n\n| | N | V |\n|---|---|---|\n| dogs | 0.7 · 0.2 = 0.14 | 0.3 · 0.1 = 0.03 |\n| watch | max(0.14 · 0.4, 0.03 · 0.9) · 0.5 = 0.028 (fra N) | max(0.14 · 0.6, 0.03 · 0.1) · 0.25 = 0.021 (fra N) |\n| ducks | max(0.028 · 0.4, 0.021 · 0.9) · 0.2 = 0.00378 (fra V) | max(0.028 · 0.6, 0.021 · 0.1) · 0.05 = 0.00084 (fra N) |\n\nStørst til slutt er δ<sub>3</sub>(N) = 0.00378. Backpointerne gir **N V N** med P(tags, words) = 0.00378.\n\nEn grådig tagger velger N for dogs (0.14 > 0.03), deretter N for watch (0.4 · 0.5 = 0.2 > 0.6 · 0.25 = 0.15) og N for ducks (0.4 · 0.2 = 0.08 > 0.6 · 0.05 = 0.03). N N N har sannsynlighet 0.14 · 0.2 · 0.08 = 0.00224. Viterbi holder på den beste veien til hver tag ved hvert ord. V for watch ser dårligere ut lokalt (0.021 < 0.028), men overgangen V → N er 0.9, så totalt blir den bedre. Dynamisk programmering gir dette i O(n · k²) i stedet for å prøve alle kⁿ sekvenser.\n\nPoeng: a) 2 (MLE 1, add-one 1). b) 3 (sekvens 1, sannsynlighet med tabell 1, grådig og forklaring 1).\n\nVanlige feil: å telle &lt;S&gt; med i V, å bruke antall forekomster av ordet i stedet for antall bigrammer som starter med det (her blir det det samme), og å stoppe ved den lokalt beste taggen.\n\n### Oppgave 13 (5 p)\n\n**a) {i, ii, iii}.**\n\n- (i) og (ii): MyBike ∈ EBikes, EBikes ⊂ Bikes og Bikes ⊂ Vehicles gir MyBike ∈ Vehicles, og da HasWheels(MyBike). Egenskapen arves nedover.\n- (iii): Partition betyr disjoint og exhaustive decomposition, så EBikes og PedalBikes har ingen felles medlemmer.\n- (iv) følger ikke: KB gir EBikes ⊂ Vehicles (delmengde), men EBikes ∈ Vehicles ville si at kategorien selv er et kjøretøy. KB sier verken det eller det motsatte.\n- (v) følger ikke: batteriet arves fra EBikes til medlemmene, ikke oppover til alle Bikes. En PedalBike uten batteri er i tråd med KB.\n- (vi) følger ikke: KB gir HasWheels bare til medlemmer av Vehicles, og KB sier ikke at kategorien EBikes er et medlem (se iv). En modell der EBikes ∉ Vehicles og HasWheels(EBikes) er usann, oppfyller hele KB.\n\nPoeng: 2 for riktig mengde med kort begrunnelse, 1 med én feil.\n\n**b) Chinese room (Searle).** En person som bare kan engelsk, sitter i et rom med en regelbok på engelsk og bunker med papir. Lapper med kinesiske tegn skyves inn, personen følger reglene og sender ut nye tegn. Utenfra ser det ut som flytende kinesisk. Searle sier at personen ikke forstår kinesisk, og at boka og papirene heller ikke gjør det. Rommet gjør det samme som en datamaskin som kjører et program, så å kjøre riktig program er ikke nok for forståelse. Argumentet er rettet mot strong AI. Searles eget syn er *biological naturalism*: mentale tilstander er emergente egenskaper skapt av fysiske prosesser i nevronene, og det er egenskapene til nevronene som teller.\n\nInnvending (én holder): boka påpeker at samme argument kan brukes mot mennesker. Hver celle i hjernen forstår ingenting, så etter samme logikk finnes det ingen forståelse hos oss heller. Den kjente *systems reply* sier at det er hele systemet (person, bok og papirer), ikke personen, som forstår. Searle svarer at personen kan pugge boka og gjøre alt i hodet, og fortsatt ikke forstå. Spørsmålet er ikke avgjort.\n\nPoeng: oppsettet 1, konklusjonen og biological naturalism 1, en innvending 1.\n"
+}

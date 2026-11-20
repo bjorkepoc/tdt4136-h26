@@ -1,0 +1,588 @@
+1
+00:00:00,450 --> 00:00:05,970
+Alle som elsker alle dyr, blir elsket av noen. Alle som dreper et dyr, blir ikke
+
+2
+00:00:05,970 --> 00:00:12,050
+elsket av noen. Jack elsker alle dyr. Enten Jack eller Curiosity drepte katten
+
+3
+00:00:12,050 --> 00:00:18,490
+Tuna. Var det Curiosity? Én regel, brukt sju ganger, gir svaret. Først må
+
+4
+00:00:18,490 --> 00:00:23,330
+setningene skrives om, og der ryker poengene. Én konstant der det skulle stått
+
+5
+00:00:23,330 --> 00:00:25,490
+en funksjon, og beviset faller.
+
+6
+00:00:26,850 --> 00:00:31,650
+Etterpå kan du gjøre en setning i førsteordens logikk om til klausuler, finne
+
+7
+00:00:31,650 --> 00:00:37,730
+theta i hvert steg, og skrive beviset slik fasiten vil ha det. Seksjon ni punkt
+
+8
+00:00:37,730 --> 00:00:45,810
+fem. Fire stopp: hvorfor motsigelse, CNF i sju steg, unification og regelen, og
+
+9
+00:00:45,810 --> 00:00:51,570
+to fulle bevis. Til slutt eksamen tjue tjuefem, oppgave ni og ti.
+
+10
+00:00:52,850 --> 00:00:57,170
+Først: hvorfor bevise det motsatte av det du vil vise?
+
+11
+00:00:58,950 --> 00:01:06,470
+Tenk på alle mulige verdener. KB er sann i noen av dem. KB medfører alfa betyr:
+
+12
+00:01:06,470 --> 00:01:12,950
+alfa er sann i alle disse. Legg til ikke-alfa. Nå finnes ingen verden der alt er
+
+13
+00:01:12,950 --> 00:01:21,190
+sant. Og omvendt: KB medfører alfa nøyaktig når KB og ikke-alfa er umulig sammen.
+
+14
+00:01:21,190 --> 00:01:25,430
+Som en detektiv: anta det motsatte, og vis at historien faller.
+
+15
+00:01:26,783 --> 00:01:33,023
+Resolusjon gjør én ting: tar to klausuler med motsatte literaler og stryker dem.
+
+16
+00:01:33,023 --> 00:01:38,703
+Står to enkeltliteraler mot hverandre, blir ingenting igjen: den tomme klausulen.
+
+17
+00:01:38,703 --> 00:01:44,223
+Regelen tar bare klausuler, så alt må på CNF. I førsteordens logikk må også
+
+18
+00:01:44,223 --> 00:01:49,423
+kvantorene bort, og variablene passe. Medfører KB alfa, når du den tomme
+
+19
+00:01:49,423 --> 00:01:55,503
+klausulen etter endelig mange steg. Ellers kan søket gå evig: semidecidable.
+
+20
+00:01:55,503 --> 00:01:59,823
+Beviset, ni punkt fem punkt fire, er ikke pensum.
+
+21
+00:02:01,117 --> 00:02:10,717
+Din tur. Du vil vise at Curiosity drepte katten. Hva legger du til?
+
+22
+00:02:10,717 --> 00:02:16,797
+B: ikke-Kills av Curiosity og Tuna. Legger du til selve målet, beviser du
+
+23
+00:02:16,797 --> 00:02:21,037
+ingenting. Negér målet, og let etter den tomme klausulen.
+
+24
+00:02:22,417 --> 00:02:26,657
+Så hvordan får du kvantorer og piler over på klausulform?
+
+25
+00:02:28,417 --> 00:02:34,897
+Fra proposisjonslogikken kjenner du fire steg: fjern dobbelpil, fjern pil, flytt
+
+26
+00:02:34,897 --> 00:02:41,377
+negasjonen inn, distribuer eller over og. Før det siste kommer tre nye:
+
+27
+00:02:41,377 --> 00:02:48,177
+standardiser variabler, skolemiser, og dropp allkvantorene. Sju steg. Boka slår
+
+28
+00:02:48,177 --> 00:02:52,417
+de to første sammen og teller seks. Vi følger forelesningen.
+
+29
+00:02:53,783 --> 00:02:59,943
+Setningen: alle som elsker alle dyr, blir elsket av noen. Steg én: ingen
+
+30
+00:02:59,943 --> 00:03:06,863
+dobbelpil. Steg to: pil blir ikke-venstre eller høyre. To ganger. Steg tre:
+
+31
+00:03:06,863 --> 00:03:14,183
+negasjonen går innover. Se på kvantoren: ikke-for-alle-y blir det-finnes-en-y.
+
+32
+00:03:14,183 --> 00:03:19,943
+Så De Morgan, og dobbel negasjon forsvinner. Nå står det: enten finnes et dyr x
+
+33
+00:03:19,943 --> 00:03:23,303
+ikke elsker, eller så elsker noen x.
+
+34
+00:03:24,683 --> 00:03:32,043
+Steg fire: to kvantorer heter y, men betyr ulike ting. Den andre blir z. Steg
+
+35
+00:03:32,043 --> 00:03:38,683
+fem: hver eksistenskvantor får et nytt navn. Dyret x ikke elsker, avhenger av x:
+
+36
+00:03:38,683 --> 00:03:46,163
+F av x. Den som elsker x: G av x. Steg seks: resten er allkvantifisert, så dropp
+
+37
+00:03:46,163 --> 00:03:52,203
+kvantoren. Steg sju: distribuer eller over og. Ut kommer to klausuler.
+
+38
+00:03:53,583 --> 00:03:59,983
+Din tur. Alle som dreper et dyr, blir ikke elsket av noen. Det-finnes-en-z står
+
+39
+00:03:59,983 --> 00:04:07,503
+foran pila. Trenger z en Skolem-funksjon?
+
+40
+00:04:07,503 --> 00:04:13,530
+Nei. Pila gir en negasjon, og ikke-det-finnes blir for-alle. Én klausul.
+
+41
+00:04:13,530 --> 00:04:16,783
+Skolemiser først når negasjonene står helt inne.
+
+42
+00:04:18,083 --> 00:04:21,843
+Men hvorfor F av x, og ikke bare en ny konstant?
+
+43
+00:04:23,617 --> 00:04:30,977
+Enklere, fra forelesningen: alle elsker noen. Bytter du y med en konstant, C én,
+
+44
+00:04:30,977 --> 00:04:37,137
+sier du at alle elsker den samme. Mye sterkere. Med en funksjon, F av x, får
+
+45
+00:04:37,137 --> 00:04:43,137
+hver x sitt eget svar. F er en tabell som slår opp hvem hver person elsker.
+
+46
+00:04:44,417 --> 00:04:49,457
+Regelen: Skolem-funksjonen tar alle allkvantorene rundt eksistensen som
+
+47
+00:04:49,457 --> 00:04:57,377
+argumenter. Her står y og z inne i for-alle-x: F av x og G av x. Med konstanter
+
+48
+00:04:57,377 --> 00:05:02,817
+får du bokas skrekkeksempel: alle mislikte samme dyr A, eller ble elsket av
+
+49
+00:05:02,817 --> 00:05:08,737
+samme B. Står eksistensen utenfor alle allkvantorer, holder en konstant. Det
+
+50
+00:05:08,737 --> 00:05:10,817
+kjenner du fra E femten.
+
+51
+00:05:12,183 --> 00:05:18,023
+Din tur, eksamen tjue tjuefire, oppgave seksten, fem poeng. Hvilken
+
+52
+00:05:18,023 --> 00:05:25,343
+skolemisering er riktig?
+
+53
+00:05:25,343 --> 00:05:33,423
+D. Samme y får samme funksjon, F én, begge steder, og z får en ny, F to. A
+
+54
+00:05:33,423 --> 00:05:38,783
+bruker F én for både y og z. B og C deler opp y.
+
+55
+00:05:40,150 --> 00:05:44,550
+Hvordan vet regelen at to literaler med variabler er motsatte nok?
+
+56
+00:05:46,317 --> 00:05:52,557
+Unification finner en substitusjon, theta, som gjør to uttrykk like. Side om
+
+57
+00:05:52,557 --> 00:06:00,757
+side. John mot y: y blir John. Så x mot Mother av y, altså Mother av John: x
+
+58
+00:06:00,757 --> 00:06:06,877
+blir Mother av John. Bind aldri mer enn du må: det gir most general unifier,
+
+59
+00:06:06,877 --> 00:06:07,997
+MGU.
+
+60
+00:06:09,283 --> 00:06:16,683
+To ting kan gå galt. Knows av John og x mot Knows av x og Elizabeth feiler: x
+
+61
+00:06:16,683 --> 00:06:22,363
+kan ikke være både John og Elizabeth. Men de to x-ene er jo helt uavhengige!
+
+62
+00:06:22,363 --> 00:06:30,083
+Nettopp. Gi den ene et nytt navn: standardizing apart. Og S av x mot S av S av x:
+
+63
+00:06:30,083 --> 00:06:35,283
+da måtte x inneholde seg selv. Det fanger occur check, som bare står i boka.
+
+64
+00:06:36,650 --> 00:06:42,810
+Nå regelen. To klausuler, standardisert fra hverandre. En literal i den ene
+
+65
+00:06:42,810 --> 00:06:47,930
+unifiserer med det motsatte av en i den andre. Så brukes theta på resten, og
+
+66
+00:06:47,930 --> 00:06:54,890
+restene slås sammen. Fra forelesningen: Animal av F av x mot ikke-Animal av F av
+
+67
+00:06:54,890 --> 00:07:01,570
+Jack. x blir Jack, og samme literal kommer to ganger. Slå dem sammen: factoring.
+
+68
+00:07:01,570 --> 00:07:06,490
+I førsteordens logikk holder det at literalene unifiserer. Det heter binary
+
+69
+00:07:06,490 --> 00:07:09,610
+resolution, og med factoring er den komplett.
+
+70
+00:07:10,983 --> 00:07:17,103
+Din tur, eksamen tjue tjuefire, oppgave sytten. Hvilken substitusjon unifiserer
+
+71
+00:07:17,103 --> 00:07:24,223
+disse?
+
+72
+00:07:24,223 --> 00:07:33,703
+A. Først: x blir F av y og A. Så: u blir z. Til slutt må F av y og A passe med F
+
+73
+00:07:33,703 --> 00:07:37,703
+av B og z: y blir B, og z blir A.
+
+74
+00:07:39,083 --> 00:07:43,163
+Verktøyene er klare. Drepte Curiosity katten?
+
+75
+00:07:44,917 --> 00:07:50,997
+Setningene fra boka og forelesningen. At katter er dyr, F, legger boka til som
+
+76
+00:07:50,997 --> 00:07:58,117
+bakgrunnskunnskap. Nederst: det negerte målet. Etter sju steg: åtte klausuler. A
+
+77
+00:07:58,117 --> 00:08:05,317
+ga to, med F og G. B ga én, uten Skolem. Nå leter vi etter motsatte literaler.
+
+78
+00:08:06,617 --> 00:08:14,377
+Første par: katter er dyr, og Tuna er en katt. x blir Tuna: Animal av Tuna.
+
+79
+00:08:14,377 --> 00:08:21,377
+Andre par: Jack eller Curiosity, og ikke Curiosity. Ingen variabler, tom theta:
+
+80
+00:08:21,377 --> 00:08:28,697
+Kills av Jack og Tuna. Tredje par er lurere. Ikke-Loves av x og F av x mot Loves
+
+81
+00:08:28,697 --> 00:08:35,337
+av Jack og x. Da må x være både Jack og F av Jack. Men de deler bare navnet x.
+
+82
+00:08:35,337 --> 00:08:40,537
+Gi den ene u. Da går det: x blir Jack, og u blir F av Jack.
+
+83
+00:08:41,917 --> 00:08:48,557
+Tuna er et dyr, så den som dreper Tuna, blir ikke elsket av noen. z blir Tuna.
+
+84
+00:08:48,557 --> 00:08:56,477
+Din tur: hva gir neste par, og med hvilken theta?
+
+85
+00:08:56,477 --> 00:09:00,317
+x blir Jack, og vi får: ingen elsker Jack.
+
+86
+00:09:01,683 --> 00:09:08,563
+På høyre side: Jack elsker alle dyr, så noen elsker ham. x blir Jack, og samme
+
+87
+00:09:08,563 --> 00:09:14,083
+literal kommer to ganger. Factoring gjør den til én. Til slutt: ingen elsker
+
+88
+00:09:14,083 --> 00:09:20,563
+Jack, men G av Jack gjør det. y blir G av Jack, og ingenting er igjen. Curiosity
+
+89
+00:09:20,563 --> 00:09:22,003
+drepte katten.
+
+90
+00:09:23,383 --> 00:09:26,343
+Hva skjer når målet selv har kvantorer?
+
+91
+00:09:28,117 --> 00:09:34,117
+Fra forelesning tretten: alle hester er dyr. Vis at hodet til en hest er hodet
+
+92
+00:09:34,117 --> 00:09:40,037
+til et dyr. Negér hele målet, med kvantorene. Fjern pila, og flytt negasjonen
+
+93
+00:09:40,037 --> 00:09:46,997
+inn: for-alle-x blir det-finnes-en-x. Konstanter? Du sa jo funksjon! Bare når
+
+94
+00:09:46,997 --> 00:09:53,877
+eksistensen står inne i en allkvantor. x og y står ytterst: C én og C to. z blir
+
+95
+00:09:53,877 --> 00:09:54,917
+en variabel.
+
+96
+00:09:56,217 --> 00:10:04,457
+Linje sju: hester er dyr, og C to er en hest, så x blir C to. Din tur: hvilke to
+
+97
+00:10:04,457 --> 00:10:10,937
+linjer nå, og hvilken theta?
+
+98
+00:10:10,937 --> 00:10:18,017
+Seks og sju, z blir C to. Til slutt fire og åtte med tom theta. Den tomme
+
+99
+00:10:18,017 --> 00:10:19,017
+klausulen.
+
+100
+00:10:20,317 --> 00:10:27,277
+Rekkefølgen er en felle. Si at KB bare vet P av A, og du vil vise for-alle-x P
+
+101
+00:10:27,277 --> 00:10:33,677
+av x. Det følger ikke. Dropper du kvantoren før du negerer, får du ikke-P av x,
+
+102
+00:10:33,677 --> 00:10:40,797
+som resolverer med P av A: et falskt bevis. Negér først: ikke-P av C én, som
+
+103
+00:10:40,797 --> 00:10:46,717
+ikke unifiserer med P av A. Negér hele målet først, skolemiser til slutt.
+
+104
+00:10:48,083 --> 00:10:51,603
+Hva med likhetstegn, og hvilket par tar du først?
+
+105
+00:10:53,383 --> 00:10:59,383
+Likhet krever ekstra arbeid. Aksiomer for likhet virker, men gir masse unyttige
+
+106
+00:10:59,383 --> 00:11:07,143
+slutninger. Bedre: demodulation. Far til far til x er farfar til x. Finn en del
+
+107
+00:11:07,143 --> 00:11:12,623
+som unifiserer med venstresiden, her med x som Bella, og bytt den med høyresiden.
+
+108
+00:11:12,623 --> 00:11:18,343
+Bare den veien. Paramodulation gjør det samme inne i en lengre klausul. Eller
+
+109
+00:11:18,343 --> 00:11:20,743
+bygg likhet inn i unification.
+
+110
+00:11:22,117 --> 00:11:28,837
+Strategiene velger neste par. Unit preference: bruk klausuler med én literal, så
+
+111
+00:11:28,837 --> 00:11:35,277
+krymper resultatet. Fem av sju steg i kattebeviset gjorde det. Set of support:
+
+112
+00:11:35,277 --> 00:11:40,677
+hvert steg bruker en klausul fra et lite sett, som det negerte målet. Input
+
+113
+00:11:40,677 --> 00:11:46,917
+resolution: hvert steg bruker en opprinnelig klausul. Komplett for Horn. Linear
+
+114
+00:11:46,917 --> 00:11:53,637
+resolution er komplett, men bare i boka. Subsumption: har du P av x, kaster du P
+
+115
+00:11:53,637 --> 00:11:54,437
+av A.
+
+116
+00:11:55,650 --> 00:11:58,050
+Klar for en ekte eksamensoppgave?
+
+117
+00:11:59,817 --> 00:12:06,537
+Oppgave ni, fem poeng, er Generalized Modus Ponens fra E femten. Unifiser
+
+118
+00:12:06,537 --> 00:12:14,937
+faktaene med premissene: x blir Alice, z blir Bob, y blir Carrie. Konklusjonen:
+
+119
+00:12:14,937 --> 00:12:20,217
+Jealous av Alice og Carrie. Vis både unification og substitusjon.
+
+120
+00:12:21,583 --> 00:12:28,063
+Oppgave ti, tjue poeng. En vase står på kjøkkenbordet. Hver vase har en blomst i
+
+121
+00:12:28,063 --> 00:12:35,183
+seg. Og står noe i noe som står på noe, står det også på det. Vis at en blomst
+
+122
+00:12:35,183 --> 00:12:43,023
+står på kjøkkenbordet. CNF, og for hvert steg: to setninger, theta og resultat.
+
+123
+00:12:43,023 --> 00:12:52,543
+Sett på pause.
+
+124
+00:12:52,543 --> 00:12:53,503
+Klar?
+
+125
+00:12:54,883 --> 00:13:02,483
+Setning én: x står ytterst, så den blir C én. Linje fem og seks. Setning to er
+
+126
+00:13:02,483 --> 00:13:09,163
+fella: y står inne i for-alle-x. Blomsten avhenger av vasen: F av x.
+
+127
+00:13:09,163 --> 00:13:15,123
+Distribusjon gir linje sju og åtte. Setning tre er en regel: linje ni. Det
+
+128
+00:13:15,123 --> 00:13:19,523
+negerte målet: ikke-det-finnes blir for-alle, linje ti.
+
+129
+00:13:20,817 --> 00:13:29,777
+Elleve: fem og sju, x blir C én. Tolv: fem og åtte, blomsten i vasen. Tretten:
+
+130
+00:13:29,777 --> 00:13:36,897
+seks og ni. y blir C én, x blir kjøkkenbordet. Fjorten: ti og tretten, hver med
+
+131
+00:13:36,897 --> 00:13:45,057
+sin variabel, så x blir z. Femten: tolv og fjorten, z blir F av C én. Seksten:
+
+132
+00:13:45,057 --> 00:13:51,337
+elleve og femten, tom theta. Den tomme klausulen. Fasiten bruker x i tretten og
+
+133
+00:13:51,337 --> 00:13:54,097
+tom theta i fjorten. Også riktig.
+
+134
+00:13:55,450 --> 00:14:02,570
+Slik mister du poeng. Allkvantor med og, eller eksistens med pil. Konstant der
+
+135
+00:14:02,570 --> 00:14:08,170
+det skulle vært Skolem-funksjon. Glemt standardisering. Negert målet for sent,
+
+136
+00:14:08,170 --> 00:14:14,090
+eller ikke i det hele tatt. Et steg uten theta. Fasiten vil ha par og theta hver
+
+137
+00:14:14,090 --> 00:14:14,890
+gang.
+
+138
+00:14:16,083 --> 00:14:18,083
+Hvor dukker dette opp igjen?
+
+139
+00:14:19,850 --> 00:14:27,130
+CNF og resolusjon for proposisjonslogikk er kapittel sju, E tolv. Unification,
+
+140
+00:14:27,130 --> 00:14:32,890
+Skolem-konstanten og semidecidability er kapittel ni, E femten. Backward
+
+141
+00:14:32,890 --> 00:14:38,090
+chaining der er resolusjon med fast strategi på Horn-klausuler. Oversettelsen
+
+142
+00:14:38,090 --> 00:14:41,290
+til logikk er kapittel åtte, E fjorten.
+
+143
+00:14:42,583 --> 00:14:48,343
+Hele kjeden: negér målet. Gjør alt om til klausuler i sju steg, med
+
+144
+00:14:48,343 --> 00:14:53,383
+Skolem-funksjon når eksistens står inne i for-alle. Finn to klausuler med
+
+145
+00:14:53,383 --> 00:14:59,863
+motsatte literaler, standardiser dem, og finn theta. Gjenta til klausulen er tom.
+
+146
+00:14:59,863 --> 00:15:05,263
+Slik fant vi kattens morder. Hvis du bare husker én ting: hvert steg er to
+
+147
+00:15:05,263 --> 00:15:10,503
+klausuler, én theta og én resolvent, helt til ingenting er igjen.
+

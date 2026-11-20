@@ -1,0 +1,740 @@
+{
+ "intro": "2019 oppgave 6 (minimax og alpha-beta, 10 p) er spart til fullprøven 01.12.",
+ "tasks": [
+  {
+   "t": "Eksamen 2021, oppgave 5 (10 p): Adversarial search",
+   "d": "**5) ADVERSARIAL SEARCH (10 pts)**\n\n1\\) Apply minimax algorithm on the tree in the given figure and find the values of all the nodes above the leaf nodes. Write down the values of nodes A-J. What is the value of the solution for the agent max?\n\n2\\) Apply alpha-beta pruning algorithm to find nodes can be pruned. Write down the names of the nodes (i.e., the letters in the squares and ellipses), either leaves or the nodes of which all children are pruned. For example if L3 and L4 are both pruned then it is sufficient to write node F only. Give the reason why each pruned node is pruned, by referring to alpha and beta values",
+   "img": [
+    "nettside-figurer/e08-2021-q5.svg"
+   ],
+   "f": [
+    [
+     "1) Minimax-verdiene til A–J",
+     "area",
+     "A: … B: … C: … D: … E: … F: … G: … H: … I: … J: …"
+    ],
+    [
+     "1) Verdien av løsningen for MAX",
+     "text"
+    ],
+    [
+     "2) Noder som kuttes, med begrunnelse",
+     "area",
+     "node: v = … og α/β = …"
+    ]
+   ],
+   "tegn": {
+    "type": "tre",
+    "data": {
+     "id": "A",
+     "type": "max",
+     "tekst": "A",
+     "barn": [
+      {
+       "id": "B",
+       "type": "min",
+       "tekst": "B",
+       "barn": [
+        {
+         "id": "E",
+         "type": "max",
+         "tekst": "E",
+         "barn": [
+          {
+           "id": "L1",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "L1"
+          },
+          {
+           "id": "L2",
+           "type": "blad",
+           "verdi": 3,
+           "tekst": "L2"
+          }
+         ]
+        },
+        {
+         "id": "F",
+         "type": "max",
+         "tekst": "F",
+         "barn": [
+          {
+           "id": "L3",
+           "type": "blad",
+           "verdi": 5,
+           "tekst": "L3"
+          },
+          {
+           "id": "L4",
+           "type": "blad",
+           "verdi": 10,
+           "tekst": "L4"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "C",
+       "type": "min",
+       "tekst": "C",
+       "barn": [
+        {
+         "id": "G",
+         "type": "max",
+         "tekst": "G",
+         "barn": [
+          {
+           "id": "L5",
+           "type": "blad",
+           "verdi": 0,
+           "tekst": "L5"
+          }
+         ]
+        },
+        {
+         "id": "H",
+         "type": "max",
+         "tekst": "H",
+         "barn": [
+          {
+           "id": "L6",
+           "type": "blad",
+           "verdi": 3,
+           "tekst": "L6"
+          },
+          {
+           "id": "L7",
+           "type": "blad",
+           "verdi": 6,
+           "tekst": "L7"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "D",
+       "type": "min",
+       "tekst": "D",
+       "barn": [
+        {
+         "id": "I",
+         "type": "max",
+         "tekst": "I",
+         "barn": [
+          {
+           "id": "L8",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "L8"
+          },
+          {
+           "id": "L9",
+           "type": "blad",
+           "verdi": 1,
+           "tekst": "L9"
+          }
+         ]
+        },
+        {
+         "id": "J",
+         "type": "max",
+         "tekst": "J",
+         "barn": [
+          {
+           "id": "L10",
+           "type": "blad",
+           "verdi": 7,
+           "tekst": "L10"
+          },
+          {
+           "id": "L11",
+           "type": "blad",
+           "verdi": 3,
+           "tekst": "L11"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "sjekk": {
+    "f": {
+     "1) Verdien av løsningen for MAX": [
+      "3"
+     ]
+    },
+    "merk": "Roten A er MAX-noden, og A = 3.",
+    "kilde": "2021A.docx, Adversarial search"
+   },
+   "fasit": "**1) A = 3, B = 3, C = 0, D = 2, E = 3, F = 10, G = 0, H = 6, I = 2, J = 7.**\n\n**Verdien av løsningen for MAX: 3** (trekket mot B).\n\n**2) Kuttes: L4, H og J.** L4 fordi v = 5 ≥ β = 3, H fordi v = 0 ≤ α = 3, og J fordi v = 2 ≤ α = 3.\n\n**Minimax nedenfra** (A er MAX, B–D er MIN, E–J er MAX):\n\n| Node | Type | Regning | Verdi |\n|---|---|---|---|\n| E | MAX | max(2, 3) | 3 |\n| F | MAX | max(5, 10) | 10 |\n| G | MAX | max(0) | 0 |\n| H | MAX | max(3, 6) | 6 |\n| I | MAX | max(2, 1) | 2 |\n| J | MAX | max(7, 3) | 7 |\n| B | MIN | min(3, 10) | 3 |\n| C | MIN | min(0, 6) | 0 |\n| D | MIN | min(2, 7) | 2 |\n| A | MAX | max(3, 0, 2) | **3** |\n\n**Alpha-beta**, barn fra venstre, α = −∞ og β = ∞ i roten:\n\n| Steg | Node | α | β | v | Hva skjer |\n|---|---|---|---|---|---|\n| 1 | E ser L1 = 2, L2 = 3 | 3 | ∞ | 3 | E = 3 |\n| 2 | B | −∞ | 3 | 3 | B er MIN og får β = 3 |\n| 3 | F ser L3 = 5 | 5 | 3 | 5 | **kutt L4: v = 5 ≥ β = 3** (β fra B). F ≥ 5 |\n| 4 | B, A | 3 | ∞ | 3 | B = 3, og A får α = 3 |\n| 5 | G ser L5 = 0 | 3 | ∞ | 0 | G = 0 |\n| 6 | C | 3 | 0 | 0 | **kutt H: v = 0 ≤ α = 3** (α fra A). C ≤ 0 |\n| 7 | I ser L8 = 2, L9 = 1 | 3 | ∞ | 2 | I er MAX og sammenligner med β = ∞, så ingen kutt. I = 2 |\n| 8 | D | 3 | 2 | 2 | **kutt J: v = 2 ≤ α = 3** (α fra A). D ≤ 2 |\n| 9 | A | 3 | ∞ | 3 | **A = 3** via B. 6 av 11 blader er sett |\n\nBegrunnelsene på fasitens form: L4 (5 > 3), H (0 < 3), J (2 < 3). Hele H og J kuttes, så det holder å skrive H og J, ikke L6, L7, L10 og L11.\n\nVanlig feil: å kutte L9 under I. I er MAX og sammenligner v med β, som er ∞ der.\n\n*Kilde: løsningsforslaget til eksamen 2021, oppgave 5 (Adversarial search).*"
+  },
+  {
+   "t": "Eksamen 2020 kont (aug. 2021), problem 4 (10 p): Adversarial search",
+   "d": "**PROBLEM 4 ---- ADVERSARIAL SEARCH**\n\nThe following figure shows a game tree.\n\na) Apply Minimax algorithm and find the values of all the nodes above the leaf nodes. What is the value of the solution for the agent max?\n\nb) Apply alpha-beta pruning algorithm to find which nodes can e pruned. Write down the names of the nodes (the letters in the square and ellipses), either leaves or the nodes of which all children are pruned. For example if 11 and 12 are pruned then it is sufficient to write node j only.\n\n*Merknad:* Det nest siste bladet (under o) er merket «x5» i figuren, men er trolig x15. Eksempelet i b) mener trolig x11 og x12, og da er det node m.",
+   "img": [
+    "nettside-figurer/e08-2020kont-p4.svg"
+   ],
+   "f": [
+    [
+     "a) Minimax-verdiene til nodene over bladene",
+     "area",
+     "a: …\nb: … c: …\nd: … e: … f: … g: …\nh: … i: … j: … k: … l: … m: … n: … o: …"
+    ],
+    [
+     "a) Verdien av løsningen for MAX",
+     "text"
+    ],
+    [
+     "b) Noder som kan kuttes",
+     "area"
+    ]
+   ],
+   "tegn": {
+    "type": "tre",
+    "data": {
+     "id": "a",
+     "type": "max",
+     "tekst": "a",
+     "barn": [
+      {
+       "id": "b",
+       "type": "min",
+       "tekst": "b",
+       "barn": [
+        {
+         "id": "d",
+         "type": "max",
+         "tekst": "d",
+         "barn": [
+          {
+           "id": "h",
+           "type": "min",
+           "tekst": "h",
+           "barn": [
+            {
+             "id": "x1",
+             "type": "blad",
+             "verdi": 7,
+             "tekst": "x1"
+            },
+            {
+             "id": "x2",
+             "type": "blad",
+             "verdi": 9,
+             "tekst": "x2"
+            }
+           ]
+          },
+          {
+           "id": "i",
+           "type": "min",
+           "tekst": "i",
+           "barn": [
+            {
+             "id": "x3",
+             "type": "blad",
+             "verdi": 6,
+             "tekst": "x3"
+            },
+            {
+             "id": "x4",
+             "type": "blad",
+             "verdi": 9,
+             "tekst": "x4"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "id": "e",
+         "type": "max",
+         "tekst": "e",
+         "barn": [
+          {
+           "id": "j",
+           "type": "min",
+           "tekst": "j",
+           "barn": [
+            {
+             "id": "x5",
+             "type": "blad",
+             "verdi": 11,
+             "tekst": "x5"
+            },
+            {
+             "id": "x6",
+             "type": "blad",
+             "verdi": 12,
+             "tekst": "x6"
+            }
+           ]
+          },
+          {
+           "id": "k",
+           "type": "min",
+           "tekst": "k",
+           "barn": [
+            {
+             "id": "x7",
+             "type": "blad",
+             "verdi": 13,
+             "tekst": "x7"
+            },
+            {
+             "id": "x8",
+             "type": "blad",
+             "verdi": 10,
+             "tekst": "x8"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "c",
+       "type": "min",
+       "tekst": "c",
+       "barn": [
+        {
+         "id": "f",
+         "type": "max",
+         "tekst": "f",
+         "barn": [
+          {
+           "id": "l",
+           "type": "min",
+           "tekst": "l",
+           "barn": [
+            {
+             "id": "x9",
+             "type": "blad",
+             "verdi": 5,
+             "tekst": "x9"
+            },
+            {
+             "id": "x10",
+             "type": "blad",
+             "verdi": 4,
+             "tekst": "x10"
+            }
+           ]
+          },
+          {
+           "id": "m",
+           "type": "min",
+           "tekst": "m",
+           "barn": [
+            {
+             "id": "x11",
+             "type": "blad",
+             "verdi": 4,
+             "tekst": "x11"
+            },
+            {
+             "id": "x12",
+             "type": "blad",
+             "verdi": 3,
+             "tekst": "x12"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "id": "g",
+         "type": "max",
+         "tekst": "g",
+         "barn": [
+          {
+           "id": "n",
+           "type": "min",
+           "tekst": "n",
+           "barn": [
+            {
+             "id": "x13",
+             "type": "blad",
+             "verdi": 1,
+             "tekst": "x13"
+            },
+            {
+             "id": "x14",
+             "type": "blad",
+             "verdi": 2,
+             "tekst": "x14"
+            }
+           ]
+          },
+          {
+           "id": "o",
+           "type": "min",
+           "tekst": "o",
+           "barn": [
+            {
+             "id": "x15",
+             "type": "blad",
+             "verdi": 2,
+             "tekst": "x5"
+            },
+            {
+             "id": "x16",
+             "type": "blad",
+             "verdi": 3,
+             "tekst": "x16"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "sjekk": {
+    "f": {
+     "a) Verdien av løsningen for MAX": [
+      "7"
+     ]
+    },
+    "kilde": "2020ResitA.docx, Problem 4 («solution=7»)"
+   },
+   "fasit": "**a) h = 7, i = 6, j = 11, k = 10, l = 4, m = 3, n = 1, o = 2; d = 7, e = 11, f = 4, g = 2; b = 7, c = 2; a = 7.**\n\n**Verdien av løsningen for MAX: 7** (a → b → d → h).\n\n**b) Kuttes: x4, k, x10, x12 og g.**\n\n**a) Minimax nedenfra.** a er MAX, b og c MIN, d–g MAX og h–o MIN. Bladet under o som figuren kaller x5, er x15.\n\n| Nivå | Regning |\n|---|---|\n| h–o (MIN) | h = min(7, 9) = 7, i = min(6, 9) = 6, j = min(11, 12) = 11, k = min(13, 10) = 10, l = min(5, 4) = 4, m = min(4, 3) = 3, n = min(1, 2) = 1, o = min(2, 3) = 2 |\n| d–g (MAX) | d = max(7, 6) = 7, e = max(11, 10) = 11, f = max(4, 3) = 4, g = max(1, 2) = 2 |\n| b, c (MIN) | b = min(7, 11) = 7, c = min(4, 2) = 2 |\n| a (MAX) | a = max(7, 2) = **7** |\n\nFasiten skriver grensene fra alpha-beta for nodene som ikke blir ferdig regnet: i ≤ 6, e ≥ 11, c ≤ 5, f ≤ 5, l ≤ 5 og m ≤ 4. De stemmer med de eksakte verdiene over.\n\n**b) Alpha-beta**, barn fra venstre:\n\n| Steg | Node | α | β | v | Hva skjer |\n|---|---|---|---|---|---|\n| 1 | h ser x1 = 7, x2 = 9 | −∞ | 7 | 7 | h = 7 |\n| 2 | d | 7 | ∞ | 7 | d er MAX og løfter α til 7 |\n| 3 | i ser x3 = 6 | 7 | 6 | 6 | **kutt x4: v = 6 ≤ α = 7** (α fra d). i ≤ 6 |\n| 4 | d, b | −∞ | 7 | 7 | d = 7, og b får β = 7 |\n| 5 | j ser x5 = 11, x6 = 12 | −∞ | 7 | 11 | j er MIN og sammenligner med α = −∞, så ingen kutt. j = 11 |\n| 6 | e | 11 | 7 | 11 | **kutt k: v = 11 ≥ β = 7** (β fra b). e ≥ 11 |\n| 7 | b, a | 7 | ∞ | 7 | b = 7, og a får α = 7 |\n| 8 | l ser x9 = 5 | 7 | 5 | 5 | **kutt x10: v = 5 ≤ α = 7** (α fra a). l ≤ 5 |\n| 9 | m ser x11 = 4 | 7 | 4 | 4 | **kutt x12: v = 4 ≤ α = 7**. m ≤ 4 |\n| 10 | f, c | 7 | 5 | 5 | f ≤ 5, så c ≤ 5. **Kutt g: v = 5 ≤ α = 7** |\n| 11 | a | 7 | ∞ | 7 | **a = 7** via b. 7 av 16 blader er sett |\n\nSiden hele k og g kuttes, skriver du k og g, ikke x7, x8 og x13–x16.\n\n*Kilde: løsningsforslaget til eksamen 2020 kontinuasjon (aug. 2021), problem 4.*"
+  },
+  {
+   "t": "Eksamen 2018, problem 2 (10 p, fordelt 3–7): Adversarial search",
+   "d": "**Problem 2: Adversarial Search (10 POINTS)**\n\n1\\) Write the minimax values in the nodes (s, j,k,l….h,i) at different layers of the search tree above the leaf nodes.\n\n2\\) Apply alpha-beta pruning algorithm to prune the parts of the tree that don’t need to be examined.\n\nFor each pruned part (i.e., one or more leaf nodes) of the tree write down which nodes are pruned and why, referring to V and Alpha/Beta values, in the following format:\n\nPRUNE &lt;The letter(s) that represent the pruned leaf nodes&gt; BECAUSE : &lt;Reason&gt;\n\nThe “reason” is either<br>V= &lt;value&gt; &lt; Alpha = &lt;value&gt; or<br>V= &lt;value&gt; &gt; Beta = &lt;value&gt;\n\nExample (not necessarily correct, just to show the requested format):<br>Prune A,B,C because: v=4 &lt; Alpha=7\n\nSo, if there are more than one leaf nodes next to each other write them at once and together as in the example above.",
+   "img": [
+    "nettside-figurer/e08-2018-p2.png"
+   ],
+   "f": [
+    [
+     "1) Minimax-verdiene",
+     "area",
+     "s: …\nj: … k: … l: …\na: … b: … c: … d: … e: … f: … g: … h: … i: …"
+    ],
+    [
+     "2) Kutt med begrunnelse",
+     "area",
+     "PRUNE … BECAUSE: V = … > Beta = …"
+    ]
+   ],
+   "tegn": {
+    "type": "tre",
+    "data": {
+     "id": "s",
+     "type": "max",
+     "tekst": "s",
+     "barn": [
+      {
+       "id": "j",
+       "type": "min",
+       "tekst": "j",
+       "barn": [
+        {
+         "id": "a",
+         "type": "max",
+         "tekst": "a",
+         "barn": [
+          {
+           "id": "A",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "A"
+          },
+          {
+           "id": "B",
+           "type": "blad",
+           "verdi": 6,
+           "tekst": "B"
+          }
+         ]
+        },
+        {
+         "id": "b",
+         "type": "max",
+         "tekst": "b",
+         "barn": [
+          {
+           "id": "C",
+           "type": "blad",
+           "verdi": 1,
+           "tekst": "C"
+          },
+          {
+           "id": "D",
+           "type": "blad",
+           "verdi": 6,
+           "tekst": "D"
+          },
+          {
+           "id": "E",
+           "type": "blad",
+           "verdi": 8,
+           "tekst": "E"
+          }
+         ]
+        },
+        {
+         "id": "c",
+         "type": "max",
+         "tekst": "c",
+         "barn": [
+          {
+           "id": "F",
+           "type": "blad",
+           "verdi": 4,
+           "tekst": "F"
+          },
+          {
+           "id": "G",
+           "type": "blad",
+           "verdi": 9,
+           "tekst": "G"
+          },
+          {
+           "id": "H",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "H"
+          },
+          {
+           "id": "I",
+           "type": "blad",
+           "verdi": 5,
+           "tekst": "I"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "k",
+       "type": "min",
+       "tekst": "k",
+       "barn": [
+        {
+         "id": "d",
+         "type": "max",
+         "tekst": "d",
+         "barn": [
+          {
+           "id": "J",
+           "type": "blad",
+           "verdi": 8,
+           "tekst": "J"
+          },
+          {
+           "id": "K",
+           "type": "blad",
+           "verdi": 4,
+           "tekst": "K"
+          }
+         ]
+        },
+        {
+         "id": "e",
+         "type": "max",
+         "tekst": "e",
+         "barn": [
+          {
+           "id": "L",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "L"
+          },
+          {
+           "id": "M",
+           "type": "blad",
+           "verdi": 10,
+           "tekst": "M"
+          },
+          {
+           "id": "N",
+           "type": "blad",
+           "verdi": 5,
+           "tekst": "N"
+          }
+         ]
+        },
+        {
+         "id": "f",
+         "type": "max",
+         "tekst": "f",
+         "barn": [
+          {
+           "id": "O",
+           "type": "blad",
+           "verdi": 3,
+           "tekst": "O"
+          },
+          {
+           "id": "P",
+           "type": "blad",
+           "verdi": 9,
+           "tekst": "P"
+          },
+          {
+           "id": "Q",
+           "type": "blad",
+           "verdi": 6,
+           "tekst": "Q"
+          },
+          {
+           "id": "R",
+           "type": "blad",
+           "verdi": 3,
+           "tekst": "R"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "l",
+       "type": "min",
+       "tekst": "l",
+       "barn": [
+        {
+         "id": "g",
+         "type": "max",
+         "tekst": "g",
+         "barn": [
+          {
+           "id": "S",
+           "type": "blad",
+           "verdi": 4,
+           "tekst": "S"
+          },
+          {
+           "id": "T",
+           "type": "blad",
+           "verdi": 3,
+           "tekst": "T"
+          }
+         ]
+        },
+        {
+         "id": "h",
+         "type": "max",
+         "tekst": "h",
+         "barn": [
+          {
+           "id": "U",
+           "type": "blad",
+           "verdi": 5,
+           "tekst": "U"
+          },
+          {
+           "id": "W",
+           "type": "blad",
+           "verdi": 6,
+           "tekst": "W"
+          },
+          {
+           "id": "X",
+           "type": "blad",
+           "verdi": 9,
+           "tekst": "X"
+          },
+          {
+           "id": "V",
+           "type": "blad",
+           "verdi": 4,
+           "tekst": "V"
+          }
+         ]
+        },
+        {
+         "id": "i",
+         "type": "max",
+         "tekst": "i",
+         "barn": [
+          {
+           "id": "Y",
+           "type": "blad",
+           "verdi": 9,
+           "tekst": "Y"
+          },
+          {
+           "id": "Z1",
+           "type": "blad",
+           "verdi": 8,
+           "tekst": "Z1"
+          },
+          {
+           "id": "Z2",
+           "type": "blad",
+           "verdi": 9,
+           "tekst": "Z2"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "fasit": "**1) s = 8; j = 6, k = 8, l = 4; a = 6, b = 8, c = 9, d = 8, e = 10, f = 9, g = 4, h = 9, i = 9.**\n\n**2) Kutt:**\n- **PRUNE H, I BECAUSE: V = 9 > Beta = 6**\n- **PRUNE N BECAUSE: V = 10 > Beta = 8**\n- **PRUNE Q, R BECAUSE: V = 9 > Beta = 8**\n- **PRUNE U, W, X, V (hele h) og Y, Z1, Z2 (hele i) BECAUSE: V = 4 < Alpha = 8**\n- **E**: V = 6 = Beta = 6. Oppgavens format bruker strenge < og >, og da kuttes ikke E. Med bokas regel (kutt ved v ≥ β) kuttes E. Fasiten godtok begge.\n\n**1) Minimax nedenfra** (s er MAX, j–l MIN, a–i MAX):\n\n| Node | Regning | Verdi |\n|---|---|---|\n| a, b, c | max(2, 6), max(1, 6, 8), max(4, 9, 2, 5) | 6, 8, 9 |\n| d, e, f | max(8, 4), max(2, 10, 5), max(3, 9, 6, 3) | 8, 10, 9 |\n| g, h, i | max(4, 3), max(5, 6, 9, 4), max(9, 8, 9) | 4, 9, 9 |\n| j, k, l | min(6, 8, 9), min(8, 10, 9), min(4, 9, 9) | 6, 8, 4 |\n| s | max(6, 8, 4) | **8** |\n\nFasiten lister det samme lag for lag: 8; 6, 8, 4; 6, 8, 9; 8, 10, 9; 4, 9, 9.\n\n**2) Alpha-beta**, barn fra venstre:\n\n| Steg | Node | α | β | v | Hva skjer |\n|---|---|---|---|---|---|\n| 1 | a ser A = 2, B = 6 | 6 | ∞ | 6 | a = 6 |\n| 2 | j | −∞ | 6 | 6 | j er MIN og får β = 6 |\n| 3 | b ser C = 1, D = 6 | 6 | 6 | 6 | V = 6 ≥ β = 6: E kuttes bare hvis du kutter ved likhet. Ellers ses E = 8, og b = 8 |\n| 4 | c ser F = 4, G = 9 | 9 | 6 | 9 | **kutt H og I: V = 9 > β = 6** (β fra j) |\n| 5 | j, s | 6 | ∞ | 6 | j = 6, og s får α = 6 |\n| 6 | d ser J = 8, K = 4 | 8 | ∞ | 8 | d er MAX og sammenligner med β = ∞. d = 8 |\n| 7 | k | 6 | 8 | 8 | k er MIN og får β = 8 |\n| 8 | e ser L = 2, M = 10 | 10 | 8 | 10 | **kutt N: V = 10 > β = 8** (β fra k) |\n| 9 | f ser O = 3, P = 9 | 9 | 8 | 9 | **kutt Q og R: V = 9 > β = 8** |\n| 10 | k, s | 8 | ∞ | 8 | k = 8, og s får α = 8 |\n| 11 | g ser S = 4, T = 3 | 8 | ∞ | 4 | g = 4 |\n| 12 | l | 8 | 4 | 4 | **kutt h og i: V = 4 < α = 8** (α fra s) |\n| 13 | s | 8 | ∞ | 8 | **s = 8** via k. 15 av 27 blader er sett (14 hvis E kuttes) |\n\nVanlige feil: å kutte K under d (d er MAX og sammenligner med β = ∞), og å glemme at α = 8 i steg 12 kommer helt fra roten.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 2.*"
+  },
+  {
+   "t": "Bøttespillet fra L8: alpha-beta",
+   "d": "MAX velger en av tre bøtter, og MIN velger deretter hvilket tall fra bøtta MAX får. MAX vil ha et så stort tall som mulig.\n\n```\n                MAX (rot)\n           /       |       \\\n          A        B        C       (MIN)\n        /   \\    /  \\    /   \\\n      −50    50  3    1  −5    15\n```\n\nBarna undersøkes fra venstre: A = {−50, 50}, B = {3, 1}, C = {−5, 15}.\n\nKjør alpha-beta. Skriv siste α og β i hver node, og begrunn kuttet.",
+   "f": [
+    [
+     "Verdien til roten og bøtta MAX velger",
+     "text"
+    ],
+    [
+     "Siste α og β i hver node",
+     "area",
+     "rot: α = …, β = …\nA: …\nB: …\nC: …"
+    ],
+    [
+     "Hva kuttes, og hvorfor?",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Verdien til roten og bøtta MAX velger": [
+      "1 B",
+      "1 og B",
+      "1 and B",
+      "1 bøtte B"
+     ]
+    },
+    "merk": "A = −50, B = 1, C = −5, så roten = 1 og MAX velger B.",
+    "kilde": "videoer/notater/e08-minimax-alfabeta.md, Fasit Øv selv 5"
+   },
+   "fasit": "**Roten = 1, og MAX velger bøtte B.**\n\n**Siste α og β: rot (α = 1, β = ∞), A (α = −∞, β = −50), B (α = −50, β = 1), C (α = 1, β = −5).**\n\n**Kutt: bladet 15 i C, fordi v = −5 ≤ α = 1.** MAX har allerede 1 fra B, og C kan bare gi høyst −5.\n\n| Steg | Node | α | β | v | Hva skjer |\n|---|---|---|---|---|---|\n| 1 | rot | −∞ | ∞ | | starter |\n| 2 | A ser −50 | −∞ | −50 | −50 | A er MIN og senker β |\n| 3 | A ser 50 | −∞ | −50 | −50 | A sammenligner med α = −∞, så ingen kutt. A = −50 |\n| 4 | rot | −50 | ∞ | −50 | α = −50 |\n| 5 | B ser 3, så 1 | −50 | 1 | 1 | B arver α = −50. B = 1 |\n| 6 | rot | 1 | ∞ | 1 | MAX er sikret minst 1 |\n| 7 | C ser −5 | 1 | −5 | −5 | **kutt 15: v = −5 ≤ α = 1** (α fra roten). C ≤ −5 |\n| 8 | rot | 1 | ∞ | 1 | **rot = 1** via B. 5 av 6 blader er sett |\n\nVanlig feil: å kutte 50 i A. Da har MAX ingenting ennå, og α er −∞.\n\nMot en motstander som velger tilfeldig, regner du snitt i stedet (expectimax), og da velges C (snitt 5).\n\n*Kilde: notatet til E08, Fasit Øv selv 5, og L8 s. 13.*"
+  },
+  {
+   "t": "Halveringsspillet fra L8 og Ø3",
+   "d": "Spillet starter med et tall N. Spillerne bytter på å gjøre ett trekk: enten «trekk fra 1» (`--`) eller «halver og rund ned» (`/2`). Spilleren som sitter igjen med 0, vinner. Utility er +1 hvis MAX vinner og −1 hvis MIN vinner.\n\nStart på N = 5 med MAX i trekket. Hele spilltreet har 27 noder.\n\nHvem vinner, og med hvilket første trekk? Hvor mange av de 27 nodene besøker alpha-beta når `--` prøves før `/2`?",
+   "f": [
+    [
+     "Minimax-treet: N og verdi i hver node",
+     "area",
+     "MAX 5: …\n  -- → MIN 4: …\n  /2 → MIN 2: …"
+    ],
+    [
+     "Hvem vinner, og med hvilket første trekk?",
+     "text"
+    ],
+    [
+     "Antall noder alpha-beta besøker, og hvor den kutter",
+     "area"
+    ]
+   ],
+   "fasit": "**MAX vinner (+1) ved å starte med `--` (5 → 4).** `/2` (5 → 2) taper.\n\n**Alpha-beta besøker 20 av de 27 nodene og gjør 3 kutt.**\n\n**Minimax-treet.** Den som har turen når tallet er 0, «sitter igjen med 0» og vinner. MAX 0 = +1 og MIN 0 = −1. Første barn er `--`, andre er `/2`.\n\n```\nMAX 5: +1\n  -- → MIN 4: +1\n    -- → MAX 3: +1\n      -- → MIN 2: −1\n        -- → MAX 1: −1   (begge trekk gir MIN 0 = −1)\n        /2 → MAX 1: −1   (begge trekk gir MIN 0 = −1)\n      /2 → MIN 1: +1     (begge trekk gir MAX 0 = +1)\n    /2 → MAX 2: +1\n      -- → MIN 1: +1     (begge trekk gir MAX 0 = +1)\n      /2 → MIN 1: +1     (begge trekk gir MAX 0 = +1)\n  /2 → MIN 2: −1\n    -- → MAX 1: −1       (begge trekk gir MIN 0 = −1)\n    /2 → MAX 1: −1       (begge trekk gir MIN 0 = −1)\n```\n\n13 indre noder og 14 blader, til sammen 27. Den som står på 1, må gi motstanderen 0 og taper. Står MIN på 4, kan MIN gå til 3 (MAX svarer `/2` til 1) eller til 2 (MAX går til 1). I begge tilfeller står MIN på 1 og taper. Etter `/2` står MIN på 2 og gir MAX 1, så MAX taper.\n\n**Alpha-beta** med `--` før `/2`:\n\n| Steg | Node | α | β | v | Hva skjer |\n|---|---|---|---|---|---|\n| 1 | MAX 5 → MIN 4 → MAX 3 → MIN 2 | −∞ | ∞ | | vinduet arves nedover |\n| 2 | MAX 1 (`--`) ser −1, −1 | −1 | ∞ | −1 | MAX 1 = −1 |\n| 3 | MIN 2 | −∞ | −1 | −1 | β = −1 |\n| 4 | MAX 1 (`/2`) ser −1 | −1 | −1 | −1 | **kutt 1: det andre bladet, v = −1 ≥ β = −1** |\n| 5 | MAX 3 | −1 | ∞ | −1 | MIN 2 = −1 |\n| 6 | MIN 1 (`/2`) ser +1, +1 | −1 | 1 | 1 | ingen kutt, 1 > α = −1 |\n| 7 | MAX 3, MIN 4 | −∞ | 1 | 1 | MAX 3 = 1, og MIN 4 får β = 1 |\n| 8 | MAX 2 → MIN 1 (`--`) ser +1, +1 | −∞ | 1 | 1 | MIN 1 = 1 |\n| 9 | MAX 2 | 1 | 1 | 1 | **kutt 2: MIN 1 (`/2`) med begge bladene, v = 1 ≥ β = 1** |\n| 10 | MIN 4, MAX 5 | 1 | ∞ | 1 | MIN 4 = 1, og roten får α = 1 |\n| 11 | MIN 2 → MAX 1 (`--`) ser −1, −1 | 1 | ∞ | −1 | MAX 1 = −1 |\n| 12 | MIN 2 | 1 | −1 | −1 | **kutt 3: MAX 1 (`/2`) med begge bladene, v = −1 ≤ α = 1** |\n| 13 | MAX 5 | 1 | ∞ | 1 | **MAX 5 = +1** via `--` |\n\nKuttet: 1 + 3 + 3 = 7 noder, så alpha-beta besøker 27 − 7 = 20. Kutt 1 og 2 skjer ved likhet. Med strenge ulikheter står bare kutt 3, og da besøkes 24 noder.\n\n*Kilde: notatet til E08, Fasit Øv selv 6, og L8 s. 14–16.*"
+  }
+ ]
+}

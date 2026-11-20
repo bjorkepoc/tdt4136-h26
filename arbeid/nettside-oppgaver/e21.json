@@ -1,0 +1,134 @@
+{
+ "intro": "Eksamen 2019, oppgave 1 (sant/usant-påstandene om Turing-testen og explainability) er spart til fullprøven 01.12. Eksamen 2020 ordinær («Ethical Issues», om consequentialism) er spart til fullprøven 03.12.",
+ "tasks": [
+  {
+   "t": "Eksamen 2025, oppgave 13b (3 p): informality og mathematical objection",
+   "d": "**13 Knowledge Representation and Ethics**\n\nb) Explain the argument from informality of behavior and the mathematical objection as proposed limits of artificial intelligence. For each argument, state its central claim and describe one specific reason why the claim may not be decisive. (3 pts.)\n\n*Merknad:* a) står i E17.",
+   "f": [
+    [
+     "b) Informality of behavior: påstand, og hvorfor den kanskje ikke er avgjørende",
+     "area"
+    ],
+    [
+     "b) Mathematical objection: påstand, og hvorfor den kanskje ikke er avgjørende",
+     "area"
+    ]
+   ],
+   "fasit": "**Informality of behavior.** *Påstand:* Menneskelig oppførsel er for kompleks til å fanges av et formelt regelsett. Mennesker følger uformelle retningslinjer som aldri kan skrives ned som regler, og derfor kan de ikke kodes i et dataprogram. Turing ga argumentet navnet, og Dreyfus er den kjente kritikeren. *Hvorfor ikke avgjørende:* Kritikken treffer en bestemt stil av AI, good old-fashioned AI (GOFAI) med eksplisitte logiske regler, ikke datamaskiner som sådan. Probabilistic reasoning og maskinlæring krever ikke komplette regler og har lyktes med oppgaver preget av usikkerhet og uformell oppførsel. Argumentet viser altså en grense for én programmeringsstil, ikke for AI.\n\n**Mathematical objection.** *Påstand:* Etter Gödels ufullstendighetsteorem har et konsistent, effektivt aksiomatisert formelt system F (aksiomene kan listes opp av et program) som er sterkt nok til aritmetikk, en setning G(F) som er sann, men ikke kan bevises i F. En maskin er et formelt system og kan derfor ikke innse at G(F) er sann, mens et menneske kan det. Altså er mennesker overlegne tenkere (Lucas, Penrose). *Hvorfor ikke avgjørende* (én grunn holder):\n\n- **Ingen skam i å ha grenser:** mennesker har også sanne setninger de ikke kan hevde, for eksempel «Lucas kan ikke konsistent påstå at denne setningen er sann».\n- **Gjelder matematikk, ikke sinn:** ingen, heller ikke mennesker, kan bevise det ubeviselige, og mennesker er langt fra konsistente.\n- **Datamaskiner er endelige:** teoremet gjelder formelle systemer som er sterke nok til aritmetikk, som Turing-maskiner med uendelig bånd. En ekte datamaskin har endelig minne og kan beskrives i proposisjonslogikk, der Gödel ikke gjelder.\n\nVanlig feil: bare å navngi argumentet. Hvert argument gir poeng for påstanden og én konkret grunn til at den ikke avgjør.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 13b.*"
+  },
+  {
+   "t": "Eksamen 2024, Q20: debiasing i NLP",
+   "d": "**AI-Ethics**\n\nSelect only one statement from the below that is incorrect about debiasing techniques in Natural Language Processing (NLP).\n\n**Select one alternative:**\n\n- A. Fairness constraints can be applied during model training to encourage equitable predictions across different demographic groups.\n- B. Debiasing in NLP ensures that the model increases its accuracy.\n- C. Data augmentation is a technique used in debiasing to increase the diversity of training data and reduce bias.\n- D. Adversarial training involves training a model to detect and remove bias by learning from adversarial examples.\n- E. Word embedding debiasing can reduce bias by altering word representations to minimize associations with sensitive attributes.\n\n*Merknad:* Poeng er ikke oppgitt i eksamen.",
+   "f": [
+    [
+     "Svar (bokstav)",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Svar (bokstav)": [
+      "B"
+     ]
+    },
+    "merk": "Debiasing gir ingen garanti for høyere accuracy, og kan til og med koste accuracy.",
+    "kilde": "2024Q&A.docx, Q20 – AI-ethics"
+   },
+   "fasit": "**B** er feil. Debiasing reduserer skjevhet i modellen, men gir ingen garanti for høyere accuracy. Fairness og accuracy kan trekke mot hverandre, så debiasing kan til og med koste litt accuracy.\n\nDe andre er riktige beskrivelser av debiasing-teknikker: fairness constraints under trening (A), data augmentation for mer mangfoldige data (C), adversarial training (D) og debiasing av word embeddings ved å endre ordvektorene slik at de ikke assosieres med sensitive attributter som kjønn (E).\n\n*Kilde: løsningsforslaget til eksamen 2024, Q20.*"
+  },
+  {
+   "t": "Eksamen 2017, problem 6: sant eller usant",
+   "d": "**Problem 6** (20 points. Each question is 2 points. -1 for each wrong answer but the total points will not be negative.)\n\nTrue/False type of questions. Answer with either True(T) or False(F)\n\n*Merknad:* Påstand c av a–j.",
+   "tf": [
+    "c) Philosopher John Searle suggests that any physical symbol system has necessary and sufficient means for general intelligent action. True or False?"
+   ],
+   "sjekk": {
+    "tf": [
+     "usant"
+    ],
+    "merk": "Fasiten: hypotesen er Newell og Simons. Searle mente det motsatte.",
+    "kilde": "2017Q&A.docx, Problem 6 c"
+   },
+   "fasit": "**c) Usant.** Physical symbol system hypothesis, at et fysisk symbolsystem har nødvendige og tilstrekkelige midler for generell intelligent handling, er Newell og Simons. Searle mener det motsatte: med Chinese room argumenterer han for at å manipulere symboler etter et program ikke er nok for forståelse.\n\n*Kilde: løsningsforslaget til eksamen 2017, problem 6 c.*"
+  },
+  {
+   "t": "Eksamen 2021, oppgave 6: AI-Ethics",
+   "d": "**6) SHORT-QUESTIONS (20 pts)**\n\n3\\) AI-Ethics: What kind of connection can you make between P of PEAS (in Chapter 2) and ethical issues in AI? This is an open question which needs you to support your answer with arguments. In other words, explain your answer – concisely.",
+   "f": [
+    [
+     "3) Svar",
+     "area"
+    ]
+   ],
+   "fasit": "**P i PEAS er performance measure, og det er der etikken kommer inn: agenten optimerer bare det som står i P.**\n\n- En rasjonell agent velger handlingen som maksimerer forventet performance measure. Står bare accuracy eller profitt i P, vil agenten ofre det vi ikke målte, for eksempel fairness, personvern eller sikkerhet. Det er value alignment-problemet: agenten får det vi ba om, ikke det vi mente (King Midas).\n- Etiske hensyn bør derfor bygges inn i P, for eksempel fairness som en del av målfunksjonen. Et lånesystem som bare maksimerer tilbakebetalte lån, kan diskriminere en gruppe. Med et krav om lik TPR mellom gruppene (equal opportunity) i P blir det synlig og straffet.\n- Det gir avveininger: fairness og accuracy kan trekke mot hverandre, og noen må bestemme vektene.\n- Ingen kan liste alle bivirkninger på forhånd. Derfor kan P også straffe endringer i verden (low impact) og ta med externalities, eller agenten kan være usikker på hva vi egentlig vil, og derfor være forsiktig og spørre (beneficial machines).\n\nLøsningsforslaget sier at oppgaven var åpen, og at de fleste fikk full score med gode argumenter.\n\n*Kilde: løsningsforslaget til eksamen 2021, oppgave 6.3.*"
+  },
+  {
+   "t": "Eksamen 2023, oppgave 1 (kortsvar): individual fairness",
+   "d": "**1 Short questions**\n\nDescribe what individual fairness means with respect to ethics in AI, and explain what kind of methods can be used to implement/realize it in an AI system.",
+   "f": [
+    [
+     "Hva betyr individual fairness?",
+     "area"
+    ],
+    [
+     "Metoder",
+     "area"
+    ]
+   ],
+   "fasit": "**Individual fairness betyr at like individer behandles likt, uansett hvilken gruppe de tilhører.** To kandidater som er like i de relevante egenskapene, skal få samme avgjørelse, for eksempel samme svar på en jobbsøknad eller lånesøknad. Det skiller seg fra group fairness, som sammenligner en statistikk mellom grupper (demographic parity, equal opportunity).\n\n**Metoder: et mål for likhet mellom kandidater, og en sjekk av at like kandidater får samme avgjørelse.** Hvis like kandidater får ulike avgjørelser, er systemet skjevt eller inkonsistent. Gjennomsiktige, sporbare og forklarbare metoder egner seg godt, for eksempel case-based reasoning eller en nearest neighbour-klassifikator: avgjørelsen begrunnes med de mest like tidligere sakene, og det er lett å se om like saker fikk likt utfall. Det holder ikke å fjerne den sensitive variabelen (fairness through unawareness), fordi andre variabler, som postnummer, kan avsløre den.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 1.*"
+  },
+  {
+   "t": "Regning: fairness-kriterier og k-anonymity",
+   "d": "**a)** En modell gir hver person høy eller lav risiko for ny kriminalitet. tp = høy risiko og begår ny, fp = høy risiko men begår ikke ny, fn = lav risiko og begår ny, tn = lav risiko og begår ikke ny. Gruppe B er fra videoen.\n\n| Gruppe | n | tp | fp | fn | tn |\n|---|---|---|---|---|---|\n| B | 100 | 28 | 12 | 12 | 48 |\n| C | 100 | 14 | 6 | 16 | 64 |\n\nI gruppe C begår 30 av 100 ny kriminalitet.\n\n**b)** Tabellen fra videoen. Kvasi-identifikatorene er fødselsdato, kjønn og postnummer. Diagnosen er det sensitive feltet.\n\n| Rad | Fødselsdato | Kjønn | Postnr. | Diagnose |\n|---|---|---|---|---|\n| 1 | 12.03.1985 | K | 7030 | influensa |\n| 2 | 30.07.1985 | K | 7034 | astma |\n| 3 | 05.11.1987 | M | 7041 | diabetes |\n| 4 | 21.01.1986 | M | 7043 | influensa |\n| 5 | 14.09.1985 | K | 7031 | migrene |\n| 6 | 02.02.1987 | M | 7048 | astma |",
+   "f": [
+    [
+     "a1) Er modellen kalibrert (well calibrated) for B og C sammen? (ja/nei)",
+     "text"
+    ],
+    [
+     "a1) Tallene",
+     "text"
+    ],
+    [
+     "a2) TPR og FPR for gruppe C",
+     "text",
+     "TPR = … · FPR = …"
+    ],
+    [
+     "a3) Hvilke av calibration, equal opportunity og demographic parity holder mellom B og C?",
+     "text"
+    ],
+    [
+     "b) Generaliser fødselsdato til år, behold kjønn og fjern hele postnummeret. Hva blir k?",
+     "text",
+     "k = …, fordi …"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a1) Er modellen kalibrert (well calibrated) for B og C sammen? (ja/nei)": [
+      "ja",
+      "yes"
+     ],
+     "a3) Hvilke av calibration, equal opportunity og demographic parity holder mellom B og C?": [
+      "{calibration}",
+      "{bare calibration}",
+      "{kun calibration}",
+      "{only calibration}",
+      "{kalibrering}",
+      "{bare kalibrering}",
+      "{kun kalibrering}"
+     ],
+     "b) Generaliser fødselsdato til år, behold kjønn og fjern hele postnummeret. Hva blir k?": [
+      "1",
+      "k = 1",
+      "k=1"
+     ]
+    },
+    "merk": "a) PPV er 70 % og andelen i lav-boksen som begår ny er 20 % i begge gruppene, så modellen er kalibrert. TPR (70 % mot 47 %) og andelen flagget (40 mot 20) er ulike, så bare calibration holder. b) 1986 · M består bare av rad 4, så k = 1.",
+    "kilde": "videoer/notater/e21-filosofi-etikk.md, Fasit Øv selv 6"
+   },
+   "fasit": "- **a1) Ja, kalibrert.** Tallene: høy-boksen (PPV) er 28/40 = 70 % i B og 14/20 = 70 % i C, og lav-boksen er 12/60 = 20 % i B og 16/80 = 20 % i C.\n- **a2) TPR = 14/30 ≈ 47 % · FPR = 6/70 ≈ 9 %**\n- **a3) Bare calibration.**\n- **b) k = 1**, fordi 1986 · M bare består av rad 4.\n\n| Gruppe | Grunnrate | Flagget (tp + fp) | PPV tp/(tp + fp) | Lav-boks fn/(fn + tn) | TPR tp/(tp + fn) | FPR fp/(fp + tn) |\n|---|---|---|---|---|---|---|\n| B | 40/100 | 40 | 28/40 = 70 % | 12/60 = 20 % | 28/40 = 70 % | 12/60 = 20 % |\n| C | 30/100 | 20 | 14/20 = 70 % | 16/80 = 20 % | 14/30 ≈ 47 % | 6/70 ≈ 9 % |\n\n- **Calibration** (well calibrated): samme score betyr samme faktiske risiko. Med binær score betyr det lik PPV og lik andel i lav-boksen. Begge er 70 % og 20 %, så den holder.\n- **Equal opportunity:** lik TPR. 70 % mot 47 %, så den holder ikke. FPR er også ulik (20 % mot 9 %), så heller ikke equalized odds (lik TPR og lik FPR) holder.\n- **Demographic parity:** lik andel flagget. 40 mot 20, så den holder ikke.\n- Grunnratene er ulike (40 % mot 30 %). Da kan en modell ikke være kalibrert og samtidig ha like feilrater for begge klasser (lik FPR og lik TPR), med mindre den er perfekt (Kleinberg mfl. 2016).\n\n**b)** Med år og kjønn, og uten postnummer:\n\n| Gruppe | Rader | Størrelse |\n|---|---|---|\n| 1985 · K | 1, 2, 5 | 3 |\n| 1987 · M | 3, 6 | 2 |\n| 1986 · M | 4 | 1 |\n\nk er størrelsen på den *minste* gruppen, altså k = 1. Diagnosen er det sensitive feltet og teller ikke med i gruppene. Det var året, ikke postnummeret, som skilte ut rad 4.\n\n*Kilde: notatet til E21, Fasit Øv selv 6.*"
+  }
+ ]
+}

@@ -1,0 +1,1077 @@
+{
+ "id": "b2",
+ "ep": "B2",
+ "tittel": "Breddesett 2",
+ "om": "**TDT4136 Introduction to Artificial Intelligence – Practice exam B2**\n\n*Practice set in the format of the 2025 exam. This is not an official exam.*\n\nTime: 4 hours<br>\nPermitted examination support material: D: No printed or hand-written support material is allowed. A specific basic calculator is allowed.\n\n**OTHER INFORMATION**\n\nThere are 13 questions in this exam. The first 4 are multiple choice questions. For questions about logic, there is a 'Formula Sheet' at the very end of the exam, after all the questions.\n\nRead the questions carefully and make your own assumptions. In your answers, explain clearly what assumptions you have made and how you have understood or limited the assignment.\n\n**SPECIFIC INFORMATION FOR YOUR COURSE**\n\nPaper drawings: For question 9 (Backward Chaining) and 10 (Resolution) you can answer on handwritten sheets. Other questions must be answered directly in the answer fields.\n\nWeighting: Weights for questions and sub-questions are given in each question.\n\n---\n\n*Øvingssett B2 (breddesett), laget av oss i 2025-formatet. Det er ikke en ekte eksamen. Settet dekker stoff som er forelest i 2026, men som ikke kom på eksamen 2025: tabelldrevet agent, belief states, min-conflicts, gjentatte spill med grim trigger, BFS mot UCS, beam search, IDA\\* og RBFS, kryptaritmetikk med forward checking, expectiminimax med pruning ved sjansenoder, PL backward chaining, sannhetstabell og resolusjon, contingent planning og overvåking, Viterbi, description logics og personvern.*\n\n<details><summary>Formula sheet (appendix)</summary><img class=\"fig\" src=\"nettside-figurer/e14-2025-formelark.svg\" alt=\"Formelark\"></details>",
+ "intro": "Flervalg, rekkefølger og tall sjekkes med «Sjekk». Tekstsvar har ingen automatisk sjekk: lever, og sammenlign med fasiten under hver oppgave og sensorveiledningen nederst.",
+ "tasks": [
+  {
+   "t": "Oppgave 1 (5 p): Intelligent Agents",
+   "d": "The textbook's TABLE-DRIVEN-AGENT is an agent program that uses a table of actions indexed by percept sequences. Assume that the table is fully specified.\n\nWhich statement is **false**?\n\n**Select one alternative:**\n\n- A. Each time the program is called, it appends the new percept to its stored percept sequence and uses the whole percept sequence as the key when it looks up the action in the table.\n- B. With |P| = 2 possible percepts and a lifetime of T = 5 percepts, the table needs 62 entries.\n- C. Even if the table could be stored and were filled in correctly, TABLE-DRIVEN-AGENT would not implement the desired agent function, because a lookup table cannot represent behaviour that depends on earlier percepts.\n- D. The agent program takes only the current percept as input. If the agent's actions need to depend on the entire percept sequence, the program itself must remember the percepts.\n- E. A model-based reflex agent keeps an internal state that it updates using a transition model and a sensor model, but it selects its action with condition–action rules, as a simple reflex agent does.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "C"
+     ]
+    },
+    "merk": "C er usann: boka sier at TABLE-DRIVEN-AGENT gjør det vi vil, så lenge tabellen er riktig fylt ut. Problemet er størrelsen, ikke hva tabellen kan uttrykke.",
+    "kilde": "Boka 2.4 (TABLE-DRIVEN-AGENT og tabellstørrelsen); 2 + 4 + 8 + 16 + 32 = 62 regnet for hånd og med skript."
+   },
+   "fasit": "**Svar: C.**\n\n- **A – sant.** Programmet legger den nye percepten til percept-sekvensen og slår opp med hele sekvensen som nøkkel (fig. 2.7).\n- **B – sant.** Tabellen har Σ<sub>t=1</sub><sup>T</sup> |P|<sup>t</sup> rader: 2 + 4 + 8 + 16 + 32 = 62.\n- **C – usant, og derfor svaret.** Boka sier at TABLE-DRIVEN-AGENT gjør det vi vil, så lenge tabellen er riktig fylt ut: den implementerer den ønskede agent function. Tabellen er indeksert på hele percept-sekvensen, så oppførsel som avhenger av tidligere percepts er nettopp det den kan uttrykke. Problemet er størrelsen: ingen plass til tabellen, ingen tid til å lage den, og agenten kan ikke lære alle radene selv.\n- **D – sant.** Agent program tar bare nåværende percept, mens agent function avhenger av hele historikken. Programmet må derfor huske selv.\n- **E – sant.** En model-based reflex agent oppdaterer den interne tilstanden med transition model og sensor model, men velger handling med condition–action rules, som en simple reflex agent.\n\nVanlig feil: å blande agent function (hele historikken) og agent program (nåværende percept).\n\n*Kilde: egen oppgave; boka 2.4 og notatet til E01.*"
+  },
+  {
+   "t": "Oppgave 2 (5 p): Search in Complex Environments",
+   "d": "A robot moves in a corridor with four squares 1, 2, 3, 4 (square 1 is leftmost). It has **no sensors** and does not know where it starts, so the initial belief state is b<sub>0</sub> = {1, 2, 3, 4}. It has three actions:\n\n- *Left*: moves one square to the left. In square 1 it stays in square 1.\n- *Right*: moves one square to the right. In square 4 it stays in square 4.\n- *Dash* (nondeterministic): moves one **or** two squares to the right, but never past square 4. From square 3 it always ends in square 4, and in square 4 it stays in square 4.\n\nThe belief state after an action is PREDICT(b, a) = ⋃<sub>s ∈ b</sub> RESULTS(s, a).\n\nWhich statement is **true**?\n\n**Select one alternative:**\n\n- A. PREDICT({1, 2}, Dash) = {2, 3}.\n- B. After the action sequence [Dash, Dash] from b<sub>0</sub>, the robot knows that it is in square 4.\n- C. The shortest action sequence that, from b<sub>0</sub>, guarantees that the robot ends in square 3 has length 4.\n- D. Because Dash is nondeterministic, no action sequence can guarantee that the robot ends in square 3; a conditional plan with percepts is needed.\n- E. Exactly 8 different belief states (b<sub>0</sub> included) are reachable from b<sub>0</sub>.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "C"
+     ]
+    },
+    "merk": "C: [Right, Right, Right, Left] gir {2, 3, 4}, {3, 4}, {4}, {3}. Ingen sekvens med tre handlinger gir {3}.",
+    "kilde": "To egne skript (Python og Node): bredde-først-søk over belief states og alle sekvenser opp til lengde 5."
+   },
+   "fasit": "**Svar: C.**\n\nPREDICT er unionen av utfallene fra hver tilstand i belief state:\n\n| Belief state | Handling | Resultat |\n|---|---|---|\n| {1, 2, 3, 4} | Right | {2, 3, 4} |\n| {1, 2, 3, 4} | Dash | {2, 3, 4} |\n| {1, 2, 3, 4} | Left | {1, 2, 3} |\n| {1, 2} | Dash | {2, 3, 4} |\n| {2, 3, 4} | Dash | {3, 4} |\n| {3, 4} | Right | {4} |\n| {4} | Left | {3} |\n\n- **A – usant.** Fra 1 gir Dash {2, 3}, fra 2 gir den {3, 4}. Unionen er {2, 3, 4}.\n- **B – usant.** [Dash, Dash] gir {2, 3, 4} og så {3, 4}. Roboten kan fortsatt stå i 3.\n- **C – sant.** [Right, Right, Right, Left] gir {2, 3, 4}, {3, 4}, {4}, {3}. Kortere går ikke: {3} kan bare komme fra {4} med Left eller fra {2} med Right. {4} krever tre handlinger, og {2} krever fire (fra {1}, som selv krever tre). Et bredde-først-søk over belief states gir også lengde 4.\n- **D – usant.** C er en sensorless plan som garanterer rute 3. Ikke-determinisme gjør belief state større, men veggene krymper den igjen.\n- **E – usant.** Fra b<sub>0</sub> kan roboten nå 10 belief states: {1, 2, 3, 4}, {1, 2, 3}, {2, 3, 4}, {1, 2}, {3, 4}, {2, 3}, {1}, {2}, {3} og {4}.\n\nVanlig feil: å ta snittet i stedet for unionen i PREDICT, eller å glemme at Dash fra 3 bare kan gi 4.\n\n*Kilde: egen oppgave; boka 4.4.1 og notatet til E05.*"
+  },
+  {
+   "t": "Oppgave 3 (5 p): Constraint Satisfaction Problems",
+   "d": "The 5-queens problem is formulated as a CSP with one variable per column, Q1, …, Q5. The value of Qi is the row (1–5, row 1 at the top) of the queen in column i. Two queens are in conflict if they are in the same row or on the same diagonal. The current complete assignment is (Q1, Q2, Q3, Q4, Q5) = (1, 5, 2, 2, 4):\n\n<table><thead><tr><th>Row</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th></tr></thead><tbody><tr><th>1</th><td><span style=\"font-size:1.6em\">♛</span></td><td>·</td><td>·</td><td>·</td><td>·</td></tr><tr><th>2</th><td>·</td><td>·</td><td><span style=\"font-size:1.6em\">♛</span></td><td><span style=\"font-size:1.6em\">♛</span></td><td>·</td></tr><tr><th>3</th><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td></tr><tr><th>4</th><td>·</td><td>·</td><td>·</td><td>·</td><td><span style=\"font-size:1.6em\">♛</span></td></tr><tr><th>5</th><td>·</td><td><span style=\"font-size:1.6em\">♛</span></td><td>·</td><td>·</td><td>·</td></tr></tbody></table>\n\nMIN-CONFLICTS is run from this assignment. Which statement is **true**?\n\n**Select one alternative:**\n\n- A. Q3, Q4 and Q5 are in conflict, and MIN-CONFLICTS always selects Q3 next, because Q3 is involved in the most conflicts.\n- B. If Q3 is selected, it is moved to row 5, and the resulting assignment is a solution.\n- C. If Q4 is selected, it stays in row 2, because no other row gives Q4 fewer conflicts.\n- D. If MIN-CONFLICTS returns failure after max_steps steps, the 5-queens problem has no solution.\n- E. Backtracking search with forward checking can be started from this complete assignment and will then only change the values of Q3, Q4 and Q5.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "C"
+     ]
+    },
+    "merk": "C: konfliktene for Q4 i rad 1–5 er 2, 1, 3, 2, 2, så rad 2 er eneste minimum og Q4 blir stående.",
+    "kilde": "Motoren min-conflicts (trekk Q3, Q4 og Q5) og eget skript."
+   },
+   "fasit": "**Svar: C.**\n\nI konflikt nå: Q3–Q4 (samme rad 2) og Q3–Q5 (diagonal: to kolonner og to rader unna). Q1 og Q2 er ikke i konflikt. Antall konflikter hvis variabelen settes i hver rad:\n\n| Variabel | Rad 1 | Rad 2 | Rad 3 | Rad 4 | Rad 5 | MIN-CONFLICTS |\n|---|---|---|---|---|---|---|\n| Q3 (står i 2) | 2 | 2 | 2 | 2 | **1** | flyttes til rad 5 |\n| Q4 (står i 2) | 2 | **1** | 3 | 2 | 2 | blir i rad 2 |\n| Q5 (står i 4) | 2 | 3 | **1** | **1** | 2 | likhet mellom 3 og 4 |\n\n- **A – usant.** Q3 er med i flest konflikter, men MIN-CONFLICTS trekker variabelen *tilfeldig* blant dem som er i konflikt. Det er verdien som velges grådig, ikke variabelen.\n- **B – usant.** Q3 går til rad 5, men der står Q2. Resultatet (1, 5, 5, 2, 4) har fortsatt én konflikt.\n- **C – sant.** Rad 2 gir 1 konflikt (med Q3), alle andre rader gir minst 2. Raden variabelen står i, teller med, så Q4 blir stående, og runden endrer ingenting.\n- **D – usant.** MIN-CONFLICTS er ufullstendig. Failure etter max_steps betyr bare at den ikke fant en løsning. 5-queens har løsninger, for eksempel (1, 3, 5, 2, 4).\n- **E – usant.** Backtracking bygger en *delvis* tilordning fra den tomme tilordningen, én variabel om gangen. Å reparere en komplett tilordning er lokalt søk.\n\nVanlig feil: å tro at variabelen med flest konflikter velges, eller å glemme at raden dronningen står i, også teller.\n\n*Kilde: egen oppgave; boka 5.4 og notatet til E07.*"
+  },
+  {
+   "t": "Oppgave 4 (5 p): Game Theory",
+   "d": "Two players repeat the stage game below infinitely many times. Action 0 is *refuse* and action 1 is *testify*. Each cell gives (U<sub>1</sub>, U<sub>2</sub>), where U<sub>p</sub>(a<sub>1</sub>, a<sub>2</sub>) is the utility of player p when P1 plays a<sub>1</sub> and P2 plays a<sub>2</sub>.\n\n<table><thead><tr><th></th><th>P2: 0 (refuse)</th><th>P2: 1 (testify)</th></tr></thead><tbody><tr><th>P1: 0 (refuse)</th><td>(−1, −2)</td><td>(−8, 0)</td></tr><tr><th>P1: 1 (testify)</th><td>(0, −8)</td><td>(−4, −4)</td></tr></tbody></table>\n\nThe utility of player p in the repeated game is Σ<sub>t=0</sub><sup>∞</sup> δ<sup>t</sup> U<sub>p</sub>(a<sub>1,t</sub>, a<sub>2,t</sub>), with discount factor δ ∈ (0, 1). The state s<sub>t</sub> = ((a<sub>1,0</sub>, a<sub>2,0</sub>), …, (a<sub>1,t−1</sub>, a<sub>2,t−1</sub>)) contains all previous actions. The grim trigger strategy for P1 is\n\nπ<sub>1</sub>(s<sub>t</sub>) = 1 if t > 0 ∧ Σ<sub>i=0</sub><sup>t−1</sup> a<sub>2,i</sub> > 0, and π<sub>1</sub>(s<sub>t</sub>) = 0 otherwise,\n\ni.e. testify if the opponent has testified previously, otherwise refuse. The grim trigger strategy for P2 is defined in the same way, with a<sub>1,i</sub>.\n\nFor which discount factors δ is (grim trigger, grim trigger) a Nash equilibrium?\n\n**Select one alternative:**\n\n- A. Exactly when δ ≥ 1/4.\n- B. Exactly when δ ≥ 1/2.\n- C. For every δ ∈ (0, 1), because mutual testifying (−4, −4) is worse for both players than mutual refusing.\n- D. For no δ, because testify is a strictly dominant strategy in the stage game.\n- E. Exactly when δ ≥ 1/2, and the same holds if the game is instead repeated a fixed number of 10 rounds that both players know.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "B"
+     ]
+    },
+    "merk": "B: P1 krever δ ≥ 1/4 og P2 krever δ ≥ 1/2. Ingen av dem skal ville avvike, så δ ≥ 1/2.",
+    "kilde": "Ulikheten fra L10 regnet for hånd for begge spillere, og diskonterte summer regnet numerisk med skript for δ mellom 0,2 og 0,65."
+   },
+   "fasit": "**Svar: B.**\n\nSom i L10: sammenlign å følge grim trigger for alltid med å avvike i runde 0 og bli straffet for alltid etterpå. Å avvike i en senere runde gir samme ulikhet, ganget med δ<sup>t</sup>.\n\n**P1:** Σ<sub>t=0</sub><sup>∞</sup> δ<sup>t</sup> U<sub>1</sub>(0, 0) ≥ δ<sup>0</sup> U<sub>1</sub>(1, 0) + Σ<sub>t=1</sub><sup>∞</sup> δ<sup>t</sup> U<sub>1</sub>(1, 1)\n\n−1/(1 − δ) ≥ 0 − 4δ/(1 − δ) ⇔ −1 ≥ −4δ ⇔ **δ ≥ 1/4**\n\n**P2:** Σ<sub>t=0</sub><sup>∞</sup> δ<sup>t</sup> U<sub>2</sub>(0, 0) ≥ δ<sup>0</sup> U<sub>2</sub>(0, 1) + Σ<sub>t=1</sub><sup>∞</sup> δ<sup>t</sup> U<sub>2</sub>(1, 1)\n\n−2/(1 − δ) ≥ 0 − 4δ/(1 − δ) ⇔ −2 ≥ −4δ ⇔ **δ ≥ 1/2**\n\nNash-likevekt krever at *ingen* av spillerne tjener på å avvike, så begge ulikhetene må holde: δ ≥ 1/2.\n\n- **A – usant.** δ ≥ 1/4 sjekker bare P1. For 1/4 ≤ δ < 1/2 tjener P2 på å avvike.\n- **B – sant.** Se over.\n- **C – usant.** Dette får du hvis straffesummen starter i t = 0: −1/(1 − δ) ≥ −4/(1 − δ) holder alltid. Riktig er gevinst 0 i avviksrunden og straff først fra t = 1. For liten δ veier den ene gevinsten mer enn framtiden.\n- **D – usant.** Testify er strengt dominant i *stage game*, men i det uendelig gjentatte spillet gjør trusselen om straff samarbeid til likevekt når δ er stor nok.\n- **E – usant.** Med et fast, kjent antall runder gir backward induction at begge testifier i siste runde, der ingen framtid kan straffe, så i nest siste, og så videre. Grim trigger er da ikke Nash-likevekt for noen δ: å testify i runde 10 gir P1 0 i stedet for −1, uten straff.\n\nVanlig feil: å bare sjekke én spiller, eller å la straffesummen starte i t = 0.\n\n*Kilde: egen oppgave; L10 (grim trigger og δ-betingelsen) og notatet til E10.*"
+  },
+  {
+   "t": "Oppgave 5 (8 p): Uninformed Search",
+   "d": "Consider the undirected graph shown below, where **S** is the start state and **G** is the goal state. The numbers on the edges are the action costs.\n\nUse **graph search**: a reached table, and a node is added to the frontier again only if a cheaper path to it is found. Tie breaking: alphabetical order. Breadth-First Search tests for the goal when a node is generated (early goal test), as in the textbook. Uniform Cost Search tests for the goal when a node is selected for expansion (late goal test).\n\n- **a)** Run Breadth-First Search (BFS). Give the expansion order (with the goal in parentheses at the end), the path found and its cost. (2 pts.)\n- **b)** Run Uniform Cost Search (UCS). Give the frontier with path costs after each expansion, the expansion order, the path found and its cost. (4 pts.)\n- **c)** Suppose UCS instead used the early goal test of BFS. Which path would it return, and what would it cost? Explain why the early goal test costs BFS nothing when all actions have the same cost, but makes UCS non-optimal. (2 pts.)",
+   "g": {
+    "w": 520,
+    "h": 360,
+    "al": "Graf til oppgave 5",
+    "n": {
+     "S": [
+      40,
+      170,
+      "",
+      0,
+      0
+     ],
+     "A": [
+      180,
+      40,
+      "",
+      0,
+      0
+     ],
+     "B": [
+      150,
+      190,
+      "",
+      0,
+      0
+     ],
+     "C": [
+      150,
+      310,
+      "",
+      0,
+      0
+     ],
+     "D": [
+      250,
+      250,
+      "",
+      0,
+      0
+     ],
+     "E": [
+      330,
+      190,
+      "",
+      0,
+      0
+     ],
+     "F": [
+      350,
+      320,
+      "",
+      0,
+      0
+     ],
+     "G": [
+      470,
+      190,
+      "",
+      0,
+      0,
+      1
+     ]
+    },
+    "e": [
+     [
+      "S",
+      "A",
+      4,
+      1
+     ],
+     [
+      "S",
+      "B",
+      1,
+      1
+     ],
+     [
+      "S",
+      "C",
+      5,
+      1
+     ],
+     [
+      "A",
+      "D",
+      3,
+      1
+     ],
+     [
+      "A",
+      "G",
+      10,
+      1
+     ],
+     [
+      "B",
+      "D",
+      2,
+      1
+     ],
+     [
+      "C",
+      "F",
+      4,
+      1
+     ],
+     [
+      "D",
+      "E",
+      2,
+      -1
+     ],
+     [
+      "D",
+      "F",
+      5,
+      1
+     ],
+     [
+      "D",
+      "G",
+      9,
+      1
+     ],
+     [
+      "E",
+      "G",
+      4,
+      -1
+     ],
+     [
+      "F",
+      "G",
+      2,
+      1
+     ]
+    ]
+   },
+   "f": [
+    [
+     "a) BFS: expansion order",
+     "text",
+     "S, …, (G)"
+    ],
+    [
+     "a) BFS: path",
+     "text",
+     "S, …, G"
+    ],
+    [
+     "a) BFS: cost",
+     "text"
+    ],
+    [
+     "b) UCS: frontier after each expansion",
+     "area",
+     "S: …\n…"
+    ],
+    [
+     "b) UCS: expansion order",
+     "text",
+     "S, …, (G)"
+    ],
+    [
+     "b) UCS: path",
+     "text",
+     "S, …, G"
+    ],
+    [
+     "b) UCS: cost",
+     "text"
+    ],
+    [
+     "c) Path with early goal test",
+     "text",
+     "S, …, G"
+    ],
+    [
+     "c) Cost with early goal test",
+     "text"
+    ],
+    [
+     "c) Why",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) BFS: expansion order": [
+      "S, A, (G)",
+      "S, A"
+     ],
+     "a) BFS: path": [
+      "S, A, G"
+     ],
+     "a) BFS: cost": [
+      "14"
+     ],
+     "b) UCS: expansion order": [
+      "S, B, D, A, C, E, F, (G)",
+      "S, B, D, A, C, E, F"
+     ],
+     "b) UCS: path": [
+      "S, B, D, E, G"
+     ],
+     "b) UCS: cost": [
+      "9"
+     ],
+     "c) Path with early goal test": [
+      "S, B, D, G"
+     ],
+     "c) Cost with early goal test": [
+      "12"
+     ]
+    },
+    "merk": "BFS stopper når G genereres fra A. UCS må vente til G9 tas ut; med tidlig test stopper den på G12 fra D.",
+    "kilde": "Motoren (bfs og ucs, graph search, alfabetisk) og eget Python-skript med Fig. 3.7/3.9."
+   },
+   "fasit": "**a) BFS: S, A, (G). Sti S → A → G, kostnad 14.**\n\nBFS ekspanderer S og legger A, B og C i frontier. Så ekspanderes A: D legges inn, og G genereres og er mål. Med early goal test stopper BFS her. Sti S–A–G = 4 + 10 = 14.\n\n**b) UCS: S, B, D, A, C, E, F, (G). Sti S → B → D → E → G, kostnad 9.**\n\n| Ekspanderer | Frontier etterpå (g) | Merknad |\n|---|---|---|\n| S (0) | B 1, A 4, C 5 | |\n| B (1) | D 3, A 4, C 5 | |\n| D (3) | A 4, C 5, E 5, F 8, G 12 | A via D koster 6 > 4 |\n| A (4) | C 5, E 5, F 8, G 12 | G via A koster 14 > 12 |\n| C (5) | E 5, F 8, G 12 | C før E ved likhet; F via C koster 9 > 8 |\n| E (5) | F 8, G 9 | G via E koster 9 < 12 og erstatter |\n| F (8) | G 9 | G via F koster 10 > 9 |\n| G (9) | | mål når den tas ut |\n\n**c) Med early goal test: S → B → D → G, kostnad 12.**\n\nUCS ekspanderer S og B. Når D ekspanderes, genereres G med kostnad 12, og en tidlig test stopper søket der, selv om S–B–D–E–G koster 9. Når alle handlinger koster det samme, er den første målnoden BFS genererer også den grunneste og dermed billigste, så tidlig test sparer bare arbeid. UCS må vente til G tas ut av frontier: først da er g(G) den minste kostnaden blant alle stier som gjenstår.\n\nPoeng: a) 2 (1 for rekkefølgen, 1 for sti og kostnad). b) 4 (2 for frontier per steg, 1 for rekkefølgen, 1 for sti og kostnad). c) 2 (1 for sti og kostnad, 1 for forklaringen).\n\nVanlig feil: å la UCS stoppe når G først havner i frontier (G 12), eller å oppdatere A via D.\n\n*Kilde: egen oppgave; kontrollert med motoren (bfs, ucs) og eget skript.*"
+  },
+  {
+   "t": "Oppgave 6 (12 p): Informed Search",
+   "d": "Consider the directed graph shown below with start state **S** and goal state **G**. The heuristic value h(n) is written next to each node; h is admissible and consistent. Tie breaking: alphabetical order in all parts.\n\n**a)** Decide for each of the statements 1–4 below whether it is true or false. (2 pts.)\n\n**b)** Run A\\* with graph search (reached table, late goal test). Give the expansion order (with the goal in parentheses), the path found and its cost. (4 pts.)\n\n**c)** Beam search with beam width k is here defined as A\\* (same f = g + h, reached table and late goal test), except that after each expansion only the k frontier nodes with the lowest f are kept; the others are discarded. Run beam search with k = 2. Give the frontier after each expansion, the path found and its cost. Is the path optimal? (3 pts.)\n\n**d)** Run IDA\\*: a depth-first search that cuts off every node with f = g + h greater than the current limit, visits children in alphabetical order and has no reached table. The first limit is f(S), and each new limit is the smallest f-value that exceeded the previous limit. The goal test is done when a node is visited with f within the limit. Give the f-limit of each iteration and the path returned. (3 pts.)",
+   "g": {
+    "w": 530,
+    "h": 330,
+    "dir": 1,
+    "al": "Graf til oppgave 6",
+    "n": {
+     "S": [
+      40,
+      170,
+      "h=8",
+      0,
+      -24
+     ],
+     "A": [
+      170,
+      50,
+      "h=7",
+      0,
+      -24
+     ],
+     "B": [
+      170,
+      170,
+      "h=6",
+      0,
+      -24
+     ],
+     "C": [
+      170,
+      290,
+      "h=5",
+      0,
+      -24
+     ],
+     "D": [
+      300,
+      130,
+      "h=5",
+      0,
+      30
+     ],
+     "E": [
+      410,
+      50,
+      "h=4",
+      0,
+      -24
+     ],
+     "F": [
+      330,
+      270,
+      "h=3",
+      0,
+      -24
+     ],
+     "G": [
+      480,
+      190,
+      "h=0",
+      0,
+      30,
+      1
+     ]
+    },
+    "e": [
+     [
+      "S",
+      "A",
+      2,
+      1
+     ],
+     [
+      "S",
+      "B",
+      3,
+      1
+     ],
+     [
+      "S",
+      "C",
+      5,
+      1
+     ],
+     [
+      "A",
+      "D",
+      4,
+      1
+     ],
+     [
+      "A",
+      "E",
+      6,
+      1
+     ],
+     [
+      "B",
+      "D",
+      2,
+      1
+     ],
+     [
+      "B",
+      "F",
+      7,
+      1
+     ],
+     [
+      "C",
+      "F",
+      2,
+      1
+     ],
+     [
+      "D",
+      "E",
+      1,
+      1
+     ],
+     [
+      "D",
+      "G",
+      8,
+      1
+     ],
+     [
+      "E",
+      "G",
+      5,
+      1
+     ],
+     [
+      "F",
+      "G",
+      3,
+      1
+     ]
+    ]
+   },
+   "tf": [
+    "1. Beam search with beam width k = 2 is complete on every finite graph in which a path to the goal exists.",
+    "2. Between two iterations, IDA* keeps only a single number in memory: the f-cost limit for the next iteration.",
+    "3. RBFS is optimal if h is admissible, and its memory use is linear in the depth of the deepest optimal solution.",
+    "4. If more memory is available, RBFS uses it to keep forgotten subtrees and thereby avoids regenerating nodes."
+   ],
+   "f": [
+    [
+     "b) A*: expansion order",
+     "text",
+     "S, …, (G)"
+    ],
+    [
+     "b) A*: path",
+     "text",
+     "S, …, G"
+    ],
+    [
+     "b) A*: cost",
+     "text"
+    ],
+    [
+     "c) Beam k = 2: frontier after each expansion",
+     "area",
+     "S: …\n…"
+    ],
+    [
+     "c) Beam: path",
+     "text",
+     "S, …, G"
+    ],
+    [
+     "c) Beam: cost",
+     "text"
+    ],
+    [
+     "c) Optimal? (yes/no)",
+     "text"
+    ],
+    [
+     "d) IDA*: f-limits",
+     "text",
+     "…, …, …"
+    ],
+    [
+     "d) IDA*: path",
+     "text",
+     "S, …, G"
+    ]
+   ],
+   "sjekk": {
+    "tf": [
+     "usant",
+     "sant",
+     "sant",
+     "usant"
+    ],
+    "f": {
+     "b) A*: expansion order": [
+      "S, A, B, C, D, E, F, (G)",
+      "S, A, B, C, D, E, F"
+     ],
+     "b) A*: path": [
+      "S, C, F, G"
+     ],
+     "b) A*: cost": [
+      "10"
+     ],
+     "c) Beam: path": [
+      "S, B, D, E, G"
+     ],
+     "c) Beam: cost": [
+      "11"
+     ],
+     "c) Optimal? (yes/no)": [
+      "no",
+      "nei"
+     ],
+     "d) IDA*: f-limits": [
+      "8, 9, 10"
+     ],
+     "d) IDA*: path": [
+      "S, C, F, G"
+     ]
+    },
+    "merk": "A* finner S–C–F–G (10). Beam med k = 2 kaster C i første steg og ender på S–B–D–E–G (11). IDA* bruker grensene 8, 9 og 10.",
+    "kilde": "Påstandene: boka 3.5.5. A*: motoren (astar) og eget skript. Beam og IDA*: to egne skript, beam med og uten kastede noder i reached (samme svar)."
+   },
+   "fasit": "**a) 1 usant, 2 sant, 3 sant, 4 usant.**\n\n1. **Usant.** Beam search kaster noder for å holde frontier liten, og boka sier at det gjør søket ufullstendig og suboptimalt.\n2. **Sant.** Mellom iterasjonene husker IDA\\* bare ett tall: den nye f-grensen.\n3. **Sant.** RBFS er optimal med admissible h og bruker minne lineært i dybden til den dypeste optimale løsningen.\n4. **Usant.** RBFS bruker bare lineært minne og kan ikke utnytte mer, selv om det finnes. Derfor regenererer den noder (SMA\\* er bokas svar på det).\n\n**b) A\\*: S, A, B, C, D, E, F, (G). Sti S → C → F → G, kostnad 10.**\n\n| Ekspanderer (f) | Frontier etterpå, g/f | Merknad |\n|---|---|---|\n| S (8) | A 2/9, B 3/9, C 5/10 | |\n| A (9) | B 3/9, C 5/10, D 6/11, E 8/12 | |\n| B (9) | C 5/10, D 5/10, E 8/12, F 10/13 | D: 5 < 6, erstattes |\n| C (10) | D 5/10, F 7/10, E 8/12 | F: 7 < 10, erstattes |\n| D (10) | E 6/10, F 7/10, G 13/13 | E: 6 < 8, erstattes |\n| E (10) | F 7/10, G 11/11 | G: 11 < 13 |\n| F (10) | G 10/10 | G: 10 < 11 |\n| G (10) | | mål når den tas ut |\n\nMange noder har f = 10, og alfabetisk tie-break gir rekkefølgen C, D, E, F.\n\n**c) Beam med k = 2: S → B → D → E → G, kostnad 11. Ikke optimal (optimum er 10).**\n\n| Ekspanderer | Frontier før kutt (f) | Beholdes |\n|---|---|---|\n| S | A 9, B 9, C 10 | A 9, B 9 |\n| A | B 9, D 11, E 12 | B 9, D 11 |\n| B | D 10, F 13 | D 10, F 13 |\n| D | E 10, F 13, G 13 | E 10, F 13 |\n| E | G 11, F 13 | G 11, F 13 |\n| G (11) | | mål |\n\nC (f = 10) kastes i første steg, og med den den optimale stien S–C–F–G. G 13 kastes ved likhet med F 13 (alfabetisk). Beholder du G 13 i stedet, blir svaret det samme, fordi E gir G 11.\n\n**d) IDA\\*: grensene 8, 9 og 10. Sti S → C → F → G (kostnad 10).**\n\n- Grense 8: bare S (f = 8). A (9), B (9) og C (10) kuttes. Minste f over grensen: 9.\n- Grense 9: S, A og B besøkes. D (11) og E (12) under A, D (10) og F (13) under B, og C (10) kuttes. Ny grense: 10.\n- Grense 10: S, A (begge barna kuttes), B, D, E (G via E har f = 11 og kuttes), C, F og G. G har f = 10 ≤ 10 og er mål.\n\nPoeng: a) 0,5 per påstand. b) 4 (2 for rekkefølgen med riktige oppdateringer, 2 for sti og kostnad). c) 3 (2 for sporingen, 1 for sti, kostnad og «ikke optimal»). d) 3 (2 for grensene, 1 for stien).\n\nVanlig feil: å bruke h alene (greedy) i stedet for f = g + h, eller å kutte frontier før de nye barna er lagt inn.\n\n*Kilde: egen oppgave; boka 3.5.5; kontrollert med motoren (astar) og egne skript for beam search og IDA\\*.*"
+  },
+  {
+   "t": "Oppgave 7 (10 p): Constraint Satisfaction Problems",
+   "d": "Consider the cryptarithmetic puzzle\n\n```\n    T O\n  + G O\n  -----\n  O U T\n```\n\nEach letter stands for a distinct digit, and the leading digits T, G and O cannot be 0. We model it as a CSP with the letter variables T, O, G, U and two carry variables: C1 (from the units column) and C2 (from the tens column). The constraints are\n\n1. O + O = T + 10 · C1\n2. C1 + T + G = U + 10 · C2\n3. C2 = O\n4. Alldiff(T, O, G, U)\n\n- **a)** Give the domain of each of the six variables. Why are the carry variables C1 and C2 introduced? What would the model look like without them, and why would that be worse for constraint propagation? (3 pts.)\n- **b)** Solve the CSP with backtracking search and forward checking. Choose variables with MRV, breaking ties alphabetically (C1, C2, G, O, T, U), and try values in increasing order. Forward checking works as follows: after an assignment X = v, (i) if X is a letter, v is removed from the domains of the unassigned letters (Alldiff), and (ii) for each of the constraints 1–3 that contains X and now has **exactly one** unassigned variable Y, the values of Y that violate the constraint are removed. An assignment that leaves an empty domain is rejected. List the assignments in the order they are tried, mark the rejected ones, and give the domains after each accepted assignment. (5 pts.)\n- **c)** Give the solution as an addition with digits, and the number of rejected assignments. (2 pts.)",
+   "f": [
+    [
+     "a) Domains",
+     "area",
+     "T ∈ …"
+    ],
+    [
+     "a) Why carry variables?",
+     "area"
+    ],
+    [
+     "b) Assignments in order (mark the rejected ones)",
+     "area",
+     "C1 = 0: …\n…"
+    ],
+    [
+     "b) D(T) right after O = 1",
+     "text",
+     "{…}"
+    ],
+    [
+     "b) Values tried for G, in order",
+     "text",
+     "…, …"
+    ],
+    [
+     "c) Solution",
+     "text",
+     "TO + GO = OUT with digits"
+    ],
+    [
+     "c) Number of rejected assignments",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "b) D(T) right after O = 1": [
+      "{2}"
+     ],
+     "b) Values tried for G, in order": [
+      "3, 4, 5, 6, 7, 8"
+     ],
+     "c) Solution": [
+      "21 + 81 = 102",
+      "21+81=102"
+     ],
+     "c) Number of rejected assignments": [
+      "6"
+     ]
+    },
+    "merk": "Rekkefølgen er C1 = 0, C2 = 0 (forkastet), C2 = 1, O = 1, T = 2, G = 3–7 (forkastet), G = 8, U = 0.",
+    "kilde": "Eget forward checking-skript med MRV og alfabetisk likhet, og brute force over alle sifre (eneste løsning). Motorens backtracking tar bare binære constraints."
+   },
+   "fasit": "**a) Domener:** T, O, G ∈ {1, …, 9} (ledende sifre), U ∈ {0, …, 9}, C1, C2 ∈ {0, 1}.\n\nUten mente-variabler må hele summen være én constraint over alle fire bokstavene: (10T + O) + (10G + O) = 100O + 10U + T. Forward checking slik den er definert i b) beskjærer med en constraint bare når nøyaktig én variabel i den er utilordnet, så den store constrainten slår først inn når tre av fire bokstaver har verdi. Generalized arc consistency kan i prinsippet fjerne verdier tidligere (hver verdi uten en støttende tuple), men hver støttesjekk må lete gjennom kombinasjoner av de tre andre bokstavene, opptil 10³, så propageringen blir dyr. C1 og C2 deler summen i små constraints per kolonne. Der slår forward checking inn tidlig, og arc consistency er billig: allerede før første tilordning fjerner constraint 3 verdien C2 = 0, siden 0 ∉ D(O). Constraint 3 sier at menten fra tierkolonnen er sifferet i hundrekolonnen.\n\n**b) Sporing (MRV, alfabetisk ved likhet, minste verdi først):**\n\n| Tilordning | Forward checking | Domener etterpå |\n|---|---|---|\n| C1 = 0 | 1 og 2 har flere utilordnede: ingenting | uendret |\n| C2 = 0 | 3: O = 0, men 0 ∉ D(O) | **D(O) = {}: forkastet** |\n| C2 = 1 | 3: O = 1 | O {1} |\n| O = 1 | Alldiff fjerner 1. 1: 2 = T + 0, så T = 2 | T {2}, G {2, …, 9}, U {0, 2, …, 9} |\n| T = 2 | Alldiff fjerner 2. 2 har G og U utilordnet | G {3, …, 9}, U {0, 3, …, 9} |\n| G = 3 | 2: 0 + 2 + 3 = U + 10 gir U = −5 | **D(U) = {}: forkastet** |\n| G = 4, 5, 6, 7 | U = −4, −3, −2, −1 | **forkastet hver gang** |\n| G = 8 | Alldiff fjerner 8. 2: 10 = U + 10, så U = 0 | U {0} |\n| U = 0 | alle er tilordnet | løsning |\n\nVariabelvalget: først C1 og C2 (to verdier hver, C1 først alfabetisk), så O (én verdi), T (én verdi), og G (7 verdier) før U (8 verdier).\n\n**c) 21 + 81 = 102** (T = 2, O = 1, G = 8, U = 0, C1 = 0, C2 = 1). **6 forkastede tilordninger:** C2 = 0 og G = 3, 4, 5, 6, 7. Ingen backtracking over flere nivåer trengs.\n\nPoeng: a) 3 (1,5 for domenene, 1,5 for begrunnelsen). b) 5 (3 for rekkefølgen med forkastelser, 2 for domenene). c) 2.\n\nVanlig feil: å gi U domenet {1, …, 9} (U er ikke et ledende siffer), eller å beskjære med en constraint som fortsatt har to utilordnede variabler.\n\n*Kilde: egen oppgave; boka 5.1–5.3 og notatet til E07.*"
+  },
+  {
+   "t": "Oppgave 8 (10 p): Adversarial Search",
+   "d": "Consider the game tree shown below. MAX moves at the root A. B, C and D are chance nodes, with the probability of each outcome on the edge. E–K are MIN nodes, and the leaves (e1–k2) are terminal states with their utilities. All utilities lie in the interval [0, 10].\n\n- **a)** Compute the expectiminimax value of every inner node. Which move should MAX choose at A? (4 pts.)\n- **b)** The chance nodes B, C and D are evaluated from left to right, and MAX remembers α, the best value found so far at A. A chance node evaluates its children from left to right, and after each child it computes an upper bound on its own value by assuming that every child not yet evaluated has the maximum utility 10. As soon as this bound is ≤ α, the chance node stops, and its remaining children are pruned. MIN nodes are always evaluated completely. Which nodes are never evaluated, and what is the upper bound of the chance node that stops early, at the moment it stops? (4 pts.)\n- **c)** Why does pruning below chance nodes require bounds on the utility values? What happens if the leaf values can be arbitrarily large? (2 pts.)",
+   "tre": {
+    "id": "A",
+    "type": "max",
+    "tekst": "A",
+    "barn": [
+     {
+      "id": "B",
+      "type": "sjanse",
+      "tekst": "B",
+      "barn": [
+       {
+        "id": "E",
+        "type": "min",
+        "tekst": "E",
+        "p": 0.5,
+        "barn": [
+         {
+          "id": "e1",
+          "type": "blad",
+          "tekst": "e1",
+          "verdi": 6
+         },
+         {
+          "id": "e2",
+          "type": "blad",
+          "tekst": "e2",
+          "verdi": 8
+         }
+        ]
+       },
+       {
+        "id": "F",
+        "type": "min",
+        "tekst": "F",
+        "p": 0.5,
+        "barn": [
+         {
+          "id": "f1",
+          "type": "blad",
+          "tekst": "f1",
+          "verdi": 2
+         },
+         {
+          "id": "f2",
+          "type": "blad",
+          "tekst": "f2",
+          "verdi": 7
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "id": "C",
+      "type": "sjanse",
+      "tekst": "C",
+      "barn": [
+       {
+        "id": "G",
+        "type": "min",
+        "tekst": "G",
+        "p": 0.6,
+        "barn": [
+         {
+          "id": "g1",
+          "type": "blad",
+          "tekst": "g1",
+          "verdi": 5
+         },
+         {
+          "id": "g2",
+          "type": "blad",
+          "tekst": "g2",
+          "verdi": 9
+         }
+        ]
+       },
+       {
+        "id": "H",
+        "type": "min",
+        "tekst": "H",
+        "p": 0.4,
+        "barn": [
+         {
+          "id": "h1",
+          "type": "blad",
+          "tekst": "h1",
+          "verdi": 8
+         },
+         {
+          "id": "h2",
+          "type": "blad",
+          "tekst": "h2",
+          "verdi": 7
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "id": "D",
+      "type": "sjanse",
+      "tekst": "D",
+      "barn": [
+       {
+        "id": "I",
+        "type": "min",
+        "tekst": "I",
+        "p": 0.5,
+        "barn": [
+         {
+          "id": "i1",
+          "type": "blad",
+          "tekst": "i1",
+          "verdi": 6
+         },
+         {
+          "id": "i2",
+          "type": "blad",
+          "tekst": "i2",
+          "verdi": 9
+         }
+        ]
+       },
+       {
+        "id": "J",
+        "type": "min",
+        "tekst": "J",
+        "p": 0.3,
+        "barn": [
+         {
+          "id": "j1",
+          "type": "blad",
+          "tekst": "j1",
+          "verdi": 1
+         },
+         {
+          "id": "j2",
+          "type": "blad",
+          "tekst": "j2",
+          "verdi": 4
+         }
+        ]
+       },
+       {
+        "id": "K",
+        "type": "min",
+        "tekst": "K",
+        "p": 0.2,
+        "barn": [
+         {
+          "id": "k1",
+          "type": "blad",
+          "tekst": "k1",
+          "verdi": 10
+         },
+         {
+          "id": "k2",
+          "type": "blad",
+          "tekst": "k2",
+          "verdi": 8
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "f": [
+    [
+     "a) Value of B",
+     "text"
+    ],
+    [
+     "a) Value of C",
+     "text"
+    ],
+    [
+     "a) Value of D",
+     "text"
+    ],
+    [
+     "a) Value of A",
+     "text"
+    ],
+    [
+     "a) Best move at A",
+     "text"
+    ],
+    [
+     "a) Values of the MIN nodes and calculation",
+     "area",
+     "E = …, F = …"
+    ],
+    [
+     "b) Nodes never evaluated",
+     "text",
+     "{…}"
+    ],
+    [
+     "b) Upper bound when the chance node stops",
+     "text"
+    ],
+    [
+     "b) Steps",
+     "area"
+    ],
+    [
+     "c) Why bounds?",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Value of B": [
+      "4"
+     ],
+     "a) Value of C": [
+      "5.8"
+     ],
+     "a) Value of D": [
+      "4.9"
+     ],
+     "a) Value of A": [
+      "5.8"
+     ],
+     "a) Best move at A": [
+      "C"
+     ],
+     "b) Nodes never evaluated": [
+      "{K, k1, k2}"
+     ],
+     "b) Upper bound when the chance node stops": [
+      "5.3"
+     ]
+    },
+    "merk": "B = 4, C = 5,8, D = 4,9, så MAX velger C. D stopper etter J med grensen 3 + 0,3 + 2 = 5,3 ≤ 5,8, så K beskjæres.",
+    "kilde": "Motoren (expectiminimax) for verdiene; eget skript for grensene ved sjansenodene."
+   },
+   "fasit": "**a) B = 4, C = 5,8, D = 4,9 og A = 5,8. MAX velger C.**\n\n- MIN-nodene: E = min(6, 8) = 6, F = min(2, 7) = 2, G = min(5, 9) = 5, H = min(8, 7) = 7, I = min(6, 9) = 6, J = min(1, 4) = 1, K = min(10, 8) = 8.\n- B = 0,5 · 6 + 0,5 · 2 = 4.\n- C = 0,6 · 5 + 0,4 · 7 = 5,8.\n- D = 0,5 · 6 + 0,3 · 1 + 0,2 · 8 = 4,9.\n- A = max(4; 5,8; 4,9) = 5,8, altså trekket til C.\n\n**b) K og bladene k1 og k2 evalueres aldri. D stopper med øvre grense 5,3.**\n\n- B: etter E = 6 er grensen 0,5 · 6 + 0,5 · 10 = 8. Etter F = 2 er B = 4. Nå er α = 4.\n- C: etter G = 5 er grensen 0,6 · 5 + 0,4 · 10 = 7 > 4, så C fortsetter. Etter H = 7 er C = 5,8. Nå er α = 5,8.\n- D: etter I = 6 er grensen 0,5 · 6 + 0,5 · 10 = 8 > 5,8, så D fortsetter. Etter J = 1 er grensen 3 + 0,3 + 0,2 · 10 = 5,3 ≤ 5,8. D kan ikke slå C, så K med bladene k1 og k2 beskjæres.\n\nRotverdien og trekket blir det samme som i a).\n\n**c)** Verdien til en sjansenode er et vektet gjennomsnitt av barna. Et barn som ikke er sett, kan dra snittet vilkårlig høyt, så uten en øvre grense på nyttene finnes ingen øvre grense på snittet, og ingenting kan kuttes. Med nytter i [0, 10] er (det som er sett) + (resten av sannsynligheten) · 10 en øvre grense. Er bladverdiene ubegrensede, må alle barna til en sjansenode evalueres.\n\nPoeng: a) 4 (2 for MIN-nodene, 1 for sjansenodene, 1 for rotverdi og trekk). b) 4 (2 for grensene underveis, 1 for K, 1 for 5,3). c) 2.\n\nVanlig feil: å regne barn som allerede er evaluert, med grensen 10, eller å tro at sjansenoder kan beskjæres uten grenser på nyttene.\n\n*Kilde: egen oppgave; boka 6.5.1 og notatet til E09.*"
+  },
+  {
+   "t": "Oppgave 9 (5 p): Backward Chaining",
+   "d": "You can answer this question on handwritten sheets.\n\nConsider the following knowledge base KB of definite clauses:\n\n1. P ∧ B ⇒ Q\n2. G ⇒ B\n3. B ⇒ G\n4. C ∧ D ⇒ Q\n5. E ⇒ C\n6. Q ⇒ D\n7. C ∧ F ⇒ D\n8. H ⇒ P\n9. E ∧ H ⇒ K\n10. E\n11. F\n12. H\n\nUse backward chaining to decide whether KB ⊨ Q. For a goal, the rules with the goal as conclusion are tried in the order they are listed, and the premises of a rule are proved from left to right. A goal that is a fact succeeds immediately. A goal that is already on the current chain of goals being proved fails at once (loop check). Proved goals are not cached: a goal that comes up again is proved again.\n\n- **a)** List every goal in the order backward chaining considers it, including goals that fail because of the loop check (a goal may appear several times). Is Q entailed? (3 pts.)\n- **b)** Which rule finally proves D? (1 pt.)\n- **c)** Name a proposition symbol that is entailed by KB but never considered by backward chaining in this query, and explain why. (1 pt.)",
+   "f": [
+    [
+     "a) Goals in order",
+     "text",
+     "Q, …"
+    ],
+    [
+     "a) KB ⊨ Q? (yes/no)",
+     "text"
+    ],
+    [
+     "b) Rule that proves D",
+     "text"
+    ],
+    [
+     "c) Symbol",
+     "text"
+    ],
+    [
+     "c) Why",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Goals in order": [
+      "Q, P, H, B, G, B, C, E, D, Q, C, E, F"
+     ],
+     "a) KB ⊨ Q? (yes/no)": [
+      "yes",
+      "ja"
+     ],
+     "b) Rule that proves D": [
+      "7"
+     ],
+     "c) Symbol": [
+      "K"
+     ]
+    },
+    "merk": "Regel 1 feiler fordi B → G → B er en løkke. Regel 4 lykkes: C fra E, og D fra regel 7 etter at regel 6 (Q ⇒ D) stoppes av loop check.",
+    "kilde": "Motoren (backward-chaining, regler i KB-rekkefølge og loop check) og for hånd."
+   },
+   "fasit": "**a) Q, P, H, B, G, B, C, E, D, Q, C, E, F. Ja, KB ⊨ Q.**\n\n1. **Q**: prøver regel 1 (P ∧ B).\n2. **P**: regel 8 (H).\n3. **H**: fakta, så P er bevist.\n4. **B**: regel 2 (G).\n5. **G**: regel 3 (B).\n6. **B**: ligger allerede på kjeden Q, B, G. Løkke, feiler. Da feiler G, B og regel 1, og Q prøver regel 4 (C ∧ D).\n7. **C**: regel 5 (E).\n8. **E**: fakta, så C er bevist.\n9. **D**: regel 6 (Q).\n10. **Q**: ligger på kjeden. Løkke, feiler, så D prøver regel 7 (C ∧ F).\n11. **C**: regel 5 igjen (ingen caching).\n12. **E**: fakta, så C er bevist.\n13. **F**: fakta. D er bevist med regel 7, og dermed Q med regel 4.\n\n**b) Regel 7** (C ∧ F ⇒ D). Regel 6 (Q ⇒ D) stoppes av loop check, fordi Q er målet som bevises.\n\n**c) K.** K følger fra E, H og regel 9, men backward chaining er målstyrt: den ser bare på regler med det aktuelle målet som konklusjon, og ingen kjede fra Q går via K. Forward chaining, som er datastyrt, ville utledet K. G er ikke et svar, for G følger ikke fra KB.\n\nPoeng: a) 3 (2 for rekkefølgen med løkkene, 1 for «ja»). b) 1. c) 1.\n\nVanlig feil: å glemme loop check, slik at B og G går i ring, eller å tro at backward chaining utleder alt som følger.\n\n*Kilde: egen oppgave; boka 7.5.4 og notatet til E12.*"
+  },
+  {
+   "t": "Oppgave 10 (20 p): Resolution",
+   "d": "You can answer this question on handwritten sheets.\n\nA smart-home controller uses four proposition symbols: A (the alarm is armed), D (the door is locked), H (someone is home) and S (the security light is on). Its knowledge base KB consists of the sentences\n\nR1: S ⇔ (H ∧ D)<br>\nR2: A ⇒ ¬S<br>\nR3: ¬A ⇒ D<br>\nR4: H ∨ A\n\n- **a)** Use a truth table over A, D, H and S to find all models of KB. How many models does KB have? Use the truth table to decide whether KB ⊨ A ⇔ ¬S and whether KB ⊨ S ∨ ¬H. For a sentence that is not entailed, give a model of KB in which it is false. (6 pts.)\n- **b)** Convert KB to conjunctive normal form (CNF). Show the steps; you can use the formula sheet. (5 pts.)\n- **c)** Prove KB ⊨ A ⇔ ¬S with the resolution inference algorithm (proof by contradiction). Write the clauses of the negated goal in CNF, and number every resolution step with its two parent clauses. (7 pts.)\n- **d)** What would happen if you ran the resolution algorithm to try to prove S ∨ ¬H? Explain with reference to a). (2 pts.)",
+   "f": [
+    [
+     "a) Number of models",
+     "text"
+    ],
+    [
+     "a) KB ⊨ A ⇔ ¬S? (yes/no)",
+     "text"
+    ],
+    [
+     "a) KB ⊨ S ∨ ¬H? (yes/no)",
+     "text"
+    ],
+    [
+     "a) Truth table and counter-model",
+     "area"
+    ],
+    [
+     "b) CNF clauses",
+     "area"
+    ],
+    [
+     "c) Resolution proof",
+     "area"
+    ],
+    [
+     "d) Explanation",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Number of models": [
+      "4"
+     ],
+     "a) KB ⊨ A ⇔ ¬S? (yes/no)": [
+      "yes",
+      "ja"
+     ],
+     "a) KB ⊨ S ∨ ¬H? (yes/no)": [
+      "no",
+      "nei"
+     ]
+    },
+    "merk": "Modellene er (A, D, H, S) = (F, T, T, T), (T, F, F, F), (T, F, T, F) og (T, T, F, F). I alle er A og S ulike; i (T, F, T, F) er S ∨ ¬H usann.",
+    "kilde": "Motoren (tt-entails, og pl-resolusjon på klausulene beviset bruker) og eget skript med full sannhetstabell og resolusjon til metning."
+   },
+   "fasit": "**a) 4 modeller. KB ⊨ A ⇔ ¬S: ja. KB ⊨ S ∨ ¬H: nei**, med motmodellen A = T, D = F, H = T, S = F.\n\nR1 bestemmer S ut fra H og D. Radene med S ≠ H ∧ D bryter R1, så det holder å se på de 8 radene med S = H ∧ D:\n\n| A | D | H | S = H ∧ D | R2: A ⇒ ¬S | R3: ¬A ⇒ D | R4: H ∨ A | Modell? |\n|---|---|---|---|---|---|---|---|\n| F | F | F | F | T | F | F | nei |\n| F | F | T | F | T | F | T | nei |\n| F | T | F | F | T | T | F | nei |\n| F | T | T | T | T | T | T | **ja** |\n| T | F | F | F | T | T | T | **ja** |\n| T | F | T | F | T | T | T | **ja** |\n| T | T | F | F | T | T | T | **ja** |\n| T | T | T | T | F | T | T | nei |\n\nI alle fire modellene har A og S ulik verdi, så A ⇔ ¬S følger. I modellen A = T, D = F, H = T, S = F er S ∨ ¬H usann, så den følger ikke.\n\n**b) CNF:**\n\n- R1: S ⇔ (H ∧ D) ≡ (¬S ∨ (H ∧ D)) ∧ (¬(H ∧ D) ∨ S) ≡ (¬S ∨ H) ∧ (¬S ∨ D) ∧ (¬H ∨ ¬D ∨ S)\n- R2: A ⇒ ¬S ≡ ¬A ∨ ¬S\n- R3: ¬A ⇒ D ≡ A ∨ D\n- R4: H ∨ A er allerede en klausul.\n\nKlausulene: C1 ¬S ∨ H, C2 ¬S ∨ D, C3 ¬H ∨ ¬D ∨ S, C4 ¬A ∨ ¬S, C5 A ∨ D, C6 H ∨ A.\n\n**c)** Negert mål: ¬(A ⇔ ¬S) ≡ A ⇔ S ≡ (¬A ∨ S) ∧ (A ∨ ¬S). Det gir C7 ¬A ∨ S og C8 A ∨ ¬S.\n\n| Steg | Foreldre (literal) | Resolvent |\n|---|---|---|\n| C9 | C7, C4 (S) | ¬A (¬A ∨ ¬A slås sammen) |\n| C10 | C5, C9 (A) | D |\n| C11 | C6, C9 (A) | H |\n| C12 | C3, C11 (H) | ¬D ∨ S |\n| C13 | C12, C10 (D) | S |\n| C14 | C8, C13 (S) | A |\n| C15 | C14, C9 (A) | □ |\n\nDen tomme klausulen viser at KB ∧ ¬(A ⇔ ¬S) er unsatisfiable, så KB ⊨ A ⇔ ¬S. Andre korrekte bevis gir full uttelling.\n\n**d)** Fra a) finnes en modell av KB der S ∨ ¬H er usann, så KB ∧ ¬(S ∨ ¬H), altså KB ∧ ¬S ∧ H, er satisfiable. Resolusjon er sound, så den tomme klausulen kan ikke utledes. Algoritmen fortsetter til en runde ikke gir nye klausuler, og svarer at S ∨ ¬H ikke følger. Det betyr ikke at KB ⊨ ¬(S ∨ ¬H): modellen A = F, D = T, H = T, S = T gjør S ∨ ¬H sann.\n\nPoeng: a) 6 (3 for tabellen og modellene, 1,5 per entailment-svar med begrunnelse og motmodell). b) 5 (3 for R1, 2 for resten). c) 7 (2 for negert mål i CNF, 4 for et korrekt bevis, 1 for konklusjonen). d) 2.\n\nVanlig feil: å legge til målet selv i stedet for det negerte målet, eller å kutte to komplementære par i ett steg (A ∨ ¬S med ¬A ∨ S gir bare tautologier).\n\n*Kilde: egen oppgave; boka 7.4–7.5 og notatene til E11 og E12.*"
+  },
+  {
+   "t": "Oppgave 11 (5 p): Planning",
+   "d": "A warehouse robot must carry a box from the loading area L through a door D into the storage room R. The robot does not know whether the door is open or closed. It can only sense the door when it stands next to it, in the corridor C. The actions are Pick(Box), Go(from, to), OpenDoor(D) and Place(Box, R).\n\n- **a)** Write a contingent plan that reaches the goal whatever the state of the door, using the percept of the door. Which search algorithm finds such plans, and over which kind of states does it search? (2 pts.)\n- **b)** The robot now knows that the door is closed and executes the sequential plan [Pick(Box), Go(L, C), OpenDoor(D), Go(C, R), Place(Box, R)]. Explain the difference between action monitoring and plan monitoring, using an example from this task where plan monitoring detects a problem before action monitoring does. Then give one situation where replanning will not help the robot reach the goal. (3 pts.)",
+   "f": [
+    [
+     "a) Contingent plan and search algorithm",
+     "area"
+    ],
+    [
+     "b) Action vs. plan monitoring, example, and when replanning fails",
+     "area"
+    ]
+   ],
+   "fasit": "**a)** For eksempel\n\n[Pick(Box), Go(L, C), **if** Open(D) **then** [Go(C, R), Place(Box, R)] **else** [OpenDoor(D), Go(C, R), Place(Box, R)]]\n\nPercepten Open(D) har et percept schema med precondition At(Robot, C), så grenen kan bare velges i korridoren. Slike planer finnes med **AND–OR-søk over belief states**: agenten velger handling (OR-node), og percepten velger gren (AND-node). Belief state oppdateres i to steg. Prediksjon: b̂ er unionen av de mulige etterfølgerne til alle tilstandene i b. Med en 1-CNF belief state og ubetingede effekter (11.5.1) settes hvert atom i DEL(a) til usant, altså fjernes ℓ og den negative literalen ¬ℓ legges inn, og hvert atom i ADD(a) settes til sant. Å bare fjerne ℓ ville gjort atomet ukjent. Deretter filtreres b̂ med percepten: bare tilstandene som stemmer med Open(D) eller ¬Open(D), beholdes, så den observerte literalen legges inn.\n\n**b)** **Action monitoring** sjekker bare at preconditions for *neste* handling holder før den utføres. **Plan monitoring** sjekker at *resten* av planen fortsatt kan lykkes, altså preconditions for alle gjenværende steg, unntatt dem et tidligere steg i planen selv sørger for.\n\nEksempel: roboten mister boksen under Go(L, C). Med action monitoring holder preconditions for OpenDoor(D) og Go(C, R), så roboten åpner døra og kjører inn i R. Først ved Place(Box, R) oppdager den at den ikke holder boksen, og må tilbake til korridoren. Plan monitoring sjekker allerede i C at Place(Box, R) trenger boksen, og at ingen gjenværende handling skaffer den. Den planlegger på nytt der og da: [Pick(Box), OpenDoor(D), Go(C, R), Place(Box, R)]. Plan monitoring fanger også serendipity: har noen andre allerede satt boksen i R, er målet nådd, og roboten kan stoppe.\n\nReplanning hjelper ikke ved en **dead end**, for eksempel tomt batteri langt fra laderen. Det hjelper heller ikke ved en **skjult precondition**: er døra låst og modellen vet ikke om nøkkelen, gir OpenDoor(D) samme feil hver gang. Da må agenten prøve en annen reparasjon eller lære en bedre modell.\n\nPoeng: a) 1 for planen med if–then–else på percepten, 1 for AND–OR-søk over belief states. b) 1 for forskjellen, 1 for eksempelet, 1 for et tilfelle der replanning ikke hjelper.\n\nVanlig feil: å blande action og plan monitoring, eller å tro at replanning alltid når målet.\n\n*Kilde: egen oppgave; boka 11.5 og notatet til E19.*"
+  },
+  {
+   "t": "Oppgave 12 (5 p): Natural Language Processing",
+   "d": "A hidden Markov model (HMM) tags words with two tags: N (noun or pronoun) and V (verb, including modal verbs). P(C<sub>1</sub>) is the probability of the first tag, P(C<sub>t</sub> | C<sub>t−1</sub>) is the transition model and P(W<sub>t</sub> | C<sub>t</sub>) is the sensor (emission) model:\n\n<table><thead><tr><th>P(C<sub>1</sub>)</th><th>N</th><th>V</th></tr></thead><tbody><tr><th></th><td>0.7</td><td>0.3</td></tr></tbody></table>\n\n<table><thead><tr><th>P(C<sub>t</sub> | C<sub>t−1</sub>)</th><th>C<sub>t</sub> = N</th><th>C<sub>t</sub> = V</th></tr></thead><tbody><tr><th>C<sub>t−1</sub> = N</th><td>0.7</td><td>0.3</td></tr><tr><th>C<sub>t−1</sub> = V</th><td>0.2</td><td>0.8</td></tr></tbody></table>\n\n<table><thead><tr><th>P(W<sub>t</sub> | C<sub>t</sub>)</th><th>they</th><th>can</th><th>fish</th></tr></thead><tbody><tr><th>C<sub>t</sub> = N</th><td>0.2</td><td>0.1</td><td>0.1</td></tr><tr><th>C<sub>t</sub> = V</th><td>0.1</td><td>0.2</td><td>0.2</td></tr></tbody></table>\n\nConsider the sentence **\"they can fish\"**.\n\n- **a)** Compute the joint probability P(they can fish, N N V) of the sentence together with the tag sequence N N V. (2 pts.)\n- **b)** Use the Viterbi algorithm to find the most likely tag sequence for the sentence. Give δ for both tags at every word, the back pointers, the best sequence and its joint probability P(they can fish, sequence). Is the tag of \"can\" in the best sequence the same as the tag of \"can\" in the most likely tag sequence for the two words \"they can\" alone? (3 pts.)",
+   "f": [
+    [
+     "a) P(they can fish, N N V)",
+     "text"
+    ],
+    [
+     "b) δ values and back pointers",
+     "area",
+     "they: δ(N) = …, δ(V) = …\n…"
+    ],
+    [
+     "b) Best tag sequence",
+     "text",
+     "…"
+    ],
+    [
+     "b) Its probability",
+     "text"
+    ],
+    [
+     "b) Same tag for «can»? (yes/no)",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) P(they can fish, N N V)": [
+      "0.000588",
+      "5.88e-4",
+      "5.88·10^-4"
+     ],
+     "b) Best tag sequence": [
+      "N V V"
+     ],
+     "b) Its probability": [
+      "0.001344",
+      "1.344e-3",
+      "1.344·10^-3"
+     ],
+     "b) Same tag for «can»? (yes/no)": [
+      "no",
+      "nei"
+     ]
+    },
+    "merk": "δ(can): N 0,0098 og V 0,0084. δ(fish): N 0,000686 og V 0,001344. Bakpekerne fra V ved «fish» gir N V V.",
+    "kilde": "Motoren (viterbi) og eget skript med brøker."
+   },
+   "fasit": "**a) P(they can fish, N N V) = 0,000588.**\n\nP(N) · P(they | N) · P(N | N) · P(can | N) · P(V | N) · P(fish | V) = 0,7 · 0,2 · 0,7 · 0,1 · 0,3 · 0,2 = 0,14 · 0,07 · 0,06 = 0,000588.\n\n**b) Beste sekvens N V V, med sannsynlighet 0,001344. Nei:** for «they can» alene er N N mest sannsynlig (δ(can, N) = 0,0098 > δ(can, V) = 0,0084), så «can» får N der, men V i den beste sekvensen for hele setningen.\n\n| Ord | δ(N) | bakpeker | δ(V) | bakpeker |\n|---|---|---|---|---|\n| they | 0,7 · 0,2 = 0,14 | – | 0,3 · 0,1 = 0,03 | – |\n| can | max(0,14 · 0,7; 0,03 · 0,2) · 0,1 = 0,0098 | N | max(0,14 · 0,3; 0,03 · 0,8) · 0,2 = 0,0084 | N |\n| fish | max(0,0098 · 0,7; 0,0084 · 0,2) · 0,1 = 0,000686 | N | max(0,0098 · 0,3; 0,0084 · 0,8) · 0,2 = 0,001344 | V |\n\nStørst δ ved «fish» er V (0,001344). Bakpekerne gir V ← V ← N, altså N V V. Å velge største δ separat ved hvert ord gir N N V med 0,000588. En grådig tagger som velger beste neste tagg gitt sitt eget forrige valg, gir N N N (0,7 · 0,1 = 0,07 > 0,3 · 0,2 = 0,06 både ved «can» og «fish») med 0,000686. Begge er godt under 0,001344. Posterioren P(N V V | they can fish) = 0,001344 / 0,003728 ≈ 0,36 er et annet tall og spørres ikke om her.\n\nPoeng: a) 2. b) 3 (1,5 for δ-tabellen med bakpekere, 1 for sekvens og sannsynlighet, 0,5 for «nei»).\n\nVanlig feil: å velge beste tagg ved hvert ord i stedet for å følge bakpekerne bakover fra slutten.\n\n*Kilde: egen oppgave; HMM-formelen fra L9 og notatet til E20.*"
+  },
+  {
+   "t": "Oppgave 13 (5 p): Knowledge Representation and Ethics",
+   "d": "**a)** Consider the description logic concepts (CLASSIC syntax)\n\n```\nC1 = And(Student, AtLeast(2, TakesCourse), All(TakesCourse, AICourse))\nC2 = And(Student, Employee, AtLeast(3, TakesCourse),\n         All(TakesCourse, And(AICourse, Graded)))\nC3 = And(C2, AtMost(2, TakesCourse))\n```\n\nDoes C1 subsume C2? Does C2 subsume C1? Is C3 consistent? Why do description logics such as CLASSIC leave out full negation and disjunction? (2 pts.)\n\n**b)** A university health service publishes the de-identified table below (names and student numbers are removed). Birth year, gender and postcode are quasi-identifiers; the diagnosis is the sensitive attribute.\n\n| Row | Birth year | Gender | Postcode | Diagnosis |\n|---|---|---|---|---|\n| 1 | 2003 | F | 7030 | flu |\n| 2 | 2003 | F | 7030 | asthma |\n| 3 | 2004 | M | 7034 | flu |\n| 4 | 2004 | M | 7034 | migraine |\n| 5 | 2004 | M | 7034 | flu |\n| 6 | 2003 | M | 7030 | anxiety |\n| 7 | 2003 | M | 7030 | flu |\n\n(i) For which largest k is the table k-anonymous?<br>\n(ii) The service also offers an interface that only answers aggregate queries over at least 10 students. The average number of sick days is 4.0 for the 15 students aged 20–24 and 4.25 for the 16 students aged 20–25. Exactly one student is 25. How many sick days does that student have?<br>\n(iii) Explain briefly what differential privacy guarantees, and why it protects against the attack in (ii). (3 pts.)",
+   "f": [
+    [
+     "a) Does C1 subsume C2? (yes/no)",
+     "text"
+    ],
+    [
+     "a) Does C2 subsume C1? (yes/no)",
+     "text"
+    ],
+    [
+     "a) Is C3 consistent? (yes/no)",
+     "text"
+    ],
+    [
+     "a) Why no negation and disjunction?",
+     "area"
+    ],
+    [
+     "b) (i) Largest k",
+     "text"
+    ],
+    [
+     "b) (ii) Sick days",
+     "text"
+    ],
+    [
+     "b) (iii) Differential privacy",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Does C1 subsume C2? (yes/no)": [
+      "yes",
+      "ja"
+     ],
+     "a) Does C2 subsume C1? (yes/no)": [
+      "no",
+      "nei"
+     ],
+     "a) Is C3 consistent? (yes/no)": [
+      "no",
+      "nei"
+     ],
+     "b) (i) Largest k": [
+      "2"
+     ],
+     "b) (ii) Sick days": [
+      "8"
+     ]
+    },
+    "merk": "C2 har alle kravene i C1 og flere, så C1 subsumerer C2. C3 krever minst 3 og høyst 2 kurs. Minste gruppe i tabellen har 2 rader. 16 · 4,25 − 15 · 4,0 = 8.",
+    "kilde": "Strukturell subsumption og gruppene i tabellen talt for hånd; 68 − 60 = 8 regnet med skript."
+   },
+   "fasit": "**a) C1 subsumerer C2: ja. C2 subsumerer C1: nei. C3 er ikke konsistent.**\n\nC1 subsumerer C2 hvis hvert krav i C1 følger av kravene i C2. Student står i C2, AtLeast(3, TakesCourse) gir AtLeast(2, TakesCourse), og All(TakesCourse, And(AICourse, Graded)) gir All(TakesCourse, AICourse). Omvendt mangler C1 kravene Employee, Graded og minst tre kurs, så C2 subsumerer ikke C1. C3 krever minst 3 og høyst 2 kurs, som er umulig, så C3 er inkonsistent. CLASSIC utelater full negasjon og disjunksjon for å holde subsumption tractable (polynomisk i størrelsen på beskrivelsene). Negasjon og disjunksjon krever eksponentiell kasusanalyse.\n\n**b) (i) k = 2. (ii) 8 sykedager.**\n\n(i) Gruppene over kvasi-identifikatorene er (2003, F, 7030) med rad 1–2, (2004, M, 7034) med rad 3–5 og (2003, M, 7030) med rad 6–7. k er størrelsen på den *minste* gruppen: 2. Diagnosen teller ikke.\n\n(ii) 16 · 4,25 − 15 · 4,0 = 68 − 60 = 8. To lovlige aggregatspørringer som skiller seg med én person, avslører den personen. Grensen på minst 10 studenter beskytter ikke mot slike flere spørringer.\n\n(iii) Differential privacy legger litt tilfeldig støy på svarene, slik at sannsynligheten for et svar nesten ikke endres om én person er med i databasen eller ikke: |log P(Q(D) = y) − log P(Q(D + r) = y)| ≤ ε. Da sier differansen mellom de to snittene nesten ingenting om den ene studenten. Ifølge boka holder garantien også når angriperen kan stille mange spørringer og har andre databaser å koble mot. Det forutsetter at ε gjelder hele mengden svar som gis ut. Stilles samme spørring mange ganger med uavhengig støy, kan støyen midles bort, og det samlede personverntapet vokser med antall svar. Systemet må derfor ha et samlet privacy budget for alle spørringene.\n\nPoeng: a) 0,5 per ja/nei-svar og 0,5 for tractability. b) 1 per deloppgave.\n\nVanlig feil: å regne k som den største eller typiske gruppen, eller å ta med det sensitive feltet i gruppene.\n\n*Kilde: egen oppgave; boka 10.5.3 og 28.3.2, notatene til E17 og E21.*"
+  }
+ ],
+ "fasit": "## Sensorveiledning\n\nFasiten under hver oppgave er samlet her. Poengene står til slutt i hver oppgave. Alle tall er regnet to ganger: med algoritmene i `nettside-algo` og med egne skript.\n\n### Oppgave 1 (5 p): Intelligent Agents\n\n**Svar: C.**\n\n- **A – sant.** Programmet legger den nye percepten til percept-sekvensen og slår opp med hele sekvensen som nøkkel (fig. 2.7).\n- **B – sant.** Tabellen har Σ<sub>t=1</sub><sup>T</sup> |P|<sup>t</sup> rader: 2 + 4 + 8 + 16 + 32 = 62.\n- **C – usant, og derfor svaret.** Boka sier at TABLE-DRIVEN-AGENT gjør det vi vil, så lenge tabellen er riktig fylt ut: den implementerer den ønskede agent function. Tabellen er indeksert på hele percept-sekvensen, så oppførsel som avhenger av tidligere percepts er nettopp det den kan uttrykke. Problemet er størrelsen: ingen plass til tabellen, ingen tid til å lage den, og agenten kan ikke lære alle radene selv.\n- **D – sant.** Agent program tar bare nåværende percept, mens agent function avhenger av hele historikken. Programmet må derfor huske selv.\n- **E – sant.** En model-based reflex agent oppdaterer den interne tilstanden med transition model og sensor model, men velger handling med condition–action rules, som en simple reflex agent.\n\nVanlig feil: å blande agent function (hele historikken) og agent program (nåværende percept).\n\n*Kilde: egen oppgave; boka 2.4 og notatet til E01.*\n\n### Oppgave 2 (5 p): Search in Complex Environments\n\n**Svar: C.**\n\nPREDICT er unionen av utfallene fra hver tilstand i belief state:\n\n| Belief state | Handling | Resultat |\n|---|---|---|\n| {1, 2, 3, 4} | Right | {2, 3, 4} |\n| {1, 2, 3, 4} | Dash | {2, 3, 4} |\n| {1, 2, 3, 4} | Left | {1, 2, 3} |\n| {1, 2} | Dash | {2, 3, 4} |\n| {2, 3, 4} | Dash | {3, 4} |\n| {3, 4} | Right | {4} |\n| {4} | Left | {3} |\n\n- **A – usant.** Fra 1 gir Dash {2, 3}, fra 2 gir den {3, 4}. Unionen er {2, 3, 4}.\n- **B – usant.** [Dash, Dash] gir {2, 3, 4} og så {3, 4}. Roboten kan fortsatt stå i 3.\n- **C – sant.** [Right, Right, Right, Left] gir {2, 3, 4}, {3, 4}, {4}, {3}. Kortere går ikke: {3} kan bare komme fra {4} med Left eller fra {2} med Right. {4} krever tre handlinger, og {2} krever fire (fra {1}, som selv krever tre). Et bredde-først-søk over belief states gir også lengde 4.\n- **D – usant.** C er en sensorless plan som garanterer rute 3. Ikke-determinisme gjør belief state større, men veggene krymper den igjen.\n- **E – usant.** Fra b<sub>0</sub> kan roboten nå 10 belief states: {1, 2, 3, 4}, {1, 2, 3}, {2, 3, 4}, {1, 2}, {3, 4}, {2, 3}, {1}, {2}, {3} og {4}.\n\nVanlig feil: å ta snittet i stedet for unionen i PREDICT, eller å glemme at Dash fra 3 bare kan gi 4.\n\n*Kilde: egen oppgave; boka 4.4.1 og notatet til E05.*\n\n### Oppgave 3 (5 p): Constraint Satisfaction Problems\n\n**Svar: C.**\n\nI konflikt nå: Q3–Q4 (samme rad 2) og Q3–Q5 (diagonal: to kolonner og to rader unna). Q1 og Q2 er ikke i konflikt. Antall konflikter hvis variabelen settes i hver rad:\n\n| Variabel | Rad 1 | Rad 2 | Rad 3 | Rad 4 | Rad 5 | MIN-CONFLICTS |\n|---|---|---|---|---|---|---|\n| Q3 (står i 2) | 2 | 2 | 2 | 2 | **1** | flyttes til rad 5 |\n| Q4 (står i 2) | 2 | **1** | 3 | 2 | 2 | blir i rad 2 |\n| Q5 (står i 4) | 2 | 3 | **1** | **1** | 2 | likhet mellom 3 og 4 |\n\n- **A – usant.** Q3 er med i flest konflikter, men MIN-CONFLICTS trekker variabelen *tilfeldig* blant dem som er i konflikt. Det er verdien som velges grådig, ikke variabelen.\n- **B – usant.** Q3 går til rad 5, men der står Q2. Resultatet (1, 5, 5, 2, 4) har fortsatt én konflikt.\n- **C – sant.** Rad 2 gir 1 konflikt (med Q3), alle andre rader gir minst 2. Raden variabelen står i, teller med, så Q4 blir stående, og runden endrer ingenting.\n- **D – usant.** MIN-CONFLICTS er ufullstendig. Failure etter max_steps betyr bare at den ikke fant en løsning. 5-queens har løsninger, for eksempel (1, 3, 5, 2, 4).\n- **E – usant.** Backtracking bygger en *delvis* tilordning fra den tomme tilordningen, én variabel om gangen. Å reparere en komplett tilordning er lokalt søk.\n\nVanlig feil: å tro at variabelen med flest konflikter velges, eller å glemme at raden dronningen står i, også teller.\n\n*Kilde: egen oppgave; boka 5.4 og notatet til E07.*\n\n### Oppgave 4 (5 p): Game Theory\n\n**Svar: B.**\n\nSom i L10: sammenlign å følge grim trigger for alltid med å avvike i runde 0 og bli straffet for alltid etterpå. Å avvike i en senere runde gir samme ulikhet, ganget med δ<sup>t</sup>.\n\n**P1:** Σ<sub>t=0</sub><sup>∞</sup> δ<sup>t</sup> U<sub>1</sub>(0, 0) ≥ δ<sup>0</sup> U<sub>1</sub>(1, 0) + Σ<sub>t=1</sub><sup>∞</sup> δ<sup>t</sup> U<sub>1</sub>(1, 1)\n\n−1/(1 − δ) ≥ 0 − 4δ/(1 − δ) ⇔ −1 ≥ −4δ ⇔ **δ ≥ 1/4**\n\n**P2:** Σ<sub>t=0</sub><sup>∞</sup> δ<sup>t</sup> U<sub>2</sub>(0, 0) ≥ δ<sup>0</sup> U<sub>2</sub>(0, 1) + Σ<sub>t=1</sub><sup>∞</sup> δ<sup>t</sup> U<sub>2</sub>(1, 1)\n\n−2/(1 − δ) ≥ 0 − 4δ/(1 − δ) ⇔ −2 ≥ −4δ ⇔ **δ ≥ 1/2**\n\nNash-likevekt krever at *ingen* av spillerne tjener på å avvike, så begge ulikhetene må holde: δ ≥ 1/2.\n\n- **A – usant.** δ ≥ 1/4 sjekker bare P1. For 1/4 ≤ δ < 1/2 tjener P2 på å avvike.\n- **B – sant.** Se over.\n- **C – usant.** Dette får du hvis straffesummen starter i t = 0: −1/(1 − δ) ≥ −4/(1 − δ) holder alltid. Riktig er gevinst 0 i avviksrunden og straff først fra t = 1. For liten δ veier den ene gevinsten mer enn framtiden.\n- **D – usant.** Testify er strengt dominant i *stage game*, men i det uendelig gjentatte spillet gjør trusselen om straff samarbeid til likevekt når δ er stor nok.\n- **E – usant.** Med et fast, kjent antall runder gir backward induction at begge testifier i siste runde, der ingen framtid kan straffe, så i nest siste, og så videre. Grim trigger er da ikke Nash-likevekt for noen δ: å testify i runde 10 gir P1 0 i stedet for −1, uten straff.\n\nVanlig feil: å bare sjekke én spiller, eller å la straffesummen starte i t = 0.\n\n*Kilde: egen oppgave; L10 (grim trigger og δ-betingelsen) og notatet til E10.*\n\n### Oppgave 5 (8 p): Uninformed Search\n\n**a) BFS: S, A, (G). Sti S → A → G, kostnad 14.**\n\nBFS ekspanderer S og legger A, B og C i frontier. Så ekspanderes A: D legges inn, og G genereres og er mål. Med early goal test stopper BFS her. Sti S–A–G = 4 + 10 = 14.\n\n**b) UCS: S, B, D, A, C, E, F, (G). Sti S → B → D → E → G, kostnad 9.**\n\n| Ekspanderer | Frontier etterpå (g) | Merknad |\n|---|---|---|\n| S (0) | B 1, A 4, C 5 | |\n| B (1) | D 3, A 4, C 5 | |\n| D (3) | A 4, C 5, E 5, F 8, G 12 | A via D koster 6 > 4 |\n| A (4) | C 5, E 5, F 8, G 12 | G via A koster 14 > 12 |\n| C (5) | E 5, F 8, G 12 | C før E ved likhet; F via C koster 9 > 8 |\n| E (5) | F 8, G 9 | G via E koster 9 < 12 og erstatter |\n| F (8) | G 9 | G via F koster 10 > 9 |\n| G (9) | | mål når den tas ut |\n\n**c) Med early goal test: S → B → D → G, kostnad 12.**\n\nUCS ekspanderer S og B. Når D ekspanderes, genereres G med kostnad 12, og en tidlig test stopper søket der, selv om S–B–D–E–G koster 9. Når alle handlinger koster det samme, er den første målnoden BFS genererer også den grunneste og dermed billigste, så tidlig test sparer bare arbeid. UCS må vente til G tas ut av frontier: først da er g(G) den minste kostnaden blant alle stier som gjenstår.\n\nPoeng: a) 2 (1 for rekkefølgen, 1 for sti og kostnad). b) 4 (2 for frontier per steg, 1 for rekkefølgen, 1 for sti og kostnad). c) 2 (1 for sti og kostnad, 1 for forklaringen).\n\nVanlig feil: å la UCS stoppe når G først havner i frontier (G 12), eller å oppdatere A via D.\n\n*Kilde: egen oppgave; kontrollert med motoren (bfs, ucs) og eget skript.*\n\n### Oppgave 6 (12 p): Informed Search\n\n**a) 1 usant, 2 sant, 3 sant, 4 usant.**\n\n1. **Usant.** Beam search kaster noder for å holde frontier liten, og boka sier at det gjør søket ufullstendig og suboptimalt.\n2. **Sant.** Mellom iterasjonene husker IDA\\* bare ett tall: den nye f-grensen.\n3. **Sant.** RBFS er optimal med admissible h og bruker minne lineært i dybden til den dypeste optimale løsningen.\n4. **Usant.** RBFS bruker bare lineært minne og kan ikke utnytte mer, selv om det finnes. Derfor regenererer den noder (SMA\\* er bokas svar på det).\n\n**b) A\\*: S, A, B, C, D, E, F, (G). Sti S → C → F → G, kostnad 10.**\n\n| Ekspanderer (f) | Frontier etterpå, g/f | Merknad |\n|---|---|---|\n| S (8) | A 2/9, B 3/9, C 5/10 | |\n| A (9) | B 3/9, C 5/10, D 6/11, E 8/12 | |\n| B (9) | C 5/10, D 5/10, E 8/12, F 10/13 | D: 5 < 6, erstattes |\n| C (10) | D 5/10, F 7/10, E 8/12 | F: 7 < 10, erstattes |\n| D (10) | E 6/10, F 7/10, G 13/13 | E: 6 < 8, erstattes |\n| E (10) | F 7/10, G 11/11 | G: 11 < 13 |\n| F (10) | G 10/10 | G: 10 < 11 |\n| G (10) | | mål når den tas ut |\n\nMange noder har f = 10, og alfabetisk tie-break gir rekkefølgen C, D, E, F.\n\n**c) Beam med k = 2: S → B → D → E → G, kostnad 11. Ikke optimal (optimum er 10).**\n\n| Ekspanderer | Frontier før kutt (f) | Beholdes |\n|---|---|---|\n| S | A 9, B 9, C 10 | A 9, B 9 |\n| A | B 9, D 11, E 12 | B 9, D 11 |\n| B | D 10, F 13 | D 10, F 13 |\n| D | E 10, F 13, G 13 | E 10, F 13 |\n| E | G 11, F 13 | G 11, F 13 |\n| G (11) | | mål |\n\nC (f = 10) kastes i første steg, og med den den optimale stien S–C–F–G. G 13 kastes ved likhet med F 13 (alfabetisk). Beholder du G 13 i stedet, blir svaret det samme, fordi E gir G 11.\n\n**d) IDA\\*: grensene 8, 9 og 10. Sti S → C → F → G (kostnad 10).**\n\n- Grense 8: bare S (f = 8). A (9), B (9) og C (10) kuttes. Minste f over grensen: 9.\n- Grense 9: S, A og B besøkes. D (11) og E (12) under A, D (10) og F (13) under B, og C (10) kuttes. Ny grense: 10.\n- Grense 10: S, A (begge barna kuttes), B, D, E (G via E har f = 11 og kuttes), C, F og G. G har f = 10 ≤ 10 og er mål.\n\nPoeng: a) 0,5 per påstand. b) 4 (2 for rekkefølgen med riktige oppdateringer, 2 for sti og kostnad). c) 3 (2 for sporingen, 1 for sti, kostnad og «ikke optimal»). d) 3 (2 for grensene, 1 for stien).\n\nVanlig feil: å bruke h alene (greedy) i stedet for f = g + h, eller å kutte frontier før de nye barna er lagt inn.\n\n*Kilde: egen oppgave; boka 3.5.5; kontrollert med motoren (astar) og egne skript for beam search og IDA\\*.*\n\n### Oppgave 7 (10 p): Constraint Satisfaction Problems\n\n**a) Domener:** T, O, G ∈ {1, …, 9} (ledende sifre), U ∈ {0, …, 9}, C1, C2 ∈ {0, 1}.\n\nUten mente-variabler må hele summen være én constraint over alle fire bokstavene: (10T + O) + (10G + O) = 100O + 10U + T. Forward checking slik den er definert i b) beskjærer med en constraint bare når nøyaktig én variabel i den er utilordnet, så den store constrainten slår først inn når tre av fire bokstaver har verdi. Generalized arc consistency kan i prinsippet fjerne verdier tidligere (hver verdi uten en støttende tuple), men hver støttesjekk må lete gjennom kombinasjoner av de tre andre bokstavene, opptil 10³, så propageringen blir dyr. C1 og C2 deler summen i små constraints per kolonne. Der slår forward checking inn tidlig, og arc consistency er billig: allerede før første tilordning fjerner constraint 3 verdien C2 = 0, siden 0 ∉ D(O). Constraint 3 sier at menten fra tierkolonnen er sifferet i hundrekolonnen.\n\n**b) Sporing (MRV, alfabetisk ved likhet, minste verdi først):**\n\n| Tilordning | Forward checking | Domener etterpå |\n|---|---|---|\n| C1 = 0 | 1 og 2 har flere utilordnede: ingenting | uendret |\n| C2 = 0 | 3: O = 0, men 0 ∉ D(O) | **D(O) = {}: forkastet** |\n| C2 = 1 | 3: O = 1 | O {1} |\n| O = 1 | Alldiff fjerner 1. 1: 2 = T + 0, så T = 2 | T {2}, G {2, …, 9}, U {0, 2, …, 9} |\n| T = 2 | Alldiff fjerner 2. 2 har G og U utilordnet | G {3, …, 9}, U {0, 3, …, 9} |\n| G = 3 | 2: 0 + 2 + 3 = U + 10 gir U = −5 | **D(U) = {}: forkastet** |\n| G = 4, 5, 6, 7 | U = −4, −3, −2, −1 | **forkastet hver gang** |\n| G = 8 | Alldiff fjerner 8. 2: 10 = U + 10, så U = 0 | U {0} |\n| U = 0 | alle er tilordnet | løsning |\n\nVariabelvalget: først C1 og C2 (to verdier hver, C1 først alfabetisk), så O (én verdi), T (én verdi), og G (7 verdier) før U (8 verdier).\n\n**c) 21 + 81 = 102** (T = 2, O = 1, G = 8, U = 0, C1 = 0, C2 = 1). **6 forkastede tilordninger:** C2 = 0 og G = 3, 4, 5, 6, 7. Ingen backtracking over flere nivåer trengs.\n\nPoeng: a) 3 (1,5 for domenene, 1,5 for begrunnelsen). b) 5 (3 for rekkefølgen med forkastelser, 2 for domenene). c) 2.\n\nVanlig feil: å gi U domenet {1, …, 9} (U er ikke et ledende siffer), eller å beskjære med en constraint som fortsatt har to utilordnede variabler.\n\n*Kilde: egen oppgave; boka 5.1–5.3 og notatet til E07.*\n\n### Oppgave 8 (10 p): Adversarial Search\n\n**a) B = 4, C = 5,8, D = 4,9 og A = 5,8. MAX velger C.**\n\n- MIN-nodene: E = min(6, 8) = 6, F = min(2, 7) = 2, G = min(5, 9) = 5, H = min(8, 7) = 7, I = min(6, 9) = 6, J = min(1, 4) = 1, K = min(10, 8) = 8.\n- B = 0,5 · 6 + 0,5 · 2 = 4.\n- C = 0,6 · 5 + 0,4 · 7 = 5,8.\n- D = 0,5 · 6 + 0,3 · 1 + 0,2 · 8 = 4,9.\n- A = max(4; 5,8; 4,9) = 5,8, altså trekket til C.\n\n**b) K og bladene k1 og k2 evalueres aldri. D stopper med øvre grense 5,3.**\n\n- B: etter E = 6 er grensen 0,5 · 6 + 0,5 · 10 = 8. Etter F = 2 er B = 4. Nå er α = 4.\n- C: etter G = 5 er grensen 0,6 · 5 + 0,4 · 10 = 7 > 4, så C fortsetter. Etter H = 7 er C = 5,8. Nå er α = 5,8.\n- D: etter I = 6 er grensen 0,5 · 6 + 0,5 · 10 = 8 > 5,8, så D fortsetter. Etter J = 1 er grensen 3 + 0,3 + 0,2 · 10 = 5,3 ≤ 5,8. D kan ikke slå C, så K med bladene k1 og k2 beskjæres.\n\nRotverdien og trekket blir det samme som i a).\n\n**c)** Verdien til en sjansenode er et vektet gjennomsnitt av barna. Et barn som ikke er sett, kan dra snittet vilkårlig høyt, så uten en øvre grense på nyttene finnes ingen øvre grense på snittet, og ingenting kan kuttes. Med nytter i [0, 10] er (det som er sett) + (resten av sannsynligheten) · 10 en øvre grense. Er bladverdiene ubegrensede, må alle barna til en sjansenode evalueres.\n\nPoeng: a) 4 (2 for MIN-nodene, 1 for sjansenodene, 1 for rotverdi og trekk). b) 4 (2 for grensene underveis, 1 for K, 1 for 5,3). c) 2.\n\nVanlig feil: å regne barn som allerede er evaluert, med grensen 10, eller å tro at sjansenoder kan beskjæres uten grenser på nyttene.\n\n*Kilde: egen oppgave; boka 6.5.1 og notatet til E09.*\n\n### Oppgave 9 (5 p): Backward Chaining\n\n**a) Q, P, H, B, G, B, C, E, D, Q, C, E, F. Ja, KB ⊨ Q.**\n\n1. **Q**: prøver regel 1 (P ∧ B).\n2. **P**: regel 8 (H).\n3. **H**: fakta, så P er bevist.\n4. **B**: regel 2 (G).\n5. **G**: regel 3 (B).\n6. **B**: ligger allerede på kjeden Q, B, G. Løkke, feiler. Da feiler G, B og regel 1, og Q prøver regel 4 (C ∧ D).\n7. **C**: regel 5 (E).\n8. **E**: fakta, så C er bevist.\n9. **D**: regel 6 (Q).\n10. **Q**: ligger på kjeden. Løkke, feiler, så D prøver regel 7 (C ∧ F).\n11. **C**: regel 5 igjen (ingen caching).\n12. **E**: fakta, så C er bevist.\n13. **F**: fakta. D er bevist med regel 7, og dermed Q med regel 4.\n\n**b) Regel 7** (C ∧ F ⇒ D). Regel 6 (Q ⇒ D) stoppes av loop check, fordi Q er målet som bevises.\n\n**c) K.** K følger fra E, H og regel 9, men backward chaining er målstyrt: den ser bare på regler med det aktuelle målet som konklusjon, og ingen kjede fra Q går via K. Forward chaining, som er datastyrt, ville utledet K. G er ikke et svar, for G følger ikke fra KB.\n\nPoeng: a) 3 (2 for rekkefølgen med løkkene, 1 for «ja»). b) 1. c) 1.\n\nVanlig feil: å glemme loop check, slik at B og G går i ring, eller å tro at backward chaining utleder alt som følger.\n\n*Kilde: egen oppgave; boka 7.5.4 og notatet til E12.*\n\n### Oppgave 10 (20 p): Resolution\n\n**a) 4 modeller. KB ⊨ A ⇔ ¬S: ja. KB ⊨ S ∨ ¬H: nei**, med motmodellen A = T, D = F, H = T, S = F.\n\nR1 bestemmer S ut fra H og D. Radene med S ≠ H ∧ D bryter R1, så det holder å se på de 8 radene med S = H ∧ D:\n\n| A | D | H | S = H ∧ D | R2: A ⇒ ¬S | R3: ¬A ⇒ D | R4: H ∨ A | Modell? |\n|---|---|---|---|---|---|---|---|\n| F | F | F | F | T | F | F | nei |\n| F | F | T | F | T | F | T | nei |\n| F | T | F | F | T | T | F | nei |\n| F | T | T | T | T | T | T | **ja** |\n| T | F | F | F | T | T | T | **ja** |\n| T | F | T | F | T | T | T | **ja** |\n| T | T | F | F | T | T | T | **ja** |\n| T | T | T | T | F | T | T | nei |\n\nI alle fire modellene har A og S ulik verdi, så A ⇔ ¬S følger. I modellen A = T, D = F, H = T, S = F er S ∨ ¬H usann, så den følger ikke.\n\n**b) CNF:**\n\n- R1: S ⇔ (H ∧ D) ≡ (¬S ∨ (H ∧ D)) ∧ (¬(H ∧ D) ∨ S) ≡ (¬S ∨ H) ∧ (¬S ∨ D) ∧ (¬H ∨ ¬D ∨ S)\n- R2: A ⇒ ¬S ≡ ¬A ∨ ¬S\n- R3: ¬A ⇒ D ≡ A ∨ D\n- R4: H ∨ A er allerede en klausul.\n\nKlausulene: C1 ¬S ∨ H, C2 ¬S ∨ D, C3 ¬H ∨ ¬D ∨ S, C4 ¬A ∨ ¬S, C5 A ∨ D, C6 H ∨ A.\n\n**c)** Negert mål: ¬(A ⇔ ¬S) ≡ A ⇔ S ≡ (¬A ∨ S) ∧ (A ∨ ¬S). Det gir C7 ¬A ∨ S og C8 A ∨ ¬S.\n\n| Steg | Foreldre (literal) | Resolvent |\n|---|---|---|\n| C9 | C7, C4 (S) | ¬A (¬A ∨ ¬A slås sammen) |\n| C10 | C5, C9 (A) | D |\n| C11 | C6, C9 (A) | H |\n| C12 | C3, C11 (H) | ¬D ∨ S |\n| C13 | C12, C10 (D) | S |\n| C14 | C8, C13 (S) | A |\n| C15 | C14, C9 (A) | □ |\n\nDen tomme klausulen viser at KB ∧ ¬(A ⇔ ¬S) er unsatisfiable, så KB ⊨ A ⇔ ¬S. Andre korrekte bevis gir full uttelling.\n\n**d)** Fra a) finnes en modell av KB der S ∨ ¬H er usann, så KB ∧ ¬(S ∨ ¬H), altså KB ∧ ¬S ∧ H, er satisfiable. Resolusjon er sound, så den tomme klausulen kan ikke utledes. Algoritmen fortsetter til en runde ikke gir nye klausuler, og svarer at S ∨ ¬H ikke følger. Det betyr ikke at KB ⊨ ¬(S ∨ ¬H): modellen A = F, D = T, H = T, S = T gjør S ∨ ¬H sann.\n\nPoeng: a) 6 (3 for tabellen og modellene, 1,5 per entailment-svar med begrunnelse og motmodell). b) 5 (3 for R1, 2 for resten). c) 7 (2 for negert mål i CNF, 4 for et korrekt bevis, 1 for konklusjonen). d) 2.\n\nVanlig feil: å legge til målet selv i stedet for det negerte målet, eller å kutte to komplementære par i ett steg (A ∨ ¬S med ¬A ∨ S gir bare tautologier).\n\n*Kilde: egen oppgave; boka 7.4–7.5 og notatene til E11 og E12.*\n\n### Oppgave 11 (5 p): Planning\n\n**a)** For eksempel\n\n[Pick(Box), Go(L, C), **if** Open(D) **then** [Go(C, R), Place(Box, R)] **else** [OpenDoor(D), Go(C, R), Place(Box, R)]]\n\nPercepten Open(D) har et percept schema med precondition At(Robot, C), så grenen kan bare velges i korridoren. Slike planer finnes med **AND–OR-søk over belief states**: agenten velger handling (OR-node), og percepten velger gren (AND-node). Belief state oppdateres i to steg. Prediksjon: b̂ er unionen av de mulige etterfølgerne til alle tilstandene i b. Med en 1-CNF belief state og ubetingede effekter (11.5.1) settes hvert atom i DEL(a) til usant, altså fjernes ℓ og den negative literalen ¬ℓ legges inn, og hvert atom i ADD(a) settes til sant. Å bare fjerne ℓ ville gjort atomet ukjent. Deretter filtreres b̂ med percepten: bare tilstandene som stemmer med Open(D) eller ¬Open(D), beholdes, så den observerte literalen legges inn.\n\n**b)** **Action monitoring** sjekker bare at preconditions for *neste* handling holder før den utføres. **Plan monitoring** sjekker at *resten* av planen fortsatt kan lykkes, altså preconditions for alle gjenværende steg, unntatt dem et tidligere steg i planen selv sørger for.\n\nEksempel: roboten mister boksen under Go(L, C). Med action monitoring holder preconditions for OpenDoor(D) og Go(C, R), så roboten åpner døra og kjører inn i R. Først ved Place(Box, R) oppdager den at den ikke holder boksen, og må tilbake til korridoren. Plan monitoring sjekker allerede i C at Place(Box, R) trenger boksen, og at ingen gjenværende handling skaffer den. Den planlegger på nytt der og da: [Pick(Box), OpenDoor(D), Go(C, R), Place(Box, R)]. Plan monitoring fanger også serendipity: har noen andre allerede satt boksen i R, er målet nådd, og roboten kan stoppe.\n\nReplanning hjelper ikke ved en **dead end**, for eksempel tomt batteri langt fra laderen. Det hjelper heller ikke ved en **skjult precondition**: er døra låst og modellen vet ikke om nøkkelen, gir OpenDoor(D) samme feil hver gang. Da må agenten prøve en annen reparasjon eller lære en bedre modell.\n\nPoeng: a) 1 for planen med if–then–else på percepten, 1 for AND–OR-søk over belief states. b) 1 for forskjellen, 1 for eksempelet, 1 for et tilfelle der replanning ikke hjelper.\n\nVanlig feil: å blande action og plan monitoring, eller å tro at replanning alltid når målet.\n\n*Kilde: egen oppgave; boka 11.5 og notatet til E19.*\n\n### Oppgave 12 (5 p): Natural Language Processing\n\n**a) P(they can fish, N N V) = 0,000588.**\n\nP(N) · P(they | N) · P(N | N) · P(can | N) · P(V | N) · P(fish | V) = 0,7 · 0,2 · 0,7 · 0,1 · 0,3 · 0,2 = 0,14 · 0,07 · 0,06 = 0,000588.\n\n**b) Beste sekvens N V V, med sannsynlighet 0,001344. Nei:** for «they can» alene er N N mest sannsynlig (δ(can, N) = 0,0098 > δ(can, V) = 0,0084), så «can» får N der, men V i den beste sekvensen for hele setningen.\n\n| Ord | δ(N) | bakpeker | δ(V) | bakpeker |\n|---|---|---|---|---|\n| they | 0,7 · 0,2 = 0,14 | – | 0,3 · 0,1 = 0,03 | – |\n| can | max(0,14 · 0,7; 0,03 · 0,2) · 0,1 = 0,0098 | N | max(0,14 · 0,3; 0,03 · 0,8) · 0,2 = 0,0084 | N |\n| fish | max(0,0098 · 0,7; 0,0084 · 0,2) · 0,1 = 0,000686 | N | max(0,0098 · 0,3; 0,0084 · 0,8) · 0,2 = 0,001344 | V |\n\nStørst δ ved «fish» er V (0,001344). Bakpekerne gir V ← V ← N, altså N V V. Å velge største δ separat ved hvert ord gir N N V med 0,000588. En grådig tagger som velger beste neste tagg gitt sitt eget forrige valg, gir N N N (0,7 · 0,1 = 0,07 > 0,3 · 0,2 = 0,06 både ved «can» og «fish») med 0,000686. Begge er godt under 0,001344. Posterioren P(N V V | they can fish) = 0,001344 / 0,003728 ≈ 0,36 er et annet tall og spørres ikke om her.\n\nPoeng: a) 2. b) 3 (1,5 for δ-tabellen med bakpekere, 1 for sekvens og sannsynlighet, 0,5 for «nei»).\n\nVanlig feil: å velge beste tagg ved hvert ord i stedet for å følge bakpekerne bakover fra slutten.\n\n*Kilde: egen oppgave; HMM-formelen fra L9 og notatet til E20.*\n\n### Oppgave 13 (5 p): Knowledge Representation and Ethics\n\n**a) C1 subsumerer C2: ja. C2 subsumerer C1: nei. C3 er ikke konsistent.**\n\nC1 subsumerer C2 hvis hvert krav i C1 følger av kravene i C2. Student står i C2, AtLeast(3, TakesCourse) gir AtLeast(2, TakesCourse), og All(TakesCourse, And(AICourse, Graded)) gir All(TakesCourse, AICourse). Omvendt mangler C1 kravene Employee, Graded og minst tre kurs, så C2 subsumerer ikke C1. C3 krever minst 3 og høyst 2 kurs, som er umulig, så C3 er inkonsistent. CLASSIC utelater full negasjon og disjunksjon for å holde subsumption tractable (polynomisk i størrelsen på beskrivelsene). Negasjon og disjunksjon krever eksponentiell kasusanalyse.\n\n**b) (i) k = 2. (ii) 8 sykedager.**\n\n(i) Gruppene over kvasi-identifikatorene er (2003, F, 7030) med rad 1–2, (2004, M, 7034) med rad 3–5 og (2003, M, 7030) med rad 6–7. k er størrelsen på den *minste* gruppen: 2. Diagnosen teller ikke.\n\n(ii) 16 · 4,25 − 15 · 4,0 = 68 − 60 = 8. To lovlige aggregatspørringer som skiller seg med én person, avslører den personen. Grensen på minst 10 studenter beskytter ikke mot slike flere spørringer.\n\n(iii) Differential privacy legger litt tilfeldig støy på svarene, slik at sannsynligheten for et svar nesten ikke endres om én person er med i databasen eller ikke: |log P(Q(D) = y) − log P(Q(D + r) = y)| ≤ ε. Da sier differansen mellom de to snittene nesten ingenting om den ene studenten. Ifølge boka holder garantien også når angriperen kan stille mange spørringer og har andre databaser å koble mot. Det forutsetter at ε gjelder hele mengden svar som gis ut. Stilles samme spørring mange ganger med uavhengig støy, kan støyen midles bort, og det samlede personverntapet vokser med antall svar. Systemet må derfor ha et samlet privacy budget for alle spørringene.\n\nPoeng: a) 0,5 per ja/nei-svar og 0,5 for tractability. b) 1 per deloppgave.\n\nVanlig feil: å regne k som den største eller typiske gruppen, eller å ta med det sensitive feltet i gruppene.\n\n*Kilde: egen oppgave; boka 10.5.3 og 28.3.2, notatene til E17 og E21.*"
+}

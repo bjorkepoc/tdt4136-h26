@@ -1,0 +1,37 @@
+;FFMETADATA1
+title=Spill 2: evalueringsfunksjoner, MCTS, sjanse og skjult info
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=46000
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=46000
+END=240800
+title=For dypt: eval og cutoff
+[CHAPTER]
+TIMEBASE=1/1000
+START=240800
+END=437700
+title=For bredt: MCTS
+[CHAPTER]
+TIMEBASE=1/1000
+START=437700
+END=579833
+title=Sjanse: expectiminimax
+[CHAPTER]
+TIMEBASE=1/1000
+START=579833
+END=746566
+title=Skjult informasjon
+[CHAPTER]
+TIMEBASE=1/1000
+START=746567
+END=812900
+title=Eksamen 2023, oppgave 6
+[CHAPTER]
+TIMEBASE=1/1000
+START=812900
+END=870300
+title=Koblinger og oppsummering

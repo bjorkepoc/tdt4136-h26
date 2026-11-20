@@ -1,0 +1,228 @@
+{
+ "intro": "",
+ "tasks": [
+  {
+   "t": "Eksamen 2023, oppgave 6 (5 p): Adversarial search",
+   "d": "**6 Adversarial search (5 pts total)**\n\n**6.1 Adversarial search**\n\nConsider a scenario where a trade union and a company are negotiating about the yearly salary increase. The union decided to use one of the two strategies:\n\n- Ask for what they are willing to accept - increase of 6%\n- Ask for a much higher increase of 10% with the hope that the company will agree on something close to it.\n\nFrom previous years, they know how the company behaves with low and high demands. When the demand is 6%, there is a 50% chance that the company will propose even lower pay increase: 3% or 4%. There is also 50% chance that the company will try to meet the demand, proposing 5% or 6% increase.\n\nWhen demand is 10%, the company with 25% chance will consider it unrealistic and come back with lower proposals of 2% or 4%. There is also 75% chance that the company will consider it realistic and come back with proposal of 8% or 10%.\n\nYour task is to use ExpectiMiniMax to come up with the best strategy for the trade union, either ask for 6% or ask for 10%.\n\n1. Consider the tree above where the trade union is MAX (A) and the company is MIN (D-G). Fill in (write down) the values for all nodes (A-G, and d1-g2) as provided in the text (1%)\n2. Compute ExpectMiniMax for all nodes except terminal nodes. Show your computations (3%)\n3. Make a decision: which strategy is the best for the trade union? Explain how you reached that conclusion (1%)\n\n*Merknad:* I figuren er d1 = 3 allerede fylt inn.",
+   "img": [
+    "nettside-figurer/e09-2023-q6.png"
+   ],
+   "f": [
+    [
+     "1. Verdiene i bladene",
+     "text",
+     "d1 = 3, d2 = …, e1 = …, e2 = …, f1 = …, f2 = …, g1 = …, g2 = …"
+    ],
+    [
+     "2. ExpectiMiniMax for D–G, B, C og A, med utregning",
+     "area",
+     "D = …\nE = …\nF = …\nG = …\nB = …\nC = …\nA = …"
+    ],
+    [
+     "3. Beste strategi",
+     "text"
+    ],
+    [
+     "3. Hvorfor?",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "3. Beste strategi": [
+      "10",
+      "10%",
+      "10 %",
+      "krev 10%",
+      "krev 10 %",
+      "be om 10%",
+      "be om 10 %",
+      "ask for 10%",
+      "ask for 10 %",
+      "strategi 2",
+      "strategy 2"
+     ]
+    },
+    "merk": "Krev 10 %: forventet verdi 6,5 mot 4 for 6 %.",
+    "kilde": "2023Q&A.pdf, 6.1.1 Solution"
+   },
+   "fasit": "**1. d1 = 3, d2 = 4, e1 = 5, e2 = 6, f1 = 2, f2 = 4, g1 = 8, g2 = 10.** Kantene fra B har sannsynlighet 0,5 og 0,5, og kantene fra C 0,25 og 0,75.\n\n**2. D = 3, E = 5, F = 2, G = 8, B = 4, C = 6,5, A = 6,5.**\n\n**3. Krev 10 % (strategi 2).**\n\n**Hvorfor: forventet verdi for 10 % er 6,5, mot 4 for 6 %, og MAX velger største.**\n\nRegn nedenfra: MIN før sjanse før MAX.\n\n| Node | Type | Regning | Verdi |\n|---|---|---|---|\n| D | MIN | min(3, 4) | 3 |\n| E | MIN | min(5, 6) | 5 |\n| F | MIN | min(2, 4) | 2 |\n| G | MIN | min(8, 10) | 8 |\n| B | chance | 0,5 · 3 + 0,5 · 5 | 4 |\n| C | chance | 0,25 · 2 + 0,75 · 8 | 6,5 |\n| A | MAX | max(4; 6,5) | **6,5** |\n\nBedriften (MIN) gir alltid det laveste budet i hvert scenario. Sjansenodene vekter scenarioene med sannsynlighetene. Fagforeningen (MAX) velger strategien med høyest forventet verdi, og det er C: krev 10 %.\n\nVanlig feil: å ta snittet av bladene direkte og hoppe over MIN-laget. Da blir B = 4,5 og C = 7,5. Valget blir likt, men verdiene er feil.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 6.1.*"
+  },
+  {
+   "t": "Eksamen 2024, Q10 (6 p): Adversarial search",
+   "d": "**10 Adversarial search**\n\nYou can choose between three buckets: A, B or C. The buckets contain the following values:\n\n- Bucket A: 2 and 3\n- Bucket B: 1 and 6\n- Bucket C: -2 and -1\n\nYour goal is to get the highest sum of values over many games.\n\na) After you choose a bucket, your opponent will give you the first value in that bucket with probability 0.5, and the second value otherwise.\n\nIf you optimise the bucket choice, the expected value will be: ☐ .\n\nb) After you choose a bucket, your opponent will give you the lowest value in that bucket.\n\nIf you optimise the bucket choice, the value in each game will be: ☐ .\n\nMaximum marks: 6\n\n*Merknad:* Feltene ber deg også skrive verdien for hver bøtte og hvilken bøtte du velger.",
+   "f": [
+    [
+     "a) Forventet verdi for hver bøtte og valget ditt",
+     "text"
+    ],
+    [
+     "a) Den optimale forventede verdien",
+     "text"
+    ],
+    [
+     "b) Verdi for hver bøtte og valget ditt",
+     "text"
+    ],
+    [
+     "b) Verdien i hvert spill",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Den optimale forventede verdien": [
+      "3.5",
+      "3,5"
+     ],
+     "b) Verdien i hvert spill": [
+      "{2}"
+     ]
+    },
+    "merk": "a) Forventet verdi 2,5, 3,5 og −1,5: velg B (3,5). b) Laveste verdi 2, 1 og −2: velg A (2).",
+    "kilde": "2024Q&A.docx, Q10 – Adversarial search"
+   },
+   "fasit": "**a) A: 0,5 · 2 + 0,5 · 3 = 2,5. B: 0,5 · 1 + 0,5 · 6 = 3,5. C: 0,5 · (−2) + 0,5 · (−1) = −1,5. Velg B.**\n\n**a) Optimal forventet verdi: 3,5.**\n\n**b) A: min(2, 3) = 2. B: min(1, 6) = 1. C: min(−2, −1) = −2. Velg A.**\n\n**b) Verdien i hvert spill: 2.**\n\na) er expectimax: motstanderen velger tilfeldig, så hver bøtte er en chance node med p = 0,5 på hvert tall. MAX tar største forventning, 3,5 i B.\n\nb) er minimax: motstanderen er MIN og gir det laveste tallet. MAX tar det beste av de verste utfallene, 2 i A. B frister med 6, men gir bare 1 mot en motstander som vil deg vondt.\n\nSamme bøtter gir ulikt valg etter hvordan motstanderen modelleres. Q11 kjører alpha-beta på b) (se notatet til E08, håndsporing 6): 6 i B og −1 i C besøkes aldri.\n\n*Kilde: løsningsforslaget til eksamen 2024, Q10.*"
+  },
+  {
+   "t": "Eksamen 2022, oppgave 1.7: MCTS og evalueringsfeil",
+   "d": "**Task 1 : Theoretical questions**\n\n1.7) Why Monte Carlo tree search is less sensitive to evaluation function errors than alpha-beta search?\n\n*Merknad:* Poeng er ikke oppgitt.",
+   "f": [
+    [
+     "Svar",
+     "area"
+    ]
+   ],
+   "fasit": "**Alpha-beta lar én evalueringsverdi i et blad avgjøre rotverdien og trekket gjennom max og min. MCTS bruker gjennomsnittet av mange playouts, så feil i enkeltvurderinger jevnes ut.**\n\nAlpha-beta med cutoff (H-MINIMAX) kaller EVAL i bladene og sender én verdi oppover. Max og min plukker ekstremverdier, så ett blad med feil eval kan styre hele valget. Feilen forplanter seg uendret til roten.\n\nMCTS trenger ikke en håndlaget eval. Den spiller mange playouts helt til slutt og lagrer U/N, altså vinnerandelen gjennom hver node. Et estimat som er snittet av mange simuleringer, er mindre følsomt for én feil enn ett enkelt tall i et blad.\n\nFasiten sier det slik: alpha-beta virker når forgreningsfaktoren ikke er for stor og verdien er et godt mål på hvem som leder. MCTS simulerer og bruker gjennomsnittlig vinnerandel, som er en bedre indikator i spill som Go.\n\nSvakheten til MCTS er at et enkelt avgjørende trekk kan bli oversett hvis playouts sjelden finner det.\n\n*Kilde: løsningsforslaget til eksamen 2022, oppgave 1.7.*"
+  },
+  {
+   "t": "Eksamen 2015, problem 6 b (2 p): et tredje nodesymbol",
+   "d": "**Problem 6 (10 pts, 2 pts each question)**\n\nChoose the correct answers (one for each question) to the questions below.\n\nb) When we illustrate the Minimax algorithm, we use the symbols △ and ▽ for nodes in the search tree. A variation of the Minimax algorithm additionally uses the symbol ○ for some of the nodes. What does this symbol represent?\n\n- A. A second opponent in a multiplayer game\n- B. A game rule has been broken\n- C. An element of chance in the game\n- D. An estimated score, due to cutoff\n- E. A tie between the players",
+   "f": [
+    [
+     "Svar",
+     "text",
+     "bokstav"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Svar": [
+      "C"
+     ]
+    },
+    "kilde": "2015Q&A.docx, Problem 6 b"
+   },
+   "fasit": "**C: An element of chance in the game.**\n\n○ er en chance node i expectiminimax, for eksempel et terningkast i backgammon. Verdien er forventningen Σ P(r) · verdi over utfallene. △ er MAX og ▽ er MIN.\n\nDe andre er feil. Flere spillere (A) gis med en nyttevektor i hver node, ikke et nytt symbol. Cutoff (D) bruker EVAL i de vanlige nodene. Regelbrudd (B) og uavgjort (E) har ikke eget symbol.\n\n*Kilde: løsningsforslaget til eksamen 2015, problem 6 b.*"
+  },
+  {
+   "t": "Eksamen 2018, problem 3: sant eller usant (2 p, −1 for feil)",
+   "d": "**PROBLEM 3 True/False Questions (2 points for each correct answer, -1 point for each wrong answer, 0 for each unanswered question. Total score between 0-20 points)**\n\n*Merknad:* Bare påstand 3 av de ti er tatt med her.",
+   "tf": [
+    "3. Expectimax is better suited for a deterministic environment than minimax."
+   ],
+   "sjekk": {
+    "tf": [
+     "usant"
+    ],
+    "kilde": "2018Q&A.docx, Problem 3 (svarrekka F F F T F T F F T F, påstand 3)"
+   },
+   "fasit": "**3. Usant.** Expectimax regner forventning over chance nodes og er laget for miljøer med tilfeldighet eller en motstander som velger tilfeldig. I et deterministisk spill mot en optimal motstander er minimax riktig modell, og minimax-verdien er en garanti.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 3 (svarrekka F F F T F T F F T F, påstand 3).*"
+  },
+  {
+   "t": "UCB1 i Fig. 6.10",
+   "d": "I lærebokas MCTS-eksempel (Fig. 6.10) står hver node som U/N: antall seire U av N playouts. Noden 60/79 har to barn: 16/53 og 3/26.\n\nUCB1(n) = U(n)/N(n) + C · √(ln N(parent(n)) / N(n))\n\nMed C = √2 velger boka 16/53 under 60/79. Regn UCB1 for begge barna under 60/79 med C = 1. Velges fortsatt 16/53?",
+   "f": [
+    [
+     "UCB1 for 16/53",
+     "text",
+     "… + … = …"
+    ],
+    [
+     "UCB1 for 3/26",
+     "text",
+     "… + … = …"
+    ],
+    [
+     "Velges fortsatt 16/53?",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "UCB1 for 16/53": [
+      "0.589",
+      "0,589",
+      "0.59",
+      "0,59"
+     ],
+     "UCB1 for 3/26": [
+      "0.525",
+      "0,525",
+      "0.53",
+      "0,53"
+     ],
+     "Velges fortsatt 16/53?": [
+      "ja",
+      "yes"
+     ]
+    },
+    "kilde": "videoer/notater/e09-spill-avansert.md, Fasit Øv selv 6"
+   },
+   "fasit": "**UCB1(16/53) = 0,302 + 0,287 = 0,589.**\n\n**UCB1(3/26) = 0,115 + 0,410 = 0,525.**\n\n**Ja, 16/53 velges fortsatt.**\n\nForelderen er 60/79, så N(parent) = 79 og ln 79 ≈ 4,369.\n\n| Barn | U/N | 1 · √(ln 79 / N) | UCB1 |\n|---|---|---|---|\n| 16/53 | 16/53 = 0,302 | √(4,369/53) = √0,0824 = 0,287 | **0,589** |\n| 3/26 | 3/26 = 0,115 | √(4,369/26) = √0,168 = 0,410 | 0,525 |\n\nMed C = √2 er tallene 0,708 og 0,695 (notatet). 16/53 har størst exploitation-ledd, og 3/26 har størst exploration-ledd. Lavere C gir exploration mindre vekt, så forspranget til 16/53 øker fra 0,013 til 0,064.\n\n*Kilde: notatet til E09, Fasit Øv selv 6 (Fig. 6.10).*"
+  },
+  {
+   "t": "Regret matching i stein, saks, papir",
+   "d": "Begge spillerne velger samtidig. Seier gir +1, uavgjort 0 og tap −1. *Regret* for et trekk er det trekket ville gitt minus det du faktisk fikk. Regrets summeres over rundene. Neste strategi får du ved å sette negative summerte regrets til 0 og dele på summen. Rekkefølgen i tabellen er stein, papir, saks.\n\n| Steg | Stein | Papir | Saks |\n|---|---|---|---|\n| Runde 1: du stein, motstander papir, du fikk −1 | | | |\n| ville gitt | −1 | 0 | +1 |\n| regret | 0 | 1 | 2 |\n| strategi (0, 1, 2)/3 | 0 | ⅓ | ⅔ |\n| Runde 2: du saks, motstander stein, du fikk −1 | | | |\n| ville gitt | 0 | +1 | −1 |\n| regret | 1 | 2 | 0 |\n| summert | 1 | 3 | 2 |\n| strategi (1, 3, 2)/6 | ⅙ | ½ | ⅓ |\n\nFortsett tabellen med runde 3, der du spiller papir og motstanderen saks.",
+   "f": [
+    [
+     "Hva fikk du i runde 3?",
+     "text"
+    ],
+    [
+     "Ville gitt (stein, papir, saks)",
+     "text",
+     "(…, …, …)"
+    ],
+    [
+     "Regret i runde 3",
+     "text",
+     "(…, …, …)"
+    ],
+    [
+     "Summert regret etter runde 3",
+     "text",
+     "(…, …, …)"
+    ],
+    [
+     "Strategi for runde 4",
+     "text",
+     "(…, …, …)"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Hva fikk du i runde 3?": [
+      "-1"
+     ],
+     "Ville gitt (stein, papir, saks)": [
+      "1 -1 0",
+      "+1 -1 0"
+     ],
+     "Regret i runde 3": [
+      "2 0 1"
+     ],
+     "Summert regret etter runde 3": [
+      "3 3 3"
+     ],
+     "Strategi for runde 4": [
+      "1/3 1/3 1/3",
+      "⅓ ⅓ ⅓"
+     ]
+    },
+    "kilde": "videoer/notater/e09-spill-avansert.md, Fasit Øv selv 7"
+   },
+   "fasit": "**Du fikk −1** (papir mot saks).\n\n**Ville gitt (stein, papir, saks) = (+1, −1, 0).**\n\n**Regret i runde 3 = (2, 0, 1).**\n\n**Summert regret = (3, 3, 3).**\n\n**Strategi for runde 4 = (⅓, ⅓, ⅓).**\n\n| Steg | Stein | Papir | Saks |\n|---|---|---|---|\n| Runde 3: du papir, motstander saks, du fikk −1 | | | |\n| ville gitt | +1 | −1 | 0 |\n| regret (− (−1)) | 2 | 0 | 1 |\n| summert (1, 3, 2) + (2, 0, 1) | 3 | 3 | 3 |\n| strategi (3, 3, 3)/9 | ⅓ | ⅓ | ⅓ |\n\nRegret er det trekket ville gitt minus det du faktisk fikk. Ingen summerte regrets er negative, så ingenting settes til 0 før du deler på summen 9.\n\nL8 sier at *gjennomsnittet* av strategiene går mot Nash-likevekten (⅓, ⅓, ⅓) når antall runder går mot uendelig. Her treffer strategien den allerede etter tre runder, men den kan svinge videre.\n\n*Kilde: notatet til E09, Fasit Øv selv 7 (L8 s. 37–38).*"
+  }
+ ]
+}

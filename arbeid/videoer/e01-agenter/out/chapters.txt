@@ -1,0 +1,52 @@
+;FFMETADATA1
+title=Hva er AI, og hva er en rasjonell agent?
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=26667
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=26667
+END=138767
+title=Fire svar på «hva er AI?»
+[CHAPTER]
+TIMEBASE=1/1000
+START=138767
+END=195833
+title=Røtter, historie og risiko
+[CHAPTER]
+TIMEBASE=1/1000
+START=195833
+END=253867
+title=Agent og miljø
+[CHAPTER]
+TIMEBASE=1/1000
+START=253867
+END=357934
+title=Rasjonalitet
+[CHAPTER]
+TIMEBASE=1/1000
+START=357933
+END=503767
+title=PEAS og miljøegenskaper
+[CHAPTER]
+TIMEBASE=1/1000
+START=503767
+END=630000
+title=Agentprogrammer
+[CHAPTER]
+TIMEBASE=1/1000
+START=630000
+END=693333
+title=Representasjoner
+[CHAPTER]
+TIMEBASE=1/1000
+START=693333
+END=785100
+title=Eksamen 2022, oppgave 2
+[CHAPTER]
+TIMEBASE=1/1000
+START=785100
+END=838666
+title=Kart over kurset

@@ -1,0 +1,225 @@
+{
+ "tasks": [
+  {
+   "t": "Unification: finn MGU eller forklar hvorfor det feiler",
+   "d": "Finn most general unifier (MGU) for hvert par, eller forklar hvorfor UNIFY gir *failure*. Vis hvert steg: hvilke deler som matches, og hvilken binding det gir. Variabler er små bokstaver (x, y, z). Konstanter starter med stor bokstav (John, Sofie, A, B), og F, Father og Mother er funksjoner.\n\n- (a) `Older(Father(y), y)` og `Older(Father(x), John)`\n- (b) `Knows(x, Mother(x))` og `Knows(Mother(y), y)`\n- (c) `P(A, x, F(x))` og `P(y, B, F(B))`\n- (d) `Loves(x, F(x))` og `Loves(Sofie, z)`",
+   "f": [
+    [
+     "(a)",
+     "area",
+     "… ~ … → …\nθ = {…} eller failure"
+    ],
+    [
+     "(b)",
+     "area",
+     "… ~ … → …\nθ = {…} eller failure"
+    ],
+    [
+     "(c)",
+     "area",
+     "… ~ … → …\nθ = {…} eller failure"
+    ],
+    [
+     "(d)",
+     "area",
+     "… ~ … → …\nθ = {…} eller failure"
+    ]
+   ],
+   "fasit": "**(a) θ = {y/x, x/John}, satt helt inn {x/John, y/John}.**\n- Older ~ Older: like, argumentene parvis.\n- Father(y) ~ Father(x): y ~ x gir y/x.\n- y ~ John: y er bundet til x, så x ~ John gir x/John.\n- Begge blir Older(Father(John), John).\n\n**(b) failure (occur check).**\n- Knows ~ Knows: argumentene parvis.\n- x ~ Mother(y) gir x/Mother(y).\n- Mother(x) ~ y: x er Mother(y), så y måtte bindes til Mother(Mother(y)). Den termen inneholder y selv, og occur check gir failure.\n\n**(c) θ = {y/A, x/B}.**\n- A ~ y gir y/A, og x ~ B gir x/B.\n- F(x) ~ F(B): x er B, og B ~ B er like.\n- Begge blir P(A, B, F(B)).\n\n**(d) θ = {x/Sofie, z/F(x)}, satt helt inn {x/Sofie, z/F(Sofie)}.**\n- x ~ Sofie gir x/Sofie.\n- F(x) ~ z gir z/F(x).\n- Begge blir Loves(Sofie, F(Sofie)).\n\nBegge skrivemåtene for θ er riktige, fordi bindingene leses i rekkefølge. Bruker du θ på en konklusjon, setter du helt inn.\n\n*Kilde: notatet til E15, Fasit Øv selv 1.*"
+  },
+  {
+   "t": "Eksamen 2015, problem 6 (2 p): UNIFY(Loves(Per, x), Loves(y, z))",
+   "d": "**Problem 6 (10 pts, 2 pts each question)**\n\nChoose the correct answers (one for each question) to the questions below.\n\ne) Which of the following would you choose as the unifier for\\\nUNIFY (Loves(Per,x),Loves(y,z))? Explain why. No points will be given without correct explanation.\n\n- A. (y/Per, x/z)\n- B. (y/Per, x/Per, z/Per)\n- C. (y/Per, x/z, z/Siri)\n- D. none of the above are suitable unifiers.",
+   "f": [
+    [
+     "e) Svar (A–D)",
+     "text"
+    ],
+    [
+     "e) Forklaring",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "e) Svar (A–D)": [
+      "A"
+     ]
+    },
+    "merk": "B og C unifiserer også, men binder mer enn nødvendig. Fasiten: «Most general is chosen.»",
+    "kilde": "2015Q&A.docx, Problem 6 e"
+   },
+   "fasit": "**e) A, (y/Per, x/z).**\n\n**Forklaring:** Loves ~ Loves. Per ~ y gir y/Per, og x ~ z gir x/z. Begge blir Loves(Per, z). Dette er most general unifier (MGU): den binder bare det som trengs.\n- B (y/Per, x/Per, z/Per) og C (y/Per, x/z, z/Siri) unifiserer også, men binder mer enn nødvendig. B er MGU + {z/Per}, og C er MGU + {z/Siri}.\n- UNIFY returnerer MGU-en, som er unik opp til navnebytte av variabler. D er feil, fordi A er en gyldig unifier.\n\n*Kilde: løsningsforslaget til eksamen 2015, problem 6 e («Most general is chosen»).*"
+  },
+  {
+   "t": "Eksamen 2024, Q17 (5 p): unification",
+   "d": "**Unification**\n\nWhich of the following alternatives is the correct unification for the following 2 sentences?\n\nF(x, F(u, x))\\\nF(F(y, A), F(z, F(B, z)))\n\n**Select one alternative:**\n\n- A. x/F(y, A); u/z; y/B; z/A\n- B. x/F(x, A); y/x; u/z; z/A\n- C. It is not possible to unify these sentences.\n- D. y/A; u/z; x/z; z/A\n\nMaximum marks: 5\n\n*Merknad:* Bokstavene A–D er lagt til her. Kjør UNIFY selv, steg for steg, før du velger.",
+   "f": [
+    [
+     "Q17 UNIFY steg for steg",
+     "area",
+     "… ~ … → …"
+    ],
+    [
+     "Q17 Svar (A–D)",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Q17 Svar (A–D)": [
+      "A"
+     ]
+    },
+    "kilde": "2024Q&A.docx, Q17 – Unification"
+   },
+   "fasit": "**Q17 UNIFY steg for steg:**\n\n| Steg | Par | Resultat |\n|---|---|---|\n| 1 | F ~ F | like, argumentene parvis |\n| 2 | x ~ F(y, A) | x/F(y, A) |\n| 3 | F(u, x) ~ F(z, F(B, z)) | like funksjoner, argumentene parvis |\n| 4 | u ~ z | u/z |\n| 5 | x ~ F(B, z) | x er F(y, A), så F(y, A) ~ F(B, z) |\n| 6 | y ~ B | y/B |\n| 7 | A ~ z | z/A |\n\nθ = {x/F(y, A), u/z, y/B, z/A}. Satt helt inn: {x/F(B, A), u/A, y/B, z/A}, og begge uttrykkene blir F(F(B, A), F(A, F(B, A))).\n\n**Q17 Svar: A** (x/F(y, A); u/z; y/B; z/A), samme form som løsningsforslaget.\n- B har x/F(x, A). Der står x inne i sin egen binding, og occur check stopper den.\n- D gir x = z = A, men x må unifisere med F(y, A). En konstant kan ikke bli lik en funksjonsterm.\n- C er feil, fordi en unifier finnes.\n\n*Kilde: løsningsforslaget til eksamen 2024, Q17.*"
+  },
+  {
+   "t": "Eksamen 2025, Q9 (5 p): Generalized Modus Ponens",
+   "d": "**9 Generalized Modus Ponens**\n\nGiven the knowledge base KB = {\\\n&emsp;∀x, y, z Loves(x, z) ∧ Loves(y, z) ⇒ Jealous(x, y),\\\n&emsp;Loves(Alice, Bob),\\\n&emsp;Loves(Carrie, Bob)\\\n}\n\nShow that KB ⊨ Jealous(Alice, Carrie) using Generalized Modus Ponens. The answer must show all the steps, including unification(s) and substitution(s).\n\nMaximum marks: 5\n\n*Merknad:* Formelarket (Formula Sheet) fra slutten av eksamen står under. Q10 (resolution) står i E16.",
+   "img": [
+    "nettside-figurer/e14-2025-formelark.svg"
+   ],
+   "f": [
+    [
+     "Q9 GMP-beviset: premisser, θ og substitusjon",
+     "area",
+     "Premisser: …\nθ = UNIFY(…, …) = {…}\nSUBST(θ, …) = …"
+    ]
+   ],
+   "fasit": "**Premisser:** p₁′ = Loves(Alice, Bob) og p₂′ = Loves(Carrie, Bob). Regelen er Loves(x, z) ∧ Loves(y, z) ⇒ Jealous(x, y), med p₁ = Loves(x, z), p₂ = Loves(y, z) og q = Jealous(x, y).\n\n**Generalized Modus Ponens:** p₁′, p₂′, (p₁ ∧ p₂ ⇒ q) ⊢ SUBST(θ, q), der SUBST(θ, pᵢ′) = SUBST(θ, pᵢ) for i = 1, 2.\n\n**Unification:**\n- Loves(Alice, Bob) ~ Loves(x, z) gir x/Alice og z/Bob.\n- Loves(Carrie, Bob) ~ Loves(y, z) gir y/Carrie. z er allerede Bob, og Bob ~ Bob er like.\n\n**θ = UNIFY(Loves(Alice, Bob) ∧ Loves(Carrie, Bob), Loves(x, z) ∧ Loves(y, z)) = {x/Alice, y/Carrie, z/Bob}.**\n\n**SUBST(θ, Jealous(x, y)) = Jealous(Alice, Carrie).** GMP er sound, så KB ⊨ Jealous(Alice, Carrie).\n\nLøsningsforslaget godtar også Universal Instantiation med {x/Alice}, {y/Carrie} og {z/Bob} først, og så vanlig Modus Ponens. Merk at Loves(Alice, Bob) kan matche begge premissene. Da blir θ = {x/Alice, y/Alice, z/Bob}, og Jealous(Alice, Alice) følger også, men det var ikke spurt om.\n\n*Kilde: løsningsforslaget til eksamen 2025, Q9.*"
+  },
+  {
+   "t": "Eksamen 2023, oppgave 3.2 (10 p) med forward og backward chaining",
+   "d": "**3 Logic (20 pts total)**\n\n**3.2 First Order logic (10 pts)**\n\nYou are given the following information:\n\nFido is father of Snowy. Fido is alive. One’s father is ones parent and vice versa. Somebody’s alive parent is older than them.\n\nQuestion: Is there anybody older than Snowy?\n\n- a) Represent this information and the question in form of First Order Logic (FoL) sentences.\n- b) Using resolution refutation answer if there is anybody older than Snowy? If there is, who is this?\n\nNumber the CNF sentences starting from 1, and then employ resolution refutation. Show how you convert the FOL sentences to CNF sentences.\n\n*Merknad:* Variant: resolution-delen står i E16. Her skriver du KB-en som definite clauses og svarer med forward chaining og backward chaining, med θ for hvert delmål.",
+   "f": [
+    [
+     "KB-en som definite clauses",
+     "area"
+    ],
+    [
+     "Forward chaining: runde for runde, med θ, og svaret",
+     "area",
+     "Runde 1: regel …, θ = {…} → ny fakta …"
+    ],
+    [
+     "Backward chaining: delmål for delmål, med θ",
+     "area",
+     "Mål …: løst med …, θ = {…}"
+    ]
+   ],
+   "fasit": "**KB-en som definite clauses** (∀ er underforstått, variabler med små bokstaver):\n1. Father(Fido, Snowy)\n2. Alive(Fido)\n3. Father(x, y) ⇒ Parent(x, y)\n4. Parent(x, y) ⇒ Father(x, y)\n5. Parent(x, y) ∧ Alive(x) ⇒ Older(x, y)\n\nSpørsmålet ∃w Older(w, Snowy) stilles som Older(w, Snowy). En ⇔ er ikke en definite clause, så Parent ⇔ Father deles i 3 og 4.\n\n**Forward chaining: ja, Fido er eldre enn Snowy, θ = {w/Fido}.** Nye fakta brukes først i runden etter.\n\n| Runde | Regel | θ | Ny fakta |\n|---|---|---|---|\n| 1 | 3 | {x/Fido, y/Snowy} | Parent(Fido, Snowy) |\n| 1 | 4 og 5 | Parent finnes ikke ennå | – |\n| 2 | 3 og 4 | bare kjente fakta | – |\n| 2 | 5 | {x/Fido, y/Snowy} | Older(Fido, Snowy), som unifiserer med spørsmålet med {w/Fido} |\n\n**Backward chaining:** dybde først fra venstre, med faktaene prøvd før reglene. Hver regel får nye variabelnavn.\n\n| Mål | Løst med | θ etterpå |\n|---|---|---|\n| Older(w, Snowy) | regel 5 som Parent(x1, y1) ∧ Alive(x1) ⇒ Older(x1, y1) | {x1/w, y1/Snowy}, delmål Parent(w, Snowy) og Alive(w) |\n| Parent(w, Snowy) | regel 3 som Father(x2, y2) ⇒ Parent(x2, y2) | + {x2/w, y2/Snowy}, delmål Father(w, Snowy) |\n| Father(w, Snowy) | fakta 1 | + {w/Fido} |\n| Alive(Fido) | fakta 2 | uendret |\n\nSvaret er θ = {w/Fido}: **Fido**. Bindingen w/Fido fra Father-delmålet føres videre, så det siste delmålet blir Alive(Fido).\n\nVanligste feil: prøves regel 4 før faktaen for Father(w, Snowy), blir delmålet Parent(w, Snowy) igjen, og BC går i løkke. BC er ikke complete. FC stopper, fordi KB-en er Datalog.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 3.2 (KB-en og svaret Fido), og notatet til E15, Fasit Øv selv 4 (chaining-varianten).*"
+  },
+  {
+   "t": "Øving 4 (A4), oppgave 4b–4d med chaining: K-pop-anbefaleren",
+   "d": "Reglene fra A4 oppgave 4 (K-pop-anbefaleren), skrevet slik som i håndsporing 8 i notatet. Alle atomene har brukeren som argument, for eksempel `Reveluv(x) ⇒ Ballads(x)`.\n\n- GG ⇔ Sone, RV ⇔ Reveluv og BP ⇔ Blink. Hver ⇔ blir to definite clauses, for eksempel GG ⇒ Sone og Sone ⇒ GG.\n- Reveluv ⇒ Ballads\n- Blink ⇒ Dance\n- Dance ∧ Ballads ⇒ CH\n- Drama ∧ Ballads ⇒ HE\n- Sone ∧ Electro ⇒ DJH\n- Sone ∧ Drama ⇒ SEO\n- Sone ∧ Ballads ⇒ TAE\n\nØvingen ber om resolution i b og c. Her skal du bruke forward eller backward chaining:\n\n- (b) En ny bruker U1 liker GG og identifiserer seg som Reveluv. Følger TAE(U1)?\n- (c) Samme bruker U1: følger HE(U1)?\n- (d) Brukeren U2 sier at den er Sone, Reveluv og Blink, og at den liker Drama. Hva anbefaler systemet for U2?\n- Kjør også backward chaining for TAE(U1) der reglene fra GG ⇔ Sone (GG ⇒ Sone og Sone ⇒ GG) prøves før faktaen GG(U1). Hva skjer?",
+   "f": [
+    [
+     "(b) Følger TAE(U1)? (ja/nei)",
+     "text"
+    ],
+    [
+     "(b) Kjøringen",
+     "area"
+    ],
+    [
+     "(c) Følger HE(U1)? (ja/nei)",
+     "text"
+    ],
+    [
+     "(c) Kjøringen",
+     "area"
+    ],
+    [
+     "(d) Anbefalinger for U2, runde for runde",
+     "area",
+     "Runde 1: …\nRunde 2: …"
+    ],
+    [
+     "Backward chaining for TAE(U1) med ⇔-reglene først: hva skjer?",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "(b) Følger TAE(U1)? (ja/nei)": [
+      "ja",
+      "yes"
+     ],
+     "(c) Følger HE(U1)? (ja/nei)": [
+      "nei",
+      "no"
+     ]
+    },
+    "merk": "(b) GG gir Sone, Reveluv gir Ballads, og Sone ∧ Ballads gir TAE. (c) HE krever Drama(U1), og ingen setning gir det.",
+    "kilde": "videoer/notater/e15-fol-inferens.md, Fasit Øv selv 5"
+   },
+   "fasit": "Faktaene for U1 er GG(U1) og Reveluv(U1).\n\n**(b) Ja.**\n\n**(b) Kjøringen (forward chaining):**\n- Runde 1: GG ⇒ Sone, Reveluv ⇒ RV og Reveluv ⇒ Ballads, hver med θ = {x/U1}, gir Sone(U1), RV(U1) og Ballads(U1).\n- Runde 2: Sone ∧ Ballads ⇒ TAE med θ = {x/U1} gir TAE(U1), som er målet.\n\nMed backward chaining: TAE(U1) krever Sone(U1) og Ballads(U1). Sone(U1) løses med GG ⇒ Sone og faktaen GG(U1), og Ballads(U1) med Reveluv ⇒ Ballads og faktaen Reveluv(U1).\n\n**(c) Nei.**\n\n**(c) Kjøringen:** HE(U1) krever Drama(U1) ∧ Ballads(U1). Ballads(U1) følger, men ingen fakta og ingen regel gir Drama(U1). FC fortsetter med TAE(U1) i runde 2 og får ingenting nytt i runde 3. Det er et fixed point uten HE(U1). FC er complete for definite clauses når det gjelder atomære fakta, så HE(U1) følger ikke. ¬HE(U1) følger heller ikke: KB-en vet bare ikke om U1 liker Drama.\n\n**(d) Anbefalinger for U2:** faktaene er Sone(U2), Reveluv(U2), Blink(U2) og Drama(U2).\n\n| Runde | Nye fakta |\n|---|---|\n| 1 | GG (Sone ⇒ GG), RV (Reveluv ⇒ RV), BP (Blink ⇒ BP), Ballads (Reveluv), Dance (Blink), SEO (Sone ∧ Drama) |\n| 2 | CH (Dance ∧ Ballads), HE (Drama ∧ Ballads), TAE (Sone ∧ Ballads) |\n| 3 | ingenting nytt, fixed point |\n\nSystemet anbefaler artistene GG, RV, BP, CH, HE, SEO og TAE, og sjangrene Ballads og Dance i tillegg til Drama, som U2 selv oppga. DJH kommer aldri, fordi den krever Electro(U2).\n\n**Backward chaining med ⇔-reglene først:** TAE(U1) gir delmålene Sone(U1) og Ballads(U1). Den eneste regelen for Sone er GG ⇒ Sone, som gir delmålet GG(U1). For GG(U1) prøves Sone ⇒ GG før faktaen, og det gir Sone(U1) igjen. Søket går GG(U1) → Sone(U1) → GG(U1) → … for alltid og når aldri faktaen GG(U1), selv om TAE(U1) følger. Det viser hvorfor BC ikke er complete: dybde-først-søket får gjentatte tilstander. Prøves faktaen først, eller stoppes et mål som allerede står på stien, lykkes beviset.\n\n*Kilde: notatet til E15, Fasit Øv selv 5 og håndsporing 8. Modelleringen er egen, og øvingen har ingen offisiell fasit.*"
+  },
+  {
+   "t": "Eksamen 2018, problem 8 (kortsvar): semidecidable",
+   "d": "**PROBLEM 8 SHORT QUESTIONS**\n\n2. Entailment for first-order logic is semidecidable. What does this mean? Explain very briefly.",
+   "f": [
+    [
+     "2. Svar",
+     "area"
+    ]
+   ],
+   "fasit": "**2. Svar:** Det finnes algoritmer som svarer ja på hver setning som følger av KB, etter endelig mange steg, for eksempel resolution eller propositionalisering dybde for dybde. Men det finnes ingen algoritme som også svarer nei på hver setning som ikke følger. Følger setningen ikke, kan søket etter et bevis gå for alltid, og du vet aldri om du bare må vente lenger.\n\nSemidecidable betyr ikke «undecidable i alle tilfeller»: ja-delen kan alltid avgjøres.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 8, punkt 2.*"
+  },
+  {
+   "t": "Eksamen 2016, Task 2, deloppgave (3 p): sant eller usant",
+   "d": "**TASK 2: Propositional and first-order logic (20p)**\n\nd) (3p) True or False (correct answer= 1p; wrong answer= -½p; total score will be 0-3p)",
+   "tf": [
+    "1. Universal Instantiation is built on Skolemization.",
+    "2. The Backward Chaining Algorithm can be described as follows: i. Pose the original query as a goal. ii. Find every clause in the knowledge base whose right-hand side unifies with the goal under some substitution. iii. Prove in turn every conjunct on the left-hand sides of each of these clauses, keeping track of the accumulated substitutions.",
+    "3. There exists a sentence S in First Order Logic such that S cannot be converted into an inferentially equivalent sentence in Conjunctive Normal Form."
+   ],
+   "sjekk": {
+    "tf": [
+     "usant",
+     "sant",
+     "usant"
+    ],
+    "kilde": "2016Q&A.docx, Task 2 d"
+   },
+   "fasit": "1. **Usant.** Universal Instantiation setter inn en hvilken som helst ground term for en ∀-variabel. Skolem-konstanter hører til Existential Instantiation.\n2. **Sant.** Det er backward chaining (FOL-BC-ASK, fig. 9.6): målet unifiseres med konklusjonen (høyresiden) til definite clauses, og premissene bevises ett for ett mens substitusjonene samles opp.\n3. **Usant.** Hver FOL-setning kan gjøres om til en CNF-setning som er inferentially equivalent: den er unsatisfiable nøyaktig når originalen er det (AIMA 9.5.1). Skolemiseringen bevarer satisfiability.\n\n*Kilde: løsningsforslaget til eksamen 2016, Task 2 d.*"
+  },
+  {
+   "t": "Eksamen 2023, oppgave 1 (kortsvar): forward og backward chaining",
+   "d": "**1 Short questions**\n\nBackward and forward chaining algorithms in logic works with sentences in a specific form, and a specific inference rule. What are the names of the representation and the rule?",
+   "f": [
+    [
+     "Representasjon",
+     "text"
+    ],
+    [
+     "Slutningsregel",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Representasjon": [
+      "Horn",
+      "Horn-klausuler",
+      "Horn-klausul",
+      "definite",
+      "definite-klausuler"
+     ],
+     "Slutningsregel": [
+      "Modus Ponens",
+      "Generalized Modus Ponens",
+      "Generalised Modus Ponens",
+      "GMP",
+      "MP"
+     ]
+    },
+    "merk": "Fasiten: «Horn clauses and modus ponens». I FOL heter det definite clauses og Generalized Modus Ponens.",
+    "kilde": "2023Q&A.pdf, oppgave 1 (short questions)"
+   },
+   "fasit": "**Representasjon: Horn clauses** (i FOL: definite clauses, med nøyaktig én positiv literal).\n\n**Slutningsregel: Modus Ponens** (i FOL: Generalized Modus Ponens).\n\nForward chaining bruker Modus Ponens fra faktaene mot målet, og backward chaining går fra målet bakover til faktaene. En Horn clause har høyst én positiv literal: ¬P ∨ Q (P ⇒ Q) er definite, og ¬P ∨ ¬Q er Horn med null positive literaler (en goal clause). Klausuler med to eller flere positive literaler, som P ∨ Q eller ¬A ∨ B ∨ C, er ikke Horn og krever resolution.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 1 («Horn clauses and modus ponens»).*"
+  }
+ ]
+}

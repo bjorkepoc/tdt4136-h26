@@ -1,0 +1,608 @@
+1
+00:00:00,450 --> 00:00:06,290
+Du kjører uniform-cost search fra A til G. Ved fjerde steg dukker G opp, med
+
+2
+00:00:06,290 --> 00:00:11,970
+kostnad tjuefem. Stopper du nå? Da har du svart feil. Veien gjennom D og F
+
+3
+00:00:11,970 --> 00:00:16,770
+koster bare tjuetre. Feilen var ikke algoritmen, men når du sjekket målet.
+
+4
+00:00:18,150 --> 00:00:23,697
+Om et kvarter kan du håndspore seks søkealgoritmer, med frontier i hvert steg.
+
+5
+00:00:23,697 --> 00:00:29,270
+Og du vil se at de er én og samme løkke med forskjellig kø. Vi tar problemet,
+
+6
+00:00:29,270 --> 00:00:34,710
+rammeverket, algoritmene, tabellen, og en ekte eksamensoppgave.
+
+7
+00:00:36,083 --> 00:00:40,003
+Hva må du skrive ned før en datamaskin kan lete etter en vei?
+
+8
+00:00:41,783 --> 00:00:47,383
+Du er i Arad i Romania og skal til Bucharest. Før du kan søke, skriver du ned
+
+9
+00:00:47,383 --> 00:00:55,143
+seks ting. State space: alle byene. Initial state: Arad. Actions: veiene du kan
+
+10
+00:00:55,143 --> 00:01:01,103
+ta herfra. Transition model: hvor hver handling fører. Mot Zerind havner du i
+
+11
+00:01:01,103 --> 00:01:07,623
+Zerind. Goal test: er jeg i Bucharest? Action cost: lengden på hver vei.
+
+12
+00:01:07,623 --> 00:01:12,183
+Løsningen er en sti fra start til mål, og den optimale har lavest sum.
+
+13
+00:01:13,483 --> 00:01:19,963
+Legg merke til hva som mangler: været, radioen, trafikken. Å fjerne detaljer som
+
+14
+00:01:19,963 --> 00:01:25,483
+ikke betyr noe for oppgaven, heter abstraction. Med handlinger som «flytt foten
+
+15
+00:01:25,483 --> 00:01:30,843
+én centimeter» kommer du aldri ut av parkeringsplassen. Abstraksjonen er gyldig
+
+16
+00:01:30,843 --> 00:01:35,923
+når hver løsning i modellen kan bli en ekte kjøretur, og nyttig når hvert steg
+
+17
+00:01:35,923 --> 00:01:41,763
+er lett å gjøre. Dette står bare i boka, i seksjon tre punkt en punkt to.
+
+18
+00:01:41,763 --> 00:01:43,483
+Foreleser tok det ikke.
+
+19
+00:01:44,850 --> 00:01:51,490
+Kartet er et state space: tjue byer og veiene mellom dem. Søket bygger noe annet:
+
+20
+00:01:51,490 --> 00:01:58,530
+et search tree med Arad som rot. Arad gir Sibiu, Timisoara og Zerind. Sibiu gir
+
+21
+00:01:58,530 --> 00:02:04,090
+blant annet Arad igjen, og den gir Sibiu igjen. Kartet er endelig, men treet er
+
+22
+00:02:04,090 --> 00:02:11,010
+uendelig. Derfor skiller vi state og node. En state er en by. En node er én sti
+
+23
+00:02:11,010 --> 00:02:14,290
+dit, med forelder, handling og kostnad.
+
+24
+00:02:15,583 --> 00:02:21,663
+Din tur. Vacuum world fra forelesningen har åtte states. Kan søketreet ha flere
+
+25
+00:02:21,663 --> 00:02:27,263
+enn åtte noder?
+
+26
+00:02:27,263 --> 00:02:32,863
+Ja, uendelig mange, for du kan gå frem og tilbake i det uendelige. States er
+
+27
+00:02:32,863 --> 00:02:35,503
+begrenset. Stier er det ikke.
+
+28
+00:02:36,883 --> 00:02:41,283
+Hvordan holder søket orden på hva det har gjort, og hva som gjenstår?
+
+29
+00:02:43,050 --> 00:02:50,330
+Her er grafen fra forelesning to: start i A, mål i G. Søket har en huskeliste,
+
+30
+00:02:50,330 --> 00:02:56,250
+frontier: noder du har funnet, men ikke gått videre fra. Å ekspandere er å ta en
+
+31
+00:02:56,250 --> 00:03:02,943
+node ut og lage barna. A gir B og C, som går inn i frontier. Alt du har sett,
+
+32
+00:03:02,943 --> 00:03:10,490
+havner i reached. Hele søket er én løkke: ta ut, test, ekspander, gjenta. Det
+
+33
+00:03:10,490 --> 00:03:13,530
+eneste spørsmålet er hvilken node du tar ut.
+
+34
+00:03:14,883 --> 00:03:21,603
+Svaret er en funksjon, f. Best-first search tar alltid ut noden med lavest f.
+
+35
+00:03:21,603 --> 00:03:29,203
+Det skjer her, i POP. Er f kostnaden så langt, g, får du uniform-cost search. Er
+
+36
+00:03:29,203 --> 00:03:34,883
+f minus dybden, vinner den dypeste, og du får depth-first search. Breadth-first
+
+37
+00:03:34,883 --> 00:03:40,403
+search har en egen versjon med vanlig kø, figur tre punkt ni. Og ved lik f
+
+38
+00:03:40,403 --> 00:03:44,003
+velger kurset alfabetisk. B før C.
+
+39
+00:03:45,383 --> 00:03:50,103
+Hva skjer når søket finner en by det har sett før? Til Sibiu kan du kjøre
+
+40
+00:03:50,103 --> 00:03:55,543
+direkte, hundre og førti, eller en omvei på to hundre og nittisju. Den lange er
+
+41
+00:03:55,543 --> 00:04:01,423
+en redundant path. Graph search husker alt i reached og dropper slike stier.
+
+42
+00:04:01,423 --> 00:04:06,463
+Tree-like search husker ingenting. Den sparer minne, men kan gå i ring. På
+
+43
+00:04:06,463 --> 00:04:12,263
+eksamen i tjue tjuetre hadde grafen en løkke fra A til A, og tree-like DFS
+
+44
+00:04:12,263 --> 00:04:18,583
+ekspanderte A, A, A, uten ende. Forskjellen er én linje: legg inn barnet bare
+
+45
+00:04:18,583 --> 00:04:21,543
+hvis staten er ny, eller veien er billigere.
+
+46
+00:04:22,917 --> 00:04:29,077
+Din tur. UCS finner en billigere vei til en state som allerede er i reached. Hva
+
+47
+00:04:29,077 --> 00:04:34,477
+skjer?
+
+48
+00:04:34,477 --> 00:04:39,557
+Den nye veien erstatter den gamle i reached, og noden går inn i frontier.
+
+49
+00:04:39,557 --> 00:04:44,197
+Frontier er det du skal gjøre, reached er det du har sett, og f bestemmer
+
+50
+00:04:44,197 --> 00:04:45,637
+rekkefølgen.
+
+51
+00:04:47,017 --> 00:04:50,297
+Når skal søket sjekke om det har funnet målet?
+
+52
+00:04:52,050 --> 00:04:58,370
+Breadth-first search bruker en vanlig kø, som i kantina: først inn, først ut.
+
+53
+00:04:58,370 --> 00:05:06,130
+Ekspander A, og B og C stiller seg bakerst. Ut med B, som gir D og E. Så C, uten
+
+54
+00:05:06,130 --> 00:05:14,610
+barn. Så D, som gir F. Så E, som gir G. BFS stopper i det G blir generert. Det
+
+55
+00:05:14,610 --> 00:05:22,370
+heter early goal test. Stien er A, B, E, G, med kostnad tjuefem. På eksamen
+
+56
+00:05:22,370 --> 00:05:26,370
+skriver du A, B, C, D, E, og G i parentes.
+
+57
+00:05:27,750 --> 00:05:33,937
+Hvorfor er det trygt å stoppe så tidlig? BFS går lag for lag. Når G dukker opp
+
+58
+00:05:33,937 --> 00:05:39,710
+på dybde tre, er hele dybde to allerede sjekket, så ingen kortere sti finnes.
+
+59
+00:05:39,710 --> 00:05:45,390
+Men kortest er ikke billigst. Veien gjennom D og F har ett steg mer og koster
+
+60
+00:05:45,390 --> 00:05:50,550
+bare tjuetre. BFS er bare optimal når alle steg koster det samme.
+
+61
+00:05:51,917 --> 00:05:58,077
+Uniform-cost search, også kalt Dijkstras algoritme, sorterer frontier etter g,
+
+62
+00:05:58,077 --> 00:06:05,397
+kostnaden fra start. A gir B til fem og C til sju. B er billigst og gir E til
+
+63
+00:06:05,397 --> 00:06:12,797
+åtte og D til tretten. Så C, uten barn. Så E, som gir G til tjuefem. Her er
+
+64
+00:06:12,797 --> 00:06:19,597
+kroken. UCS tester ikke G nå, den legger den bare i frontier. D på tretten gir F
+
+65
+00:06:19,597 --> 00:06:25,917
+til sytten. F gir G til tjuetre, som erstatter den dyrere. Nå er G billigst. Den
+
+66
+00:06:25,917 --> 00:06:29,437
+tas ut, testes, og er målet. Tjuetre.
+
+67
+00:06:30,817 --> 00:06:37,537
+Hvorfor må UCS vente? Tenk på søket som en bølge som brer seg utover i kostnad.
+
+68
+00:06:37,537 --> 00:06:43,297
+En node tas ut først når bølgen når den, og da er alle billigere stier tatt ut.
+
+69
+00:06:43,297 --> 00:06:48,497
+Da G ble funnet med tjuefem, sto bølgen på åtte, og D på tretten lå fortsatt i
+
+70
+00:06:48,497 --> 00:06:53,937
+frontier. Tester du ved generering, svarer du tjuefem. Tester du når noden tas
+
+71
+00:06:53,937 --> 00:07:00,097
+ut, svarer du tjuetre. Det heter late goal test, og A-stjerne gjør det samme.
+
+72
+00:07:01,450 --> 00:07:12,530
+Din tur. Tenk deg at alle kantene koster én. Hvilken sti finner BFS da?
+
+73
+00:07:12,530 --> 00:07:20,650
+A, B, E, G, med kostnad tre. Og nå er den også billigst. BFS tester tidlig og
+
+74
+00:07:20,650 --> 00:07:26,010
+finner færrest steg. UCS tester sent og finner lavest kostnad.
+
+75
+00:07:27,383 --> 00:07:30,183
+Hva gjør du når det er minnet som tar slutt?
+
+76
+00:07:31,950 --> 00:07:37,750
+BFS holder hele fronten i minnet. Depth-first search tar i stedet alltid den
+
+77
+00:07:37,750 --> 00:07:43,950
+dypeste noden, som fra en stabel med tallerkener. A gir B og C, begge på dybde
+
+78
+00:07:43,950 --> 00:07:53,230
+én, så alfabetet avgjør: B. B gir D og E. Likt igjen, så D. D gir F, og F gir G.
+
+79
+00:07:53,230 --> 00:08:01,070
+G tas ut, testes, og er målet. Kostnad tjuetre. Billigst, men det var flaks. DFS
+
+80
+00:08:01,070 --> 00:08:02,990
+tar første løsning den finner.
+
+81
+00:08:04,283 --> 00:08:11,043
+Men DFS kan gå nedover for alltid, i et uendelig rom eller i ringer uten reached.
+
+82
+00:08:11,043 --> 00:08:15,963
+Depth-limited search setter en grense. Noder på grensen behandles som om de ikke
+
+83
+00:08:15,963 --> 00:08:23,443
+har barn. Med grense to tar søket ut A, B, D, E og C, men G ligger på dybde tre.
+
+84
+00:08:23,443 --> 00:08:28,763
+Svaret blir cutoff: det kan finnes noe dypere. Grensen stopper løkkene, men er
+
+85
+00:08:28,763 --> 00:08:30,923
+den for lav, finner du ingenting.
+
+86
+00:08:32,283 --> 00:08:39,216
+Iterative deepening prøver alle grensene etter tur. Grense null: bare A. Cutoff.
+
+87
+00:08:39,216 --> 00:08:48,683
+Grense én: A, B og C. Cutoff. Grense to: A, B, D, E og C. Cutoff. Grense tre: A,
+
+88
+00:08:48,683 --> 00:08:57,563
+B, D, F, så E, som gir G. Mål. Stien er A, B, E, G, den samme som BFS fant,
+
+89
+00:08:57,563 --> 00:09:02,803
+fordi IDS også går lag for lag. Men i minnet ligger bare én sti med søsken: b
+
+90
+00:09:02,803 --> 00:09:04,123
+ganger d noder.
+
+91
+00:09:05,483 --> 00:09:11,083
+Er ikke det sløsing, når toppen lages på nytt hver gang? Boka regner på det: med
+
+92
+00:09:11,083 --> 00:09:17,803
+b lik ti og d lik fem lager IDS hundre og tjuetre tusen noder, BFS hundre og
+
+93
+00:09:17,803 --> 00:09:22,203
+elleve tusen. Nesten alle nodene ligger i bunnen, så du betaler rundt elleve
+
+94
+00:09:22,203 --> 00:09:25,483
+prosent mer tid for minne som vokser lineært.
+
+95
+00:09:26,783 --> 00:09:33,143
+Siste idé: søk fra begge ender, som to lag som graver en tunnel fra hver side.
+
+96
+00:09:33,143 --> 00:09:41,063
+Forover fra A: B og C. Bakover fra G, langs kantene baklengs: E og F. Forover
+
+97
+00:09:41,063 --> 00:09:47,943
+fra B: D og E. E er nådd bakfra, så frontene møtes. To søk til halv dybde er
+
+98
+00:09:47,943 --> 00:09:53,263
+langt mindre enn ett til full dybde. Men du må kunne gå baklengs og kjenne målet.
+
+99
+00:09:53,263 --> 00:09:59,463
+Og første møte er ikke alltid billigst: her tjuefem. Toveis søk står bare i boka,
+
+100
+00:09:59,463 --> 00:10:03,743
+i seksjon tre punkt fire punkt fem. Foreleser tok det ikke.
+
+101
+00:10:05,017 --> 00:10:15,257
+Din tur. Løsningen ligger dypt, og minnet er lite. Hvilken algoritme velger du?
+
+102
+00:10:15,257 --> 00:10:21,097
+IDS. Den holder bare én sti med søsken. Toveis BFS trenger fortsatt
+
+103
+00:10:21,097 --> 00:10:27,097
+eksponentielt minne. IDS gir deg svaret til BFS med minnet til DFS.
+
+104
+00:10:28,383 --> 00:10:32,783
+Hvorfor står det ja, nei og O av noe i hver eneste rute?
+
+105
+00:10:34,550 --> 00:10:39,910
+Hver algoritme får fire spørsmål. Completeness: finner den en løsning når det
+
+106
+00:10:39,910 --> 00:10:46,750
+finnes en? Cost optimality: er den billigst? Og hvor mye tid og minne bruker den?
+
+107
+00:10:46,750 --> 00:10:53,430
+Svarene bruker b, branching factor, d, dybden til grunneste løsning, og m,
+
+108
+00:10:53,430 --> 00:10:56,070
+største dybde, som kan være uendelig.
+
+109
+00:10:57,350 --> 00:11:03,270
+BFS først. Den er complete når b er endelig, for den går lag for lag og når
+
+110
+00:11:03,270 --> 00:11:09,830
+dybde d til slutt. Optimal bare når alle steg koster likt. Tid og plass er b
+
+111
+00:11:09,830 --> 00:11:15,750
+opphøyd i d, fordi hele det siste laget ligger i minnet. UCS er optimal, fordi
+
+112
+00:11:15,750 --> 00:11:20,710
+den tar ut noder i kostnadsrekkefølge, og complete hvis hvert steg koster minst
+
+113
+00:11:20,710 --> 00:11:26,230
+epsilon, et tall over null, så den ikke går uendelig på gratis steg. C-stjerne
+
+114
+00:11:26,230 --> 00:11:31,030
+er prisen på beste løsning, så C-stjerne delt på epsilon er hvor mange steg en
+
+115
+00:11:31,030 --> 00:11:36,630
+sti kan ha før den blir for dyr. Med like steg blir det b opphøyd i d pluss én.
+
+116
+00:11:37,917 --> 00:11:43,357
+DFS er ikke complete, for den kan forsvinne ned en uendelig gren. Den er heller
+
+117
+00:11:43,357 --> 00:11:48,717
+ikke optimal, for den tar første løsning. Tiden er b opphøyd i m, siden den kan
+
+118
+00:11:48,717 --> 00:11:54,157
+gå gjennom hele treet. Men plassen er bare b ganger m: én sti, med søsknene
+
+119
+00:11:54,157 --> 00:12:00,717
+langs den. DLS er det samme med grensen l i stedet for m. IDS er complete og
+
+120
+00:12:00,717 --> 00:12:07,437
+optimal som BFS, med plass b ganger d. Toveis er BFS begge veier, med halve
+
+121
+00:12:07,437 --> 00:12:13,357
+dybden i eksponenten. En felle: tabellen gjelder tree-like search. Med reached
+
+122
+00:12:13,357 --> 00:12:17,917
+blir DFS complete i endelige rom, men da mister den plassfordelen.
+
+123
+00:12:19,217 --> 00:12:25,297
+Din tur, fra eksamen tjue nitten. Sant eller usant: kompleksiteten til
+
+124
+00:12:25,297 --> 00:12:32,537
+breadth-first search er b ganger m.
+
+125
+00:12:32,537 --> 00:12:40,297
+Usant. BFS er b opphøyd i d. b ganger m er plassen til DFS. Forstår du køen, kan
+
+126
+00:12:40,297 --> 00:12:42,337
+du utlede hele tabellen.
+
+127
+00:12:43,717 --> 00:12:47,237
+Klarer du en ekte eksamensoppgave på åtte poeng?
+
+128
+00:12:49,017 --> 00:12:57,937
+Eksamen tjue tjuefem, oppgave fem, åtte poeng. Start i s, mål i g, urettet graf.
+
+129
+00:12:57,937 --> 00:13:07,017
+Kjør BFS, DFS med minne og UCS, med alfabetisk tie-break. a: hvem finner
+
+130
+00:13:07,017 --> 00:13:14,217
+billigste vei? b: hvem ekspanderer færrest noder? c: hvilke noder ekspanderer
+
+131
+00:13:14,217 --> 00:13:23,737
+hver? Sett på pause og løs den først.
+
+132
+00:13:23,737 --> 00:13:25,657
+Klar? Da regner vi.
+
+133
+00:13:26,950 --> 00:13:37,510
+BFS: s gir a, b og k. a gir ingenting nytt. b gir c. k gir g, og BFS stopper
+
+134
+00:13:37,510 --> 00:13:47,550
+straks: s, k, g, kostnad ni. DFS med minne: s gir a, b og k. a har ingen nye
+
+135
+00:13:47,550 --> 00:13:55,190
+barn. Så b, og deretter den dypeste: c, d, e, og g. Stien går hele veien rundt:
+
+136
+00:13:55,190 --> 00:13:56,950
+kostnad elleve.
+
+137
+00:13:58,317 --> 00:14:08,677
+UCS: s gir b til én, a til fire og k til seks. b gir c til tre. c gir d til fem.
+
+138
+00:14:08,677 --> 00:14:17,357
+Så a, uten noe nytt. d gir e til sju. k gir g og j, begge til ni. e gir g til
+
+139
+00:14:17,357 --> 00:14:24,117
+elleve, men ni er billigere. g og j står likt, og alfabetet velger g. Mål,
+
+140
+00:14:24,117 --> 00:14:34,877
+kostnad ni. Svar: a, BFS og UCS. b, BFS. Svaret på c står på skjermen. Fasiten
+
+141
+00:14:34,877 --> 00:14:39,757
+teller ikke s. Og BFS fant billigste vei bare fordi den korteste også var
+
+142
+00:14:39,757 --> 00:14:40,797
+billigst her.
+
+143
+00:14:42,083 --> 00:14:44,243
+Hvor møter du disse ideene igjen?
+
+144
+00:14:46,017 --> 00:14:52,897
+Ideene kommer tilbake. A-stjerne er best-first med f lik g pluss h, og tester
+
+145
+00:14:52,897 --> 00:15:00,537
+sent, som UCS. Det er neste episode. Backtracking i CSP er dybde først, kapittel
+
+146
+00:15:00,537 --> 00:15:06,497
+fem. Minimax går dybde først gjennom spilltreet, kapittel seks. Og planlegging
+
+147
+00:15:06,497 --> 00:15:09,697
+søker forover eller bakover, kapittel elleve.
+
+148
+00:15:10,983 --> 00:15:17,103
+Hele kjeden: et problem har seks deler. Søket bygger et tre med frontier og
+
+149
+00:15:17,103 --> 00:15:22,743
+reached. Rekkefølgen ut av frontier er hele forskjellen: kø, stabel eller
+
+150
+00:15:22,743 --> 00:15:29,010
+kostnad. Og tabellen følger av den. Husker du G på tjuefem? Den lå i frontier,
+
+151
+00:15:29,010 --> 00:15:34,503
+men var ikke ferdig. Hvis du bare husker én ting: målet er funnet når det tas ut
+
+152
+00:15:34,503 --> 00:15:39,143
+av frontier, ikke når det dukker opp. Unntaket er BFS.
+

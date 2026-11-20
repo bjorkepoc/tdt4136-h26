@@ -1,0 +1,580 @@
+1
+00:00:00,450 --> 00:00:05,810
+Her er en helt grei setning fra wumpus-verdenen: «the pit smells». En
+
+2
+00:00:05,810 --> 00:00:11,250
+språkmodell ganger sammen én sannsynlighet per ordpar. Men «pit smells» har den
+
+3
+00:00:11,250 --> 00:00:18,370
+aldri sett. Null, og null ganger alt er null. Plutselig er setningen umulig.
+
+4
+00:00:18,370 --> 00:00:21,330
+Nettopp dette spurte eksamen om i totusen og tjuefem.
+
+5
+00:00:22,683 --> 00:00:27,883
+Etterpå kan du regne bigram-sannsynligheter med og uten add-one, finne beste
+
+6
+00:00:27,883 --> 00:00:32,923
+taggsekvens med Viterbi, regne sannsynligheten for et parsetre og fylle et
+
+7
+00:00:32,923 --> 00:00:38,763
+CYK-chart. Pensum er kapittel tjuefire, tjuetre i den amerikanske utgaven,
+
+8
+00:00:38,763 --> 00:00:43,643
+forelest i forelesning ni. Noen få underseksjoner er ikke pensum.
+
+9
+00:00:44,917 --> 00:00:48,277
+Hva er en språkmodell, og hva skal du med den?
+
+10
+00:00:50,050 --> 00:00:56,370
+Logikk har harde grenser: en setning er lovlig eller ikke. Naturlig språk er
+
+11
+00:00:56,370 --> 00:01:03,650
+tvetydig. «He saw her duck»: en and, eller en som dukker? Så vi gir hver streng
+
+12
+00:01:03,650 --> 00:01:09,170
+en sannsynlighet. Det er en language model. Den foreslår neste ord, retter
+
+13
+00:01:09,170 --> 00:01:15,410
+stavefeil og oversetter. Den enkleste er bag-of-words: ord trukket fra en pose,
+
+14
+00:01:15,410 --> 00:01:16,770
+uten rekkefølge.
+
+15
+00:01:18,150 --> 00:01:25,510
+To poser: business og weather. Tre av ti tekster er business. Det er prioren. I
+
+16
+00:01:25,510 --> 00:01:30,870
+business-posen er fem av hundre lapper «stocks», i weather-posen ti av hundre
+
+17
+00:01:30,870 --> 00:01:37,070
+«rain». For «stocks, rain» ganger du prioren med én faktor per ord. Business får
+
+18
+00:01:37,070 --> 00:01:42,790
+femten, weather sytti, i hundretusendeler. Normalisert vinner weather med åttito
+
+19
+00:01:42,790 --> 00:01:48,310
+prosent. Det er naive Bayes: ordene antas uavhengige, gitt klassen.
+
+20
+00:01:49,583 --> 00:01:59,023
+Din tur. Du bytter til «rain, stocks». Hva skjer med sannsynligheten?
+
+21
+00:01:59,023 --> 00:02:04,543
+Ingenting. En pose har ingen rekkefølge. Så modellen skiller ikke «the dog bites
+
+22
+00:02:04,543 --> 00:02:07,583
+the man» fra «the man bites the dog».
+
+23
+00:02:08,950 --> 00:02:13,590
+Hvordan tar et ord hensyn til ordene før, og hvor kommer nullene fra?
+
+24
+00:02:15,350 --> 00:02:20,790
+Den helt riktige modellen lar hvert ord avhenge av alle ordene før. Med hundre
+
+25
+00:02:20,790 --> 00:02:25,350
+tusen ord og førti ord lange setninger blir det ti opphøyd i to hundre
+
+26
+00:02:25,350 --> 00:02:31,630
+parametere. Så vi forenkler: bare de n minus én siste ordene teller. Det er
+
+27
+00:02:31,630 --> 00:02:37,190
+Markov-antagelsen, og modellen heter n-gram. En bigram-modell ser bare ett ord
+
+28
+00:02:37,190 --> 00:02:38,150
+tilbake.
+
+29
+00:02:39,450 --> 00:02:44,330
+Her er korpuset: tre setninger, med et start-symbol foran. En
+
+30
+00:02:44,330 --> 00:02:49,290
+bigram-sannsynlighet er hvor ofte paret står, delt på hvor ofte det første ordet
+
+31
+00:02:49,290 --> 00:02:56,890
+står. «the» står tre ganger, to ganger fulgt av «wumpus». To tredjedeler. «pit»
+
+32
+00:02:56,890 --> 00:03:03,050
+står én gang, fulgt av «is». Og «pit smells»? Null av én.
+
+33
+00:03:04,417 --> 00:03:11,377
+Nå ganger vi for hele setningen. Én, ganger en tredjedel, ganger null. Null. Men
+
+34
+00:03:11,377 --> 00:03:17,137
+alle ordene er jo kjente! Ja, det er paret som mangler. Et korpus får aldri med
+
+35
+00:03:17,137 --> 00:03:22,737
+alt som er sjeldent. Det heter sparse data, og ett usett n-gram nuller ut hele
+
+36
+00:03:22,737 --> 00:03:23,937
+produktet.
+
+37
+00:03:25,317 --> 00:03:31,037
+Laplace foreslo å legge én til alle tellingene. Over brøkstreken: tellingen
+
+38
+00:03:31,037 --> 00:03:38,757
+pluss én. Under: pluss V, antall ulike ord, her sju, så summen blir én. «pit
+
+39
+00:03:38,757 --> 00:03:44,397
+smells» får en åttendedel, og setningen en hundredel. Men «pit is», som vi
+
+40
+00:03:44,397 --> 00:03:50,157
+faktisk så, faller fra én til en fjerdedel. Det er add-one smoothing: ingen
+
+41
+00:03:50,157 --> 00:03:52,997
+nuller, men den tar mye fra det du har sett.
+
+42
+00:03:54,350 --> 00:04:05,110
+Din tur. Hva er P av «dead» gitt «is», med add-one?
+
+43
+00:04:05,110 --> 00:04:10,790
+To niendedeler: én pluss én over to pluss sju. Legger du bare til én under
+
+44
+00:04:10,790 --> 00:04:14,230
+streken, får du to tredjedeler. Det er fellen.
+
+45
+00:04:15,517 --> 00:04:18,477
+Finnes det noe bedre enn å legge til én?
+
+46
+00:04:20,250 --> 00:04:26,810
+To ting kan mangle. Et ukjent ord: bytt sjeldne ord med symbolet UNK allerede i
+
+47
+00:04:26,810 --> 00:04:33,290
+treningen. Et ukjent par: back off til et kortere n-gram. Linear interpolation
+
+48
+00:04:33,290 --> 00:04:38,730
+blander alle tre, med vekter som summerer til én. Forelesningen tok «a black
+
+49
+00:04:38,730 --> 00:04:44,730
+cat», som aldri er sett. Med vektene seks, tre og én tideler blir det null komma
+
+50
+00:04:44,730 --> 00:04:47,450
+null null seks én. Ikke null.
+
+51
+00:04:48,817 --> 00:04:54,977
+N-gram trenger ikke være ord. En character-level-modell ser på bokstaver. Den
+
+52
+00:04:54,977 --> 00:05:00,177
+gjetter språket på et par ord over nittini prosent riktig, men svensk mot norsk
+
+53
+00:05:00,177 --> 00:05:06,617
+bare rundt nittifem. Et skip-gram hopper over ord: i «je ne comprends pas» blir
+
+54
+00:05:06,617 --> 00:05:08,337
+«ne pas» et par.
+
+55
+00:05:09,717 --> 00:05:14,917
+Og jo lengre n-gram, jo bedre tekst. Boka trakk tilfeldige setninger fra
+
+56
+00:05:14,917 --> 00:05:21,677
+modeller av sin egen tekst. Unigram er ordsalat. Bigram gir lokale par.
+
+57
+00:05:21,677 --> 00:05:26,597
+Fire-gram ser nesten ut som en setning, men kopierer bare biter av boka.
+
+58
+00:05:27,950 --> 00:05:31,710
+Hvordan vet modellen om «duck» er substantiv eller verb?
+
+59
+00:05:33,483 --> 00:05:38,723
+For en n-gram-modell er hvert ord et atom: «cat» og «kitten» har ingenting
+
+60
+00:05:38,723 --> 00:05:44,603
+felles. WordNet er en håndlaget ordbok: kitten er et ungt pattedyr, som er et
+
+61
+00:05:44,603 --> 00:05:51,003
+pattedyr, som er et dyr. Med one-hot er alle ord like ulike. En word embedding
+
+62
+00:05:51,003 --> 00:05:55,643
+er en kort vektor der like ord havner nær hverandre. Den hører til kapittel
+
+63
+00:05:55,643 --> 00:05:56,763
+tjuefem.
+
+64
+00:05:58,050 --> 00:06:03,410
+Part-of-speech tagging gir hvert ord en ordklasse. Penn Treebank har førtifem
+
+65
+00:06:03,410 --> 00:06:10,090
+tagger, som NN for substantiv. En hidden Markov model ser taggene som skjulte
+
+66
+00:06:10,090 --> 00:06:15,770
+tilstander og ordene som observasjoner. Transition model: hvor sannsynlig er en
+
+67
+00:06:15,770 --> 00:06:21,370
+tagg etter den forrige? Sensor model: hvor sannsynlig er ordet, gitt taggen?
+
+68
+00:06:21,370 --> 00:06:23,810
+Begge telles i et tagget korpus.
+
+69
+00:06:25,183 --> 00:06:32,063
+Ta «he saw her duck». «he saw» er entydig, men «her» kan være pronomen eller
+
+70
+00:06:32,063 --> 00:06:37,823
+eiendomsord. For hver tagg regner Viterbi beste sti inn: forrige verdi ganger
+
+71
+00:06:37,823 --> 00:06:43,703
+overgang ganger ord. Ved «her» leder pronomenet, null komma null åtte mot null
+
+72
+00:06:43,703 --> 00:06:49,903
+komma null seks. Ved «duck» kommer to stier inn i hver tagg. Den svakeste kuttes.
+
+73
+00:06:49,903 --> 00:06:55,023
+Så følger du pilene bakover fra den beste. Det er Viterbi: den mest sannsynlige
+
+74
+00:06:55,023 --> 00:06:55,903
+stien.
+
+75
+00:06:57,283 --> 00:07:03,683
+Vanlig feil: å velge beste tagg ord for ord. Grådig tar pronomen ved «her», der
+
+76
+00:07:03,683 --> 00:07:08,923
+det leder, og ender på under en fjerdedel av Viterbis sannsynlighet.
+
+77
+00:07:08,923 --> 00:07:14,563
+Alternativet er logistic regression: én klassifikator per tagg, med features som
+
+78
+00:07:14,563 --> 00:07:20,830
+endelsen eller forrige ord. Den er diskriminativ og lærer P av tagg gitt ord.
+
+79
+00:07:20,830 --> 00:07:25,123
+HMM og naive Bayes er generative og kan lage setninger.
+
+80
+00:07:26,483 --> 00:07:29,763
+Hvordan gir du et helt setningstre en sannsynlighet?
+
+81
+00:07:31,517 --> 00:07:38,077
+N-gram ser en flat streng, men setninger har fraser inni fraser. En grammar er
+
+82
+00:07:38,077 --> 00:07:43,677
+regler som bygger trær. I en probabilistic context-free grammar har hver regel
+
+83
+00:07:43,677 --> 00:07:49,197
+en sannsynlighet, og reglene for samme symbol summerer til én. Boka bruker
+
+84
+00:07:49,197 --> 00:07:55,757
+E-null, et lite wumpus-språk. Den overgenererer, «Me go I» er lov, og
+
+85
+00:07:55,757 --> 00:08:00,077
+undergenererer: «I think the wumpus is smelly» er ikke lov.
+
+86
+00:08:01,350 --> 00:08:07,270
+Hvor sannsynlig er treet for «every wumpus smells»? Gang sammen hver regel treet
+
+87
+00:08:07,270 --> 00:08:15,670
+bruker. S til NP VP: null komma ni. NP til Article Noun: null komma to fem. VP
+
+88
+00:08:15,670 --> 00:08:22,270
+til Verb: null komma fire. Og ordreglene nederst: «every», «wumpus» og «smells».
+
+89
+00:08:22,270 --> 00:08:27,830
+Produktet blir null komma null null null null seks sju fem. Ikke glem ordreglene.
+
+90
+00:08:27,830 --> 00:08:29,030
+De hører med.
+
+91
+00:08:30,317 --> 00:08:37,397
+Din tur. Treet for «the wumpus is dead» bruker også VP til VP Adjective. Hvor
+
+92
+00:08:37,397 --> 00:08:43,597
+mange faktorer får produktet?
+
+93
+00:08:43,597 --> 00:08:49,437
+Åtte. Fire regler i treet, og fire ordregler. Svaret er én komma tre fem
+
+94
+00:08:49,437 --> 00:08:50,717
+milliontedeler.
+
+95
+00:08:52,017 --> 00:08:55,457
+Du har en setning. Hvordan finner du treet?
+
+96
+00:08:57,217 --> 00:09:03,337
+Parsing er søk etter et tre der bladene er ordene. Top-down starter i S og
+
+97
+00:09:03,337 --> 00:09:08,737
+bruker regler nedover mot ordene. Bottom-up starter i ordene og slår dem sammen
+
+98
+00:09:08,737 --> 00:09:14,817
+opp til S. Begge kan gjenta arbeid i blindveier. I bokas eksempel avgjør først
+
+99
+00:09:14,817 --> 00:09:19,697
+ord elleve om setningen er ordre eller spørsmål. Gjetter du feil, parser du
+
+100
+00:09:19,697 --> 00:09:24,817
+NP-en på nytt. Løsningen: lagre hver frase i et chart.
+
+101
+00:09:26,117 --> 00:09:33,077
+CYK er en bottom-up chart parser. Grammatikken må være på Chomsky Normal Form: X
+
+102
+00:09:33,077 --> 00:09:40,157
+til ett ord, eller X til to symboler. Nederst kommer ordene. VP til Verb er
+
+103
+00:09:40,157 --> 00:09:45,984
+slått sammen med ordet: null komma fire ganger null komma én. Så spenn på to ord:
+
+104
+00:09:45,984 --> 00:09:53,317
+«every wumpus» blir en NP. Og «wumpus smells» blir en S som aldri brukes. Til
+
+105
+00:09:53,317 --> 00:09:59,237
+slutt hele setningen: S av NP og VP. Samme tall som for treet.
+
+106
+00:10:00,617 --> 00:10:06,377
+Hvorfor er dette raskt nok? Tre løkker: spennets lengde, startpunktet og
+
+107
+00:10:06,377 --> 00:10:13,017
+delepunktet. Hver går opp til n. Inni prøver du reglene, med m symboler. Det gir
+
+108
+00:10:13,017 --> 00:10:19,737
+O av n i tredje ganger m i tid. Raskere: A-stjerne, eller beam search som bare
+
+109
+00:10:19,737 --> 00:10:24,137
+beholder de b beste. Med b lik én er det shift-reduce.
+
+110
+00:10:25,517 --> 00:10:36,037
+Din tur. Setningen blir dobbelt så lang. Hvor mye lengre tid tar CYK?
+
+111
+00:10:36,037 --> 00:10:38,637
+Åtte ganger. To i tredje.
+
+112
+00:10:40,017 --> 00:10:43,297
+Hva brukes dette til, og hva kom etterpå?
+
+113
+00:10:45,050 --> 00:10:50,650
+Seksjon tjuefire punkt seks er en kort liste. Talegjenkjenning gjør lyd til
+
+114
+00:10:50,650 --> 00:10:56,610
+tekst. Tekst-til-tale går motsatt vei og må uttale «record» riktig.
+
+115
+00:10:56,610 --> 00:11:01,930
+Maskinoversettelse lærer av parallelle tekster. Information extraction henter
+
+116
+00:11:01,930 --> 00:11:07,930
+fakta, som adresser. Information retrieval finner relevante dokumenter. Question
+
+117
+00:11:07,930 --> 00:11:10,890
+answering gir et svar, ikke en liste.
+
+118
+00:11:12,183 --> 00:11:16,983
+Kapittel tjuefem har en stjerne i pensumlista uten forklaring, og ingen
+
+119
+00:11:16,983 --> 00:11:22,343
+forelesning gikk gjennom det. Så ta det på idénivå. Word embeddings gjør
+
+120
+00:11:22,343 --> 00:11:28,023
+analogier til regning: Athen er til Hellas som Oslo er til … Norge.
+
+121
+00:11:29,383 --> 00:11:36,343
+En RNN leser ett ord om gangen og bærer med seg en skjult tilstand. Seq2seq
+
+122
+00:11:36,343 --> 00:11:42,023
+koder en setning og dekoder en ny. Attention lar hvert nytt ord se på alle
+
+123
+00:11:42,023 --> 00:11:47,943
+ordene i kilden. Transformeren bruker self-attention: ordene i samme setning ser
+
+124
+00:11:47,943 --> 00:11:53,863
+på hverandre. Og pretraining: tren på masse tekst først, finjuster etterpå.
+
+125
+00:11:55,217 --> 00:11:57,217
+Hvordan ser dette ut på eksamen?
+
+126
+00:11:58,983 --> 00:12:06,023
+Eksamen totusen og tjuefem, oppgave tolv, fem poeng. a: Hvorfor trengs smoothing
+
+127
+00:12:06,023 --> 00:12:12,503
+i n-gram-modeller? Beskriv én type. b: Forklar forskjellen på top-down og
+
+128
+00:12:12,503 --> 00:12:26,263
+bottom-up parsing, med én ulempe for hver. Sett på pause og svar selv.
+
+129
+00:12:27,550 --> 00:12:33,550
+Fasiten på a: noen n-gram finnes ikke i treningskorpuset, og da blir hele
+
+130
+00:12:33,550 --> 00:12:38,590
+setningen null. Smoothing flytter litt sannsynlighet fra vanlige n-gram til
+
+131
+00:12:38,590 --> 00:12:45,870
+usette, for eksempel med add-one. På b: top-down starter i S og utvider mot
+
+132
+00:12:45,870 --> 00:12:53,150
+ordene. Ulempen: utvidelser som aldri passer ordene. Bottom-up starter i ordene.
+
+133
+00:12:53,150 --> 00:12:59,630
+Ulempen: biter som aldri blir en hel parse, som S-en for «wumpus smells». Begge
+
+134
+00:12:59,630 --> 00:13:01,710
+gjentar arbeid i blindveier.
+
+135
+00:13:03,083 --> 00:13:05,323
+Hvor møter du disse ideene igjen?
+
+136
+00:13:07,083 --> 00:13:12,123
+HMM-taggeren følger skjulte tilstander, som belief state-oppdateringen i
+
+137
+00:13:12,123 --> 00:13:18,243
+E-null-fem. Grammatikken er som BNF for førsteordens logikk i E-fjorten, med
+
+138
+00:13:18,243 --> 00:13:24,203
+sannsynligheter. WordNet sin is-a-kjede er en taksonomi, som i E-sytten.
+
+139
+00:13:24,203 --> 00:13:29,563
+A-stjerne-parsing er søket fra E-null-tre. Og en språkmodell arver skjevhetene i
+
+140
+00:13:29,563 --> 00:13:32,763
+korpuset. Det er etikk, i E-tjueen.
+
+141
+00:13:34,050 --> 00:13:40,610
+Hele kjeden: en språkmodell gir strenger en sannsynlighet. N-gram ser n minus én
+
+142
+00:13:40,610 --> 00:13:47,010
+ord tilbake og teller. Usette par gir null, så du glatter. Viterbi finner beste
+
+143
+00:13:47,010 --> 00:13:54,530
+taggsti, en PCFG ganger regler, og CYK fyller et chart nedenfra. Og «the pit
+
+144
+00:13:54,530 --> 00:14:00,410
+smells» får en hundredel i stedet for null. Husker du én ting: én null i et
+
+145
+00:14:00,410 --> 00:14:02,290
+produkt dreper alt.
+

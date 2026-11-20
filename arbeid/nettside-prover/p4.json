@@ -1,0 +1,1305 @@
+{
+ "id": "p4",
+ "ep": "P4",
+ "tittel": "Prøveeksamen 4",
+ "om": "**Cover Page**\n\n**Examination paper for TDT4136 Introduction to Artificial Intelligence**\n\nPractice exam P4 · Time: 4 hours\n\nPermitted examination support material: D: No printed or hand-written support material is allowed. A specific basic calculator is allowed.\n\n**OTHER INFORMATION**\n\nThere are 13 questions in this exam. The first 4 are multiple choice questions. For questions about logic, there is a 'Formula Sheet' at the very end of the exam, after all the questions.\n\nRead the questions carefully and make your own assumptions. In your answers, explain clearly what assumptions you have made and how you have understood or limited the assignment.\n\n**Paper drawings:** For question 9 (Generalized Modus Ponens) and 10 (Resolution Inference Algorithm) you can answer on handwritten sheets. Other questions must be answered directly in the answer boxes.\n\n**Weighting:** Weights for questions and sub-questions are given in each question.\n\n---\n\n*Øvingssett laget for TDT4136 H26 i formatet fra eksamen 2025: 13 oppgaver, 100 poeng, 4 timer. Dette er ikke en ekte eksamen. P4 dekker rasjonalitet og autonomi, simulated annealing (akseptsannsynlighet), min-conflicts, Pareto og social welfare, IDS, A\\* med Manhattan-h og konsistensbevis, forward checking mot MAC, alpha-beta på fire nivåer, GMP med konjunksjon, engelsk → FOL → CNF → resolusjon, HTN og ikke-deterministiske handlinger, over-/undergenerering og CYK, event calculus og autonome våpen.*\n\n<details><summary>Formula sheet (appendix)</summary><img class=\"fig\" src=\"nettside-figurer/e14-2025-formelark.svg\" alt=\"Formelark\"></details>",
+ "intro": "Flervalg og delsvar med ett riktig svar kan sjekkes med «Sjekk». Resten rettes mot fasiten. Trykk «Start» for å kjøre settet på tid (4 timer).",
+ "tasks": [
+  {
+   "t": "Oppgave 1 (5 p): Intelligent Agents",
+   "d": "Which of the following statements about rationality, omniscience, learning and autonomy is **false**?\n\nSelect one alternative:\n\n- A. Rationality maximizes expected performance, while perfection maximizes actual performance. An agent can therefore act rationally even if its action turns out badly after the fact.\n- B. What is rational at any given time depends on the performance measure, the agent's prior knowledge of the environment, the actions the agent can perform, and the agent's percept sequence to date.\n- C. A rational agent must be completely autonomous from the start, so the designer should not give it any built-in knowledge of the environment.\n- D. Doing actions in order to modify future percepts, such as looking both ways before crossing a street, is called information gathering and is an important part of rationality.\n- E. If the environment is completely known a priori and completely predictable, the agent need not perceive or learn; it can simply act correctly.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "C"
+     ]
+    },
+    "merk": "C er usann: boka sier at man sjelden krever full autonomi fra start, og at det er rimelig å gi agenten noe innebygd kunnskap i tillegg til evnen til å lære (2.2.3). A, B, D og E står nesten ordrett i 2.2.2–2.2.3.",
+    "kilde": "AIMA 4e 2.2.2–2.2.3, kontrollert mot fulltekst av boka"
+   },
+   "fasit": "**Alternativ: C** (den usanne påstanden).\n\n- **A sann.** Boka (2.2.3): rasjonalitet maksimerer *forventet* ytelse, perfeksjon maksimerer *faktisk* ytelse. Eksempelet med lasteluka som faller ned: å krysse gata var rasjonelt selv om det gikk galt.\n- **B sann.** Dette er de fire tingene rasjonalitet avhenger av (2.2.2): performance measure, prior knowledge, actions og percept sequence to date.\n- **C usann.** Boka sier at man sjelden krever full autonomi fra start. Uten erfaring måtte agenten handlet tilfeldig, så det er rimelig å gi den noe innebygd kunnskap *og* evnen til å lære, slik evolusjonen gir dyr reflekser. En agent mangler autonomi i den grad den *bare* stoler på designerens kunnskap.\n- **D sann.** Information gathering (2.2.3): å se seg for endrer ikke veien, men endrer fremtidige percepter og øker forventet ytelse.\n- **E sann.** Står nesten ordrett i 2.2.3. Boka legger til at slike agenter er skjøre (gjødselbillen), men påstanden stemmer.\n\nVanlig feil: velge E fordi den høres for sterk ut, eller B fordi man husker setningen om at det rasjonelle valget bare avhenger av perceptsekvensen *så langt*. Den setningen handler om at valget ikke kan avhenge av fremtidige utfall, og motsier ikke de fire faktorene."
+  },
+  {
+   "t": "Oppgave 2 (5 p): Local Search",
+   "d": "Simulated annealing (SIMULATED-ANNEALING, Fig. 4.5 in the textbook) is used to **maximize** VALUE. The schedule is T = schedule(t) = 40 · 0.5<sup>t</sup>.\n\nIn the iteration with t = 3, the current state has VALUE = 20. It has exactly four successors, with VALUE 23, 20, 17 and 14. As in Fig. 4.5, *next* is one of the four successors selected uniformly at random.\n\nWhat is the probability that *current* is replaced by *next* in this iteration (rounded to two decimals)?\n\nSelect one alternative:\n\n- A. 0.21\n- B. 0.46\n- C. 0.60\n- D. 0.71\n- E. 0.82",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "D"
+     ]
+    },
+    "merk": "T = 40 · 0,5³ = 5. ΔE = +3, 0, −3 og −6 gir akseptsannsynlighet 1, 1 (e⁰), e^(−0,6) ≈ 0,549 og e^(−1,2) ≈ 0,301. Snittet er 2,850/4 ≈ 0,71.",
+    "kilde": "Regnet med Python og med simulated-annealing i nettside-algo (akseptsannsynlighetene), Fig. 4.5"
+   },
+   "fasit": "**Alternativ: D (0,71).**\n\nT = schedule(3) = 40 · 0,5³ = 5. Fig. 4.5: er ΔE > 0, byttes alltid; ellers byttes med sannsynlighet e<sup>ΔE/T</sup>.\n\n| next | ΔE | P(current ← next) |\n|---|---|---|\n| 23 | +3 | 1 |\n| 20 | 0 | e⁰ = 1 (else-grenen) |\n| 17 | −3 | e<sup>−0,6</sup> ≈ 0,5488 |\n| 14 | −6 | e<sup>−1,2</sup> ≈ 0,3012 |\n\nP = (1 + 1 + 0,5488 + 0,3012)/4 = 2,8500/4 ≈ **0,7125 ≈ 0,71**.\n\nDe gale alternativene er typiske regnefeil:\n\n- **A 0,21:** bare de to dårligere trekkene telt: (0,5488 + 0,3012)/4.\n- **B 0,46:** ΔE = 0 behandlet som «aldri bytt»: (1 + 0,5488 + 0,3012)/4.\n- **C 0,60:** t = 4, altså T = 2,5: (2 + e<sup>−1,2</sup> + e<sup>−2,4</sup>)/4 = (2 + 0,3012 + 0,0907)/4.\n- **E 0,82:** t = 2, altså T = 10: (2 + e<sup>−0,3</sup> + e<sup>−0,6</sup>)/4 = (2 + 0,7408 + 0,5488)/4.\n\nVanlig feil: tro at et like godt trekk (ΔE = 0) aldri tas. I Fig. 4.5 går det til else-grenen med e⁰ = 1."
+  },
+  {
+   "t": "Oppgave 3 (5 p): Constraint Satisfaction Problems",
+   "d": "Six transmitters A–F must each get one of the frequencies {1, 2, 3}. Transmitters joined by an edge in the graph below must get different frequencies. The current complete assignment is shown next to each node:\n\nA = 1, B = 2, C = 3, D = 2, E = 1, F = 1.\n\nMIN-CONFLICTS (Fig. 5.9) now performs **one** iteration: it picks a conflicted variable at random and gives it the value that minimizes the number of conflicts with the other variables. Ties between values are broken at random.\n\nWhich of the following could be the assignment after this one iteration? The assignments are written as (A, B, C, D, E, F).\n\nSelect one alternative:\n\n- A. (1, 2, 3, 1, 1, 1)\n- B. (1, 1, 3, 3, 1, 1)\n- C. (3, 2, 3, 2, 1, 1)\n- D. (1, 2, 3, 2, 1, 2)\n- E. (1, 2, 3, 2, 3, 1)",
+   "g": {
+    "w": 420,
+    "h": 200,
+    "dir": 0,
+    "al": "Constraint-graf til oppgave 3 med gjeldende tilordning",
+    "n": {
+     "A": [
+      40,
+      100,
+      "= 1",
+      0,
+      28
+     ],
+     "B": [
+      140,
+      40,
+      "= 2",
+      0,
+      -26
+     ],
+     "C": [
+      140,
+      160,
+      "= 3",
+      0,
+      28
+     ],
+     "D": [
+      250,
+      40,
+      "= 2",
+      0,
+      -26
+     ],
+     "E": [
+      250,
+      160,
+      "= 1",
+      0,
+      28
+     ],
+     "F": [
+      360,
+      100,
+      "= 1",
+      0,
+      28
+     ]
+    },
+    "e": [
+     [
+      "A",
+      "B",
+      ""
+     ],
+     [
+      "A",
+      "C",
+      ""
+     ],
+     [
+      "B",
+      "C",
+      ""
+     ],
+     [
+      "B",
+      "D",
+      ""
+     ],
+     [
+      "C",
+      "D",
+      ""
+     ],
+     [
+      "C",
+      "E",
+      ""
+     ],
+     [
+      "D",
+      "E",
+      ""
+     ],
+     [
+      "D",
+      "F",
+      ""
+     ],
+     [
+      "E",
+      "F",
+      ""
+     ]
+    ]
+   },
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "E"
+     ]
+    },
+    "merk": "Konfliktene er B–D og E–F, så B, D, E og F kan velges. E har 1 konflikt for alle tre verdier, så E = 3 er et mulig sideveis trekk. A: D = 1 gir 2 konflikter. B: to variabler endret. C: A er ikke i konflikt. D: F = 3 gir 0 konflikter og må velges.",
+    "kilde": "To uavhengige skript (Python og Node) som teller konflikter per verdi; min-conflicts i nettside-algo støtter bare dronninger"
+   },
+   "fasit": "**Alternativ: E.**\n\nKonflikter nå: B–D (2 = 2) og E–F (1 = 1). Konfliktvariablene er **B, D, E og F**. A og C er ikke i konflikt og kan ikke velges.\n\nAntall konflikter med de andre variablene for hver verdi:\n\n| Variabel | = 1 | = 2 | = 3 | Minst konflikt |\n|---|---|---|---|---|\n| B (naboer A, C, D) | 1 (A) | 1 (D) | 1 (C) | 1, 2 eller 3 |\n| D (naboer B, C, E, F) | 2 (E, F) | 1 (B) | 1 (C) | 2 eller 3 |\n| E (naboer C, D, F) | 1 (F) | 1 (D) | 1 (C) | 1, 2 eller 3 |\n| F (naboer D, E) | 1 (E) | 1 (D) | 0 | bare 3 |\n\n- **A umulig:** D = 1 gir 2 konflikter, mens 2 og 3 gir 1.\n- **B umulig:** både B og D er endret. Én iterasjon endrer én variabel.\n- **C umulig:** A er ikke en konfliktvariabel.\n- **D umulig:** F = 2 gir 1 konflikt, men F = 3 gir 0, så F må få 3.\n- **E mulig:** E velges, alle tre verdier gir 1 konflikt, og likheten brytes tilfeldig. E = 3 er et sideveis trekk: totalt er det fortsatt 2 konflikter (B–D og C–E).\n\nVanlig feil: tro at min-conflicts alltid senker det totale antallet konflikter, eller at den kan velge en variabel som ikke er i konflikt."
+  },
+  {
+   "t": "Oppgave 4 (5 p): Game Theory",
+   "d": "Consider the following two-player game. P1 chooses the row and P2 chooses the column. Each cell gives (utility for P1, utility for P2).\n\n| | Left | Center | Right |\n|---|---|---|---|\n| **Up** | 4, 4 | 0, 9 | 2, 1 |\n| **Middle** | 6, 0 | 1, 1 | 0, 2 |\n| **Down** | 1, 2 | 2, 0 | 3, 2 |\n\nThe game has exactly one pure-strategy Nash equilibrium, (Down, Right). Consider only the nine pure-strategy outcomes.\n\nWhich of the following statements is **true**?\n\nSelect one alternative:\n\n- A. The Nash equilibrium (Down, Right) is Pareto optimal.\n- B. Exactly three of the nine outcomes are Pareto optimal.\n- C. The outcome that maximizes utilitarian social welfare also maximizes egalitarian social welfare (the utility of the worst-off player).\n- D. (Middle, Left) is not Pareto optimal, because its utilitarian social welfare (6) is lower than that of (Up, Left) (8).\n- E. If P1 uses a pure maximin strategy (maximizing P1's worst-case utility), P1 plays Middle, since Middle contains P1's highest utility, 6.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "B"
+     ]
+    },
+    "merk": "Pareto optimale: (Up, Left) = (4, 4), (Up, Center) = (0, 9) og (Middle, Left) = (6, 0). Alle de andre seks er dominert av (4, 4). Utilitaristisk maks er (Up, Center) med sum 9, egalitær maks er (Up, Left) med minimum 4, og P1s maximin er Down (verste utfall 1).",
+    "kilde": "Eget Python-skript (Pareto, summer, minimum, maximin) og dominans-nash i nettside-algo (én ren likevekt)"
+   },
+   "fasit": "**Alternativ: B.**\n\nEt utfall er Pareto optimal hvis ingen andre utfall er minst like godt for begge og bedre for minst én (17.2.2). (4, 4) dominerer alle utfall der begge får høyst 4 og én får mindre: (2, 1), (1, 1), (0, 2), (1, 2), (2, 0) og (3, 2). Igjen står **(Up, Left) = (4, 4), (Up, Center) = (0, 9) og (Middle, Left) = (6, 0)**: ingen andre celler gir P2 mer enn 9 eller P1 minst 6.\n\n| Utfall | Sum (utilitaristisk) | Minimum (egalitær) |\n|---|---|---|\n| (Up, Left) | 8 | **4** |\n| (Up, Center) | **9** | 0 |\n| (Middle, Left) | 6 | 0 |\n| (Down, Right), Nash | 5 | 2 |\n\n- **A usann:** (4, 4) er bedre for begge enn (3, 2), så likevekten er ikke Pareto optimal.\n- **B sann.**\n- **C usann:** utilitaristisk maks er (Up, Center) med sum 9, men der får P1 0. Egalitær maks er (Up, Left) med minimum 4.\n- **D usann:** lavere sum betyr ikke Pareto-dominans. (4, 4) gir P1 mindre enn 6, så (6, 0) er Pareto optimal.\n- **E usann:** P1s verste utfall er 0 med Up, 0 med Middle og 1 med Down. Maximin er **Down**.\n\nVanlig feil: blande Pareto-dominans med høyest sum, eller tro at Nash-likevekten automatisk er et godt utfall for fellesskapet."
+  },
+  {
+   "t": "Oppgave 5 (8 p): Uninformed Search",
+   "d": "Consider the undirected graph below, where S is the start state and G is the goal state. All edges have cost 1.\n\nUse **iterative deepening search (IDS)** as in the textbook: depth-limited search (DLS) with ℓ = 0, 1, 2, … . DLS is a tree-like depth-first search that goal-tests a node when it is popped from the frontier and does not expand nodes at depth ℓ. It checks for cycles by never generating a child that is already on the path from S to the current node. Tie breaking: children are pushed so that they are popped in alphabetical order.\n\na) For each depth limit ℓ, list the nodes in the order they are popped. At which ℓ is the goal found, which path does IDS return, and how many nodes are popped in total over all iterations? (4 pts.)\n\nb) Run DLS **alone** with ℓ = 4 (same conventions). Which path is returned? Is it the shallowest solution, and what does this say about why IDS increases ℓ one step at a time? (2 pts.)\n\nc) Consider instead a tree with uniform branching factor b = 3 where the shallowest goal is at depth d = 4. Using the textbook's worst-case analysis (count generated nodes; do not count the root), how many nodes do IDS and breadth-first search generate? Why is IDS still the preferred uninformed method when the search space is large and the depth of the solution is unknown? (2 pts.)",
+   "g": {
+    "w": 500,
+    "h": 300,
+    "dir": 0,
+    "al": "Graf til oppgave 5",
+    "n": {
+     "S": [
+      40,
+      150
+     ],
+     "A": [
+      140,
+      70
+     ],
+     "B": [
+      140,
+      230
+     ],
+     "C": [
+      250,
+      30
+     ],
+     "D": [
+      250,
+      150
+     ],
+     "E": [
+      250,
+      270
+     ],
+     "F": [
+      360,
+      90
+     ],
+     "G": [
+      460,
+      180,
+      "",
+      0,
+      0,
+      1
+     ]
+    },
+    "e": [
+     [
+      "S",
+      "A",
+      ""
+     ],
+     [
+      "S",
+      "B",
+      ""
+     ],
+     [
+      "A",
+      "C",
+      ""
+     ],
+     [
+      "A",
+      "D",
+      ""
+     ],
+     [
+      "B",
+      "D",
+      ""
+     ],
+     [
+      "B",
+      "E",
+      ""
+     ],
+     [
+      "C",
+      "F",
+      ""
+     ],
+     [
+      "D",
+      "F",
+      ""
+     ],
+     [
+      "E",
+      "G",
+      ""
+     ],
+     [
+      "F",
+      "G",
+      ""
+     ]
+    ]
+   },
+   "f": [
+    [
+     "a) Nodes popped for each ℓ",
+     "area",
+     "ℓ = 0: …\nℓ = 1: …"
+    ],
+    [
+     "a) Nodes popped with ℓ = 3",
+     "text",
+     "S, A, …"
+    ],
+    [
+     "a) Path returned by IDS",
+     "text",
+     "S, …, G"
+    ],
+    [
+     "a) Total number of popped nodes",
+     "text",
+     "ett tall"
+    ],
+    [
+     "b) Path returned by DLS with ℓ = 4",
+     "text",
+     "S, …, G"
+    ],
+    [
+     "b) Explanation",
+     "area"
+    ],
+    [
+     "c) Nodes generated by IDS",
+     "text",
+     "ett tall"
+    ],
+    [
+     "c) Nodes generated by BFS",
+     "text",
+     "ett tall"
+    ],
+    [
+     "c) Why IDS",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Nodes popped with ℓ = 3": [
+      "S A C F D B F B D A F E G"
+     ],
+     "a) Path returned by IDS": [
+      "S B E G"
+     ],
+     "a) Total number of popped nodes": [
+      "24"
+     ],
+     "b) Path returned by DLS with ℓ = 4": [
+      "S A C F G"
+     ],
+     "c) Nodes generated by IDS": [
+      "174"
+     ],
+     "c) Nodes generated by BFS": [
+      "120"
+     ]
+    },
+    "merk": "ℓ = 0: S. ℓ = 1: S A B. ℓ = 2: S A C D B D E. ℓ = 3: S A C F D B F B D A F E G, målet funnet med S–B–E–G. Totalt 1 + 3 + 7 + 13 = 24. DLS med ℓ = 4 alene gir S–A–C–F–G. N(IDS) = 4·3 + 3·9 + 2·27 + 81 = 174, N(BFS) = 3 + 9 + 27 + 81 = 120.",
+    "kilde": "ids og dls i nettside-algo og et eget Python-skript; tallene i c) med bokas formel, kontrollert mot bokas 123 450 / 111 110"
+   },
+   "fasit": "**a) ℓ = 3. Uttak med ℓ = 3: S A C F D B F B D A F E G. Sti: S–B–E–G. Totalt 24 uttak.**\n\n**b) S–A–C–F–G**, ikke grunnest.\n**c) N(IDS) = 174, N(BFS) = 120.**\n\n**a) (4 p)** DLS er tree-like: D og F kan tas ut flere ganger via ulike stier.\n\n| ℓ | Tatt ut (i rekkefølge) | Resultat |\n|---|---|---|\n| 0 | S | cutoff |\n| 1 | S A B | cutoff |\n| 2 | S A C D B D E | cutoff |\n| 3 | S A C F D B F B D A F E G | G funnet |\n\nMed ℓ = 3: S → A → C → F (dybde 3, testes, utvides ikke) → D (stien S–A–D) → B, F → B (stien S–B) → D (S–B–D) → A, F → E (S–B–E) → **G**. Stien er **S–B–E–G**, og totalt tas 1 + 3 + 7 + 13 = **24** noder ut.\n\nPoeng: 1 p for ℓ = 0–2, 2 p for ℓ = 3, 1 p for sti og antall.\n\n**b) (2 p)** Uttak: S A C F D G. DLS går dypt under A først og finner **S–A–C–F–G** på dybde 4 før den ser den grunnere stien på dybde 3 under B. Med ℓ større enn d er DLS verken grunnest eller optimal. IDS øker ℓ ett trinn om gangen, så den første løsningen den finner, er den grunneste (optimal når alle kanter koster det samme).\n\n**c) (2 p)** Bokas formel: N(IDS) = d·b + (d − 1)·b² + … + 1·b<sup>d</sup> = 4·3 + 3·9 + 2·27 + 1·81 = **174**. N(BFS) = b + b² + b³ + b⁴ = 3 + 9 + 27 + 81 = **120**. IDS gjentar de øvre nivåene, men de fleste nodene ligger på det nederste nivået, så tidsoverheaden er liten og tiden er fortsatt O(b<sup>d</sup>). Minnet er bare O(bd) (én sti med søsken), mens BFS må lagre O(b<sup>d</sup>) noder. Boka: IDS er foretrukket uinformert metode når søkerommet er større enn det som får plass i minnet og dybden til løsningen er ukjent.\n\nVanlige feil: bruke `reached` (da tas D og F bare ut én gang), teste målet når noden genereres (det er BFS), utvide noder på dybde ℓ, eller telle med rota: den genereres i hver av de fem DLS-iterasjonene, så IDS får 174 + 5 = 179, og BFS får 121."
+  },
+  {
+   "t": "Oppgave 6 (12 p): Informed Search",
+   "d": "The graph below is a road map. Each node is a crossing with grid coordinates (x, y), shown next to the node, and each edge is a two-way road with the given cost. S is the start state and G is the goal state. Every road costs **at least** the Manhattan distance between its two endpoints.\n\nCoordinates: S (0, 0), A (2, 0), B (0, 3), C (2, 2), D (4, 1), E (1, 4), F (3, 3), H (5, 1), G (5, 4).\n\nThe heuristic is the Manhattan distance to the goal: h(n) = |x<sub>n</sub> − 5| + |y<sub>n</sub> − 4|.\n\na) Prove that h is consistent on this graph. (3 pts.)\n\nb) Run A\\* **graph search** (BEST-FIRST-SEARCH with f = g + h; the goal test is done when a node is popped, and a node is added again only if a cheaper path to it is found). Tie breaking: if several nodes have the same f-value, the one that comes first in alphabetical order is expanded first. Give h for every node, show the frontier with f-values after each expansion, list the expanded nodes in order, and give the path found and its cost. (7 pts.)\n\nc) A new metro line connects S and E directly with cost 3 (both directions). Is h still consistent? Is h still admissible? Justify both answers. (2 pts.)",
+   "g": {
+    "w": 540,
+    "h": 360,
+    "dir": 0,
+    "al": "Veikart til oppgave 6 med koordinater",
+    "n": {
+     "S": [
+      70,
+      320,
+      "(0, 0)",
+      0,
+      28
+     ],
+     "A": [
+      230,
+      320,
+      "(2, 0)",
+      0,
+      28
+     ],
+     "B": [
+      70,
+      110,
+      "(0, 3)",
+      -46,
+      0
+     ],
+     "C": [
+      230,
+      180,
+      "(2, 2)",
+      46,
+      0
+     ],
+     "D": [
+      390,
+      250,
+      "(4, 1)",
+      0,
+      28
+     ],
+     "E": [
+      150,
+      40,
+      "(1, 4)",
+      0,
+      -28
+     ],
+     "F": [
+      310,
+      110,
+      "(3, 3)",
+      0,
+      -28
+     ],
+     "H": [
+      470,
+      250,
+      "(5, 1)",
+      0,
+      28
+     ],
+     "G": [
+      470,
+      40,
+      "(5, 4)",
+      0,
+      -30,
+      1
+     ]
+    },
+    "e": [
+     [
+      "S",
+      "A",
+      2
+     ],
+     [
+      "S",
+      "B",
+      3
+     ],
+     [
+      "A",
+      "C",
+      3
+     ],
+     [
+      "A",
+      "D",
+      5
+     ],
+     [
+      "B",
+      "C",
+      3
+     ],
+     [
+      "B",
+      "E",
+      2
+     ],
+     [
+      "C",
+      "F",
+      2
+     ],
+     [
+      "D",
+      "H",
+      1
+     ],
+     [
+      "D",
+      "F",
+      3
+     ],
+     [
+      "E",
+      "F",
+      4
+     ],
+     [
+      "F",
+      "G",
+      4
+     ],
+     [
+      "H",
+      "G",
+      5
+     ]
+    ]
+   },
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "S",
+       "x": 70,
+       "y": 320,
+       "h": 9
+      },
+      {
+       "id": "A",
+       "x": 230,
+       "y": 320,
+       "h": 7
+      },
+      {
+       "id": "B",
+       "x": 70,
+       "y": 110,
+       "h": 6
+      },
+      {
+       "id": "C",
+       "x": 230,
+       "y": 180,
+       "h": 5
+      },
+      {
+       "id": "D",
+       "x": 390,
+       "y": 250,
+       "h": 4
+      },
+      {
+       "id": "E",
+       "x": 150,
+       "y": 40,
+       "h": 4
+      },
+      {
+       "id": "F",
+       "x": 310,
+       "y": 110,
+       "h": 3
+      },
+      {
+       "id": "H",
+       "x": 470,
+       "y": 250,
+       "h": 3
+      },
+      {
+       "id": "G",
+       "x": 470,
+       "y": 40,
+       "h": 0
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "S",
+       "til": "A",
+       "kost": 2
+      },
+      {
+       "fra": "S",
+       "til": "B",
+       "kost": 3
+      },
+      {
+       "fra": "A",
+       "til": "C",
+       "kost": 3
+      },
+      {
+       "fra": "A",
+       "til": "D",
+       "kost": 5
+      },
+      {
+       "fra": "B",
+       "til": "C",
+       "kost": 3
+      },
+      {
+       "fra": "B",
+       "til": "E",
+       "kost": 2
+      },
+      {
+       "fra": "C",
+       "til": "F",
+       "kost": 2
+      },
+      {
+       "fra": "D",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "D",
+       "til": "F",
+       "kost": 3
+      },
+      {
+       "fra": "E",
+       "til": "F",
+       "kost": 4
+      },
+      {
+       "fra": "F",
+       "til": "G",
+       "kost": 4
+      },
+      {
+       "fra": "H",
+       "til": "G",
+       "kost": 5
+      }
+     ],
+     "start": "S",
+     "mal": [
+      "G"
+     ]
+    }
+   },
+   "f": [
+    [
+     "a) Proof",
+     "area"
+    ],
+    [
+     "b) h-values and frontier after each expansion",
+     "area",
+     "h: S = …\n1. expand S: frontier …"
+    ],
+    [
+     "b) Expanded nodes in order (goal in parentheses)",
+     "text",
+     "S, …, (G)"
+    ],
+    [
+     "b) Path found",
+     "text",
+     "S, …, G"
+    ],
+    [
+     "b) Path cost",
+     "text",
+     "ett tall"
+    ],
+    [
+     "c) Is h still consistent? (yes/no)",
+     "text",
+     "yes eller no"
+    ],
+    [
+     "c) Is h still admissible? (yes/no)",
+     "text",
+     "yes eller no"
+    ],
+    [
+     "c) Justification",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "b) Expanded nodes in order (goal in parentheses)": [
+      "S A B E C F D (G)",
+      "S A B E C F D"
+     ],
+     "b) Path found": [
+      "S A C F G"
+     ],
+     "b) Path cost": [
+      "11"
+     ],
+     "c) Is h still consistent? (yes/no)": [
+      "no",
+      "nei"
+     ],
+     "c) Is h still admissible? (yes/no)": [
+      "yes",
+      "ja"
+     ]
+    },
+    "merk": "h: S 9, A 7, B 6, C 5, D 4, E 4, F 3, H 3, G 0. A* ekspanderer S A B E C F D (G) og finner S–A–C–F–G med kostnad 11. Metrolinja gir h(S) = 9 > 3 + h(E) = 7, så h er ikke konsistent, men h*(S) er fortsatt 11, så h er fortsatt admissible.",
+    "kilde": "astar i nettside-algo og et eget Python-skript; h* med Dijkstra fra G, med og uten metrolinja"
+   },
+   "fasit": "**a) Manhattan-avstanden oppfyller trekantulikheten, og hver kant koster minst Manhattan-avstanden, så h(n) ≤ c(n, n′) + h(n′).**\n\n**b) Ekspandert: S A B E C F D (G). Sti: S–A–C–F–G. Kostnad: 11.**\n\n**c) Ikke konsistent, men fortsatt admissible.**\n\n**a) (3 p)** La M(n, m) være Manhattan-avstanden. For hver kant (n, n′) med kostnad c(n, n′):\n\nh(n) = M(n, G) ≤ M(n, n′) + M(n′, G) = M(n, n′) + h(n′) ≤ c(n, n′) + h(n′).\n\nFørste ulikhet er trekantulikheten for Manhattan-avstanden, den andre er at hver vei koster minst Manhattan-avstanden. Begge retninger av hver kant er dekket fordi argumentet gjelder for alle par. I tillegg er h(G) = 0. Altså er h konsistent (og dermed admissible). Å sjekke alle 12 kantene i begge retninger gir også full score.\n\nPoeng: 2 p for argumentet, 1 p for h(G) = 0 og at det gjelder alle kanter.\n\n**b) (7 p)** h: S 9, A 7, B 6, C 5, D 4, E 4, F 3, H 3, G 0.\n\n| Steg | Ekspanderer (g, f) | Frontier etterpå: node (g, f) |\n|---|---|---|\n| 1 | S (0, 9) | A (2, 9), B (3, 9) |\n| 2 | A (2, 9) | B (3, 9), C (5, 10), D (7, 11) |\n| 3 | B (3, 9) | E (5, 9), C (5, 10), D (7, 11); C via B gir g = 6, ikke billigere |\n| 4 | E (5, 9) | C (5, 10), D (7, 11), F (9, 12) |\n| 5 | C (5, 10) | F (7, 10), D (7, 11); F får billigere vei via C |\n| 6 | F (7, 10) | D (7, 11), G (11, 11); D via F gir g = 10, ikke billigere |\n| 7 | D (7, 11) | G (11, 11), H (8, 11) |\n| 8 | G tas ut og testes: mål | |\n\nEkspansjonsrekkefølgen er **S A B E C F D (G)**. D og G har begge f = 11, og D kommer først alfabetisk. Etter D har G og H f = 11, og G tas ut. Stien er **S–A–C–F–G** med kostnad 2 + 3 + 2 + 4 = **11**.\n\nPoeng: 1 p for h, 4 p for rekkefølge og frontier, 2 p for sti og kostnad. Til sammenligning gir greedy best-first S–B–E–F–G med kostnad 13.\n\n**c) (2 p)** **Ikke konsistent:** h(S) = 9 > c(S, E) + h(E) = 3 + 4 = 7. Metrolinja koster mindre enn Manhattan-avstanden 5 mellom S og E, så argumentet i a) faller. **Fortsatt admissible:** de sanne kostnadene til målet endres ikke. Via metroen koster S–E–F–G 3 + 4 + 4 = 11, det samme som før, og ingen andre noder får kortere vei. h\\*: S 11, A 9, B 9, C 6, D 6, E 8, F 4, H 5, så h(n) ≤ h\\*(n) for alle n. Konsistens er et krav per kant; admissibility gjelder hele veien til målet.\n\nVanlige feil: teste målet når det genereres (og stoppe etter F), glemme å oppdatere F fra g = 9 til 7, bryte likheten mellom D og G feil, eller tro at inkonsistent betyr ikke admissible."
+  },
+  {
+   "t": "Oppgave 7 (10 p): Constraint Satisfaction Problems",
+   "d": "Consider the CSP below with variables A, B, C, D, E, domains A ∈ {1, 2}, B ∈ {1, 2}, C ∈ {2, 3}, D ∈ {1, 3}, E ∈ {1, 3}, and the binary constraints A ≠ B, B ≠ C, C ≠ D, C ≠ E and D ≠ E (the edges in the figure).\n\nBACKTRACKING-SEARCH (Fig. 5.5) assigns the variables in the fixed order A, B, C, D, E and tries the values in increasing order (no MRV, degree heuristic or LCV).\n\na) Run backtracking search with **forward checking** as INFERENCE. List every assignment in the order it is made, including the ones that are later undone, and give the solution. (3 pts.)\n\nb) Run backtracking search with **MAC** (maintaining arc consistency) as INFERENCE. Show the AC-3 run right after the first assignment A = 1: for every arc taken from the queue, give the values removed and the arcs added. The initial queue is [(B, A)], i.e. the arcs (X<sub>j</sub>, A) for all unassigned neighbours X<sub>j</sub> of A. When REVISE(X<sub>i</sub>, X<sub>j</sub>) changes D(X<sub>i</sub>), the arcs (X<sub>k</sub>, X<sub>i</sub>) for every neighbour X<sub>k</sub> ≠ X<sub>j</sub> of X<sub>i</sub> are added at the end of the queue, unless they are already in it. Arcs that are added at the same time are added in alphabetical order of X<sub>k</sub>. (4 pts.)\n\nc) How many assignments (including undone ones) do backtracking with forward checking and backtracking with MAC make in total? Explain the difference. (3 pts.)",
+   "g": {
+    "w": 440,
+    "h": 200,
+    "dir": 0,
+    "al": "Constraint-graf til oppgave 7 med domener",
+    "n": {
+     "A": [
+      40,
+      100,
+      "{1, 2}",
+      0,
+      -26
+     ],
+     "B": [
+      150,
+      100,
+      "{1, 2}",
+      0,
+      -26
+     ],
+     "C": [
+      260,
+      100,
+      "{2, 3}",
+      0,
+      28
+     ],
+     "D": [
+      370,
+      40,
+      "{1, 3}",
+      44,
+      0
+     ],
+     "E": [
+      370,
+      160,
+      "{1, 3}",
+      44,
+      0
+     ]
+    },
+    "e": [
+     [
+      "A",
+      "B",
+      ""
+     ],
+     [
+      "B",
+      "C",
+      ""
+     ],
+     [
+      "C",
+      "D",
+      ""
+     ],
+     [
+      "C",
+      "E",
+      ""
+     ],
+     [
+      "D",
+      "E",
+      ""
+     ]
+    ]
+   },
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "A",
+       "x": 40,
+       "y": 100,
+       "domene": [
+        "1",
+        "2"
+       ]
+      },
+      {
+       "id": "B",
+       "x": 150,
+       "y": 100,
+       "domene": [
+        "1",
+        "2"
+       ]
+      },
+      {
+       "id": "C",
+       "x": 260,
+       "y": 100,
+       "domene": [
+        "2",
+        "3"
+       ]
+      },
+      {
+       "id": "D",
+       "x": 370,
+       "y": 40,
+       "domene": [
+        "1",
+        "3"
+       ]
+      },
+      {
+       "id": "E",
+       "x": 370,
+       "y": 160,
+       "domene": [
+        "1",
+        "3"
+       ]
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "B"
+      },
+      {
+       "fra": "B",
+       "til": "C"
+      },
+      {
+       "fra": "C",
+       "til": "D"
+      },
+      {
+       "fra": "C",
+       "til": "E"
+      },
+      {
+       "fra": "D",
+       "til": "E"
+      }
+     ]
+    }
+   },
+   "f": [
+    [
+     "a) Assignments with forward checking, in order",
+     "text",
+     "A=1, B=…"
+    ],
+    [
+     "a) Solution",
+     "text",
+     "A=…, B=…, C=…, D=…, E=…"
+    ],
+    [
+     "a) Domains after each assignment",
+     "area"
+    ],
+    [
+     "b) Arcs taken from the queue, in order",
+     "text",
+     "(B, A), …"
+    ],
+    [
+     "b) Variable whose domain becomes empty",
+     "text",
+     "én variabel"
+    ],
+    [
+     "b) AC-3 trace after A = 1",
+     "area",
+     "(B, A): removes …, D(B) = …, adds …"
+    ],
+    [
+     "c) Number of assignments with forward checking",
+     "text",
+     "ett tall"
+    ],
+    [
+     "c) Number of assignments with MAC",
+     "text",
+     "ett tall"
+    ],
+    [
+     "c) Explanation",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Assignments with forward checking, in order": [
+      "A=1, B=2, C=3, D=1, A=2, B=1, C=2, D=1, E=3",
+      "A = 1, B = 2, C = 3, D = 1, A = 2, B = 1, C = 2, D = 1, E = 3",
+      "A 1, B 2, C 3, D 1, A 2, B 1, C 2, D 1, E 3"
+     ],
+     "a) Solution": [
+      "A=2, B=1, C=2, D=1, E=3",
+      "A = 2, B = 1, C = 2, D = 1, E = 3",
+      "A 2, B 1, C 2, D 1, E 3"
+     ],
+     "b) Arcs taken from the queue, in order": [
+      "(B, A), (C, B), (D, C), (E, C), (E, D)"
+     ],
+     "b) Variable whose domain becomes empty": [
+      "E"
+     ],
+     "c) Number of assignments with forward checking": [
+      "9"
+     ],
+     "c) Number of assignments with MAC": [
+      "6"
+     ]
+    },
+    "merk": "FC: A=1, B=2, C=3 gir D {1} og E {1}, men FC ser ikke D–E. D=1 tømmer E, og alt angres tilbake til A=2, B=1, C=2, D=1, E=3 (9 tilordninger). MAC etter A=1: (B,A), (C,B), (D,C), (E,C), (E,D) tømmer E, så A=1 angres med en gang (6 tilordninger).",
+    "kilde": "backtracking (ingen, forward checking, MAC) og ac-3 i nettside-algo, og håndsporing"
+   },
+   "fasit": "**a) A=1, B=2, C=3, D=1, A=2, B=1, C=2, D=1, E=3. Løsning: A=2, B=1, C=2, D=1, E=3.**\n\n**b) Buer: (B, A), (C, B), (D, C), (E, C), (E, D). D(E) blir tom.**\n\n**c) Forward checking: 9 tilordninger. MAC: 6.**\n\n**a) (3 p)** Forward checking fjerner bare verdier hos naboene til variabelen som nettopp fikk verdi.\n\n| Tilordning | FC fjerner | Domener etterpå |\n|---|---|---|\n| A = 1 | 1 fra B | B {2} |\n| B = 2 | 2 fra C | C {3} |\n| C = 3 | 3 fra D og E | D {1}, E {1} |\n| D = 1 | 1 fra E | E = ∅: feil, D = 1 angres |\n| | D, C og B har ingen flere verdier | backtrack til A |\n| A = 2 | 2 fra B | B {1} |\n| B = 1 | ingenting (C har ikke 1) | C {2, 3} |\n| C = 2 | ingenting | D {1, 3}, E {1, 3} |\n| D = 1 | 1 fra E | E {3} |\n| E = 3 | – | løsning |\n\n**b) (4 p)** AC-3 etter A = 1, kø [(B, A)]:\n\n| Bue | Fjerner | Nytt domene | Legges inn |\n|---|---|---|---|\n| (B, A) | 1 | B {2} | (C, B) |\n| (C, B) | 2 | C {3} | (D, C), (E, C) |\n| (D, C) | 3 | D {1} | (E, D) |\n| (E, C) | 3 | E {1} | (D, E) |\n| (E, D) | 1 | E = ∅ | AC-3 returnerer false |\n\n(D, E) blir aldri behandlet. A = 1 angres før B får verdi. Deretter A = 2: (B, A) gir B {1}, og (C, B) endrer ingenting. B = 1, C = 2 og D = 1 (som gir E {3}) og E = 3 følger uten flere feil.\n\n**c) (3 p)** Forward checking: **9** tilordninger, der A = 1, B = 2, C = 3 og D = 1 angres. MAC: **6**, der bare A = 1 angres. Etter C = 3 har D og E begge domenet {1}, men forward checking ser bare på buene fra C og oppdager ikke at D ≠ E da er umulig. Feilen kommer først når D = 1 tømmer E. MAC propagerer videre fra hvert domene som endres, og ser allerede etter A = 1 at kjeden B → C → D, E ender i et tomt domene.\n\nPoeng: 1 p for tallene, 2 p for forklaringen.\n\nVanlige feil: legge inn (A, B) igjen i AC-3 (X<sub>k</sub> ≠ X<sub>j</sub>), glemme at D = 1 telles som en tilordning før FC feiler, eller starte MAC-køen med alle buer i grafen."
+  },
+  {
+   "t": "Oppgave 8 (10 p): Minimax and Alpha-Beta Pruning",
+   "d": "Consider the game tree below. MAX is to move at the root A, and the levels alternate between MAX and MIN: A is a MAX node; B, C and D are MIN nodes; E, F, H and I are MAX nodes; L and Q are MIN nodes. The numbers at the leaves are utilities for MAX.\n\na) What is the minimax value of A, and which move (B, C or D) does MAX choose? Give the minimax value of every internal node. (3 pts.)\n\nb) Run alpha-beta search (ALPHA-BETA-SEARCH, Fig. 6.7) where the children of each node are visited in alphabetical order (left to right). A MAX node prunes when v ≥ β and a MIN node prunes when v ≤ α, also when the values are equal. Which nodes will not be visited? For each pruned subtree, explain why it is skipped by giving the responsible α or β value and the node where that value was set. (5 pts.)\n\nc) What are α and β at the moment the search enters node Q? (2 pts.)",
+   "tre": {
+    "id": "A",
+    "type": "max",
+    "tekst": "A",
+    "barn": [
+     {
+      "id": "B",
+      "type": "min",
+      "tekst": "B",
+      "barn": [
+       {
+        "id": "E",
+        "type": "max",
+        "tekst": "E",
+        "barn": [
+         {
+          "id": "K",
+          "type": "blad",
+          "tekst": "K",
+          "verdi": 4
+         },
+         {
+          "id": "L",
+          "type": "min",
+          "tekst": "L",
+          "barn": [
+           {
+            "id": "S",
+            "type": "blad",
+            "tekst": "S",
+            "verdi": 7
+           },
+           {
+            "id": "T",
+            "type": "blad",
+            "tekst": "T",
+            "verdi": 3
+           },
+           {
+            "id": "U",
+            "type": "blad",
+            "tekst": "U",
+            "verdi": 9
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "id": "F",
+        "type": "max",
+        "tekst": "F",
+        "barn": [
+         {
+          "id": "M",
+          "type": "blad",
+          "tekst": "M",
+          "verdi": 6
+         },
+         {
+          "id": "N",
+          "type": "blad",
+          "tekst": "N",
+          "verdi": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "id": "C",
+      "type": "min",
+      "tekst": "C",
+      "barn": [
+       {
+        "id": "G",
+        "type": "blad",
+        "tekst": "G",
+        "verdi": 4
+       },
+       {
+        "id": "H",
+        "type": "max",
+        "tekst": "H",
+        "barn": [
+         {
+          "id": "O",
+          "type": "blad",
+          "tekst": "O",
+          "verdi": 9
+         },
+         {
+          "id": "P",
+          "type": "blad",
+          "tekst": "P",
+          "verdi": 1
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "id": "D",
+      "type": "min",
+      "tekst": "D",
+      "barn": [
+       {
+        "id": "I",
+        "type": "max",
+        "tekst": "I",
+        "barn": [
+         {
+          "id": "Q",
+          "type": "min",
+          "tekst": "Q",
+          "barn": [
+           {
+            "id": "V",
+            "type": "blad",
+            "tekst": "V",
+            "verdi": 3
+           },
+           {
+            "id": "W",
+            "type": "blad",
+            "tekst": "W",
+            "verdi": 8
+           }
+          ]
+         },
+         {
+          "id": "R",
+          "type": "blad",
+          "tekst": "R",
+          "verdi": 7
+         }
+        ]
+       },
+       {
+        "id": "J",
+        "type": "blad",
+        "tekst": "J",
+        "verdi": 5
+       }
+      ]
+     }
+    ]
+   },
+   "f": [
+    [
+     "a) Minimax value of A",
+     "text",
+     "ett tall"
+    ],
+    [
+     "a) MAX's move at A",
+     "text",
+     "B, C eller D"
+    ],
+    [
+     "a) Minimax values of B, C and D",
+     "text",
+     "tre tall"
+    ],
+    [
+     "a) Values of the other internal nodes",
+     "area"
+    ],
+    [
+     "b) Nodes that are not visited",
+     "text",
+     "f.eks. X, Y, Z"
+    ],
+    [
+     "b) Explanation with α and β",
+     "area"
+    ],
+    [
+     "c) α when Q is entered",
+     "text",
+     "ett tall"
+    ],
+    [
+     "c) β when Q is entered",
+     "text",
+     "ett tall eller ∞"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Minimax value of A": [
+      "5"
+     ],
+     "a) MAX's move at A": [
+      "D"
+     ],
+     "a) Minimax values of B, C and D": [
+      "4 4 5"
+     ],
+     "b) Nodes that are not visited": [
+      "{H, N, O, P, U, W}"
+     ],
+     "c) α when Q is entered": [
+      "4"
+     ],
+     "c) β when Q is entered": [
+      "+∞",
+      "∞",
+      "inf",
+      "+inf",
+      "infinity",
+      "uendelig"
+     ]
+    },
+    "merk": "Minimax: L 3, E 4, F 6, B 4, H 9, C 4, Q 3, I 7, D 5, A 5, og MAX går til D. Alpha-beta besøker ikke U (3 ≤ α 4 fra E), N (6 ≥ β 4 fra B), H med O og P (4 ≤ α 4 fra A, likhet) og W (3 ≤ α 4 fra A). Ved Q er α = 4 og β = +∞.",
+    "kilde": "minimax og alfa-beta (med og uten kutt ved likhet) i nettside-algo og et eget Python-skript"
+   },
+   "fasit": "**a) A = 5, MAX velger D. B = 4, C = 4, D = 5.**\n\n**b) Ikke besøkt: U, N, H (med O og P) og W.**\n\n**c) α = 4, β = +∞.**\n\n**a) (3 p)** Nedenfra: L = min(7, 3, 9) = 3, E = max(4, 3) = 4, F = max(6, 1) = 6, B = min(4, 6) = 4. H = max(9, 1) = 9, C = min(4, 9) = 4. Q = min(3, 8) = 3, I = max(3, 7) = 7, D = min(7, 5) = 5. A = max(4, 4, 5) = **5**, så MAX velger **D**.\n\n**b) (5 p)** Sporing med vinduet [α, β]:\n\n| Node | Hendelse | Kutt |\n|---|---|---|\n| E (MAX) | K = 4 gir v = 4, α = 4 | |\n| L (MIN), vindu [4, ∞] | S = 7, så T = 3: v = 3 ≤ α = 4 (fra E) | **U** |\n| B (MIN) | E gir 4, β = 4 | |\n| F (MAX), vindu [−∞, 4] | M = 6: v = 6 ≥ β = 4 (fra B) | **N** |\n| A (MAX) | B gir 4, α = 4 | |\n| C (MIN), vindu [4, ∞] | G = 4: v = 4 ≤ α = 4 (fra A), likhet | **H** (med O og P) |\n| Q (MIN), vindu [4, ∞] | V = 3: v = 3 ≤ α = 4 (fra A, arvet gjennom D og I) | **W** |\n| I (MAX) | Q gir 3, R = 7: I = 7 | |\n| D (MIN) | I gir 7, J = 5: D = 5 | |\n| A | D gir 5: A = 5 | |\n\nBladene som evalueres, er K, S, T, M, G, V, R og J (8 av 13). Kutter man ikke ved likhet, går søket inn i H, ser O = 9 og kutter P (9 ≥ β = 4).\n\nPoeng: 1 p per kuttet deltre med riktig grunn (4 p), 1 p for ingen ekstra noder.\n\n**c) (2 p)** **α = 4** (fra A, etter at B ga 4 og C ga høyst 4) og **β = +∞**: verken D eller I har sett noe barn ennå, så ingen MIN-node over Q har satt en øvre grense. Det er derfor W kuttes av en verdi fra rota, tre nivåer opp.\n\nVanlige feil: tro at α og β bare kommer fra forelderen, glemme at hele deltreet under H forsvinner, eller oppgi O og P uten H."
+  },
+  {
+   "t": "Oppgave 9 (5 p): Generalized Modus Ponens",
+   "d": "Given the knowledge base\n\n1. Supervises(Ingrid, Lena)\n2. Supervises(Ingrid, Jonas)\n3. ∀p WorksOn(p, Project(p))\n4. Funded(Project(Jonas))\n5. ∀x, y, z Supervises(x, y) ∧ WorksOn(y, z) ∧ Funded(z) ⇒ CanSign(x, z)\n\nShow that CanSign(Ingrid, Project(Jonas)) using Generalized Modus Ponens. The answer must show all the steps, including unification(s) and substitution(s). Explain also why sentence 1 cannot be used to prove the goal.\n\nYou can answer this question on handwritten sheets.",
+   "f": [
+    [
+     "θ (the substitution in the GMP step)",
+     "text",
+     "{x/…, y/…, z/…}"
+    ],
+    [
+     "Steps",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "θ (the substitution in the GMP step)": [
+      "{x/Ingrid, y/Jonas, z/Project(Jonas)}",
+      "{x/Ingrid, y/Jonas, p/Jonas, z/Project(Jonas)}",
+      "{x/Ingrid, y/Jonas, p1/Jonas, z/Project(Jonas)}"
+     ]
+    },
+    "merk": "Standardiser 3 til WorksOn(p1, Project(p1)). Supervises(Ingrid, Jonas), WorksOn(p1, Project(p1)) og Funded(Project(Jonas)) unifiserer med premissene i 5 med θ = {x/Ingrid, y/Jonas, p1/Jonas, z/Project(Jonas)}, og GMP gir CanSign(Ingrid, Project(Jonas)). Med Lena blir z = Project(Lena), og Funded(Project(Lena)) finnes ikke.",
+    "kilde": "unifikasjon og fol-forward-chaining i nettside-algo, og håndregning"
+   },
+   "fasit": "**θ = {x/Ingrid, y/Jonas, p1/Jonas, z/Project(Jonas)}** (p1 kan utelates fra svaret, den binder bare variabelen i setning 3).\n\n1. Standardiser setning 3 apart: WorksOn(p1, Project(p1)).\n2. GMP med p₁ = Supervises(x, y), p₂ = WorksOn(y, z), p₃ = Funded(z) og q = CanSign(x, z). Faktaene er p₁′ = Supervises(Ingrid, Jonas), p₂′ = WorksOn(p1, Project(p1)), p₃′ = Funded(Project(Jonas)).\n3. UNIFY(Supervises(x, y), Supervises(Ingrid, Jonas)) = {x/Ingrid, y/Jonas}.\n4. Med y = Jonas: UNIFY(WorksOn(Jonas, z), WorksOn(p1, Project(p1))) = {p1/Jonas, z/Project(Jonas)}.\n5. Med z = Project(Jonas): Funded(Project(Jonas)) er identisk med faktum 4, ingen nye bindinger.\n6. θ = {x/Ingrid, y/Jonas, p1/Jonas, z/Project(Jonas)}, og p<sub>i</sub>′θ = p<sub>i</sub>θ for alle i.\n7. GMP gir SUBST(θ, CanSign(x, z)) = **CanSign(Ingrid, Project(Jonas))**.\n\nSetning 1 gir y/Lena, og da gir WorksOn(Lena, z) z/Project(Lena). Funded(Project(Lena)) står ikke i KB, og Project(Lena) unifiserer ikke med Project(Jonas) fordi Lena og Jonas er ulike konstanter. Den grenen feiler.\n\nPoeng: 1 p for oppsett og standardisering, 3 p for unifikasjonene og θ, 1 p for konklusjonen og Lena-forklaringen.\n\nVanlige feil: binde z til Project(p) uten å binde p, eller skrive θ uten å vise hver unifikasjon."
+  },
+  {
+   "t": "Oppgave 10 (20 p): Resolution Inference Algorithm",
+   "d": "Consider the following sentences:\n\n1. Every student who has passed every mandatory assignment is allowed to take the exam.\n2. Everyone who is allowed to take the exam has a seat in some exam room.\n3. Kari is a student.\n4. Kari has submitted every mandatory assignment.\n5. Kari has passed every assignment she has submitted.\n\nUse only the predicates Student(x), Mandatory(a) (a is a mandatory assignment), Submitted(x, a), Passed(x, a), Allowed(x) (x is allowed to take the exam), ExamRoom(r), SeatIn(x, r) and the constant Kari.\n\na) Translate sentences 1–5 and the goal \"Kari has a seat in some exam room\" into first-order logic. (6 pts.)\n\nb) Convert the knowledge base and the negated goal into conjunctive normal form (CNF). Use Skolem functions where needed, and show the intermediate steps for sentence 1. (6 pts.)\n\nc) Use the resolution inference algorithm, with proof by contradiction/refutation, to show that Kari has a seat in some exam room. For each resolution step, it is sufficient to show which two clauses are used, with which substitution, and the result. (8 pts.)\n\nYou can answer this question on handwritten sheets.",
+   "f": [
+    [
+     "a) First-order logic",
+     "area"
+    ],
+    [
+     "b) CNF",
+     "area"
+    ],
+    [
+     "c) Resolution proof",
+     "area"
+    ]
+   ],
+   "fasit": "**a) Se FOL under. b) Åtte klausuler med Skolem-funksjonene F(s) og G(x). c) Den tomme klausulen nås i 9 steg, så målet følger.**\n\n**a) (6 p)**\n\n1. ∀s [Student(s) ∧ ∀a (Mandatory(a) ⇒ Passed(s, a))] ⇒ Allowed(s)\n2. ∀x Allowed(x) ⇒ ∃r [ExamRoom(r) ∧ SeatIn(x, r)]\n3. Student(Kari)\n4. ∀a Mandatory(a) ⇒ Submitted(Kari, a)\n5. ∀a Submitted(Kari, a) ⇒ Passed(Kari, a)\n\nMål: ∃r ExamRoom(r) ∧ SeatIn(Kari, r)\n\nPoeng: 1 p per setning og 1 p for målet. Vanlige feil: ∧ under ∀ (∀a Mandatory(a) ∧ Passed(s, a)), ⇒ under ∃ i setning 2, og å flytte ∀a ut av premisset i setning 1. Da betyr setningen at det holder å ha bestått én av obligene.\n\n**b) (6 p)** Setning 1:\n\n- Fjern ⇒: ∀s ¬[Student(s) ∧ ∀a (¬Mandatory(a) ∨ Passed(s, a))] ∨ Allowed(s)\n- Flytt ¬ inn: ∀s ¬Student(s) ∨ ∃a [Mandatory(a) ∧ ¬Passed(s, a)] ∨ Allowed(s)\n- Skolemiser: a avhenger av s, så a blir F(s): ¬Student(s) ∨ [Mandatory(F(s)) ∧ ¬Passed(s, F(s))] ∨ Allowed(s)\n- Dropp ∀ og distribuer ∨ over ∧.\n\nKlausulene:\n\n| Nr. | Klausul |\n|---|---|\n| 1a | ¬Student(s) ∨ Mandatory(F(s)) ∨ Allowed(s) |\n| 1b | ¬Student(s) ∨ ¬Passed(s, F(s)) ∨ Allowed(s) |\n| 2a | ¬Allowed(x) ∨ ExamRoom(G(x)) |\n| 2b | ¬Allowed(x) ∨ SeatIn(x, G(x)) |\n| 3 | Student(Kari) |\n| 4 | ¬Mandatory(a) ∨ Submitted(Kari, a) |\n| 5 | ¬Submitted(Kari, a) ∨ Passed(Kari, a) |\n| 6 | ¬ExamRoom(r) ∨ ¬SeatIn(Kari, r) (negert mål) |\n\nI setning 2 blir r til G(x). Det negerte målet ¬∃r [ExamRoom(r) ∧ SeatIn(Kari, r)] blir ∀r ¬ExamRoom(r) ∨ ¬SeatIn(Kari, r), så det trenger ingen Skolem-term. Variablene i ulike klausuler er uavhengige (standardized apart).\n\nPoeng: 3 p for setning 1 (særlig Skolem-funksjonen F(s), ikke en konstant), 1 p for setning 2, 1 p for 3–5, 1 p for det negerte målet. Vanlige feil: Skolem-konstant i stedet for F(s), og å Skolemisere målet før det negeres.\n\n**c) (8 p)**\n\n| Steg | Klausuler | θ | Resolvent |\n|---|---|---|---|\n| 7 | 6 + 2b | {x/Kari, r/G(Kari)} | ¬ExamRoom(G(Kari)) ∨ ¬Allowed(Kari) |\n| 8 | 7 + 2a | {x/Kari} | ¬Allowed(Kari) (factoring av to like literaler) |\n| 9 | 1a + 3 | {s/Kari} | Mandatory(F(Kari)) ∨ Allowed(Kari) |\n| 10 | 9 + 8 | {} | Mandatory(F(Kari)) |\n| 11 | 10 + 4 | {a/F(Kari)} | Submitted(Kari, F(Kari)) |\n| 12 | 11 + 5 | {a/F(Kari)} | Passed(Kari, F(Kari)) |\n| 13 | 1b + 3 | {s/Kari} | ¬Passed(Kari, F(Kari)) ∨ Allowed(Kari) |\n| 14 | 13 + 8 | {} | ¬Passed(Kari, F(Kari)) |\n| 15 | 14 + 12 | {} | □ |\n\nDen tomme klausulen viser at KB ∧ ¬mål er unsatisfiable, så KB ⊨ ∃r ExamRoom(r) ∧ SeatIn(Kari, r). Andre rekkefølger er like gode. Poeng: om lag 1 p per riktig steg med riktig θ, og full score krever □."
+  },
+  {
+   "t": "Oppgave 11 (5 p): Automated Planning",
+   "d": "An agent at Home must get to the exam hall. The hierarchy has the high-level actions (HLAs) Act, Go and Ride, and the primitive actions Walk, Bus, Bike and Enter:\n\n- Act → [Go, Enter]\n- Go → [Ride] or [Walk, Bus] (the refinements are listed in this order)\n- Ride → [Bike]\n\n| Primitive action | Precondition | Effect |\n|---|---|---|\n| Walk(Home, Stop) | At(Home) | At(Stop) ∧ ¬At(Home) |\n| Bus(Stop, Campus) | At(Stop) | At(Campus) ∧ ¬At(Stop) |\n| Bike(Home, Campus) | At(Home) ∧ Have(Bike) | At(Campus) ∧ ¬At(Home) |\n| Enter(Campus, Hall) | At(Campus) | At(Hall) ∧ ¬At(Campus) |\n\nInitial state: At(Home) ∧ Have(Bike). Goal: At(Hall). All refinements are applicable in the initial state.\n\na) Which plan does HIERARCHICAL-SEARCH (Fig. 11.8, a breadth-first search over refinements) return? Is it the plan with the fewest primitive actions? Explain. (2 pts.)\n\nb) Suppose the bus is nondeterministic: Bus(Stop, Campus) either brings the agent to Campus, or the bus is full and the agent is still At(Stop). Is the plan from a) still a solution? Write a cyclic plan that still uses the bus, and explain under which assumption such a plan reaches the goal. Which plan reaches the goal without loops? (3 pts.)",
+   "f": [
+    [
+     "a) Plan returned",
+     "text",
+     "[…, …]"
+    ],
+    [
+     "a) Explanation",
+     "area"
+    ],
+    [
+     "b) Answer",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Plan returned": [
+      "Walk, Bus, Enter",
+      "Walk(Home, Stop), Bus(Stop, Campus), Enter(Campus, Hall)"
+     ]
+    },
+    "merk": "HIERARCHICAL-SEARCH er bredde-først over refinements: [Walk, Bus, Enter] ligger to raffineringer ned, mens [Bike, Enter] trenger tre (Act, Go, Ride). Den korteste planen blir derfor ikke funnet først, selv om [Ride] står først.",
+    "kilde": "htn i nettside-algo med dette hierarkiet, og håndsporing av Fig. 11.8"
+   },
+   "fasit": "**a) [Walk, Bus, Enter]. Nei, [Bike, Enter] har færre handlinger.**\n\n**b) Nei. Syklisk plan: [Walk, L1: Bus, if At(Stop) then L1 else Enter]. Uten løkker: [Bike, Enter].**\n\n**a) (2 p)** Frontier er en FIFO-kø av planer:\n\n1. POP [Act]: refinement [Go, Enter].\n2. POP [Go, Enter]: legg [Ride, Enter] og [Walk, Bus, Enter] bakerst.\n3. POP [Ride, Enter]: Ride er en HLA, legg [Bike, Enter] bakerst.\n4. POP [Walk, Bus, Enter]: planen er primitiv (en implementation), og resultatet At(Hall) ∧ Have(Bike) oppfyller målet. Returner **[Walk, Bus, Enter]**.\n\nSøket er bredde-først over antall raffineringer, ikke over antall primitive handlinger. [Walk, Bus, Enter] ligger to raffineringer ned, [Bike, Enter] tre (Act, Go, Ride). At [Ride] står først, hjelper ikke.\n\n**b) (3 p)** [Walk, Bus, Enter] er **ikke** en løsning lenger: i et ikke-deterministisk miljø må planen nå målet for *alle* utfall, og er bussen full, mangler Enter preconditionen At(Campus). (For en HLA holder det at *minst én* implementasjon virker, fordi agenten velger refinement. Utfallet av Bus velger miljøet.)\n\nEn syklisk plan (4.3.3, «try, try again») er [Walk, L1: Bus, if At(Stop) then L1 else Enter], eller [Walk, while At(Stop) do Bus, Enter]. Den er en løsning hvis hvert blad er et mål og et mål kan nås fra hvert punkt i planen. Er bussen full tilfeldig og uavhengig fra gang til gang, med en fast sannsynlighet p > 0 for plass, lykkes Bus til slutt med sannsynlighet 1 (boka: «eventually it will work»). Det er ingen garanti for hvert tenkelige forløp: en uendelig rekke fulle busser er mulig, bare med sannsynlighet 0. En garanti for alle forløp krever en fairness-antakelse om at hvert utfall til slutt inntreffer når Bus gjentas. Er bussen full av en skjult, varig grunn, hjelper det ikke å prøve igjen.\n\n**[Bike, Enter]** når målet uten løkker, fordi Bike er deterministisk og Have(Bike) er sann. Den er garantert.\n\nPoeng: 1 p for nei med «alle utfall», 1 p for den sykliske planen og når den virker, 1 p for [Bike, Enter].\n\nVanlig feil: tro at HIERARCHICAL-SEARCH finner den korteste planen, eller at «minst én implementasjon» også gjelder utfallene av en ikke-deterministisk handling."
+  },
+  {
+   "t": "Oppgave 12 (5 p): Natural Language Processing",
+   "d": "Consider the grammar G with start symbol S:\n\n```\nS       → NP VP\nNP      → Pronoun | Name | Article Noun\nVP      → Verb | Verb NP\nPronoun → I | me | she | her\nName    → Ada\nArticle → the | a\nNoun    → robot | dog\nVerb    → sees | see | runs | run\n```\n\nand the five word strings (ignore capital letters and the full stop):\n\n1. Me see the robot.\n2. Ada sees her dog.\n3. She runs.\n4. The dog run.\n5. Robot the sees Ada.\n\na) Which of the strings show that G **overgenerates**, and which show that G **undergenerates**? Explain the two terms. (2 pts.)\n\nb) G is converted to Chomsky Normal Form and parsed with the CYK algorithm. A sentence of 10 words takes 0.2 seconds. Using the textbook's complexity for CYK, estimate the time for a sentence of 30 words with the same grammar, and the factor by which the memory for the P table grows. Which rules in G must be changed before CYK can be used, and why? (3 pts.)",
+   "f": [
+    [
+     "a) Strings that show overgeneration",
+     "text",
+     "f.eks. 1, 2"
+    ],
+    [
+     "a) Strings that show undergeneration",
+     "text",
+     "f.eks. 3"
+    ],
+    [
+     "a) Explanation",
+     "area"
+    ],
+    [
+     "b) Time for 30 words (seconds)",
+     "text",
+     "ett tall"
+    ],
+    [
+     "b) Growth factor for the P table",
+     "text",
+     "ett tall"
+    ],
+    [
+     "b) Rules that must be changed, and why",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Strings that show overgeneration": [
+      "{1, 4}"
+     ],
+     "a) Strings that show undergeneration": [
+      "{2}"
+     ],
+     "b) Time for 30 words (seconds)": [
+      "5.4"
+     ],
+     "b) Growth factor for the P table": [
+      "9"
+     ]
+    },
+    "merk": "1 og 4 godtas av G, men er ugrammatiske (kasus og samsvar): overgenerering. 2 er grammatisk, men G har ingen regel for her foran et substantiv: undergenerering. 3 godtas og er riktig, 5 avvises og er ugrammatisk. CYK bruker O(n³m) tid og O(n²m) plass: 0,2 s · 3³ = 5,4 s, og P-tabellen blir 3² = 9 ganger større.",
+    "kilde": "cyk i nettside-algo og en egen Python-parser for G; kompleksiteten fra boka (CYK-avsnittet)"
+   },
+   "fasit": "**a) Overgenerering: 1 og 4. Undergenerering: 2.**\n\n**b) 5,4 s. P-tabellen blir 9 ganger større. NP → Pronoun, NP → Name og VP → Verb må endres.**\n\n**a) (2 p)** En grammatikk **overgenererer** når den godtar (genererer) strenger som ikke er grammatiske. Den **undergenererer** når den avviser strenger som er grammatiske.\n\n| Streng | G godtar? | Grammatisk? | Viser |\n|---|---|---|---|\n| 1 Me see the robot | ja: NP(Pronoun) VP(Verb, NP(Article Noun)) | nei, «me» som subjekt | overgenerering |\n| 2 Ada sees her dog | nei: «her» er bare Pronoun, og «dog» blir til overs | ja | undergenerering |\n| 3 She runs | ja | ja | riktig |\n| 4 The dog run | ja: NP(Article Noun) VP(Verb) | nei, samsvar | overgenerering |\n| 5 Robot the sees Ada | nei | nei | riktig |\n\n**b) (3 p)** CYK bruker O(n³m) tid og O(n²m) plass, der n er antall ord og m antall ikke-terminaler (m er lik, siden grammatikken er den samme). Tre ganger så mange ord gir 3³ = 27 ganger så lang tid: 0,2 s · 27 = **5,4 s**. P-tabellen blir 3² = **9** ganger større.\n\nCYK krever Chomsky Normal Form: bare X → ord og X → Y Z med nøyaktig to kategorier. **NP → Pronoun, NP → Name og VP → Verb** har én kategori på høyre side og må erstattes, for eksempel med NP → I | me | she | her | Ada og VP → sees | see | runs | run. De andre reglene er allerede på riktig form.\n\nPoeng: 1 p for tiden, 1 p for faktoren, 1 p for reglene med begrunnelse.\n\nVanlig feil: regne lineært (0,6 s) eller kvadratisk (1,8 s) for tiden."
+  },
+  {
+   "t": "Oppgave 13 (5 p): Knowledge Representation and Ethics",
+   "d": "a) In the textbook's event calculus, a flight is described by\n\nE = Flyings(a, here, there) ∧ Happens(E, t1, t2) ⇒ Terminates(E, At(a, here), t1) ∧ Initiates(E, At(a, there), t2)\n\nand a fluent persists according to\n\nHappens(e, t1, t3) ∧ Initiates(e, f, t2) ∧ ¬Terminated(f, t2, t4) ∧ t1 ≤ t2 ≤ t3 ≤ t4 ⇒ T(f, t2, t4)\n\nwhere Terminated(f, t1, t2) means that fluent f ceases to be true at some point between t1 and t2.\n\nThe KB contains E1 = Flyings(Sara, Oslo, Rome) with Happens(E1, 2, 5), and E2 = Flyings(Sara, Rome, Oslo) with Happens(E2, 9, 12). There are no other events (apart from Start). Does T(At(Sara, Rome), 5, 8) follow from the KB? Does T(At(Sara, Rome), 5, 13) follow? Justify both answers with the axioms. (2 pts.)\n\nb) The UN has a definition of a lethal autonomous weapon. State it, explain which legal requirements the textbook says such weapons cannot meet today, and give one argument in favour of such weapons that the textbook mentions. (3 pts.)",
+   "f": [
+    [
+     "a) T(At(Sara, Rome), 5, 8) follows? (yes/no)",
+     "text",
+     "yes eller no"
+    ],
+    [
+     "a) T(At(Sara, Rome), 5, 13) follows? (yes/no)",
+     "text",
+     "yes eller no"
+    ],
+    [
+     "a) Justification",
+     "area"
+    ],
+    [
+     "b) Answer",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) T(At(Sara, Rome), 5, 8) follows? (yes/no)": [
+      "yes",
+      "ja"
+     ],
+     "a) T(At(Sara, Rome), 5, 13) follows? (yes/no)": [
+      "no",
+      "nei"
+     ]
+    },
+    "merk": "E1 gir Initiates(E1, At(Sara, Rome), 5). Den eneste hendelsen som terminerer At(Sara, Rome), er E2 ved tid 9. Mellom 5 og 8 er det ingen, så persistensregelen gir T(At(Sara, Rome), 5, 8). Mellom 5 og 13 er Terminated sann via E2, så T(At(Sara, Rome), 5, 13) følger ikke.",
+    "kilde": "AIMA 10.3 (aksiomene), håndregning; notatet til E17, håndsporing 3"
+   },
+   "fasit": "**a) T(At(Sara, Rome), 5, 8): ja. T(At(Sara, Rome), 5, 13): nei.**\n\n**b) Se modellsvaret under.**\n\n**a) (2 p)** Flyaksiomet gir Terminates(E1, At(Sara, Oslo), 2), Initiates(E1, At(Sara, Rome), 5), Terminates(E2, At(Sara, Rome), 9) og Initiates(E2, At(Sara, Oslo), 12).\n\n- **Ja:** Happens(E1, 2, 5) ∧ Initiates(E1, At(Sara, Rome), 5) ∧ ¬Terminated(At(Sara, Rome), 5, 8) ∧ 2 ≤ 5 ≤ 5 ≤ 8 ⇒ T(At(Sara, Rome), 5, 8). ¬Terminated holder fordi den eneste hendelsen som terminerer At(Sara, Rome), er E2 ved tid 9, etter 8.\n- **Nei:** Terminated(At(Sara, Rome), 5, 13) er sann via E2 (5 ≤ 9 ≤ 9 ≤ 12 ≤ 13), så premisset ¬Terminated svikter og persistensregelen kan ikke brukes. Speilregelen med Terminates og ¬Initiated gir tvert imot ¬T(At(Sara, Rome), 9, 13): Sara er i Oslo igjen fra 12.\n\n**b) (3 p)** FN definerer et dødelig autonomt våpen som et våpen som **finner, velger ut og angriper (dreper) mennesker uten menneskelig tilsyn** (28.3.1).\n\nJuridisk krever krigens regler (CCW) at våpenet kan skille mellom stridende og sivile (**distinction**), vurdere om angrepet er militært nødvendig (**necessity**) og om den militære verdien står i forhold til faren for sivile tap (**proportionality**). Boka mener distinction kan gå i noen situasjoner, men necessity og proportionality krever subjektive og situasjonsavhengige vurderinger som maskiner ikke kan gjøre i dag. Lovlig bruk er derfor bare mulig i svært avgrensede oppdrag.\n\nArgument for: autonome våpen blir ikke trøtte, redde, sinte eller hevngjerrige, kan bli mer presise og gi færre sivile tap enn menneskelige soldater, og egne soldater slipper å risikere livet.\n\nDet er også lov å nevne motargumentene: etisk (en maskin skal ikke alene avgjøre liv og død), pålitelighet (Petrov 1983) og skalerbarhet. Boka konkluderer med at slike våpen gir mindre sikkerhet for alle og anbefaler våpenkontroll.\n\nPoeng: 1 p for definisjonen, 1 p for necessity og proportionality, 1 p for et argument for.\n\nVanlig feil: blande Terminates (hendelsen avslutter f ved et tidspunkt) med Terminated (f avsluttes et sted i intervallet)."
+  }
+ ],
+ "fasit": "Fullstendig løsning med poengfordeling som en sensorveiledning. Hver oppgave har også sin egen fasit bak «Vis fasit» etter «Lever».\n\n### Oppgave 1 (5 p): Intelligent Agents\n\n**Alternativ: C** (den usanne påstanden).\n\n- **A sann.** Boka (2.2.3): rasjonalitet maksimerer *forventet* ytelse, perfeksjon maksimerer *faktisk* ytelse. Eksempelet med lasteluka som faller ned: å krysse gata var rasjonelt selv om det gikk galt.\n- **B sann.** Dette er de fire tingene rasjonalitet avhenger av (2.2.2): performance measure, prior knowledge, actions og percept sequence to date.\n- **C usann.** Boka sier at man sjelden krever full autonomi fra start. Uten erfaring måtte agenten handlet tilfeldig, så det er rimelig å gi den noe innebygd kunnskap *og* evnen til å lære, slik evolusjonen gir dyr reflekser. En agent mangler autonomi i den grad den *bare* stoler på designerens kunnskap.\n- **D sann.** Information gathering (2.2.3): å se seg for endrer ikke veien, men endrer fremtidige percepter og øker forventet ytelse.\n- **E sann.** Står nesten ordrett i 2.2.3. Boka legger til at slike agenter er skjøre (gjødselbillen), men påstanden stemmer.\n\nVanlig feil: velge E fordi den høres for sterk ut, eller B fordi man husker setningen om at det rasjonelle valget bare avhenger av perceptsekvensen *så langt*. Den setningen handler om at valget ikke kan avhenge av fremtidige utfall, og motsier ikke de fire faktorene.\n\n### Oppgave 2 (5 p): Local Search\n\n**Alternativ: D (0,71).**\n\nT = schedule(3) = 40 · 0,5³ = 5. Fig. 4.5: er ΔE > 0, byttes alltid; ellers byttes med sannsynlighet e<sup>ΔE/T</sup>.\n\n| next | ΔE | P(current ← next) |\n|---|---|---|\n| 23 | +3 | 1 |\n| 20 | 0 | e⁰ = 1 (else-grenen) |\n| 17 | −3 | e<sup>−0,6</sup> ≈ 0,5488 |\n| 14 | −6 | e<sup>−1,2</sup> ≈ 0,3012 |\n\nP = (1 + 1 + 0,5488 + 0,3012)/4 = 2,8500/4 ≈ **0,7125 ≈ 0,71**.\n\nDe gale alternativene er typiske regnefeil:\n\n- **A 0,21:** bare de to dårligere trekkene telt: (0,5488 + 0,3012)/4.\n- **B 0,46:** ΔE = 0 behandlet som «aldri bytt»: (1 + 0,5488 + 0,3012)/4.\n- **C 0,60:** t = 4, altså T = 2,5: (2 + e<sup>−1,2</sup> + e<sup>−2,4</sup>)/4 = (2 + 0,3012 + 0,0907)/4.\n- **E 0,82:** t = 2, altså T = 10: (2 + e<sup>−0,3</sup> + e<sup>−0,6</sup>)/4 = (2 + 0,7408 + 0,5488)/4.\n\nVanlig feil: tro at et like godt trekk (ΔE = 0) aldri tas. I Fig. 4.5 går det til else-grenen med e⁰ = 1.\n\n### Oppgave 3 (5 p): Constraint Satisfaction Problems\n\n**Alternativ: E.**\n\nKonflikter nå: B–D (2 = 2) og E–F (1 = 1). Konfliktvariablene er **B, D, E og F**. A og C er ikke i konflikt og kan ikke velges.\n\nAntall konflikter med de andre variablene for hver verdi:\n\n| Variabel | = 1 | = 2 | = 3 | Minst konflikt |\n|---|---|---|---|---|\n| B (naboer A, C, D) | 1 (A) | 1 (D) | 1 (C) | 1, 2 eller 3 |\n| D (naboer B, C, E, F) | 2 (E, F) | 1 (B) | 1 (C) | 2 eller 3 |\n| E (naboer C, D, F) | 1 (F) | 1 (D) | 1 (C) | 1, 2 eller 3 |\n| F (naboer D, E) | 1 (E) | 1 (D) | 0 | bare 3 |\n\n- **A umulig:** D = 1 gir 2 konflikter, mens 2 og 3 gir 1.\n- **B umulig:** både B og D er endret. Én iterasjon endrer én variabel.\n- **C umulig:** A er ikke en konfliktvariabel.\n- **D umulig:** F = 2 gir 1 konflikt, men F = 3 gir 0, så F må få 3.\n- **E mulig:** E velges, alle tre verdier gir 1 konflikt, og likheten brytes tilfeldig. E = 3 er et sideveis trekk: totalt er det fortsatt 2 konflikter (B–D og C–E).\n\nVanlig feil: tro at min-conflicts alltid senker det totale antallet konflikter, eller at den kan velge en variabel som ikke er i konflikt.\n\n### Oppgave 4 (5 p): Game Theory\n\n**Alternativ: B.**\n\nEt utfall er Pareto optimal hvis ingen andre utfall er minst like godt for begge og bedre for minst én (17.2.2). (4, 4) dominerer alle utfall der begge får høyst 4 og én får mindre: (2, 1), (1, 1), (0, 2), (1, 2), (2, 0) og (3, 2). Igjen står **(Up, Left) = (4, 4), (Up, Center) = (0, 9) og (Middle, Left) = (6, 0)**: ingen andre celler gir P2 mer enn 9 eller P1 minst 6.\n\n| Utfall | Sum (utilitaristisk) | Minimum (egalitær) |\n|---|---|---|\n| (Up, Left) | 8 | **4** |\n| (Up, Center) | **9** | 0 |\n| (Middle, Left) | 6 | 0 |\n| (Down, Right), Nash | 5 | 2 |\n\n- **A usann:** (4, 4) er bedre for begge enn (3, 2), så likevekten er ikke Pareto optimal.\n- **B sann.**\n- **C usann:** utilitaristisk maks er (Up, Center) med sum 9, men der får P1 0. Egalitær maks er (Up, Left) med minimum 4.\n- **D usann:** lavere sum betyr ikke Pareto-dominans. (4, 4) gir P1 mindre enn 6, så (6, 0) er Pareto optimal.\n- **E usann:** P1s verste utfall er 0 med Up, 0 med Middle og 1 med Down. Maximin er **Down**.\n\nVanlig feil: blande Pareto-dominans med høyest sum, eller tro at Nash-likevekten automatisk er et godt utfall for fellesskapet.\n\n### Oppgave 5 (8 p): Uninformed Search\n\n**a) ℓ = 3. Uttak med ℓ = 3: S A C F D B F B D A F E G. Sti: S–B–E–G. Totalt 24 uttak.**\n\n**b) S–A–C–F–G**, ikke grunnest.\n**c) N(IDS) = 174, N(BFS) = 120.**\n\n**a) (4 p)** DLS er tree-like: D og F kan tas ut flere ganger via ulike stier.\n\n| ℓ | Tatt ut (i rekkefølge) | Resultat |\n|---|---|---|\n| 0 | S | cutoff |\n| 1 | S A B | cutoff |\n| 2 | S A C D B D E | cutoff |\n| 3 | S A C F D B F B D A F E G | G funnet |\n\nMed ℓ = 3: S → A → C → F (dybde 3, testes, utvides ikke) → D (stien S–A–D) → B, F → B (stien S–B) → D (S–B–D) → A, F → E (S–B–E) → **G**. Stien er **S–B–E–G**, og totalt tas 1 + 3 + 7 + 13 = **24** noder ut.\n\nPoeng: 1 p for ℓ = 0–2, 2 p for ℓ = 3, 1 p for sti og antall.\n\n**b) (2 p)** Uttak: S A C F D G. DLS går dypt under A først og finner **S–A–C–F–G** på dybde 4 før den ser den grunnere stien på dybde 3 under B. Med ℓ større enn d er DLS verken grunnest eller optimal. IDS øker ℓ ett trinn om gangen, så den første løsningen den finner, er den grunneste (optimal når alle kanter koster det samme).\n\n**c) (2 p)** Bokas formel: N(IDS) = d·b + (d − 1)·b² + … + 1·b<sup>d</sup> = 4·3 + 3·9 + 2·27 + 1·81 = **174**. N(BFS) = b + b² + b³ + b⁴ = 3 + 9 + 27 + 81 = **120**. IDS gjentar de øvre nivåene, men de fleste nodene ligger på det nederste nivået, så tidsoverheaden er liten og tiden er fortsatt O(b<sup>d</sup>). Minnet er bare O(bd) (én sti med søsken), mens BFS må lagre O(b<sup>d</sup>) noder. Boka: IDS er foretrukket uinformert metode når søkerommet er større enn det som får plass i minnet og dybden til løsningen er ukjent.\n\nVanlige feil: bruke `reached` (da tas D og F bare ut én gang), teste målet når noden genereres (det er BFS), utvide noder på dybde ℓ, eller telle med rota: den genereres i hver av de fem DLS-iterasjonene, så IDS får 174 + 5 = 179, og BFS får 121.\n\n### Oppgave 6 (12 p): Informed Search\n\n**a) Manhattan-avstanden oppfyller trekantulikheten, og hver kant koster minst Manhattan-avstanden, så h(n) ≤ c(n, n′) + h(n′).**\n\n**b) Ekspandert: S A B E C F D (G). Sti: S–A–C–F–G. Kostnad: 11.**\n\n**c) Ikke konsistent, men fortsatt admissible.**\n\n**a) (3 p)** La M(n, m) være Manhattan-avstanden. For hver kant (n, n′) med kostnad c(n, n′):\n\nh(n) = M(n, G) ≤ M(n, n′) + M(n′, G) = M(n, n′) + h(n′) ≤ c(n, n′) + h(n′).\n\nFørste ulikhet er trekantulikheten for Manhattan-avstanden, den andre er at hver vei koster minst Manhattan-avstanden. Begge retninger av hver kant er dekket fordi argumentet gjelder for alle par. I tillegg er h(G) = 0. Altså er h konsistent (og dermed admissible). Å sjekke alle 12 kantene i begge retninger gir også full score.\n\nPoeng: 2 p for argumentet, 1 p for h(G) = 0 og at det gjelder alle kanter.\n\n**b) (7 p)** h: S 9, A 7, B 6, C 5, D 4, E 4, F 3, H 3, G 0.\n\n| Steg | Ekspanderer (g, f) | Frontier etterpå: node (g, f) |\n|---|---|---|\n| 1 | S (0, 9) | A (2, 9), B (3, 9) |\n| 2 | A (2, 9) | B (3, 9), C (5, 10), D (7, 11) |\n| 3 | B (3, 9) | E (5, 9), C (5, 10), D (7, 11); C via B gir g = 6, ikke billigere |\n| 4 | E (5, 9) | C (5, 10), D (7, 11), F (9, 12) |\n| 5 | C (5, 10) | F (7, 10), D (7, 11); F får billigere vei via C |\n| 6 | F (7, 10) | D (7, 11), G (11, 11); D via F gir g = 10, ikke billigere |\n| 7 | D (7, 11) | G (11, 11), H (8, 11) |\n| 8 | G tas ut og testes: mål | |\n\nEkspansjonsrekkefølgen er **S A B E C F D (G)**. D og G har begge f = 11, og D kommer først alfabetisk. Etter D har G og H f = 11, og G tas ut. Stien er **S–A–C–F–G** med kostnad 2 + 3 + 2 + 4 = **11**.\n\nPoeng: 1 p for h, 4 p for rekkefølge og frontier, 2 p for sti og kostnad. Til sammenligning gir greedy best-first S–B–E–F–G med kostnad 13.\n\n**c) (2 p)** **Ikke konsistent:** h(S) = 9 > c(S, E) + h(E) = 3 + 4 = 7. Metrolinja koster mindre enn Manhattan-avstanden 5 mellom S og E, så argumentet i a) faller. **Fortsatt admissible:** de sanne kostnadene til målet endres ikke. Via metroen koster S–E–F–G 3 + 4 + 4 = 11, det samme som før, og ingen andre noder får kortere vei. h\\*: S 11, A 9, B 9, C 6, D 6, E 8, F 4, H 5, så h(n) ≤ h\\*(n) for alle n. Konsistens er et krav per kant; admissibility gjelder hele veien til målet.\n\nVanlige feil: teste målet når det genereres (og stoppe etter F), glemme å oppdatere F fra g = 9 til 7, bryte likheten mellom D og G feil, eller tro at inkonsistent betyr ikke admissible.\n\n### Oppgave 7 (10 p): Constraint Satisfaction Problems\n\n**a) A=1, B=2, C=3, D=1, A=2, B=1, C=2, D=1, E=3. Løsning: A=2, B=1, C=2, D=1, E=3.**\n\n**b) Buer: (B, A), (C, B), (D, C), (E, C), (E, D). D(E) blir tom.**\n\n**c) Forward checking: 9 tilordninger. MAC: 6.**\n\n**a) (3 p)** Forward checking fjerner bare verdier hos naboene til variabelen som nettopp fikk verdi.\n\n| Tilordning | FC fjerner | Domener etterpå |\n|---|---|---|\n| A = 1 | 1 fra B | B {2} |\n| B = 2 | 2 fra C | C {3} |\n| C = 3 | 3 fra D og E | D {1}, E {1} |\n| D = 1 | 1 fra E | E = ∅: feil, D = 1 angres |\n| | D, C og B har ingen flere verdier | backtrack til A |\n| A = 2 | 2 fra B | B {1} |\n| B = 1 | ingenting (C har ikke 1) | C {2, 3} |\n| C = 2 | ingenting | D {1, 3}, E {1, 3} |\n| D = 1 | 1 fra E | E {3} |\n| E = 3 | – | løsning |\n\n**b) (4 p)** AC-3 etter A = 1, kø [(B, A)]:\n\n| Bue | Fjerner | Nytt domene | Legges inn |\n|---|---|---|---|\n| (B, A) | 1 | B {2} | (C, B) |\n| (C, B) | 2 | C {3} | (D, C), (E, C) |\n| (D, C) | 3 | D {1} | (E, D) |\n| (E, C) | 3 | E {1} | (D, E) |\n| (E, D) | 1 | E = ∅ | AC-3 returnerer false |\n\n(D, E) blir aldri behandlet. A = 1 angres før B får verdi. Deretter A = 2: (B, A) gir B {1}, og (C, B) endrer ingenting. B = 1, C = 2 og D = 1 (som gir E {3}) og E = 3 følger uten flere feil.\n\n**c) (3 p)** Forward checking: **9** tilordninger, der A = 1, B = 2, C = 3 og D = 1 angres. MAC: **6**, der bare A = 1 angres. Etter C = 3 har D og E begge domenet {1}, men forward checking ser bare på buene fra C og oppdager ikke at D ≠ E da er umulig. Feilen kommer først når D = 1 tømmer E. MAC propagerer videre fra hvert domene som endres, og ser allerede etter A = 1 at kjeden B → C → D, E ender i et tomt domene.\n\nPoeng: 1 p for tallene, 2 p for forklaringen.\n\nVanlige feil: legge inn (A, B) igjen i AC-3 (X<sub>k</sub> ≠ X<sub>j</sub>), glemme at D = 1 telles som en tilordning før FC feiler, eller starte MAC-køen med alle buer i grafen.\n\n### Oppgave 8 (10 p): Minimax and Alpha-Beta Pruning\n\n**a) A = 5, MAX velger D. B = 4, C = 4, D = 5.**\n\n**b) Ikke besøkt: U, N, H (med O og P) og W.**\n\n**c) α = 4, β = +∞.**\n\n**a) (3 p)** Nedenfra: L = min(7, 3, 9) = 3, E = max(4, 3) = 4, F = max(6, 1) = 6, B = min(4, 6) = 4. H = max(9, 1) = 9, C = min(4, 9) = 4. Q = min(3, 8) = 3, I = max(3, 7) = 7, D = min(7, 5) = 5. A = max(4, 4, 5) = **5**, så MAX velger **D**.\n\n**b) (5 p)** Sporing med vinduet [α, β]:\n\n| Node | Hendelse | Kutt |\n|---|---|---|\n| E (MAX) | K = 4 gir v = 4, α = 4 | |\n| L (MIN), vindu [4, ∞] | S = 7, så T = 3: v = 3 ≤ α = 4 (fra E) | **U** |\n| B (MIN) | E gir 4, β = 4 | |\n| F (MAX), vindu [−∞, 4] | M = 6: v = 6 ≥ β = 4 (fra B) | **N** |\n| A (MAX) | B gir 4, α = 4 | |\n| C (MIN), vindu [4, ∞] | G = 4: v = 4 ≤ α = 4 (fra A), likhet | **H** (med O og P) |\n| Q (MIN), vindu [4, ∞] | V = 3: v = 3 ≤ α = 4 (fra A, arvet gjennom D og I) | **W** |\n| I (MAX) | Q gir 3, R = 7: I = 7 | |\n| D (MIN) | I gir 7, J = 5: D = 5 | |\n| A | D gir 5: A = 5 | |\n\nBladene som evalueres, er K, S, T, M, G, V, R og J (8 av 13). Kutter man ikke ved likhet, går søket inn i H, ser O = 9 og kutter P (9 ≥ β = 4).\n\nPoeng: 1 p per kuttet deltre med riktig grunn (4 p), 1 p for ingen ekstra noder.\n\n**c) (2 p)** **α = 4** (fra A, etter at B ga 4 og C ga høyst 4) og **β = +∞**: verken D eller I har sett noe barn ennå, så ingen MIN-node over Q har satt en øvre grense. Det er derfor W kuttes av en verdi fra rota, tre nivåer opp.\n\nVanlige feil: tro at α og β bare kommer fra forelderen, glemme at hele deltreet under H forsvinner, eller oppgi O og P uten H.\n\n### Oppgave 9 (5 p): Generalized Modus Ponens\n\n**θ = {x/Ingrid, y/Jonas, p1/Jonas, z/Project(Jonas)}** (p1 kan utelates fra svaret, den binder bare variabelen i setning 3).\n\n1. Standardiser setning 3 apart: WorksOn(p1, Project(p1)).\n2. GMP med p₁ = Supervises(x, y), p₂ = WorksOn(y, z), p₃ = Funded(z) og q = CanSign(x, z). Faktaene er p₁′ = Supervises(Ingrid, Jonas), p₂′ = WorksOn(p1, Project(p1)), p₃′ = Funded(Project(Jonas)).\n3. UNIFY(Supervises(x, y), Supervises(Ingrid, Jonas)) = {x/Ingrid, y/Jonas}.\n4. Med y = Jonas: UNIFY(WorksOn(Jonas, z), WorksOn(p1, Project(p1))) = {p1/Jonas, z/Project(Jonas)}.\n5. Med z = Project(Jonas): Funded(Project(Jonas)) er identisk med faktum 4, ingen nye bindinger.\n6. θ = {x/Ingrid, y/Jonas, p1/Jonas, z/Project(Jonas)}, og p<sub>i</sub>′θ = p<sub>i</sub>θ for alle i.\n7. GMP gir SUBST(θ, CanSign(x, z)) = **CanSign(Ingrid, Project(Jonas))**.\n\nSetning 1 gir y/Lena, og da gir WorksOn(Lena, z) z/Project(Lena). Funded(Project(Lena)) står ikke i KB, og Project(Lena) unifiserer ikke med Project(Jonas) fordi Lena og Jonas er ulike konstanter. Den grenen feiler.\n\nPoeng: 1 p for oppsett og standardisering, 3 p for unifikasjonene og θ, 1 p for konklusjonen og Lena-forklaringen.\n\nVanlige feil: binde z til Project(p) uten å binde p, eller skrive θ uten å vise hver unifikasjon.\n\n### Oppgave 10 (20 p): Resolution Inference Algorithm\n\n**a) Se FOL under. b) Åtte klausuler med Skolem-funksjonene F(s) og G(x). c) Den tomme klausulen nås i 9 steg, så målet følger.**\n\n**a) (6 p)**\n\n1. ∀s [Student(s) ∧ ∀a (Mandatory(a) ⇒ Passed(s, a))] ⇒ Allowed(s)\n2. ∀x Allowed(x) ⇒ ∃r [ExamRoom(r) ∧ SeatIn(x, r)]\n3. Student(Kari)\n4. ∀a Mandatory(a) ⇒ Submitted(Kari, a)\n5. ∀a Submitted(Kari, a) ⇒ Passed(Kari, a)\n\nMål: ∃r ExamRoom(r) ∧ SeatIn(Kari, r)\n\nPoeng: 1 p per setning og 1 p for målet. Vanlige feil: ∧ under ∀ (∀a Mandatory(a) ∧ Passed(s, a)), ⇒ under ∃ i setning 2, og å flytte ∀a ut av premisset i setning 1. Da betyr setningen at det holder å ha bestått én av obligene.\n\n**b) (6 p)** Setning 1:\n\n- Fjern ⇒: ∀s ¬[Student(s) ∧ ∀a (¬Mandatory(a) ∨ Passed(s, a))] ∨ Allowed(s)\n- Flytt ¬ inn: ∀s ¬Student(s) ∨ ∃a [Mandatory(a) ∧ ¬Passed(s, a)] ∨ Allowed(s)\n- Skolemiser: a avhenger av s, så a blir F(s): ¬Student(s) ∨ [Mandatory(F(s)) ∧ ¬Passed(s, F(s))] ∨ Allowed(s)\n- Dropp ∀ og distribuer ∨ over ∧.\n\nKlausulene:\n\n| Nr. | Klausul |\n|---|---|\n| 1a | ¬Student(s) ∨ Mandatory(F(s)) ∨ Allowed(s) |\n| 1b | ¬Student(s) ∨ ¬Passed(s, F(s)) ∨ Allowed(s) |\n| 2a | ¬Allowed(x) ∨ ExamRoom(G(x)) |\n| 2b | ¬Allowed(x) ∨ SeatIn(x, G(x)) |\n| 3 | Student(Kari) |\n| 4 | ¬Mandatory(a) ∨ Submitted(Kari, a) |\n| 5 | ¬Submitted(Kari, a) ∨ Passed(Kari, a) |\n| 6 | ¬ExamRoom(r) ∨ ¬SeatIn(Kari, r) (negert mål) |\n\nI setning 2 blir r til G(x). Det negerte målet ¬∃r [ExamRoom(r) ∧ SeatIn(Kari, r)] blir ∀r ¬ExamRoom(r) ∨ ¬SeatIn(Kari, r), så det trenger ingen Skolem-term. Variablene i ulike klausuler er uavhengige (standardized apart).\n\nPoeng: 3 p for setning 1 (særlig Skolem-funksjonen F(s), ikke en konstant), 1 p for setning 2, 1 p for 3–5, 1 p for det negerte målet. Vanlige feil: Skolem-konstant i stedet for F(s), og å Skolemisere målet før det negeres.\n\n**c) (8 p)**\n\n| Steg | Klausuler | θ | Resolvent |\n|---|---|---|---|\n| 7 | 6 + 2b | {x/Kari, r/G(Kari)} | ¬ExamRoom(G(Kari)) ∨ ¬Allowed(Kari) |\n| 8 | 7 + 2a | {x/Kari} | ¬Allowed(Kari) (factoring av to like literaler) |\n| 9 | 1a + 3 | {s/Kari} | Mandatory(F(Kari)) ∨ Allowed(Kari) |\n| 10 | 9 + 8 | {} | Mandatory(F(Kari)) |\n| 11 | 10 + 4 | {a/F(Kari)} | Submitted(Kari, F(Kari)) |\n| 12 | 11 + 5 | {a/F(Kari)} | Passed(Kari, F(Kari)) |\n| 13 | 1b + 3 | {s/Kari} | ¬Passed(Kari, F(Kari)) ∨ Allowed(Kari) |\n| 14 | 13 + 8 | {} | ¬Passed(Kari, F(Kari)) |\n| 15 | 14 + 12 | {} | □ |\n\nDen tomme klausulen viser at KB ∧ ¬mål er unsatisfiable, så KB ⊨ ∃r ExamRoom(r) ∧ SeatIn(Kari, r). Andre rekkefølger er like gode. Poeng: om lag 1 p per riktig steg med riktig θ, og full score krever □.\n\n### Oppgave 11 (5 p): Automated Planning\n\n**a) [Walk, Bus, Enter]. Nei, [Bike, Enter] har færre handlinger.**\n\n**b) Nei. Syklisk plan: [Walk, L1: Bus, if At(Stop) then L1 else Enter]. Uten løkker: [Bike, Enter].**\n\n**a) (2 p)** Frontier er en FIFO-kø av planer:\n\n1. POP [Act]: refinement [Go, Enter].\n2. POP [Go, Enter]: legg [Ride, Enter] og [Walk, Bus, Enter] bakerst.\n3. POP [Ride, Enter]: Ride er en HLA, legg [Bike, Enter] bakerst.\n4. POP [Walk, Bus, Enter]: planen er primitiv (en implementation), og resultatet At(Hall) ∧ Have(Bike) oppfyller målet. Returner **[Walk, Bus, Enter]**.\n\nSøket er bredde-først over antall raffineringer, ikke over antall primitive handlinger. [Walk, Bus, Enter] ligger to raffineringer ned, [Bike, Enter] tre (Act, Go, Ride). At [Ride] står først, hjelper ikke.\n\n**b) (3 p)** [Walk, Bus, Enter] er **ikke** en løsning lenger: i et ikke-deterministisk miljø må planen nå målet for *alle* utfall, og er bussen full, mangler Enter preconditionen At(Campus). (For en HLA holder det at *minst én* implementasjon virker, fordi agenten velger refinement. Utfallet av Bus velger miljøet.)\n\nEn syklisk plan (4.3.3, «try, try again») er [Walk, L1: Bus, if At(Stop) then L1 else Enter], eller [Walk, while At(Stop) do Bus, Enter]. Den er en løsning hvis hvert blad er et mål og et mål kan nås fra hvert punkt i planen. Er bussen full tilfeldig og uavhengig fra gang til gang, med en fast sannsynlighet p > 0 for plass, lykkes Bus til slutt med sannsynlighet 1 (boka: «eventually it will work»). Det er ingen garanti for hvert tenkelige forløp: en uendelig rekke fulle busser er mulig, bare med sannsynlighet 0. En garanti for alle forløp krever en fairness-antakelse om at hvert utfall til slutt inntreffer når Bus gjentas. Er bussen full av en skjult, varig grunn, hjelper det ikke å prøve igjen.\n\n**[Bike, Enter]** når målet uten løkker, fordi Bike er deterministisk og Have(Bike) er sann. Den er garantert.\n\nPoeng: 1 p for nei med «alle utfall», 1 p for den sykliske planen og når den virker, 1 p for [Bike, Enter].\n\nVanlig feil: tro at HIERARCHICAL-SEARCH finner den korteste planen, eller at «minst én implementasjon» også gjelder utfallene av en ikke-deterministisk handling.\n\n### Oppgave 12 (5 p): Natural Language Processing\n\n**a) Overgenerering: 1 og 4. Undergenerering: 2.**\n\n**b) 5,4 s. P-tabellen blir 9 ganger større. NP → Pronoun, NP → Name og VP → Verb må endres.**\n\n**a) (2 p)** En grammatikk **overgenererer** når den godtar (genererer) strenger som ikke er grammatiske. Den **undergenererer** når den avviser strenger som er grammatiske.\n\n| Streng | G godtar? | Grammatisk? | Viser |\n|---|---|---|---|\n| 1 Me see the robot | ja: NP(Pronoun) VP(Verb, NP(Article Noun)) | nei, «me» som subjekt | overgenerering |\n| 2 Ada sees her dog | nei: «her» er bare Pronoun, og «dog» blir til overs | ja | undergenerering |\n| 3 She runs | ja | ja | riktig |\n| 4 The dog run | ja: NP(Article Noun) VP(Verb) | nei, samsvar | overgenerering |\n| 5 Robot the sees Ada | nei | nei | riktig |\n\n**b) (3 p)** CYK bruker O(n³m) tid og O(n²m) plass, der n er antall ord og m antall ikke-terminaler (m er lik, siden grammatikken er den samme). Tre ganger så mange ord gir 3³ = 27 ganger så lang tid: 0,2 s · 27 = **5,4 s**. P-tabellen blir 3² = **9** ganger større.\n\nCYK krever Chomsky Normal Form: bare X → ord og X → Y Z med nøyaktig to kategorier. **NP → Pronoun, NP → Name og VP → Verb** har én kategori på høyre side og må erstattes, for eksempel med NP → I | me | she | her | Ada og VP → sees | see | runs | run. De andre reglene er allerede på riktig form.\n\nPoeng: 1 p for tiden, 1 p for faktoren, 1 p for reglene med begrunnelse.\n\nVanlig feil: regne lineært (0,6 s) eller kvadratisk (1,8 s) for tiden.\n\n### Oppgave 13 (5 p): Knowledge Representation and Ethics\n\n**a) T(At(Sara, Rome), 5, 8): ja. T(At(Sara, Rome), 5, 13): nei.**\n\n**b) Se modellsvaret under.**\n\n**a) (2 p)** Flyaksiomet gir Terminates(E1, At(Sara, Oslo), 2), Initiates(E1, At(Sara, Rome), 5), Terminates(E2, At(Sara, Rome), 9) og Initiates(E2, At(Sara, Oslo), 12).\n\n- **Ja:** Happens(E1, 2, 5) ∧ Initiates(E1, At(Sara, Rome), 5) ∧ ¬Terminated(At(Sara, Rome), 5, 8) ∧ 2 ≤ 5 ≤ 5 ≤ 8 ⇒ T(At(Sara, Rome), 5, 8). ¬Terminated holder fordi den eneste hendelsen som terminerer At(Sara, Rome), er E2 ved tid 9, etter 8.\n- **Nei:** Terminated(At(Sara, Rome), 5, 13) er sann via E2 (5 ≤ 9 ≤ 9 ≤ 12 ≤ 13), så premisset ¬Terminated svikter og persistensregelen kan ikke brukes. Speilregelen med Terminates og ¬Initiated gir tvert imot ¬T(At(Sara, Rome), 9, 13): Sara er i Oslo igjen fra 12.\n\n**b) (3 p)** FN definerer et dødelig autonomt våpen som et våpen som **finner, velger ut og angriper (dreper) mennesker uten menneskelig tilsyn** (28.3.1).\n\nJuridisk krever krigens regler (CCW) at våpenet kan skille mellom stridende og sivile (**distinction**), vurdere om angrepet er militært nødvendig (**necessity**) og om den militære verdien står i forhold til faren for sivile tap (**proportionality**). Boka mener distinction kan gå i noen situasjoner, men necessity og proportionality krever subjektive og situasjonsavhengige vurderinger som maskiner ikke kan gjøre i dag. Lovlig bruk er derfor bare mulig i svært avgrensede oppdrag.\n\nArgument for: autonome våpen blir ikke trøtte, redde, sinte eller hevngjerrige, kan bli mer presise og gi færre sivile tap enn menneskelige soldater, og egne soldater slipper å risikere livet.\n\nDet er også lov å nevne motargumentene: etisk (en maskin skal ikke alene avgjøre liv og død), pålitelighet (Petrov 1983) og skalerbarhet. Boka konkluderer med at slike våpen gir mindre sikkerhet for alle og anbefaler våpenkontroll.\n\nPoeng: 1 p for definisjonen, 1 p for necessity og proportionality, 1 p for et argument for.\n\nVanlig feil: blande Terminates (hendelsen avslutter f ved et tidspunkt) med Terminated (f avsluttes et sted i intervallet)."
+}

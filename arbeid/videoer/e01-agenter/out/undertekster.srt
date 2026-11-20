@@ -1,0 +1,568 @@
+1
+00:00:00,450 --> 00:00:06,290
+En robotstøvsuger får poeng per klump skitt den suger opp. Den suger, tømmer ut
+
+2
+00:00:06,290 --> 00:00:12,210
+og suger igjen. Er den ødelagt? Nei. Den er rasjonell. Den gjør nøyaktig det du
+
+3
+00:00:12,210 --> 00:00:13,010
+ba om.
+
+4
+00:00:14,150 --> 00:00:20,150
+Du lærer å si hva AI er, dømme om en agent er rasjonell, skrive PEAS og
+
+5
+00:00:20,150 --> 00:00:25,830
+klassifisere miljøet og velge agenttype. Og du får et kart over kurset.
+
+6
+00:00:27,117 --> 00:00:29,997
+Hva er egentlig kunstig intelligens?
+
+7
+00:00:31,750 --> 00:00:37,670
+To akser deler svarene. Skal maskinen tenke eller handle? Og måles den mot
+
+8
+00:00:37,670 --> 00:00:44,070
+mennesker, eller mot det rasjonelle? Det gir fire ruter. Boka og kurset velger
+
+9
+00:00:44,070 --> 00:00:47,270
+acting rationally: rasjonelle agenter.
+
+10
+00:00:48,550 --> 00:00:53,950
+Acting humanly er Turing-testen: en utspørrer skriver med et menneske og en
+
+11
+00:00:53,950 --> 00:00:59,510
+maskin. Skiller hun dem ikke, består maskinen. Det krever fire evner. Den totale
+
+12
+00:00:59,510 --> 00:01:03,270
+testen legger til fysisk kontakt og to evner til.
+
+13
+00:01:04,550 --> 00:01:09,710
+Thinking humanly er cognitive modeling: introspeksjon, eksperimenter og
+
+14
+00:01:09,710 --> 00:01:15,270
+hjerneavbildning i cognitive science. Thinking rationally er laws of thought,
+
+15
+00:01:15,270 --> 00:01:20,910
+logikken fra Aristoteles. Men verden er usikker, og riktige slutninger gir ingen
+
+16
+00:01:20,910 --> 00:01:21,710
+handling.
+
+17
+00:01:22,783 --> 00:01:28,063
+Acting rationally er å velge best forventet utfall. Det trenger ikke slutninger,
+
+18
+00:01:28,063 --> 00:01:33,103
+som når du trekker hånda fra kokeplata. Boka kaller det standardmodellen: vi gir
+
+19
+00:01:33,103 --> 00:01:35,663
+et mål, maskinen maksimerer.
+
+20
+00:01:36,950 --> 00:01:42,350
+Men vi klarer sjelden å skrive målet riktig. Er målet bare trygghet, blir bilen
+
+21
+00:01:42,350 --> 00:01:48,630
+i garasjen. Å få maskinens mål til å stemme med våre, er value alignment problem.
+
+22
+00:01:48,630 --> 00:01:55,030
+Kong Midas fikk alt til gull, også maten. Boka vil ha beneficial machines, som
+
+23
+00:01:55,030 --> 00:02:00,550
+vet at de ikke kjenner målet helt, og spør. Dette tok ikke foreleser.
+
+24
+00:02:01,917 --> 00:02:07,917
+Din tur, eksamen tjue femten. Må en agent tenke som et menneske for å bestå
+
+25
+00:02:07,917 --> 00:02:13,437
+Turing-testen?
+
+26
+00:02:13,437 --> 00:02:17,837
+Nei. Testen måler oppførsel: acting humanly.
+
+27
+00:02:19,217 --> 00:02:22,657
+Hvor kommer AI fra, og hvor står feltet i dag?
+
+28
+00:02:24,417 --> 00:02:31,417
+AI bygger på åtte fag. Nitten førtitre: kunstige nevroner. Nitten femti:
+
+29
+00:02:31,417 --> 00:02:38,737
+Turing-testen. Nitten femtiseks: feltet fødes i Dartmouth. Så kommer entusiasme,
+
+30
+00:02:38,737 --> 00:02:45,497
+en kalddusj, ekspertsystemer og AI-vinter, sannsynlighet og læring, big data og
+
+31
+00:02:45,497 --> 00:02:46,897
+deep learning.
+
+32
+00:02:48,250 --> 00:02:56,010
+Én punkt fire og fem tok ikke foreleser: hva AI klarer i dag, og seks risikoer.
+
+33
+00:02:56,010 --> 00:02:58,810
+Etikken kommer i episode tjueen.
+
+34
+00:03:00,183 --> 00:03:08,983
+Din tur. Hvem står bak physical symbol system hypothesis?
+
+35
+00:03:08,983 --> 00:03:14,903
+Newell og Simon. Searle mente det motsatte: intelligens krever biologi.
+
+36
+00:03:16,283 --> 00:03:19,083
+Hva er egentlig en agent?
+
+37
+00:03:20,850 --> 00:03:26,370
+En agent oppfatter miljøet med sensorer og påvirker det med aktuatorer. Det den
+
+38
+00:03:26,370 --> 00:03:31,890
+oppfatter nå, er et percept, alt den har oppfattet, percept sequence. Den kan
+
+39
+00:03:31,890 --> 00:03:34,450
+aldri bygge på det den ikke har sett.
+
+40
+00:03:35,750 --> 00:03:44,390
+Ta støvsugerverdenen: to ruter, A og B. Agenten ser rute og skitt. Skittent? Sug.
+
+41
+00:03:44,390 --> 00:03:50,390
+Ellers flytt. En handling per percept sequence gir en endeløs tabell: agent
+
+42
+00:03:50,390 --> 00:03:56,870
+function. Agent program er koden som kjører. Agent er arkitektur pluss program.
+
+43
+00:03:58,150 --> 00:04:06,470
+Din tur. Hva avbilder agent function til en handling?
+
+44
+00:04:06,470 --> 00:04:11,830
+Hele percept sequence, ikke bare siste percept. Det presiserte fasiten i tjue
+
+45
+00:04:11,830 --> 00:04:12,950
+tjuefire.
+
+46
+00:04:14,317 --> 00:04:16,637
+Hva gjør en agent god?
+
+47
+00:04:18,417 --> 00:04:23,217
+Boka dømmer etter konsekvenser: handlingene gir en rekke tilstander, og
+
+48
+00:04:23,217 --> 00:04:28,097
+performance measure gir dem poeng. Poeng for oppsugd skitt gir støvsugeren fra
+
+49
+00:04:28,097 --> 00:04:35,377
+starten. Bedre: ett poeng per ren rute per tidssteg. Mål det du vil ha i miljøet,
+
+50
+00:04:35,377 --> 00:04:36,897
+ikke oppførselen.
+
+51
+00:04:38,250 --> 00:04:44,450
+Rasjonalitet avhenger av fire ting: performance measure, forkunnskap, mulige
+
+52
+00:04:44,450 --> 00:04:50,530
+handlinger og percept sequence. Rasjonell: velg handlingen med høyest forventet
+
+53
+00:04:50,530 --> 00:04:55,770
+performance measure, gitt det du har sett og vet. Støvsugeren er rasjonell. Men
+
+54
+00:04:55,770 --> 00:05:00,250
+koster hvert flytt et poeng, er pendling i et rent rom irrasjonelt.
+
+55
+00:05:01,550 --> 00:05:06,790
+Du ser deg for og går over gata. En lastedør faller fra et fly og treffer deg.
+
+56
+00:05:06,790 --> 00:05:13,150
+Irrasjonelt? Nei. Rasjonell maksimerer forventet ytelse. Perfekt maksimerer
+
+57
+00:05:13,150 --> 00:05:19,990
+faktisk ytelse, og krever omniscience. Eksamensfella: rasjonell er ikke perfekt.
+
+58
+00:05:19,990 --> 00:05:23,150
+Men å se seg for hører med: information gathering.
+
+59
+00:05:24,517 --> 00:05:30,117
+Agenten må også lære. Ta kula fra en gjødselbille, og den tetter reiret med en
+
+60
+00:05:30,117 --> 00:05:35,997
+kule som ikke finnes. Den stoler bare på det innebygde og mangler autonomy. En
+
+61
+00:05:35,997 --> 00:05:40,037
+autonom agent lærer og retter opp feil forkunnskap.
+
+62
+00:05:41,417 --> 00:05:52,137
+Din tur, eksamen tjue sytten. Finnes det et miljø der alle agenter er rasjonelle?
+
+63
+00:05:52,137 --> 00:05:57,017
+Ja. Gir alle handlinger samme belønning, er hvert valg optimalt.
+
+64
+00:05:58,383 --> 00:06:00,223
+Hvordan beskriver du oppgaven?
+
+65
+00:06:01,983 --> 00:06:09,983
+PEAS beskriver oppgaven. Ta en automatisert taxi. Performance: trygg, rask,
+
+66
+00:06:09,983 --> 00:06:17,023
+lovlig, behagelig og lønnsom. Environment: veier, trafikk, fotgjengere, vær.
+
+67
+00:06:17,023 --> 00:06:25,823
+Actuators: ratt, gass, brems. Sensors: kameraer, radar, GPS. Målene krasjer.
+
+68
+00:06:27,117 --> 00:06:37,317
+Din tur: PEAS for en robot som sorterer deler fra et samlebånd.
+
+69
+00:06:37,317 --> 00:06:43,957
+Boka: andel deler i riktig kasse, samlebånd og kasser, arm og hånd, kamera og
+
+70
+00:06:43,957 --> 00:06:45,557
+berøringssensorer.
+
+71
+00:06:46,917 --> 00:06:53,957
+Taxien på sju akser. Ser sensorene alt relevant, er miljøet fully observable.
+
+72
+00:06:53,957 --> 00:07:00,757
+Taxien ser ikke andres planer: partially. Kryssord er single agent, sjakk
+
+73
+00:07:00,757 --> 00:07:06,757
+multiagent. Noe er en agent hvis målet dets avhenger av deg. Sjakk er
+
+74
+00:07:06,757 --> 00:07:12,597
+competitive. Taxier samarbeider mot kollisjoner, men konkurrerer om parkering.
+
+75
+00:07:13,950 --> 00:07:19,790
+Deterministic: neste tilstand følger av tilstand og handling. Taxien er
+
+76
+00:07:19,790 --> 00:07:25,950
+stochastic: trafikken er uforutsigbar. Stochastic gir utfallene sannsynligheter,
+
+77
+00:07:25,950 --> 00:07:31,870
+nondeterministic lister dem bare. Episodic: hver episode står alene, som
+
+78
+00:07:31,870 --> 00:07:37,150
+delesjekk på samlebånd. Sequential: valget nå påvirker resten.
+
+79
+00:07:38,450 --> 00:07:45,330
+Static: verden venter mens agenten tenker, som et kryssord. Dynamic: den venter
+
+80
+00:07:45,330 --> 00:07:52,530
+ikke, som trafikken. Semidynamic: bare klokka går, som i sjakk med klokke. Sjakk
+
+81
+00:07:52,530 --> 00:08:00,010
+er discrete, taxien continuous. Known: agenten kjenner reglene. Kabal er known,
+
+82
+00:08:00,010 --> 00:08:01,890
+men partially observable.
+
+83
+00:08:03,250 --> 00:08:09,570
+Her er bokas tabell. Sjakk med klokke er semi, backgammon stochastic, som
+
+84
+00:08:09,570 --> 00:08:15,970
+eksamen tjue sytten testet. Medisinsk diagnose er single agent, bildeanalyse
+
+85
+00:08:15,970 --> 00:08:22,850
+episodic. Known er ikke med. Svarene er ikke alltid klare, så skriv antakelsen.
+
+86
+00:08:24,217 --> 00:08:26,057
+Hvordan bygger du agenten?
+
+87
+00:08:27,817 --> 00:08:33,497
+En tabell over hele agent function vokser eksponentielt. Universet har under ti
+
+88
+00:08:33,497 --> 00:08:39,697
+opphøyd i åtti atomer. Sjakk krever minst ti opphøyd i hundre og femti rader, en
+
+89
+00:08:39,697 --> 00:08:44,697
+time med taxi over ti opphøyd i seks hundre milliarder. Målet er rasjonell
+
+90
+00:08:44,697 --> 00:08:46,857
+oppførsel fra et lite program.
+
+91
+00:08:48,150 --> 00:08:53,550
+Simple reflex agent ser bare på perceptet nå, matcher en condition-action rule
+
+92
+00:08:53,550 --> 00:08:59,270
+og handler. Det krever fully observable. Uten lokasjonssensor kan støvsugeren gå
+
+93
+00:08:59,270 --> 00:09:03,830
+i løkke, men med myntkast når den andre rute på to steg i snitt.
+
+94
+00:09:05,183 --> 00:09:10,823
+Model-based reflex agent husker det den ikke ser: en intern tilstand, en
+
+95
+00:09:10,823 --> 00:09:15,543
+transition model for hvordan verden endrer seg, og en sensor model. Tilstanden
+
+96
+00:09:15,543 --> 00:09:19,103
+er en beste gjetning, men valget gjøres fortsatt med regler.
+
+97
+00:09:20,483 --> 00:09:26,683
+I et kryss hjelper ikke regler. Goal-based agent har mål, og spør: hva skjer
+
+98
+00:09:26,683 --> 00:09:33,203
+hvis jeg gjør A? Å finne veien til målet er søk og planlegging. Ny destinasjon?
+
+99
+00:09:33,203 --> 00:09:34,483
+Bytt bare målet.
+
+100
+00:09:35,850 --> 00:09:42,730
+Men mange veier når målet. Utility-based agent spør: hvor fornøyd blir jeg?
+
+101
+00:09:42,730 --> 00:09:48,010
+Utility er performance measure inni agenten. Den velger høyest expected utility
+
+102
+00:09:48,010 --> 00:09:50,330
+og kan veie fart mot sikkerhet.
+
+103
+00:09:51,683 --> 00:09:57,523
+Alle typene kan lære. Agenten fra før blir performance element. Critic
+
+104
+00:09:57,523 --> 00:10:02,003
+sammenligner med en fast performance standard. Learning element forbedrer
+
+105
+00:10:02,003 --> 00:10:06,323
+agenten, og problem generator foreslår nye forsøk.
+
+106
+00:10:07,683 --> 00:10:18,923
+Din tur, eksamen tjue tjuefem. Hvordan velger de tre agentene handling?
+
+107
+00:10:18,923 --> 00:10:25,203
+Rule matching, rule matching, search and plan. Modellen gir bare bedre input til
+
+108
+00:10:25,203 --> 00:10:29,083
+reglene. Målet krever søk og planlegging.
+
+109
+00:10:30,450 --> 00:10:33,250
+Hvordan ser en tilstand ut inne i agenten?
+
+110
+00:10:35,017 --> 00:10:42,057
+Dette tok ikke foreleser. Atomic: tilstanden er en svart boks, som et bynavn.
+
+111
+00:10:42,057 --> 00:10:48,937
+Factored: variabler med verdier, som bensin og GPS. Structured: objekter og
+
+112
+00:10:48,937 --> 00:10:54,670
+relasjoner, som en ku som sperrer en lastebil. Mot høyre øker uttrykkskraften,
+
+113
+00:10:54,670 --> 00:11:00,457
+og prisen. Sjakkreglene: et par sider i førsteordens logikk, tusenvis i
+
+114
+00:11:00,457 --> 00:11:01,977
+proposisjonslogikk.
+
+115
+00:11:03,350 --> 00:11:09,350
+Begreper kan lagres localist, ett begrep per sted, så noen feil bits kan gjøre
+
+116
+00:11:09,350 --> 00:11:15,670
+Truck til Truce. Distributed gjør begrepet til et punkt i et rom, så støy gir et
+
+117
+00:11:15,670 --> 00:11:16,710
+nabobegrep.
+
+118
+00:11:18,083 --> 00:11:27,923
+Din tur, eksamen tjue tjueto. Hvorfor velge factored framfor atomic?
+
+119
+00:11:27,923 --> 00:11:32,483
+Variablene gir agenten noe å regne med, for eksempel i heuristikker.
+
+120
+00:11:33,783 --> 00:11:36,983
+Klarer du en hel agentoppgave fra eksamen?
+
+121
+00:11:38,750 --> 00:11:44,910
+Eksamen tjue tjueto, oppgave to: en butikkrobot skanner hyller, med kameraer,
+
+122
+00:11:44,910 --> 00:11:52,510
+ultralyd og kollisjonssensor. Lag PEAS og begrunn miljøet. Velg agenttype. Sett
+
+123
+00:11:52,510 --> 00:11:59,350
+på pause og prøv.
+
+124
+00:11:59,350 --> 00:12:00,790
+Her er løsningen.
+
+125
+00:12:02,150 --> 00:12:09,110
+Løsningsforslaget: trygt, raskt, flest skannede varer, færrest kollisjoner.
+
+126
+00:12:09,110 --> 00:12:17,270
+Ganger, hyller, varer, kunder, ansatte og roboter. Hjul og skjerm ut, kamera,
+
+127
+00:12:17,270 --> 00:12:20,870
+skanner, ultralyd og kollisjonssensor inn.
+
+128
+00:12:22,250 --> 00:12:28,490
+Fasiten klassifiserer ikke miljøet, så vi bruker boka. Partially observable:
+
+129
+00:12:28,490 --> 00:12:36,410
+hyllene skjuler. Multiagent: folk og roboter. Stochastic: folk er uforutsigbare.
+
+130
+00:12:36,410 --> 00:12:43,210
+Sequential: ruten nå avgjør resten. Dynamic: folk flytter seg. Continuous:
+
+131
+00:12:43,210 --> 00:12:48,850
+posisjon og fart. Known, hvis utfallene av handlingene er kjent. Skriv
+
+132
+00:12:48,850 --> 00:12:49,930
+antakelsene.
+
+133
+00:12:51,217 --> 00:12:57,297
+Miljøet er partially observable, så roboten trenger en modell. Og den har et mål:
+
+134
+00:12:57,297 --> 00:13:04,177
+skann alt. Svaret er model-based, goal-based agent. Tegn figuren.
+
+135
+00:13:05,550 --> 00:13:07,230
+Hvor møter du dette igjen?
+
+136
+00:13:08,983 --> 00:13:16,903
+Slik henger kurset sammen. Atomic: søk. Factored: CSP, proposisjonslogikk og
+
+137
+00:13:16,903 --> 00:13:22,983
+planlegging. Structured: førsteordens logikk og kunnskapsrepresentasjon. Flere
+
+138
+00:13:22,983 --> 00:13:27,303
+agenter: spill. Til slutt språk og etikk.
+
+139
+00:13:28,683 --> 00:13:35,083
+Hele kjeden: vi velger acting rationally. En agent kobler percept sequence til
+
+140
+00:13:35,083 --> 00:13:41,323
+handling. Rasjonell er best forventet, ikke perfekt. PEAS og miljøet avgjør
+
+141
+00:13:41,323 --> 00:13:47,523
+agenttypen. Støvsugeren som tømte ut skitten, var rasjonell. Feilen lå i målet.
+
+142
+00:13:47,523 --> 00:13:52,843
+Hvis du bare husker én ting: en agent blir aldri bedre enn målet du gir den.
+

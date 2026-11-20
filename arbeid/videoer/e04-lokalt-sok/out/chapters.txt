@@ -1,0 +1,42 @@
+;FFMETADATA1
+title=Lokalt søk: å klatre uten kart
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=43600
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=43600
+END=167033
+title=Landskapet og hill climbing
+[CHAPTER]
+TIMEBASE=1/1000
+START=167033
+END=253300
+title=Varianter: sideways og restart
+[CHAPTER]
+TIMEBASE=1/1000
+START=253300
+END=359566
+title=Simulated annealing
+[CHAPTER]
+TIMEBASE=1/1000
+START=359567
+END=478866
+title=Beam og genetiske algoritmer
+[CHAPTER]
+TIMEBASE=1/1000
+START=478867
+END=579100
+title=Kontinuerlige rom
+[CHAPTER]
+TIMEBASE=1/1000
+START=579100
+END=650266
+title=Eksamensoppgave
+[CHAPTER]
+TIMEBASE=1/1000
+START=650267
+END=711967
+title=Koblinger og oppsummering

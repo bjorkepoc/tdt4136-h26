@@ -1,0 +1,339 @@
+{
+ "id": "a2",
+ "ep": "A2",
+ "tittel": "Assignment 2: Constraint Satisfaction Problems",
+ "kilde": "../materiale/Files/Assignment 2.pdf",
+ "om": "Responsible for assignments this year: Aleksandra Jekic<br>\nAssignment updated by Ole C. Eidheim from the work of Håkon Måløy and Xavier F.C. Sánchez-Díaz\n\n9th September 2026<br>\nDeadline: 25.09.2026, 23:59 hrs\n\n**Handout-filer:** [csp.py](../materiale/Files/code_handout/csp.py) · [map_coloring.py](../materiale/Files/code_handout/map_coloring.py) · [sudoku.py](../materiale/Files/code_handout/sudoku.py) · [sudoku_easy.txt](../materiale/Files/code_handout/sudoku_easy.txt) · [sudoku_medium.txt](../materiale/Files/code_handout/sudoku_medium.txt) · [sudoku_hard.txt](../materiale/Files/code_handout/sudoku_hard.txt) · [sudoku_very_hard.txt](../materiale/Files/code_handout/sudoku_very_hard.txt) · [code_handout_A2.zip](../materiale/Files/code_handout_A2.zip)<br>\n*Merknad:* PDF-en kaller brettfilene easy.txt, medium.txt, hard.txt og veryhard.txt. I handouten heter de `sudoku_easy.txt`, `sudoku_medium.txt`, `sudoku_hard.txt` og `sudoku_very_hard.txt`.\n\n### 1 Overview\n\nIn this assignment, you will implement backtracking search and AC-3 for Constraint Satisfaction Problems. You will then use these algorithms to solve Sudoku boards of varying difficulty.\n\nYou are required to implement the algorithms, properly document the source code, and write a short PDF report. However, to make sure you start on the right track, we provide you with a code handout for Python. This code suggests a code structure, and populates the necessary data structures for two example CSPs, namely the map coloring problem and Sudoku. You are welcome to use and adapt this code in your submission, but it is not mandatory.\n\nWe recommend you implement the backtracking search algorithm first, and test this algorithm on the map coloring problem.\n\n### 2 CSPs, Backtracking and AC-3\n\nUsing backtracking search to solve CSPs is described in Chapter 5.3 of the textbook (AIMA 4th Ed., Global edition), and the pseudocode is shown in Figure 5.5 (p. 176). The pseudocode references three functions that are not concretely specified in the textbook, namely: Select-Unassigned-Variable, Order-Domain-Values, and Inference.\n\nFor this assignment, it is sufficient to implement the following:\n\n1. Select-Unassigned-Variable: return any unassigned variable.\n2. Order-Domain-Values: any ordering for the given variable is fine.\n3. Inference: no inference needs to be performed during the backtracking search. You can instead apply the AC-3 algorithm (described Figure 5.3, (p. 171)) prior to running the backtracking search. For simpler Sudoku problems this will reduce the variable domains to one value each.\n\n#### 2.1 Code handout\n\nThe code handout suggests which data structures to use to represent the CSP. As mentioned in Chapter 5.1, a Constraint Satisfaction Problem can be represented as three components X, D, and C:\n\n- *X*: set of variables.\n- *D*: set of domains, one for each variable. Each domain defines which values a variable can be assigned.\n- *C*: set of constraints, where a constraint can be a set of legal pairs of values for two given variables.\n\nIn the *code handout*, the following data structures are used:\n\n- *variables*: list of variable names.\n- *domains*: dictionary that associates a variable name with a set of legal values.\n- *binary_constraints*: dictionary that associates constrained variable pairs to a set of legal value pairs. In the *code handout*, *binary_constraints* is populated from a list of *edges* containing variable pairs that must not be assigned the same value. You will not need to use non-binary constraints in this assignment.\n\n#### 2.1.1 An example\n\nThe construction of the map colouring CSP from the textbook (Chapter 5.1.1, p. 165) is shown below as demonstrated in the file *map_coloring.py* in the *code handout*. The contents of the data structures are also presented, where dictionaries and sets use curly brackets {}, lists use square brackets [], and tuples use parentheses ().\n\n```\n>>> from csp import CSP\n>>> variables = ['WA', 'NT', 'Q', 'NSW', 'V', 'SA', 'T']\n>>> csp = CSP(\n...     variables=variables,\n...     domains={variable: {'red', 'green', 'blue'}\n...              for variable in variables},\n...     edges=[\n...         ('SA', 'WA'),\n...         ('SA', 'NT'),\n...         ('SA', 'Q'),\n...         ('SA', 'NSW'),\n...         ('SA', 'V'),\n...         ('WA', 'NT'),\n...         ('NT', 'Q'),\n...         ('Q', 'NSW'),\n...         ('NSW', 'V')\n...     ]\n... )\n\n>>> print(csp.variables)\n['WA', 'NT', 'Q', 'NSW', 'V', 'SA', 'T']\n\n>>> print(csp.domains)\n{'WA': {'blue', 'red', 'green'},\n 'NT': {'blue', 'red', 'green'},\n 'Q': {'blue', 'red', 'green'},\n 'NSW': {'blue', 'red', 'green'},\n 'V': {'blue', 'red', 'green'},\n 'SA': {'blue', 'red', 'green'},\n 'T': {'blue', 'red', 'green'}}\n\n>>> print(csp.binary_constraints)\n{('SA', 'WA'): {('blue', 'green'),\n                ('blue', 'red'),\n                ('green', 'blue'),\n                ('green', 'red'),\n                ('red', 'blue'),\n                ('red', 'green')},\n ('SA', 'NT'): {('blue', 'green'),\n                ('blue', 'red'),\n                ('green', 'blue'),\n                ('green', 'red'),\n                ('red', 'blue'),\n                ('red', 'green')},\n ('SA', 'Q'): {('blue', 'green'),\n               ('blue', 'red'),\n               ('green', 'blue'),\n               ('green', 'red'),\n               ('red', 'blue'),\n               ('red', 'green')},\n ('SA', 'NSW'): {('blue', 'green'),\n                 ('blue', 'red'),\n                 ('green', 'blue'),\n                 ('green', 'red'),\n                 ('red', 'blue'),\n                 ('red', 'green')},\n ('SA', 'V'): {('blue', 'green'),\n               ('blue', 'red'),\n               ('green', 'blue'),\n               ('green', 'red'),\n               ('red', 'blue'),\n               ('red', 'green')},\n ('WA', 'NT'): {('blue', 'green'),\n                ('blue', 'red'),\n                ('green', 'blue'),\n                ('green', 'red'),\n                ('red', 'blue'),\n                ('red', 'green')},\n ('NT', 'Q'): {('blue', 'green'),\n               ('blue', 'red'),\n               ('green', 'blue'),\n               ('green', 'red'),\n               ('red', 'blue'),\n               ('red', 'green')},\n ('Q', 'NSW'): {('blue', 'green'),\n                ('blue', 'red'),\n                ('green', 'blue'),\n                ('green', 'red'),\n                ('red', 'blue'),\n                ('red', 'green')},\n ('NSW', 'V'): {('blue', 'green'),\n                ('blue', 'red'),\n                ('green', 'blue'),\n                ('green', 'red'),\n                ('red', 'blue'),\n                ('red', 'green')}}\n```\n\nThe variables are stored as a list of strings in the csp object. All the seven variables have the same domain: red, green and blue. The printout of `csp.binary_constraints` shows the legal value pairs for the edges, but the binary constraints are directional, same as is presented in the book. The constraint for ('WA', 'SA') is not stored in `csp.binary_constraint` even though it is the same as ('SA', 'WA'). If you decide to use the code handout, you have to take this into account or modify `csp.binary_constraints` to your liking.\n\n### 3 Sudoku boards as CSPs\n\nThe code handout already includes a file, `sudoku.py`, which reads a Sudoku board from a text file and constructs a CSP for solving the Sudoku board. There is also a function to output the solution as a Sudoku board called `print_solution(solution)`.\n\n#### 3.1 What you should implement\n\nIf you choose to use the code handout, your task is to implement backtracking search and AC-3 in the methods `CSP.backtracking_search()` and `CSP.ac_3()` in the `csp.py` file. After this, you can run the files `map_coloring.py` and `sudoku.py` to output the solutions. It is suggested that you complete the backtracking search first and test your implementation on the `map_coloring.py` file.\n\nIn `sudoku.py`, AC-3 is used to reduce the domains prior to running the backtracking search. It is not expected that you use the AC-3 algorithm during the backtracking search.\n\nYou must solve the four Sudoku boards illustrated in Figures 1a-1d, and the results should be included in your PDF report.\n\n### 4 Deliverables\n\n1. Source files containing well-commented code for backtracking search and AC-3 that are able to solve the Sudoku boards.\n2. A single PDF report containing:\n   - (a) Your program’s solution for each of the Sudoku boards shown in Figures 1a-1d.\n   - (b) The domains after running the AC-3 algorithm for each of the four boards.\n   - (c) The number of times your `backtrack()` function was called, and the number of times your `backtrack()` function returned failure, for each of the four boards.\n   - (d) The runtime of the backtracking search algorithm for each of the four boards.\n   - (e) The total runtime of the AC-3 and backtracking search algorithms for each of the four boards.\n   - (f) Brief discussion of your results. For example, explain why the AC-3 algorithm drastically decrease the total runtime when solving some Sudoku problems.\n\n### Recommendations\n\nMake sure that your code is well documented. Please upload the code files and PDF report as seperate files when delivering the assignment on Canvas. Do NOT put in zip.",
+ "intro": "Programmeringsøving: backtracking search (fig. 5.5) og AC-3 (fig. 5.3), testet på kartfarging og fire Sudoku-brett. Den hører til E06 (AC-3, arc consistency) og E07 (backtracking search). Koden skriver og kjører du i Python med handout-filene. Her svarer du med det som kan skrives som tekst: kode i kortform, utskrifter, domener, tellinger og kjøretider. Bare easy-brettet har offisiell løsning (i `sudoku.py`), så bare den sjekkes automatisk. Under «Tegn og sjekk» i oppgave 1 ligger kartfargingen fra handouten.",
+ "tasks": [
+  {
+   "t": "Oppgave 1: Backtracking search",
+   "d": "Using backtracking search to solve CSPs is described in Chapter 5.3 of the textbook (AIMA 4th Ed., Global edition), and the pseudocode is shown in Figure 5.5 (p. 176). The pseudocode references three functions that are not concretely specified in the textbook, namely: Select-Unassigned-Variable, Order-Domain-Values, and Inference.\n\nFor this assignment, it is sufficient to implement the following:\n\n1. Select-Unassigned-Variable: return any unassigned variable.\n2. Order-Domain-Values: any ordering for the given variable is fine.\n\n**3.1 What you should implement**\n\nIf you choose to use the code handout, your task is to implement backtracking search and AC-3 in the methods `CSP.backtracking_search()` and `CSP.ac_3()` in the `csp.py` file. After this, you can run the files `map_coloring.py` and `sudoku.py` to output the solutions. It is suggested that you complete the backtracking search first and test your implementation on the `map_coloring.py` file.",
+   "f": [
+    [
+     "backtrack(): koden din i kortform",
+     "area",
+     "def backtrack(assignment):\n    …"
+    ],
+    [
+     "Hvordan sjekker du en verdi mot binary_constraints, som bare er lagret i én retning?",
+     "area"
+    ],
+    [
+     "Utskrift fra map_coloring.py",
+     "text",
+     "{'WA': …}"
+    ]
+   ],
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "WA",
+       "x": 60,
+       "y": 260,
+       "domene": [
+        "red",
+        "green",
+        "blue"
+       ]
+      },
+      {
+       "id": "NT",
+       "x": 200,
+       "y": 130,
+       "domene": [
+        "red",
+        "green",
+        "blue"
+       ]
+      },
+      {
+       "id": "SA",
+       "x": 230,
+       "y": 300,
+       "domene": [
+        "red",
+        "green",
+        "blue"
+       ]
+      },
+      {
+       "id": "Q",
+       "x": 370,
+       "y": 150,
+       "domene": [
+        "red",
+        "green",
+        "blue"
+       ]
+      },
+      {
+       "id": "NSW",
+       "x": 400,
+       "y": 320,
+       "domene": [
+        "red",
+        "green",
+        "blue"
+       ]
+      },
+      {
+       "id": "V",
+       "x": 330,
+       "y": 440,
+       "domene": [
+        "red",
+        "green",
+        "blue"
+       ]
+      },
+      {
+       "id": "T",
+       "x": 380,
+       "y": 570,
+       "domene": [
+        "red",
+        "green",
+        "blue"
+       ]
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "SA",
+       "til": "WA"
+      },
+      {
+       "fra": "SA",
+       "til": "NT"
+      },
+      {
+       "fra": "SA",
+       "til": "Q"
+      },
+      {
+       "fra": "SA",
+       "til": "NSW"
+      },
+      {
+       "fra": "SA",
+       "til": "V"
+      },
+      {
+       "fra": "WA",
+       "til": "NT"
+      },
+      {
+       "fra": "NT",
+       "til": "Q"
+      },
+      {
+       "fra": "Q",
+       "til": "NSW"
+      },
+      {
+       "fra": "NSW",
+       "til": "V"
+      }
+     ]
+    }
+   },
+   "fasit": "**backtrack():** fig. 5.5 uten inference: velg første variabel uten verdi, prøv verdiene i domenet, sjekk mot tilordningen, gå videre rekursivt og angre ved failure.\n\n```python\ndef backtracking_search(self):\n    self.calls = self.failures = 0\n\n    def consistent(var, value, assignment):\n        # sjekk mot alle naboer som allerede har verdi\n        return all(self.allowed(var, value, other, v2)\n                   for other, v2 in assignment.items())\n\n    def backtrack(assignment):\n        self.calls += 1\n        if len(assignment) == len(self.variables):\n            return assignment                      # komplett tilordning\n        var = next(v for v in self.variables if v not in assignment)\n        for value in sorted(self.domains[var]):\n            if consistent(var, value, assignment):\n                assignment[var] = value\n                result = backtrack(assignment)\n                if result is not None:\n                    return result\n                del assignment[var]                # angre og prøv neste verdi\n        self.failures += 1\n        return None                                # failure\n\n    return backtrack({})\n```\n\n**Sjekk i begge retninger:** `binary_constraints` har bare nøkkelen (SA, WA), ikke (WA, SA). Slå derfor opp begge nøklene og snu verdiparet for den motsatte, slik kommentaren i `csp.py` viser. Ellers blir constrainten oversett når WA får verdi etter SA. Et alternativ er å legge inn den speilvendte nøkkelen i `__init__`.\n\n```python\ndef allowed(self, xi, x, xj, y):\n    \"\"\"True hvis xi = x og xj = y ikke bryter noen constraint.\"\"\"\n    if (xi, xj) in self.binary_constraints:\n        return (x, y) in self.binary_constraints[(xi, xj)]\n    if (xj, xi) in self.binary_constraints:\n        return (y, x) in self.binary_constraints[(xj, xi)]\n    return True                                    # ingen constraint mellom dem\n```\n\n**Utskrift fra `map_coloring.py`:** for eksempel `{'WA': 'red', 'NT': 'green', 'Q': 'red', 'NSW': 'green', 'V': 'red', 'SA': 'blue', 'T': 'red'}` (AL2). Hver gyldig fargelegging er riktig: SA har en annen farge enn de fem naboene på fastlandet, WA ≠ NT, NT ≠ Q, Q ≠ NSW og NSW ≠ V, mens T er fri. Domenene er mengder, så rekkefølgen og dermed løsningen kan variere fra kjøring til kjøring. Med `sorted` som over blir svaret `{'WA': 'blue', 'NT': 'green', 'Q': 'blue', 'NSW': 'green', 'V': 'blue', 'SA': 'red', 'T': 'blue'}`.\n\nSelect-Unassigned-Variable og Order-Domain-Values kan være hva som helst (AL2, lysbilde 13). MRV og LCV er lov, men ikke påkrevd.\n\n*Kilde: oppgaveteksten, fig. 5.5 og AL2 (lysbilde 13 og eksempelutskriften). Koden er kjørt på handout-filene.*"
+  },
+  {
+   "t": "Oppgave 2: AC-3",
+   "d": "3. Inference: no inference needs to be performed during the backtracking search. You can instead apply the AC-3 algorithm (described Figure 5.3, (p. 171)) prior to running the backtracking search. For simpler Sudoku problems this will reduce the variable domains to one value each.\n\n**3.1 What you should implement**\n\nIn `sudoku.py`, AC-3 is used to reduce the domains prior to running the backtracking search. It is not expected that you use the AC-3 algorithm during the backtracking search.",
+   "f": [
+    [
+     "ac_3() og revise: koden din i kortform",
+     "area",
+     "def ac_3(self):\n    …"
+    ],
+    [
+     "Hva returnerer ac_3() for easy-brettet?",
+     "text",
+     "True eller False"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Hva returnerer ac_3() for easy-brettet?": [
+      "True"
+     ]
+    },
+    "kilde": "code_handout/sudoku.py, «Expected output after implementing csp.ac_3() and csp.backtracking_search()»"
+   },
+   "fasit": "**ac_3() returnerer True for easy-brettet.** Da har alle 81 domener nøyaktig én verdi.\n\n**ac_3() og revise** etter fig. 5.3. Køen starter med alle buer i begge retninger. Når D(Xi) krymper, legges (Xk, Xi) inn for alle naboer Xk unntatt Xj.\n\n```python\nfrom collections import deque\n\ndef ac_3(self):\n    arcs = list(self.binary_constraints) + [(b, a) for a, b in self.binary_constraints]\n    neighbors = {v: set() for v in self.variables}\n    for a, b in arcs:\n        neighbors[a].add(b)\n    queue = deque(arcs)\n    while queue:\n        xi, xj = queue.popleft()\n        if self.revise(xi, xj):\n            if not self.domains[xi]:\n                return False                   # tomt domene: ingen løsning\n            for xk in neighbors[xi] - {xj}:\n                queue.append((xk, xi))\n    return True\n\ndef revise(self, xi, xj):\n    revised = False\n    for x in set(self.domains[xi]):\n        if not any(self.allowed(xi, x, xj, y) for y in self.domains[xj]):\n            self.domains[xi].remove(x)         # x har ingen støtte i D(xj)\n            revised = True\n    return revised\n```\n\n`allowed` er hjelperen fra oppgave 1, som slår opp constrainten i begge retninger.\n\nVanlige feil: å stryke verdier i D(Xj) i stedet for D(Xi), og å glemme å legge buene (Xk, Xi) tilbake i køen etter en endring.\n\n*Kilde: «True» står i forventet utskrift i `sudoku.py`. Koden er kjørt på handout-filene.*"
+  },
+  {
+   "t": "Oppgave 3: Easy board",
+   "d": "*Figure 1: Sudoku boards you will solve* (a)\n\nYou must solve the four Sudoku boards illustrated in Figures 1a-1d, and the results should be included in your PDF report.\n\n**4 Deliverables** (punkt 2)\n\n2. A single PDF report containing:\n   - (a) Your program’s solution for each of the Sudoku boards shown in Figures 1a-1d.\n   - (b) The domains after running the AC-3 algorithm for each of the four boards.\n   - (c) The number of times your `backtrack()` function was called, and the number of times your `backtrack()` function returned failure, for each of the four boards.\n   - (d) The runtime of the backtracking search algorithm for each of the four boards.\n   - (e) The total runtime of the AC-3 and backtracking search algorithms for each of the four boards.",
+   "img": [
+    "nettside-figurer/a2-sudoku-easy.png"
+   ],
+   "f": [
+    [
+     "(a) Løsning",
+     "area",
+     "Én rad per linje, 9 sifre per rad"
+    ],
+    [
+     "(b) Domener etter AC-3",
+     "area",
+     "Celler med mer enn én verdi, f.eks. X11: {2, 5, 8}"
+    ],
+    [
+     "(c) Antall kall til backtrack()",
+     "text"
+    ],
+    [
+     "(c) Antall ganger backtrack() returnerte failure",
+     "text"
+    ],
+    [
+     "(d) Kjøretid for backtracking search",
+     "text"
+    ],
+    [
+     "(e) Total kjøretid for AC-3 og backtracking search",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "(a) Løsning": [
+      "784932156 619485327 235176489 578261934 341897562 926543871 453729618 862314795 197658243",
+      "7 8 4 9 3 2 1 5 6 6 1 9 4 8 5 3 2 7 2 3 5 1 7 6 4 8 9 5 7 8 2 6 1 9 3 4 3 4 1 8 9 7 5 6 2 9 2 6 5 4 3 8 7 1 4 5 3 7 2 9 6 1 8 8 6 2 3 1 4 7 9 5 1 9 7 6 5 8 2 4 3",
+      "7 8 4 | 9 3 2 | 1 5 6\n6 1 9 | 4 8 5 | 3 2 7\n2 3 5 | 1 7 6 | 4 8 9\n------+-------+------\n5 7 8 | 2 6 1 | 9 3 4\n3 4 1 | 8 9 7 | 5 6 2\n9 2 6 | 5 4 3 | 8 7 1\n------+-------+------\n4 5 3 | 7 2 9 | 6 1 8\n8 6 2 | 3 1 4 | 7 9 5\n1 9 7 | 6 5 8 | 2 4 3"
+     ]
+    },
+    "merk": "Godtar én rad per linje (784932156 …), sifre med mellomrom, eller utskriften fra print_solution.",
+    "kilde": "code_handout/sudoku.py, «Expected output» (også AssignmentLecture2-Fall2026.pdf, lysbilde 19)"
+   },
+   "fasit": "**(a) Løsning:**\n\n```\n7 8 4 | 9 3 2 | 1 5 6\n6 1 9 | 4 8 5 | 3 2 7\n2 3 5 | 1 7 6 | 4 8 9\n------+-------+------\n5 7 8 | 2 6 1 | 9 3 4\n3 4 1 | 8 9 7 | 5 6 2\n9 2 6 | 5 4 3 | 8 7 1\n------+-------+------\n4 5 3 | 7 2 9 | 6 1 8\n8 6 2 | 3 1 4 | 7 9 5\n1 9 7 | 6 5 8 | 2 4 3\n```\n\n**(b) Domener etter AC-3: alle 81 domener har én verdi**, nemlig løsningen over. Ingen celle har mer enn én verdi igjen.\n\n**(c) 82 kall til backtrack(), 0 ganger failure.** Rotkallet pluss ett kall per variabel. Hver celle har bare én verdi, og den er lovlig, så søket angrer aldri. Det gjelder uansett rekkefølge på variablene.\n\n**(d) Backtracking: under 1 ms** (0,2–0,4 ms i egne kjøringer). **(e) AC-3 + backtracking: noen få ms** (3–6 ms, nesten alt er AC-3). Tidene er fra én kjøring av koden i oppgave 1 og 2 (Python) og avhenger av maskin og implementasjon. Det viktige er forholdet mellom brettene.\n\nAC-3 løser easy-brettet alene. Backtracking leser bare av løsningen.\n\n*Kilde: løsningen og «True» står i forventet utskrift i `sudoku.py` og i AL2, lysbilde 19. Domener, tellinger og tider er egen kjøring.*"
+  },
+  {
+   "t": "Oppgave 4: Medium board",
+   "d": "*Figure 1: Sudoku boards you will solve* (b)\n\nYou must solve the four Sudoku boards illustrated in Figures 1a-1d, and the results should be included in your PDF report.\n\n**4 Deliverables** (punkt 2)\n\n2. A single PDF report containing:\n   - (a) Your program’s solution for each of the Sudoku boards shown in Figures 1a-1d.\n   - (b) The domains after running the AC-3 algorithm for each of the four boards.\n   - (c) The number of times your `backtrack()` function was called, and the number of times your `backtrack()` function returned failure, for each of the four boards.\n   - (d) The runtime of the backtracking search algorithm for each of the four boards.\n   - (e) The total runtime of the AC-3 and backtracking search algorithms for each of the four boards.",
+   "img": [
+    "nettside-figurer/a2-sudoku-medium.png"
+   ],
+   "f": [
+    [
+     "(a) Løsning",
+     "area",
+     "Én rad per linje, 9 sifre per rad"
+    ],
+    [
+     "(b) Domener etter AC-3",
+     "area",
+     "Celler med mer enn én verdi, f.eks. X11: {2, 5, 8}"
+    ],
+    [
+     "(c) Antall kall til backtrack()",
+     "text"
+    ],
+    [
+     "(c) Antall ganger backtrack() returnerte failure",
+     "text"
+    ],
+    [
+     "(d) Kjøretid for backtracking search",
+     "text"
+    ],
+    [
+     "(e) Total kjøretid for AC-3 og backtracking search",
+     "text"
+    ]
+   ],
+   "fasit": "**(a) Løsning:**\n\n```\n8 7 5 | 9 3 6 | 1 4 2\n1 6 9 | 7 2 4 | 3 8 5\n2 4 3 | 8 5 1 | 6 7 9\n------+-------+------\n4 5 2 | 6 9 7 | 8 3 1\n9 8 6 | 4 1 3 | 2 5 7\n7 3 1 | 5 8 2 | 9 6 4\n------+-------+------\n5 1 7 | 3 6 9 | 4 2 8\n6 2 8 | 1 4 5 | 7 9 3\n3 9 4 | 2 7 8 | 5 1 6\n```\n\n**(b) Domener etter AC-3: 56 av 81 domener har én verdi, 25 celler har flere.** Tabellen viser domenet til hver celle (rad, kolonne). For eksempel er X11 = {2, 5, 8} og X91 = {3, 4, 5, 6}.\n\n| | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |\n|---|---|---|---|---|---|---|---|---|---|\n| **1** | 258 | 257 | 57 | 9 | 3 | 6 | 15 | 4 | 25 |\n| **2** | 1 | 56 | 9 | 7 | 2 | 4 | 356 | 8 | 56 |\n| **3** | 2346 | 246 | 34 | 8 | 5 | 1 | 36 | 7 | 269 |\n| **4** | 45 | 45 | 2 | 6 | 9 | 7 | 8 | 3 | 1 |\n| **5** | 9 | 8 | 6 | 4 | 1 | 3 | 2 | 5 | 7 |\n| **6** | 7 | 3 | 1 | 5 | 8 | 2 | 9 | 6 | 4 |\n| **7** | 45 | 1 | 457 | 3 | 6 | 9 | 45 | 2 | 58 |\n| **8** | 26 | 26 | 8 | 1 | 4 | 5 | 7 | 9 | 3 |\n| **9** | 3456 | 9 | 345 | 2 | 7 | 8 | 456 | 1 | 56 |\n\n**(c) 273 kall til backtrack(), 191 ganger failure.** Tallene gjelder første ledige variabel (X11, X12, …), verdiene i stigende rekkefølge og konsistenssjekk før det rekursive kallet, som i koden fra oppgave 1. En annen rekkefølge gir andre tall, som kan være like riktige. Kall minus failure er alltid 82: rotkallet pluss ett kall per tilordning på den vellykte stien.\n\n**(d) Backtracking: rundt 1 ms. (e) AC-3 + backtracking: rundt 4–7 ms.** Tidene er fra én kjøring av koden i oppgave 1 og 2 (Python) og avhenger av maskin og implementasjon. Det viktige er forholdet mellom brettene.\n\nAC-3 fastsetter 23 celler i tillegg til de 33 gitte, så bare 25 celler med 2–4 verdier står igjen for søket.\n\n*Kilde: egen kjøring av AC-3 (fig. 5.3) og backtracking (fig. 5.5) på handout-filene. Løsningen er sjekket mot alle constraints, og brettet har nøyaktig én løsning. Ingen offisiell fasit.*"
+  },
+  {
+   "t": "Oppgave 5: Hard board",
+   "d": "*Figure 1: Sudoku boards you will solve* (c)\n\nYou must solve the four Sudoku boards illustrated in Figures 1a-1d, and the results should be included in your PDF report.\n\n**4 Deliverables** (punkt 2)\n\n2. A single PDF report containing:\n   - (a) Your program’s solution for each of the Sudoku boards shown in Figures 1a-1d.\n   - (b) The domains after running the AC-3 algorithm for each of the four boards.\n   - (c) The number of times your `backtrack()` function was called, and the number of times your `backtrack()` function returned failure, for each of the four boards.\n   - (d) The runtime of the backtracking search algorithm for each of the four boards.\n   - (e) The total runtime of the AC-3 and backtracking search algorithms for each of the four boards.",
+   "img": [
+    "nettside-figurer/a2-sudoku-hard.png"
+   ],
+   "f": [
+    [
+     "(a) Løsning",
+     "area",
+     "Én rad per linje, 9 sifre per rad"
+    ],
+    [
+     "(b) Domener etter AC-3",
+     "area",
+     "Celler med mer enn én verdi, f.eks. X11: {2, 5, 8}"
+    ],
+    [
+     "(c) Antall kall til backtrack()",
+     "text"
+    ],
+    [
+     "(c) Antall ganger backtrack() returnerte failure",
+     "text"
+    ],
+    [
+     "(d) Kjøretid for backtracking search",
+     "text"
+    ],
+    [
+     "(e) Total kjøretid for AC-3 og backtracking search",
+     "text"
+    ]
+   ],
+   "fasit": "**(a) Løsning:**\n\n```\n1 5 2 | 3 4 6 | 8 9 7\n4 3 7 | 1 8 9 | 6 5 2\n6 8 9 | 5 7 2 | 3 1 4\n------+-------+------\n8 2 1 | 6 3 7 | 9 4 5\n5 4 3 | 8 9 1 | 7 2 6\n9 7 6 | 4 2 5 | 1 8 3\n------+-------+------\n7 9 8 | 2 5 3 | 4 6 1\n3 6 5 | 9 1 4 | 2 7 8\n2 1 4 | 7 6 8 | 5 3 9\n```\n\n**(b) Domener etter AC-3: 28 av 81 domener har én verdi**, og det er bare de 28 gitte tallene. Ingen tom celle blir fastsatt, men mange domener krymper. Tabellen viser domenet til hver celle (rad, kolonne):\n\n| | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |\n|---|---|---|---|---|---|---|---|---|---|\n| **1** | 1 | 3568 | 2 | 39 | 4 | 69 | 68 | 5689 | 7 |\n| **2** | 346 | 3567 | 3457 | 12379 | 8 | 1269 | 126 | 1569 | 125 |\n| **3** | 68 | 678 | 9 | 5 | 27 | 126 | 3 | 168 | 4 |\n| **4** | 38 | 1238 | 13 | 6 | 23 | 7 | 9 | 13458 | 1358 |\n| **5** | 5 | 4 | 137 | 1389 | 39 | 189 | 178 | 2 | 6 |\n| **6** | 389 | 123789 | 6 | 4 | 239 | 5 | 178 | 1378 | 138 |\n| **7** | 7 | 1569 | 8 | 29 | 259 | 3 | 4 | 16 | 12 |\n| **8** | 3469 | 3569 | 345 | 2789 | 1 | 2489 | 2678 | 3678 | 238 |\n| **9** | 2 | 13 | 134 | 78 | 6 | 48 | 5 | 1378 | 9 |\n\n**(c) 1288 kall til backtrack(), 1206 ganger failure.** Tallene gjelder første ledige variabel (X11, X12, …), verdiene i stigende rekkefølge og konsistenssjekk før det rekursive kallet, som i koden fra oppgave 1. En annen rekkefølge gir andre tall, som kan være like riktige. Kall minus failure er alltid 82: rotkallet pluss ett kall per tilordning på den vellykte stien.\n\n**(d) Backtracking: rundt 3–9 ms. (e) AC-3 + backtracking: rundt 6–16 ms.** Tidene er fra én kjøring av koden i oppgave 1 og 2 (Python) og avhenger av maskin og implementasjon. Det viktige er forholdet mellom brettene.\n\n*Kilde: egen kjøring av AC-3 (fig. 5.3) og backtracking (fig. 5.5) på handout-filene. Løsningen er sjekket mot alle constraints, og brettet har nøyaktig én løsning. Ingen offisiell fasit.*"
+  },
+  {
+   "t": "Oppgave 6: Very hard board",
+   "d": "*Figure 1: Sudoku boards you will solve* (d)\n\nYou must solve the four Sudoku boards illustrated in Figures 1a-1d, and the results should be included in your PDF report.\n\n**4 Deliverables** (punkt 2)\n\n2. A single PDF report containing:\n   - (a) Your program’s solution for each of the Sudoku boards shown in Figures 1a-1d.\n   - (b) The domains after running the AC-3 algorithm for each of the four boards.\n   - (c) The number of times your `backtrack()` function was called, and the number of times your `backtrack()` function returned failure, for each of the four boards.\n   - (d) The runtime of the backtracking search algorithm for each of the four boards.\n   - (e) The total runtime of the AC-3 and backtracking search algorithms for each of the four boards.",
+   "img": [
+    "nettside-figurer/a2-sudoku-veryhard.png"
+   ],
+   "f": [
+    [
+     "(a) Løsning",
+     "area",
+     "Én rad per linje, 9 sifre per rad"
+    ],
+    [
+     "(b) Domener etter AC-3",
+     "area",
+     "Celler med mer enn én verdi, f.eks. X11: {2, 5, 8}"
+    ],
+    [
+     "(c) Antall kall til backtrack()",
+     "text"
+    ],
+    [
+     "(c) Antall ganger backtrack() returnerte failure",
+     "text"
+    ],
+    [
+     "(d) Kjøretid for backtracking search",
+     "text"
+    ],
+    [
+     "(e) Total kjøretid for AC-3 og backtracking search",
+     "text"
+    ]
+   ],
+   "fasit": "**(a) Løsning:**\n\n```\n4 3 1 | 8 6 7 | 9 2 5\n6 5 2 | 4 9 1 | 3 8 7\n8 9 7 | 5 3 2 | 1 6 4\n------+-------+------\n3 8 4 | 9 7 6 | 5 1 2\n5 1 9 | 2 8 4 | 7 3 6\n2 7 6 | 3 1 5 | 8 4 9\n------+-------+------\n9 4 3 | 7 2 8 | 6 5 1\n7 6 5 | 1 4 3 | 2 9 8\n1 2 8 | 6 5 9 | 4 7 3\n```\n\n**(b) Domener etter AC-3: 26 av 81 domener har én verdi**, og det er bare de 26 gitte tallene. Ingen tom celle blir fastsatt. Tabellen viser domenet til hver celle (rad, kolonne):\n\n| | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |\n|---|---|---|---|---|---|---|---|---|---|\n| **1** | 4589 | 23459 | 1 | 25689 | 5689 | 7 | 589 | 289 | 2589 |\n| **2** | 6 | 259 | 2579 | 4 | 589 | 128 | 3 | 12789 | 25789 |\n| **3** | 589 | 259 | 2579 | 2589 | 3 | 128 | 15789 | 6 | 4 |\n| **4** | 3 | 8 | 459 | 29 | 7 | 6 | 1459 | 1249 | 259 |\n| **5** | 1459 | 1459 | 459 | 289 | 489 | 248 | 145789 | 3 | 6 |\n| **6** | 2 | 7 | 469 | 389 | 1 | 5 | 489 | 489 | 89 |\n| **7** | 49 | 3469 | 3469 | 3678 | 2 | 348 | 46789 | 5 | 1 |\n| **8** | 7 | 34569 | 34569 | 1 | 4568 | 348 | 2 | 489 | 389 |\n| **9** | 145 | 123456 | 8 | 3567 | 456 | 9 | 467 | 47 | 37 |\n\n**(c) 14382 kall til backtrack(), 14300 ganger failure.** Tallene gjelder første ledige variabel (X11, X12, …), verdiene i stigende rekkefølge og konsistenssjekk før det rekursive kallet, som i koden fra oppgave 1. En annen rekkefølge gir andre tall, som kan være like riktige. Kall minus failure er alltid 82: rotkallet pluss ett kall per tilordning på den vellykte stien.\n\n**(d) Backtracking: rundt 30–100 ms. (e) AC-3 + backtracking: rundt 35–110 ms.** Tidene er fra én kjøring av koden i oppgave 1 og 2 (Python) og avhenger av maskin og implementasjon. Det viktige er forholdet mellom brettene.\n\n*Kilde: egen kjøring av AC-3 (fig. 5.3) og backtracking (fig. 5.5) på handout-filene. Løsningen er sjekket mot alle constraints, og brettet har nøyaktig én løsning. Ingen offisiell fasit.*"
+  },
+  {
+   "t": "Oppgave 7: Diskusjon",
+   "d": "**4 Deliverables** (punkt 2)\n\n(f) Brief discussion of your results. For example, explain why the AC-3 algorithm drastically decrease the total runtime when solving some Sudoku problems.",
+   "f": [
+    [
+     "(f) Diskusjon",
+     "area"
+    ]
+   ],
+   "fasit": "**(f) Diskusjon (modellsvar):** AC-3 fjerner før søket alle verdier som ikke har støtte hos en nabo. Det koster noen få millisekunder (polynomisk, O(cd³)), men hver verdi som forsvinner, fjerner et helt deltre fra det eksponentielle søket.\n\n- **Easy:** propageringen gir én verdi i hver celle. AC-3 løser brettet alene, og backtracking går rett ned uten failure (82 kall, 0 failure).\n- **Medium:** AC-3 fastsetter 56 celler, og bare 25 celler med 2–4 verdier står igjen. Søket blir lite (273 kall).\n- **Hard og very hard:** AC-3 fastsetter ingen nye celler. Arc consistency ser bare på par av celler, mens disse brettene krever resonnement over en hel rad, kolonne eller boks, for eksempel at et tall bare får plass ett sted i raden. Domenene krymper likevel, så søket blir 1 288 og 14 382 kall.\n- **Uten AC-3** prøver søket alle 9 verdiene i hver tom celle, og en konflikt med et gitt tall lenger ut i rekkefølgen oppdages sent. Med samme kode ga det rundt 3,9 millioner kall for easy, 6,2 millioner for medium og 3,1 millioner for hard (20–40 s i Python).\n\nMer kunne vært spart med MRV (cellen med færrest lovlige verdier først) og inference under søket, altså forward checking eller MAC (AC-3 etter hver tilordning).\n\nVanlig feil: å tro at AC-3 som svarer True betyr at brettet er løst. True betyr bare at ingen domener ble tomme.\n\n*Kilde: egne kjøringer (se oppgave 3–6). Ingen offisiell fasit.*"
+  }
+ ],
+ "fasit": "### Offisielt (handouten og assignment lecture 2)\n\n- `map_coloring.py`, eksempel på utskrift (én av flere gyldige løsninger):<br>`{'WA': 'red', 'NT': 'green', 'Q': 'red', 'NSW': 'green', 'V': 'red', 'SA': 'blue', 'T': 'red'}`\n- `sudoku.py`, forventet utskrift for easy-brettet (også AL2, lysbilde 19):\n\n```\nTrue\n7 8 4 | 9 3 2 | 1 5 6\n6 1 9 | 4 8 5 | 3 2 7\n2 3 5 | 1 7 6 | 4 8 9\n------+-------+------\n5 7 8 | 2 6 1 | 9 3 4\n3 4 1 | 8 9 7 | 5 6 2\n9 2 6 | 5 4 3 | 8 7 1\n------+-------+------\n4 5 3 | 7 2 9 | 6 1 8\n8 6 2 | 3 1 4 | 7 9 5\n1 9 7 | 6 5 8 | 2 4 3\n```\n\n- AL2, lysbilde 13: Select-Unassigned-Variable og Order-Domain-Values kan være hva som helst (MRV og LCV er lov), og inference (forward checking) hoppes over.\n\n### Egen kontroll (ikke offisiell)\n\nKjørt med en egen implementasjon av AC-3 (fig. 5.3) og backtracking (fig. 5.5) på handout-filene. Hver løsning er sjekket mot alle constraints og de gitte tallene, og hvert brett har nøyaktig én løsning.\n\n**(a) Løsninger**\n\nMedium:\n```\n8 7 5 | 9 3 6 | 1 4 2\n1 6 9 | 7 2 4 | 3 8 5\n2 4 3 | 8 5 1 | 6 7 9\n------+-------+------\n4 5 2 | 6 9 7 | 8 3 1\n9 8 6 | 4 1 3 | 2 5 7\n7 3 1 | 5 8 2 | 9 6 4\n------+-------+------\n5 1 7 | 3 6 9 | 4 2 8\n6 2 8 | 1 4 5 | 7 9 3\n3 9 4 | 2 7 8 | 5 1 6\n```\n\nHard:\n```\n1 5 2 | 3 4 6 | 8 9 7\n4 3 7 | 1 8 9 | 6 5 2\n6 8 9 | 5 7 2 | 3 1 4\n------+-------+------\n8 2 1 | 6 3 7 | 9 4 5\n5 4 3 | 8 9 1 | 7 2 6\n9 7 6 | 4 2 5 | 1 8 3\n------+-------+------\n7 9 8 | 2 5 3 | 4 6 1\n3 6 5 | 9 1 4 | 2 7 8\n2 1 4 | 7 6 8 | 5 3 9\n```\n\nVery hard:\n```\n4 3 1 | 8 6 7 | 9 2 5\n6 5 2 | 4 9 1 | 3 8 7\n8 9 7 | 5 3 2 | 1 6 4\n------+-------+------\n3 8 4 | 9 7 6 | 5 1 2\n5 1 9 | 2 8 4 | 7 3 6\n2 7 6 | 3 1 5 | 8 4 9\n------+-------+------\n9 4 3 | 7 2 8 | 6 5 1\n7 6 5 | 1 4 3 | 2 9 8\n1 2 8 | 6 5 9 | 4 7 3\n```\n\n**(b) Domener etter AC-3.** `ac_3()` returnerer True for alle fire brettene. På easy får alle 81 domener én verdi, altså løsningen over. På hard og very hard får ingen tomme celler én verdi (28 og 26 er akkurat de gitte tallene), men mange domener krymper. Tabellene viser domenet til hver celle (rad, kolonne):\n\n**Medium** (56 av 81 domener har én verdi):\n\n| | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |\n|---|---|---|---|---|---|---|---|---|---|\n| **1** | 258 | 257 | 57 | 9 | 3 | 6 | 15 | 4 | 25 |\n| **2** | 1 | 56 | 9 | 7 | 2 | 4 | 356 | 8 | 56 |\n| **3** | 2346 | 246 | 34 | 8 | 5 | 1 | 36 | 7 | 269 |\n| **4** | 45 | 45 | 2 | 6 | 9 | 7 | 8 | 3 | 1 |\n| **5** | 9 | 8 | 6 | 4 | 1 | 3 | 2 | 5 | 7 |\n| **6** | 7 | 3 | 1 | 5 | 8 | 2 | 9 | 6 | 4 |\n| **7** | 45 | 1 | 457 | 3 | 6 | 9 | 45 | 2 | 58 |\n| **8** | 26 | 26 | 8 | 1 | 4 | 5 | 7 | 9 | 3 |\n| **9** | 3456 | 9 | 345 | 2 | 7 | 8 | 456 | 1 | 56 |\n\n**Hard** (28 av 81 domener har én verdi):\n\n| | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |\n|---|---|---|---|---|---|---|---|---|---|\n| **1** | 1 | 3568 | 2 | 39 | 4 | 69 | 68 | 5689 | 7 |\n| **2** | 346 | 3567 | 3457 | 12379 | 8 | 1269 | 126 | 1569 | 125 |\n| **3** | 68 | 678 | 9 | 5 | 27 | 126 | 3 | 168 | 4 |\n| **4** | 38 | 1238 | 13 | 6 | 23 | 7 | 9 | 13458 | 1358 |\n| **5** | 5 | 4 | 137 | 1389 | 39 | 189 | 178 | 2 | 6 |\n| **6** | 389 | 123789 | 6 | 4 | 239 | 5 | 178 | 1378 | 138 |\n| **7** | 7 | 1569 | 8 | 29 | 259 | 3 | 4 | 16 | 12 |\n| **8** | 3469 | 3569 | 345 | 2789 | 1 | 2489 | 2678 | 3678 | 238 |\n| **9** | 2 | 13 | 134 | 78 | 6 | 48 | 5 | 1378 | 9 |\n\n**Very hard** (26 av 81 domener har én verdi):\n\n| | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |\n|---|---|---|---|---|---|---|---|---|---|\n| **1** | 4589 | 23459 | 1 | 25689 | 5689 | 7 | 589 | 289 | 2589 |\n| **2** | 6 | 259 | 2579 | 4 | 589 | 128 | 3 | 12789 | 25789 |\n| **3** | 589 | 259 | 2579 | 2589 | 3 | 128 | 15789 | 6 | 4 |\n| **4** | 3 | 8 | 459 | 29 | 7 | 6 | 1459 | 1249 | 259 |\n| **5** | 1459 | 1459 | 459 | 289 | 489 | 248 | 145789 | 3 | 6 |\n| **6** | 2 | 7 | 469 | 389 | 1 | 5 | 489 | 489 | 89 |\n| **7** | 49 | 3469 | 3469 | 3678 | 2 | 348 | 46789 | 5 | 1 |\n| **8** | 7 | 34569 | 34569 | 1 | 4568 | 348 | 2 | 489 | 389 |\n| **9** | 145 | 123456 | 8 | 3567 | 456 | 9 | 467 | 47 | 37 |\n\n\n**(c) Kall og failure** avhenger av rekkefølgen på variabler og verdier. Med første ledige variabel (X11, X12, …), verdier i stigende rekkefølge og konsistenssjekk før det rekursive kallet ble det:\n\n| Brett | Kall til backtrack() | Failure |\n|---|---|---|\n| Easy | 82 | 0 |\n| Medium | 273 | 191 |\n| Hard | 1288 | 1206 |\n| Very hard | 14382 | 14300 |\n\nAndre tall kan være like riktige. Kall minus failure er 82 her: rotkallet pluss ett kall per tilordning på den vellykte stien.\n\n**(d)–(e) Kjøretid** avhenger av maskin og implementasjon. Med tallene over tok backtracking under 1 ms for easy og medium, rundt 3 ms for hard og rundt 30 ms for very hard (Python). AC-3 tok noen få millisekunder.\n\n**(f) Diskusjonspunkter.** AC-3 fjerner verdier som ikke kan inngå i noen løsning, før søket starter. På easy sprer dette seg helt til én verdi per celle, så backtracking aldri trenger å angre. På de vanskeligere brettene er arc consistency for svak (den ser bare på par av celler), så flere celler står åpne, og antall kall vokser raskt. MRV eller inference under søket (forward checking eller MAC) ville kuttet mye av dette."
+}

@@ -1,0 +1,47 @@
+;FFMETADATA1
+title=Planlegging 2: hierarkier og en usikker verden
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=39666
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=39667
+END=149033
+title=Planlegging i lag
+[CHAPTER]
+TIMEBASE=1/1000
+START=149033
+END=256200
+title=Hierarkisk søk
+[CHAPTER]
+TIMEBASE=1/1000
+START=256200
+END=389100
+title=Uten sensorer
+[CHAPTER]
+TIMEBASE=1/1000
+START=389100
+END=445700
+title=Med sensorer
+[CHAPTER]
+TIMEBASE=1/1000
+START=445700
+END=558166
+title=Underveis
+[CHAPTER]
+TIMEBASE=1/1000
+START=558167
+END=593200
+title=Analyse av planlegging
+[CHAPTER]
+TIMEBASE=1/1000
+START=593200
+END=656600
+title=Eksamen 2025, oppgave 11
+[CHAPTER]
+TIMEBASE=1/1000
+START=656600
+END=715666
+title=Koblinger og oppsummering

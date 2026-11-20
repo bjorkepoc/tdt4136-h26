@@ -1,0 +1,42 @@
+;FFMETADATA1
+title=Logikk 1: modeller, entailment og sannhetstabeller
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=46500
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=46500
+END=135167
+title=Kunnskapsbasert agent
+[CHAPTER]
+TIMEBASE=1/1000
+START=135167
+END=248134
+title=Wumpus-hula
+[CHAPTER]
+TIMEBASE=1/1000
+START=248133
+END=467533
+title=Modeller og entailment
+[CHAPTER]
+TIMEBASE=1/1000
+START=467533
+END=623166
+title=Proposisjonslogikk
+[CHAPTER]
+TIMEBASE=1/1000
+START=623167
+END=759133
+title=Sannhetstabellen som algoritme
+[CHAPTER]
+TIMEBASE=1/1000
+START=759133
+END=865000
+title=Eksamen 2022, oppgave 5
+[CHAPTER]
+TIMEBASE=1/1000
+START=865000
+END=924700
+title=Koblinger og oppsummering

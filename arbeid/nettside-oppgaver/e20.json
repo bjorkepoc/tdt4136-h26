@@ -1,0 +1,185 @@
+{
+ "intro": "",
+ "tasks": [
+  {
+   "t": "Eksamen 2025, oppgave 12 (5 p): smoothing og parsing",
+   "d": "**12 Natural Language Processing**\n\na) Explain why smoothing is necessary in n-gram language models. In your answer, briefly describe a possible type of smoothing. (2 pts.)\n\nb) Explain the difference between top-down and bottom-up parsing strategies. In your answer, briefly describe how each strategy constructs a parser and mention one drawback of each approach. (3 pts.)",
+   "f": [
+    [
+     "a) Forklar hvorfor smoothing er nødvendig i n-gram-språkmodeller. Beskriv kort én mulig type smoothing. (2 p)",
+     "area"
+    ],
+    [
+     "b) Forklar forskjellen på top-down og bottom-up parsing. Beskriv kort hvordan hver strategi bygger en parse, og nevn én ulempe ved hver. (3 p)",
+     "area"
+    ]
+   ],
+   "fasit": "**a) Smoothing trengs fordi usette n-gram ellers får sannsynlighet 0, og da blir hele setningen 0.**\n\nTreningskorpuset inneholder aldri alle mulige n-gram. Maximum likelihood-estimatet c(forrige w)/c(forrige) gir et n-gram som ikke er sett, P = 0 når historien (forrige) er sett. Er heller ikke historien sett, blir estimatet 0/0 og udefinert. Sannsynligheten for en setning er et produkt av n-gram-sannsynlighetene, så én null gjør hele setningen umulig, selv om den er helt grei og alle ordene er kjent. Smoothing flytter litt sannsynlighetsmasse fra vanlige n-gram til sjeldne og usette, slik at ingen får 0.\n\nEksempel: **Laplace (add-one) smoothing** legger 1 til alle tellinger: P(w | forrige) = (c(forrige w) + 1)/(c(forrige) + V), der V er antall ord i vokabularet. +V under brøkstreken gjør at fordelingen fortsatt summerer til 1. Backoff (gå ned til (n − 1)-gram når tellingene er for få) og linear interpolation (λ₃P(trigram) + λ₂P(bigram) + λ₁P(unigram), Σλ = 1) er også gode svar.\n\n**b) Top-down starter i S og utvider mot ordene; bottom-up starter i ordene og bygger oppover mot S.**\n\n- **Top-down parsing** starter i startsymbolet S og bruker grammatikkreglene til å utvide det til stadig mindre konstituenter (S → NP VP, NP → Article Noun, …), ned mot ordene, og sjekker om utvidelsene passer med input. *Ulempe:* den bruker tid på utvidelser som aldri kan matche de faktiske ordene.\n- **Bottom-up parsing** starter i ordene og slår dem sammen til større konstituenter etter reglene (Article + Noun → NP, NP + VP → S) til den når S over hele setningen. *Ulempe:* den bygger delstrukturer som aldri blir del av en fullstendig parse, for eksempel S over «wumpus smells» i «the wumpus smells».\n\nBegge kan gjenta arbeid i blindveier. I bokas «Have the students in section 2 of Computer Science 101 take/taken the exam» avgjør først ord 11 om setningen er en ordre eller et spørsmål, og en feil gjetning gjør at NP-en må parses på nytt. Løsningen er en **chart parser** som lagrer hver frase over hvert spenn én gang, for eksempel CYK (bottom-up, krever Chomsky Normal Form, O(n³m)).\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 12.*"
+  },
+  {
+   "t": "Eksamen 2016, task 6a: sant eller usant (utvalg)",
+   "d": "**TASK 6: Natural Language Processing (20p)**\n\na) (6p) True or False (correct answer= 1p; wrong answer= -½p; total score will be 0-6p)\n\n*Merknad:* Fire av de seks påstandene. Eldre eksamen, skrevet etter 3. utgave av boka.",
+   "tf": [
+    "A. The purpose of smoothing is to avoid dramatic effects of low-frequency counts.",
+    "B. The bag of words model can be seen as a simple language model.",
+    "C. The task of Information Retrieval is to return the answer to a user query.",
+    "D. Information Extraction systems are often based on templates"
+   ],
+   "sjekk": {
+    "tf": [
+     "sant",
+     "sant",
+     "usant",
+     "sant"
+    ],
+    "merk": "C er usann: Information Retrieval returnerer relevante dokumenter, ikke svaret på spørringen.",
+    "kilde": "2016Q&A.docx, Task 6 a (svarene er røde listemarkører T/F i docx-fila)"
+   },
+   "fasit": "- **A. Sant.** Smoothing jevner ut estimatene, slik at n-gram med lave tellinger (0 eller 1) ikke gir ekstreme sannsynligheter, som P = 0 for en hel setning.\n- **B. Sant.** Bag-of-words er en unigram-modell: hvert ord trekkes uavhengig av de andre, og det gir en sannsynlighetsfordeling over tekster.\n- **C. Usant.** Information retrieval finner og returnerer dokumenter som er relevante for spørringen, ikke selve svaret. Å gi svaret er question answering.\n- **D. Sant.** Information extraction fyller ofte ut en template, et skjema med felt som adresse, pris eller dato, med verdier hentet fra teksten.\n\n*Kilde: løsningsforslaget til eksamen 2016, task 6a.*"
+  },
+  {
+   "t": "Eksamen 2017, problem 7 (2 p): flervalg",
+   "d": "**Problem 7** (20pts- division of points: 3-3-3-3-2-2-2-2. Minus point: -1 for each wrong answer)\n\nMultiple Choice or True/False type of tasks.\n\nh) Which of the following statements is not correct?\n\n1. The distributional hypothesis assumes that words with similar usage have similar meanings.\n2. The bag of words model ignores the grammatical structure of the language.\n3. An n-gram model is an example of a language model.\n4. Grounding means that a speaker defines the basis for a dialogue.",
+   "f": [
+    [
+     "h) Svar (nummer)",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "h) Svar (nummer)": [
+      "4"
+     ]
+    },
+    "kilde": "2017Q&A.docx, Problem 7 h"
+   },
+   "fasit": "**h) 4** er ikke riktig. Grounding er ikke noe én taler definerer alene. Det er en felles prosess i dialog der deltakerne etablerer felles forståelse (common ground), for eksempel ved at lytteren bekrefter at ytringen er forstått.\n\nDe tre andre er riktige: (1) the distributional hypothesis sier at ord som brukes i like kontekster, har lik betydning; (2) bag-of-words ser bort fra rekkefølgen og dermed fra grammatikken; (3) en n-gram-modell er en språkmodell, en sannsynlighetsfordeling over ordsekvenser.\n\n*Kilde: løsningsforslaget til eksamen 2017, problem 7 h.*"
+  },
+  {
+   "t": "Eksamen 2024, Q19: NLP",
+   "d": "**NLP**\n\nSelect only one correct statement from the below that is correct about Natural Language Processing (NLP)\n\n**Select one alternative:**\n\n- A. Named Entity Recognition (NER) in NLP is used to quantify entities' importances like names, locations, and dates in text.\n- B. NLP techniques are solely based on syntactic analysis, ignoring semantic meaning.\n- C. No matter the task, Stop Words must be removed in NLP because they do not carry significant meaning.\n- D. NLP enables computers to interpret and generate human language.\n- E. Tokenization is a technique in NLP used to transform structured data into unstructured text.\n\n*Merknad:* Poeng er ikke oppgitt i eksamen.",
+   "f": [
+    [
+     "Svar (bokstav)",
+     "text"
+    ],
+    [
+     "Hva er galt med hvert av de fire andre utsagnene?",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Svar (bokstav)": [
+      "D"
+     ]
+    },
+    "kilde": "2024Q&A.docx, Q19 – NLP"
+   },
+   "fasit": "**D.** NLP lar datamaskiner tolke og generere menneskelig språk.\n\n- **A** er feil: Named Entity Recognition finner og klassifiserer navngitte enheter (personer, steder, datoer) i tekst. Den måler ikke hvor viktige de er.\n- **B** er feil: NLP bruker både syntaks og semantikk, for eksempel word embeddings som fanger betydning.\n- **C** er feil: om stop words skal fjernes, avhenger av oppgaven. I en språkmodell, maskinoversettelse eller sentimentanalyse («not good») bærer de viktig mening.\n- **E** er feil: retningen er motsatt. Tokenization deler ustrukturert tekst i enheter (tokens, som ord og tegn), som et første steg mot strukturerte data.\n\n*Kilde: løsningsforslaget til eksamen 2024, Q19.*"
+  },
+  {
+   "t": "Regning: bigram med og uten add-one",
+   "d": "En bigram-modell er trent på korpuset fra videoen:\n\n```\n<S> the wumpus smells\n<S> the wumpus is dead\n<S> the pit is breezy\n```\n\n- Vokabularet har V = 7 ord: the, wumpus, smells, is, dead, pit, breezy.\n- `<S>` står bare først i setningen og telles ikke som neste ord.\n- Det er ikke noe sluttsymbol.\n\nBruk add-one (Laplace) smoothing der oppgaven ber om det. Svar med brøk.",
+   "f": [
+    [
+     "a) P(wumpus | the) med add-one",
+     "text"
+    ],
+    [
+     "b) P(breezy | is) med add-one",
+     "text"
+    ],
+    [
+     "c) P(<S> the wumpus is breezy) uten smoothing",
+     "text"
+    ],
+    [
+     "d) P(<S> the wumpus is breezy) med add-one",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) P(wumpus | the) med add-one": [
+      "3/10"
+     ],
+     "b) P(breezy | is) med add-one": [
+      "2/9"
+     ],
+     "c) P(<S> the wumpus is breezy) uten smoothing": [
+      "1/6",
+      "2/12"
+     ],
+     "d) P(<S> the wumpus is breezy) med add-one": [
+      "4/675",
+      "48/8100"
+     ]
+    },
+    "merk": "c) 3/3 · 2/3 · 1/2 · 1/2 = 1/6. d) 4/10 · 3/10 · 2/9 · 2/9 = 4/675.",
+    "kilde": "videoer/notater/e20-nlp.md, Fasit Øv selv 4"
+   },
+   "fasit": "**a) 3/10 · b) 2/9 · c) 1/6 · d) 4/675** (≈ 0,0059)\n\nTellinger, der c(forrige) er antall bigram som starter med ordet: c(`<S>`) = 3, c(the) = 3, c(wumpus) = 2, c(is) = 2, c(pit) = 1.\n\n| Bigram | Telling | MLE | Add-one (c + 1)/(c(forrige) + 7) |\n|---|---|---|---|\n| P(the \\| `<S>`) | 3 | 3/3 = 1 | 4/10 |\n| P(wumpus \\| the) | 2 | 2/3 | 3/10 |\n| P(is \\| wumpus) | 1 | 1/2 | 2/9 |\n| P(breezy \\| is) | 1 | 1/2 | 2/9 |\n| **Produkt** | | **1/6** | **4/675** |\n\n- a) (2 + 1)/(3 + 7) = 3/10. b) (1 + 1)/(2 + 7) = 2/9.\n- c) 1 · 2/3 · 1/2 · 1/2 = 1/6. Setningen står ikke i korpuset, men alle fire bigrammene gjør det, så MLE gir ikke 0.\n- d) 4/10 · 3/10 · 2/9 · 2/9 = 48/8100 = 4/675.\n- Add-one tar masse fra bigram som er sett: P(the | `<S>`) faller fra 1 til 4/10, og setningen får lavere sannsynlighet enn uten smoothing.\n\nVanlig feil: +1 under brøkstreken i stedet for +V. Da summerer fordelingen ikke lenger til 1.\n\n*Kilde: notatet til E20, Fasit Øv selv 4.*"
+  },
+  {
+   "t": "Regning: Viterbi på «he saw her duck»",
+   "d": "HMM-modellen fra videoen, med én endring. «he/PRP saw/VBD» er entydig, og δ(saw/VBD) = 1. «her» kan være PRP$ eller PRP, og «duck» kan være NN eller VB. P(duck | VB) er nå 0,1 (i videoen var den 0,01). Resten er likt.\n\n```\nTransition               Emission\nP(PRP$ | VBD) = 0,3      P(her | PRP$) = 0,2\nP(PRP  | VBD) = 0,4      P(her | PRP)  = 0,2\nP(NN | PRP$)  = 0,9      P(duck | NN)  = 0,02\nP(VB | PRP$)  = 0,01     P(duck | VB)  = 0,1   (endret)\nP(NN | PRP)   = 0,05\nP(VB | PRP)   = 0,3\n```\n\nKjør Viterbi. Hvilken taggsekvens vinner, og med hvilken δ?",
+   "f": [
+    [
+     "Vinnende taggsekvens",
+     "text",
+     "PRP VBD … …"
+    ],
+    [
+     "δ for beste sluttilstand",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Vinnende taggsekvens": [
+      "PRP VBD PRP VB"
+     ],
+     "δ for beste sluttilstand": [
+      "0.0024",
+      "0,0024"
+     ]
+    },
+    "merk": "duck/VB = max(0,06 · 0,01; 0,08 · 0,3) · 0,1 = 0,0024 > duck/NN = 0,00108.",
+    "kilde": "videoer/notater/e20-nlp.md, Fasit Øv selv 5"
+   },
+   "fasit": "**PRP VBD PRP VB**, med **δ = 0,0024**.\n\nδ(ord, tagg) = max over forrige tagg av [δ(forrige) · P(tagg | forrige tagg)] · P(ord | tagg), med δ(saw/VBD) = 1:\n\n| Steg | Kandidater inn | δ | Bakpeker |\n|---|---|---|---|\n| her/PRP$ | 1 · 0,3 · 0,2 | 0,06 | VBD |\n| her/PRP | 1 · 0,4 · 0,2 | 0,08 | VBD |\n| duck/NN | max(0,06 · 0,9 = **0,054**; 0,08 · 0,05 = 0,004) · 0,02 | 0,00108 | PRP$ |\n| duck/VB | max(0,06 · 0,01 = 0,0006; 0,08 · 0,3 = **0,024**) · 0,1 | **0,0024** | PRP |\n\nBeste sluttilstand er duck/VB, siden 0,0024 > 0,00108. Følg bakpekerne: VB ← PRP ← VBD ← PRP, altså PRP VBD PRP VB («her» er personlig pronomen og «duck» et verb). Med P(duck | VB) = 0,01 vant NN med 0,00108, så tidoblingen av emisjonen snur svaret.\n\nVanlig feil: grådig tagging. Den beste taggen ved hvert ord gir ikke nødvendigvis beste sekvens; her gir den tilfeldigvis samme svar.\n\n*Kilde: notatet til E20, Fasit Øv selv 5.*"
+  },
+  {
+   "t": "Regning: CYK på «the wumpus smells»",
+   "d": "Fyll CYK-chartet for «the wumpus smells» med dette utdraget av E₀:\n\n```\nS  → NP VP         [0,90]\nNP → Article Noun  [0,25]\nNP → Noun          [0,10]\nVP → Verb          [0,40]\nArticle → the      [0,40]\nNoun → wumpus      [0,15]\nVerb → smells      [0,10]\n```\n\nChomsky Normal Form tillater ikke enhetsregler som NP → Noun og VP → Verb. Slå dem sammen med ordreglene slik videoen gjør: X → Y → ord får sannsynligheten p(X → Y) · p(Y → ord).",
+   "f": [
+    [
+     "Chartet: innholdet i hver celle [i, k]",
+     "area",
+     "[1,1] the: …\n[2,2] wumpus: …\n[3,3] smells: …\n[1,2]: …\n[2,3]: …\n[1,3]: …"
+    ],
+    [
+     "Verdien til S over hele setningen",
+     "text"
+    ],
+    [
+     "Hvilke celler er blindveier?",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Verdien til S over hele setningen": [
+      "0.00054",
+      "0,00054"
+     ]
+    },
+    "merk": "S = 0,9 · NP(the wumpus) 0,015 · VP(smells) 0,04 = 0,00054.",
+    "kilde": "videoer/notater/e20-nlp.md, Fasit Øv selv 6"
+   },
+   "fasit": "**S over hele setningen = 0,00054.** **Blindvei: [2,3]**, S over «wumpus smells» (og dermed NP i [2,2], som bare brukes der).\n\nEnhetsreglene slått sammen med ordreglene: NP → wumpus = 0,10 · 0,15 = 0,015 og VP → smells = 0,40 · 0,10 = 0,04.\n\n| Celle [i,k] | Ord | Innhold |\n|---|---|---|\n| [1,1] | the | Article 0,40 |\n| [2,2] | wumpus | Noun 0,15 · NP 0,015 |\n| [3,3] | smells | Verb 0,10 · VP 0,04 |\n| [1,2] | the wumpus | NP = 0,25 · 0,40 · 0,15 = 0,015 |\n| [2,3] | wumpus smells | S = 0,90 · 0,015 · 0,04 = 0,00054 (blindvei) |\n| [1,3] | the wumpus smells | S = 0,90 · NP[1,2] 0,015 · VP[3,3] 0,04 = **0,00054** |\n\n- [1,3] har to mulige splitt. [1,1] + [2,3] gir ingenting, fordi ingen regel har Article og S på høyre side. [1,2] + [3,3] gir S → NP VP.\n- [2,3] er en blindvei: S over «wumpus smells» er grammatisk, men brukes aldri i parsen av hele setningen. CYK bygger den likevel fordi den er bottom-up.\n- At de to S-verdiene er like, er tilfeldig: NP(the wumpus) = 0,25 · 0,40 · 0,15 = 0,015 = NP(wumpus) = 0,10 · 0,15.\n- Treets sannsynlighet er produktet av alle reglene, også ordreglene: 0,90 · 0,25 · 0,40 · 0,15 · 0,40 · 0,10 = 0,00054.\n\n*Kilde: notatet til E20, Fasit Øv selv 6.*"
+  }
+ ]
+}

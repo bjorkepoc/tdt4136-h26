@@ -1,0 +1,52 @@
+;FFMETADATA1
+title=Førsteordens logikk: å si «alle» og «noen»
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=43233
+title=Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=43233
+END=122634
+title=Hvorfor holder ikke PL?
+[CHAPTER]
+TIMEBASE=1/1000
+START=122633
+END=221400
+title=Objekter, relasjoner og funksjoner
+[CHAPTER]
+TIMEBASE=1/1000
+START=221400
+END=379633
+title=Kvantorer: alle og noen
+[CHAPTER]
+TIMEBASE=1/1000
+START=379633
+END=476300
+title=Likhet og database semantics
+[CHAPTER]
+TIMEBASE=1/1000
+START=476300
+END=590834
+title=Bruke FOL: spørsmål og domener
+[CHAPTER]
+TIMEBASE=1/1000
+START=590833
+END=642467
+title=Knowledge engineering
+[CHAPTER]
+TIMEBASE=1/1000
+START=642467
+END=741333
+title=Oversettelse
+[CHAPTER]
+TIMEBASE=1/1000
+START=741333
+END=899200
+title=Eksamen: ekte oversettelser
+[CHAPTER]
+TIMEBASE=1/1000
+START=899200
+END=951867
+title=Koblinger og oppsummering

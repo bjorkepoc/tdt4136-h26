@@ -1,0 +1,153 @@
+/* Algoritmeanimasjonene og tegneverktøyet (motor.js). Fargene bygger på sidens variabler, se KONTRAKT.md. */
+.algo{--a-ak-f:#ffe5ad;--a-ak-s:#b86a00;--a-fe-f:#fde0de;--a-fe-s:#c62828}
+@media (prefers-color-scheme:dark){.algo{--a-ak-f:#4a3610;--a-ak-s:#ffb547;--a-fe-f:#3f1d1d;--a-fe-s:#ff8a80}}
+
+/* Én fargeregel per tilstand: --f fyll, --s strek, --tx tekst. Brukes av noder, kanter og forklaringen. */
+.algo .t-ny{--f:var(--surface);--s:var(--muted);--tx:var(--fg)}
+.algo .t-grense{--f:var(--accent-bg);--s:var(--accent);--tx:var(--fg)}
+.algo .t-utvidet{--f:var(--code);--s:var(--muted);--tx:var(--muted)}
+.algo .t-aktiv{--f:var(--a-ak-f);--s:var(--a-ak-s);--tx:var(--fg)}
+.algo .t-sti{--f:var(--ok-bg);--s:var(--ok);--tx:var(--fg)}
+.algo .t-mal{--f:var(--ok);--s:var(--ok);--tx:var(--surface)}
+.algo .t-beskaret{--f:var(--surface);--s:var(--muted);--tx:var(--muted)}
+.algo .t-feil{--f:var(--a-fe-f);--s:var(--a-fe-s);--tx:var(--fg)}
+
+/* Grafen */
+.algo-g{display:block;width:100%;height:auto;margin:0 auto;max-height:min(68vh,640px);font-family:inherit;-webkit-user-select:none;user-select:none}
+.algo-g .n .s{fill:var(--f);stroke:var(--s);stroke-width:1.6}
+.algo-g .n .ring{fill:none;stroke:var(--s);stroke-width:1.6}
+.algo-g .n.t-grense .s{stroke-width:2.4}
+.algo-g .n.t-aktiv .s,.algo-g .n.t-sti .s,.algo-g .n.t-aktiv .ring,.algo-g .n.t-sti .ring{stroke-width:3}
+.algo-g .n.t-beskaret .s{opacity:.5}
+.algo-g .n.t-beskaret .s{stroke-dasharray:4 3}
+.algo-g .f-sjanse .s{stroke-dasharray:5 3}
+.algo-g text{dominant-baseline:central;text-anchor:middle;paint-order:stroke;stroke:var(--surface);stroke-width:4px;stroke-linejoin:round}
+.algo-g .nt{fill:var(--tx);stroke:none;font-size:14px;font-weight:650}
+.algo-g .nt.l{font-size:11px}.algo-g .nt.xl{font-size:9px}.algo-g .nt.b{font-size:13px;font-weight:500}
+.algo-g .no{fill:var(--muted);font-size:12px}
+.algo-g .nu{fill:var(--fg);font-size:12px;font-weight:600}
+.algo-g .e .l{fill:none;stroke:var(--s);stroke-width:1.5}
+.algo-g .e .ah{fill:var(--s)}
+.algo-g .e.t-ny .l,.algo-g .e.t-ny .ah{opacity:.8}
+.algo-g .e.t-utvidet .l{stroke:var(--fg);stroke-width:2;opacity:.5}
+.algo-g .e.t-utvidet .ah{fill:var(--fg);opacity:.5}
+.algo-g .e.t-grense .l{stroke-width:2.4}
+.algo-g .e.t-aktiv .l,.algo-g .e.t-sti .l{stroke-width:3.4}
+.algo-g .e.t-beskaret :not(text){opacity:.4}
+.algo-g .e.t-beskaret .l{stroke-dasharray:5 4}
+.algo-g .e .el{fill:var(--fg);font-size:12.5px}
+.algo-g .e .hit{fill:none;stroke:transparent;stroke-width:16}
+.algo-g .st .l{stroke:var(--fg);stroke-width:1.6;fill:none}.algo-g .st .ah{fill:var(--fg)}
+.algo-g .s,.algo-g .ring,.algo-g .l,.algo-g .ah,.algo-g .n,.algo-g .e{transition:fill .35s,stroke .35s,stroke-width .35s,opacity .35s}
+
+/* Avspilleren: graf, forklaring og knapper samlet; tabellene ved siden av (bredt) eller under (smalt). */
+.algo-spiller{container:spiller/inline-size;margin:14px 0;border-radius:12px}
+.algo-spiller:focus-visible,.algo-lerret:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.algo-vis{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"g" "t" "k" "s";gap:10px}
+.algo-vis.ug{grid-template-areas:"s" "t" "k"}
+.algo-graf{grid-area:g;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 6px 6px;min-width:0;overflow-x:auto}
+.algo-tekst{grid-area:t;min-height:3.2em;padding:8px 12px;border-left:3px solid var(--accent);background:var(--accent-bg);border-radius:0 8px 8px 0;font-size:15px;line-height:1.5}
+.algo-kontroll{grid-area:k;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.algo-side{grid-area:s;min-width:0}
+@container spiller (min-width:760px){
+  .algo-vis:not(.stablet):not(.ug):not(.us){grid-template-columns:minmax(0,1.6fr) minmax(250px,1fr);grid-template-rows:auto auto 1fr;grid-template-areas:"g s" "t s" "k s";align-items:start}
+  .algo-vis:not(.stablet):not(.ug):not(.us) .algo-side{max-height:75vh;overflow:auto}
+}
+.algo-knapper{display:inline-flex;gap:4px}
+.algo-knapper button{padding:6px 9px;line-height:0}
+.algo-knapper svg{width:15px;height:15px;fill:currentColor}
+.algo-kontroll input[type=range]{flex:1 1 120px;min-width:90px;accent-color:var(--accent)}
+.algo-nr{font-size:13px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.algo-fart{font-size:13px;color:var(--muted);white-space:nowrap}
+.algo select,.algo-fart select{font:inherit;font-size:13px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--fg);max-width:100%}
+.algo-leg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted);padding:6px 4px 0}
+.algo-leg span{display:inline-flex;align-items:center;gap:5px}
+.algo-leg .sw{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--f);border:2px solid var(--s)}
+.algo-leg .sw.ring{background:transparent;border:2px solid var(--muted);box-shadow:inset 0 0 0 2px var(--surface),inset 0 0 0 3.5px var(--muted)}
+.algo-leg .sw.pil{width:auto;height:auto;border:0;border-radius:0;background:none;color:var(--fg);font-style:normal;font-weight:700}
+.algo-tab{margin:0 0 12px}
+.algo-tt{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:0 0 4px}
+.algo-tab table{margin:0;font-size:13px}
+.algo-tab td,.algo-tab th{padding:4px 8px}
+.algo-tab tr.mk td{background:var(--a-ak-f)}
+.algo-tab td.tom{color:var(--muted);font-style:italic}
+.algo-kurve{display:block;width:100%;max-width:420px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.algo-kurve polyline{fill:none;stroke:var(--accent);stroke-width:2}
+.algo-kurve circle{fill:var(--a-ak-s);stroke:var(--surface);stroke-width:1.5}
+.algo-kurve .ax{fill:none;stroke:var(--muted);stroke-width:1}
+.algo-kurve text{fill:var(--muted);font-size:11px}
+.algo-kurve .kt{fill:var(--fg);font-weight:600;font-size:12px}
+
+/* Sidene */
+.algo-sti{margin:0 0 2px}
+.algo-valg,.algo-velg,.algo-verktoy,.algo-rad{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:10px 0}
+.algo-v{display:inline-flex;align-items:center;gap:6px;font-size:14px;max-width:100%}
+.algo-v .in{width:auto;min-width:0;padding:4px 8px}
+.algo-v>select,.algo-v>.in{flex:0 1 auto;min-width:0}
+.algo-v .in.kort{width:5.5em}
+.algo-vv{display:contents}
+.algo-om{max-width:760px}
+.algo-om ul{padding-left:1.2em}
+.algo-kortliste{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.algo-kort{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--fg);text-decoration:none;line-height:1.35}
+.algo-kort:hover,.algo-kort:focus-visible{border-color:var(--accent)}
+.algo-kort .mut{font-size:13px}
+.algo-ep{font-size:12px;color:var(--accent);font-weight:600}
+.algo-sok{max-width:420px;margin:4px 0 6px}.algo [hidden]{display:none!important}
+.algo-vliste{list-style:none;margin:4px 0 0;padding:0;font-size:14px}
+.algo-vliste li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:3px 0;border-top:1px solid var(--border)}
+.algo-vliste li.treff a{color:var(--accent);font-weight:600}
+.algo-vliste a{color:var(--fg);text-decoration:none}.algo-vliste a:hover{color:var(--accent)}
+.algo-faner{display:inline-flex;flex-wrap:wrap;gap:2px;padding:3px;margin:2px 0 6px;border:1px solid var(--border);border-radius:9px;background:var(--surface)}
+.algo-faner a,.algo-faner .pa{padding:4px 12px;border-radius:6px;font-size:14px;text-decoration:none;color:var(--fg)}
+.algo-faner a:hover{background:var(--code)}.algo-faner .pa{background:var(--accent-bg);color:var(--accent);font-weight:600}
+.algo-fnote{margin:0 0 14px;font-size:14px}
+.algo-pri{font-size:11px;font-weight:600;padding:1px 7px;border-radius:999px;margin-left:4px;white-space:nowrap}
+.algo-pri.p1{background:var(--ok-bg);color:var(--ok)}
+.algo-pri.p2{background:var(--accent-bg);color:var(--accent)}
+.algo-pri.p3{border:1px solid var(--border);color:var(--muted)}
+.algo-feil{color:var(--a-fe-s)}
+
+/* Tegneverktøyet */
+.algo-gruppe{display:inline-flex}
+.algo-gruppe button:first-child{border-radius:7px 0 0 7px}
+.algo-gruppe button+button{border-radius:0 7px 7px 0;margin-left:-1px}
+.algo-grafv{display:inline-flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.algo-grafv[hidden]{display:none}
+.algo-lerret{border:1px solid var(--border);border-radius:10px;background:var(--surface);overflow-x:auto;overflow-y:hidden}
+.algo-red{max-height:none;cursor:crosshair;touch-action:manipulation}
+.algo-red .n,.algo-red .hand{cursor:grab;touch-action:none}
+.algo-red .e{cursor:pointer}
+.algo-red .valgt .s{stroke:var(--accent);stroke-width:3.5}
+.algo-red .e.valgt .l{stroke:var(--accent);stroke-width:3.5;opacity:1}
+.algo-red .e.valgt .ah{fill:var(--accent);opacity:1}
+.algo-red .hand circle{fill:var(--accent);stroke:var(--surface);stroke-width:2}
+.algo-red .hand path{stroke:var(--surface);stroke-width:2.2;fill:none}
+.algo-red .gummi{stroke:var(--accent);stroke-width:2;stroke-dasharray:6 4;pointer-events:none}
+.algo-red .tomt{fill:var(--muted);font-size:15px;stroke:none}
+.algo-insp{min-height:2.6em}
+.algo-insp .algo-rad{margin:8px 0 2px}
+.algo-hint{margin:6px 0;font-size:13px}
+.algo-hint:empty{display:none}
+.algo-insp .in[aria-invalid=true]{border-color:var(--a-fe-s)}
+.algo-sjekk{margin-top:6px}
+.algo-sjekk h3{margin:14px 0 4px}
+.algo-felt .lab{margin-top:8px}
+.algo-res{font-size:14px;margin-top:3px;min-height:0}
+.algo-res.ok{color:var(--ok);font-weight:600}
+.algo-res.nei{color:var(--a-fe-s)}
+.algo-fasit{font-size:14px;margin-top:3px;color:var(--muted)}
+.algo-json{margin-top:14px;font-size:14px}
+.algo-json summary{cursor:pointer;color:var(--muted)}
+.algo-json textarea{font-family:ui-monospace,Menlo,monospace;font-size:12px;margin-top:6px;min-height:70px}
+.algo-verk.inline{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border)}
+.algo-verk.inline h3{font-size:15px}
+.algo-verk.inline .algo-tekst{font-size:14px}
+.algo button:disabled{opacity:.45;cursor:default}
+.algo button:focus-visible,.algo select:focus-visible,.algo input:focus-visible,.algo-kort:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+@media (prefers-reduced-motion:reduce){.algo *{transition:none!important}}
+.algo-fig{margin:12px 0}
+
+/* Sammenligning av algoritmer på samme tegning */
+.algo-sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:14px;margin-top:10px}.algo-sgrid h4{margin:0 0 6px}.algo-samm .algo-tab{margin:10px 0;overflow-x:auto}

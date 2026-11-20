@@ -1,0 +1,600 @@
+1
+00:00:00,450 --> 00:00:06,370
+En agent står i en mørk hule. Der den starter, kjenner den ingenting. Den går
+
+2
+00:00:06,370 --> 00:00:13,970
+ett steg østover, til to-en, og kjenner trekk. Trekk betyr en grop i en naborute.
+
+3
+00:00:13,970 --> 00:00:20,130
+Er det grop i to-to? Det kan den ikke vite. Men rute en-to har den aldri sett,
+
+4
+00:00:20,130 --> 00:00:24,770
+og likevel kan den bevise at den er trygg. Den gjør det ved å telle mulige
+
+5
+00:00:24,770 --> 00:00:25,570
+verdener.
+
+6
+00:00:26,783 --> 00:00:31,423
+Etter episoden kan du avgjøre om noe følger logisk av det du vet, med en
+
+7
+00:00:31,423 --> 00:00:38,383
+sannhetstabell, slik eksamen spør. Fire stopp: agenten som lagrer kunnskap, hva
+
+8
+00:00:38,383 --> 00:00:43,663
+det betyr at noe følger, reglene i proposisjonslogikk, og en algoritme som
+
+9
+00:00:43,663 --> 00:00:45,583
+teller verdener for deg.
+
+10
+00:00:46,950 --> 00:00:50,790
+Hvordan lagrer en agent det den vet, og hvordan spør den?
+
+11
+00:00:52,550 --> 00:00:59,910
+Agenten har en kunnskapsbase, KB: setninger den regner som sanne. TELL legger
+
+12
+00:00:59,910 --> 00:01:05,830
+til en setning. ASK spør om noe følger av det som står der. Eksempelet fra
+
+13
+00:01:05,830 --> 00:01:12,310
+forelesning fem: KB inneholder bare «det regner». Spør du om det regner eller
+
+14
+00:01:12,310 --> 00:01:19,070
+blåser, svarer den ja. Om det ikke regner: nei. Om det blåser: vet ikke. Den
+
+15
+00:01:19,070 --> 00:01:20,310
+gjetter ikke.
+
+16
+00:01:21,583 --> 00:01:27,983
+Hele agenten er få linjer i boka. Først forteller den KB hva den sanser. Så spør
+
+17
+00:01:27,983 --> 00:01:33,543
+den KB hva den bør gjøre. Det er her resonneringen skjer. Så forteller den KB
+
+18
+00:01:33,543 --> 00:01:37,903
+hvilken handling den valgte, og telleren t går ett steg fram.
+
+19
+00:01:39,283 --> 00:01:44,483
+Ingen linje sier «gå nord hvis det ikke trekker». Du forteller agenten hvordan
+
+20
+00:01:44,483 --> 00:01:49,283
+verden er, og den finner selv ut hva den skal gjøre. Det er den deklarative
+
+21
+00:01:49,283 --> 00:01:55,043
+tilnærmingen. Å skrive oppførselen rett inn som kode er den prosedyrale. Gode
+
+22
+00:01:55,043 --> 00:01:56,963
+agenter blander begge.
+
+23
+00:01:58,250 --> 00:02:05,250
+Din tur. KB inneholder bare «det regner». Hva svarer ASK på «det regner og det
+
+24
+00:02:05,250 --> 00:02:10,410
+blåser»?
+
+25
+00:02:10,410 --> 00:02:14,330
+Vet ikke. Regnet er kjent, vinden er det ikke.
+
+26
+00:02:15,617 --> 00:02:19,457
+Hvordan ser en verden ut der agenten må tenke seg fram?
+
+27
+00:02:21,217 --> 00:02:26,977
+Boka bruker én verden gjennom hele kapittelet. Seksjon sju punkt to ble ikke
+
+28
+00:02:26,977 --> 00:02:33,297
+forelest, men er pensum. Fire ganger fire ruter. Et sted bor wumpusen, som
+
+29
+00:02:33,297 --> 00:02:39,617
+spiser deg. Noen ruter har groper, og et sted ligger gull. Agenten sanser bare
+
+30
+00:02:39,617 --> 00:02:45,777
+det som er nær: lukt ved wumpusen, trekk ved en grop, glitter der gullet ligger.
+
+31
+00:02:47,050 --> 00:02:53,530
+Som PEAS fra kapittel to: Pluss tusen for å klatre ut med gullet, minus tusen
+
+32
+00:02:53,530 --> 00:03:00,610
+for å dø, minus én per handling. Agenten kan gå fram, snu, gripe, skyte og
+
+33
+00:03:00,610 --> 00:03:07,690
+klatre. Sensorene gir fem biter. Verden er deterministisk og statisk, men delvis
+
+34
+00:03:07,690 --> 00:03:11,210
+observerbar. Derfor må agenten resonnere.
+
+35
+00:03:12,583 --> 00:03:19,303
+Se agenten tenke. I start kjenner den ingenting, så begge naborutene er trygge.
+
+36
+00:03:19,303 --> 00:03:26,103
+I to-en kjenner den trekk. Gropa er i to-to eller tre-en, eller begge. Eneste
+
+37
+00:03:26,103 --> 00:03:32,663
+trygge ubesøkte rute er en-to, så den går dit. Der lukter det, men trekker ikke.
+
+38
+00:03:32,663 --> 00:03:39,063
+Wumpusen kan ikke være i to-to, for da hadde det luktet i to-en. Den er i en-tre.
+
+39
+00:03:39,063 --> 00:03:45,503
+Ingen trekk betyr ingen grop i to-to, så gropa er i tre-en. Nå er to-to trygg,
+
+40
+00:03:45,503 --> 00:03:48,663
+og via den når agenten gullet i to-tre.
+
+41
+00:03:50,017 --> 00:03:56,217
+Din tur. I start kjenner agenten lukt, men ikke trekk. Hvilke ruter er garantert
+
+42
+00:03:56,217 --> 00:04:01,577
+uten grop?
+
+43
+00:04:01,577 --> 00:04:07,217
+Både en-to og to-en. Lukten sier noe om wumpusen, ikke om groper.
+
+44
+00:04:08,583 --> 00:04:12,183
+Hva betyr det egentlig at noe følger logisk?
+
+45
+00:04:13,950 --> 00:04:20,790
+To ord først. Syntaks sier hva som er lov å skrive: x pluss y er lik fire er en
+
+46
+00:04:20,790 --> 00:04:27,017
+setning, rotet ved siden av er det ikke. Semantikk sier når en setning er sann.
+
+47
+00:04:27,017 --> 00:04:32,750
+Den er sann i en verden der x og y er to, og usann der begge er én. I hver
+
+48
+00:04:32,750 --> 00:04:35,950
+verden er en setning enten sann eller usann.
+
+49
+00:04:37,250 --> 00:04:42,730
+En slik mulig verden kalles en modell. I proposisjonslogikk er det et valg av
+
+50
+00:04:42,730 --> 00:04:48,370
+sann eller usann for hvert symbol. Med Rain og Wind blir det fire modeller. Er
+
+51
+00:04:48,370 --> 00:04:55,170
+alfa sann i modellen m, sier vi at m satisfies alfa. M av alfa er alle modeller
+
+52
+00:04:55,170 --> 00:05:01,250
+som gjør alfa sann. M av Rain er to modeller, M av Rain eller Wind er tre.
+
+53
+00:05:02,550 --> 00:05:09,110
+Nå definisjonen. Alfa entails beta hvis beta er sann i hver modell der alfa er
+
+54
+00:05:09,110 --> 00:05:16,230
+sann. Med mengder: M av alfa er en delmengde av M av beta. Rain entails Rain
+
+55
+00:05:16,230 --> 00:05:20,950
+eller Wind, fordi de to regnmodellene ligger inni de tre. Tegnet med dobbel
+
+56
+00:05:20,950 --> 00:05:25,590
+strek står ikke inni en setning. Det er en påstand om to setninger.
+
+57
+00:05:26,950 --> 00:05:33,590
+Tilbake til hula, etter trekket i to-en. Agenten lurer på tre ruter: en-to,
+
+58
+00:05:33,590 --> 00:05:41,670
+to-to og tre-en. Grop eller ikke i hver gir åtte modeller. Ingen trekk i en-en?
+
+59
+00:05:41,670 --> 00:05:48,390
+Da forsvinner alle modeller med grop i en-to. Fire igjen. Trekk i to-en? Da
+
+60
+00:05:48,390 --> 00:05:53,910
+forsvinner modellen uten groper. Tre igjen. Det er M av KB.
+
+61
+00:05:55,283 --> 00:06:01,283
+Alfa én: ingen grop i en-to. Den er sann i fire modeller, og alle tre
+
+62
+00:06:01,283 --> 00:06:10,203
+KB-modellene ligger inni. Altså KB entails alfa én. Alfa to: ingen grop i to-to.
+
+63
+00:06:10,203 --> 00:06:17,203
+Også fire modeller, men to KB-modeller stikker utenfor. KB entails ikke alfa to.
+
+64
+00:06:17,203 --> 00:06:19,443
+Agenten vet ikke om det er grop der.
+
+65
+00:06:20,817 --> 00:06:26,817
+Se på tallene. Uten kunnskap er åtte verdener mulige. Hver ny setning streker ut
+
+66
+00:06:26,817 --> 00:06:32,977
+noen. En sterkere setning sier mer og har færre modeller. Derfor står KB på den
+
+67
+00:06:32,977 --> 00:06:38,617
+lille siden: tre inni fire. Fella på eksamen er å snu retningen. Den lille
+
+68
+00:06:38,617 --> 00:06:41,937
+mengden entails den store, ikke omvendt.
+
+69
+00:06:43,317 --> 00:06:49,877
+Å gå gjennom alle modellene slik heter model checking. Boka har et bilde: alt
+
+70
+00:06:49,877 --> 00:06:55,957
+som følger av KB er en høystakk, og alfa er en nål. Entailment er at nåla ligger
+
+71
+00:06:55,957 --> 00:07:01,877
+der. Inferens er å finne den. Algoritmen er sound hvis den bare finner nåler som
+
+72
+00:07:01,877 --> 00:07:07,397
+ligger der. Den er complete hvis den finner hver nål. Model checking er begge,
+
+73
+00:07:07,397 --> 00:07:09,797
+når modellene er endelig mange.
+
+74
+00:07:11,150 --> 00:07:18,110
+Til slutt: hvordan vet vi at KB stemmer med hula? Det heter grounding. Svaret er
+
+75
+00:07:18,110 --> 00:07:23,950
+sensorene: lukter det, lager agenten en setning om lukt. Generelle regler kommer
+
+76
+00:07:23,950 --> 00:07:26,270
+fra læring, som kan ta feil.
+
+77
+00:07:27,650 --> 00:07:39,730
+Din tur. KB er sann i to modeller, alfa i de samme to og én til. Hva gjelder?
+
+78
+00:07:39,730 --> 00:07:45,730
+KB entails alfa. Den andre veien holder ikke, for alfa har en modell der KB er
+
+79
+00:07:45,730 --> 00:07:46,610
+usann.
+
+80
+00:07:47,983 --> 00:07:51,343
+Hvilke setninger kan vi skrive, og når er de sanne?
+
+81
+00:07:53,117 --> 00:08:00,397
+En atomær setning er ett symbol, som P en-to: grop i en-to. Tallene er en del av
+
+82
+00:08:00,397 --> 00:08:07,437
+navnet. Sammensatte setninger bygges med fem konnektiver: ikke, og, eller,
+
+83
+00:08:07,437 --> 00:08:14,664
+impliserer, og hvis og bare hvis. Grammatikken står i BNF. Uten parenteser
+
+84
+00:08:14,664 --> 00:08:22,357
+binder ikke sterkest, så og, eller, impliserer og hvis og bare hvis. Ikke A og B
+
+85
+00:08:22,357 --> 00:08:25,357
+betyr altså ikke-A, og så B.
+
+86
+00:08:26,717 --> 00:08:34,157
+Semantikken er en tabell. Ikke snur verdien. Og er sann bare når begge er sanne.
+
+87
+00:08:34,157 --> 00:08:40,277
+Eller er sann når minst én er det, også begge. Hvis og bare hvis er sann når de
+
+88
+00:08:40,277 --> 00:08:44,557
+er like. Én kolonne igjen, og den forvirrer alle.
+
+89
+00:08:45,850 --> 00:08:53,050
+P impliserer Q er usann i bare én rad: P sann og Q usann. Tenk på det som et
+
+90
+00:08:53,050 --> 00:08:59,530
+løfte: «Hvis det regner, tar jeg paraply.» Regn og paraply: løftet holdt. Regn
+
+91
+00:08:59,530 --> 00:09:04,650
+uten paraply: brutt. Men uten regn har jeg ikke lovet noe, så løftet er ikke
+
+92
+00:09:04,650 --> 00:09:11,610
+brutt. Sant. Derfor er usann impliserer hva som helst alltid sant. «Fem er et
+
+93
+00:09:11,610 --> 00:09:16,090
+partall impliserer at Sam er smart» er sant, uansett Sam.
+
+94
+00:09:17,450 --> 00:09:22,490
+Det er forvirrende første gang, og det er navnet sin skyld. Impliserer høres ut
+
+95
+00:09:22,490 --> 00:09:28,210
+som årsak, men logikken krever ingen sammenheng. Hvis og bare hvis er
+
+96
+00:09:28,210 --> 00:09:34,650
+implikasjon begge veier. Trekk i en-en hvis og bare hvis grop i en-to eller
+
+97
+00:09:34,650 --> 00:09:38,570
+to-en: grop gir trekk, og trekk krever grop.
+
+98
+00:09:39,950 --> 00:09:46,190
+Så den største fella. Impliserer står inni en setning, og er sann eller usann i
+
+99
+00:09:46,190 --> 00:09:53,470
+én modell. Entails er en påstand om alle modeller. Koblingen: alfa entails beta
+
+100
+00:09:53,470 --> 00:10:00,110
+nøyaktig når alfa impliserer beta er sann i hver modell. Derfor sier A4: bytt
+
+101
+00:10:00,110 --> 00:10:04,430
+entails med impliserer, og se om kolonnen er sann i hver rad.
+
+102
+00:10:05,783 --> 00:10:16,223
+Din tur. P er usann og Q er sann. Hvilken setning er usann?
+
+103
+00:10:16,223 --> 00:10:22,263
+Q impliserer P. Sann premiss og usann konklusjon er den eneste raden som bryter.
+
+104
+00:10:23,617 --> 00:10:26,577
+Hvordan kan en maskin sjekke alle verdener?
+
+105
+00:10:28,350 --> 00:10:34,590
+Nå skriver vi det agenten vet som proposisjonslogikk. Også dette er bare i boka.
+
+106
+00:10:34,590 --> 00:10:42,830
+R én: ingen grop i en-en. R to og R tre: en rute har trekk hvis og bare hvis en
+
+107
+00:10:42,830 --> 00:10:52,110
+nabo har grop. R fire: ingen trekk i en-en. R fem: trekk i to-en. Sju symboler
+
+108
+00:10:52,110 --> 00:10:56,110
+gir to i sjuende, altså hundre og tjueåtte modeller.
+
+109
+00:10:57,483 --> 00:11:03,923
+Den heter T T entails. Den gir første symbol verdien sann og usann, og går
+
+110
+00:11:03,923 --> 00:11:09,883
+videre i begge grener, som backtracking i CSP. Når alle symbolene har en verdi,
+
+111
+00:11:09,883 --> 00:11:17,203
+har den en modell. Er KB usann der, er raden uinteressant, og grenen sier ja. Er
+
+112
+00:11:17,203 --> 00:11:20,523
+KB sann, må alfa også være sann.
+
+113
+00:11:21,883 --> 00:11:27,563
+Se den gå gjennom tabellen, én modell per rad. Nesten alle rader faller med en
+
+114
+00:11:27,563 --> 00:11:35,323
+gang: minst én av R én til R fem er usann. Her er KB sann for første gang. Er
+
+115
+00:11:35,323 --> 00:11:43,323
+det grop i en-to? Nei. Neste rad: KB sann igjen, og ingen grop. Den tredje:
+
+116
+00:11:43,323 --> 00:11:49,883
+samme svar. Etter alle hundre og tjueåtte er KB sann i tre rader, alle med en-to
+
+117
+00:11:49,883 --> 00:11:53,483
+fri. KB entails at det ikke er grop der.
+
+118
+00:11:54,850 --> 00:11:59,930
+Algoritmen er sound, for den følger definisjonen, og complete, for den sjekker
+
+119
+00:11:59,930 --> 00:12:06,210
+alle modellene, og de er endelig mange. Men n symboler gir to i n-te rader.
+
+120
+00:12:06,210 --> 00:12:11,730
+Hundre symboler gir et tall med trettien sifre. Minnet er bare O av n, fordi den
+
+121
+00:12:11,730 --> 00:12:16,370
+går dybde først. Raskere metoder kommer i episode tolv og tretten.
+
+122
+00:12:17,650 --> 00:12:23,730
+Din tur. Du vil vise at alfa entails beta med en sannhetstabell. Hvilke rader
+
+123
+00:12:23,730 --> 00:12:29,050
+sjekker du?
+
+124
+00:12:29,050 --> 00:12:35,010
+Radene der alfa er sann. Der må beta også være sann. Like kolonner i alle rader
+
+125
+00:12:35,010 --> 00:12:38,210
+er ekvivalens: entailment begge veier.
+
+126
+00:12:39,583 --> 00:12:41,823
+Hvordan ser dette ut på eksamen?
+
+127
+00:12:43,583 --> 00:12:51,903
+Eksamen tjue tjueto, oppgave fem. Tre bokser, gull i én. Boks én: gullet er ikke
+
+128
+00:12:51,903 --> 00:13:00,063
+her. Boks to: gullet er ikke her. Boks tre: gullet er i boks to. Bare én beskjed
+
+129
+00:13:00,063 --> 00:13:07,343
+er sann. Hvor er gullet? Bruk B én til B tre, skriv setningene og lag tabellen.
+
+130
+00:13:07,343 --> 00:13:17,023
+Sett gjerne på pause.
+
+131
+00:13:18,317 --> 00:13:25,597
+Fasiten lager to setninger. S én: nøyaktig én boks har gull. Uten kvantorer
+
+132
+00:13:25,597 --> 00:13:31,837
+skriver du alle tre tilfellene, med eller mellom. Beskjedene er ikke B én, ikke
+
+133
+00:13:31,837 --> 00:13:39,357
+B to, og B to. S to: nøyaktig én beskjed er sann, igjen tre tilfeller. Forenklet
+
+134
+00:13:39,357 --> 00:13:42,717
+er S to sann bare når B én er sann.
+
+135
+00:13:44,017 --> 00:13:51,617
+Så tabellen, i fasitens rekkefølge. S én er sann i tre rader. S to i de fire der
+
+136
+00:13:51,617 --> 00:13:59,137
+B én er sann. KB er begge, og bare én rad overlever: B én sann, de to andre
+
+137
+00:13:59,137 --> 00:14:07,177
+usanne. I den eneste KB-modellen er gullet i boks én. Altså KB entails B én.
+
+138
+00:14:07,177 --> 00:14:10,257
+Kontroll: der er bare beskjed to sann.
+
+139
+00:14:11,617 --> 00:14:17,377
+Fasiten gjør fire ting: forklarer symbolene, skriver setningene, viser hele
+
+140
+00:14:17,377 --> 00:14:24,097
+tabellen og peker på raden. Del tre, bevis ved motsigelse, tar episode tolv.
+
+141
+00:14:25,450 --> 00:14:27,050
+Hvor dukker dette opp igjen?
+
+142
+00:14:28,817 --> 00:14:36,177
+PEAS er kapittel to, episode én. M av KB, alle verdener agenten kan være i,
+
+143
+00:14:36,177 --> 00:14:43,164
+minner om en belief state, episode fem. T T entails er backtracking, som i CSP,
+
+144
+00:14:43,164 --> 00:14:48,337
+kapittel fem, seks i den amerikanske, episode sju. Resolution kommer i episode
+
+145
+00:14:48,337 --> 00:14:54,017
+tolv, DPLL og WalkSAT i tretten, og førsteordens logikk i fjorten.
+
+146
+00:14:55,317 --> 00:15:02,837
+Hele kjeden: Agenten lagrer setninger i en KB. En modell er en mulig verden. KB
+
+147
+00:15:02,837 --> 00:15:09,037
+entails alfa når alfa er sann i hver modell der KB er sann. Tabellen sjekker det
+
+148
+00:15:09,037 --> 00:15:14,837
+rad for rad, to i n-te rader. Og en-to er trygg fordi alle de tre verdenene som
+
+149
+00:15:14,837 --> 00:15:20,917
+er igjen, sier det. Hvis du bare husker én ting: entailment er delmengde. Alle
+
+150
+00:15:20,917 --> 00:15:23,877
+verdenene KB tillater, gjør alfa sann.
+
