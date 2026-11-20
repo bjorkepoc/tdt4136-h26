@@ -62,7 +62,7 @@ details.fasit summary{cursor:pointer;font-weight:600}
 .maks{color:var(--muted);font-size:14px;margin:18px 0 8px}
 .alt label{display:flex;gap:10px;align-items:flex-start;padding:8px 12px;border:1px solid var(--border);border-radius:8px;margin:6px 0;cursor:pointer}
 .alt label:has(:checked){border-color:var(--accent);background:var(--accent-bg)}.alt input{margin-top:4px}
-.eks:not(.levert) :is(.sj,.vb,.rb,.sjm,.fb,.vk,.tfasit,.etter),.eks.levert #lever{display:none}
+.eks:not(.levert) :is(.sj,.rb,.sjm,.fb,.tfasit,.etter),.eks.levert #lever{display:none}
 .eks-nav button{min-width:36px;padding:5px 8px}.eks-nav button.ok{background:var(--accent-bg);border-color:var(--accent)}
 .eks-nav button[aria-current]{outline:2px solid var(--accent);outline-offset:1px;font-weight:700}
 .task h3{margin:0 0 6px}
@@ -320,7 +320,7 @@ navigator.clipboard?navigator.clipboard.writeText(s).then(ok,fb):fb()};if(pv)eks
 // Sjekk, fasit og retting skjules til settet er levert.
 const PT=4*3600e3;let tt;
 function prove(e){const n=e.tasks.length,b=(k,l)=>`<button type="button" data-k="${k}">${l}</button>`;
-return `<div class="eks"><div class="eks-top"><b>TDT4136 · ${e.ep} ${esc(e.title)}</b><span id="tid"></span><button type="button" id="lever">Lever</button></div>
+return `<div class="eks"><div class="eks-top"><b>TDT4136 · ${e.ep} ${esc(e.title)}</b><span id="tid"></span><button type="button" id="leksE">Leksikon</button><button type="button" id="lever">Lever</button></div>
 <section class="eks-s" id="s0">${e.note}${e.intro}<p><button type="button" class="pri" id="startp"></button></p></section>
 <div id="tasks">${e.tasks.map((t,j)=>`<section class="eks-s" id="s${j+1}">${task(e,t,j)}</section>`).join("")}</div>
 <section class="eks-s" id="s${n+1}"><h3>Formula sheet</h3><img class="fig" src="nettside-figurer/e14-2025-formelark.svg" alt="Formelarket fra eksamen 2025"></section>
@@ -342,6 +342,7 @@ const lev=()=>{X.classList.toggle("levert",!!p.levert);if(p.levert)e.tasks.forEa
 X.querySelector(".eks-nav").onclick=x=>{const b=x.target.closest("button");if(b){const d=b.dataset.k;vis(d==="-"?p.k-1:d==="+"?p.k+1:+d)}};
 X.addEventListener("input",merk);X.addEventListener("click",merk);
 $("#startp").onclick=()=>{if(!p.start)p.start=Date.now();lev();vis(1)};
+$("#leksE").onclick=()=>$("#leksknapp").click();
 $("#lever").onclick=()=>{if(confirm("Levere nå? Da kan du sjekke svarene, se fasit og sende alt til retting.")){p.levert=Date.now();save();lev()}};
 clearInterval(tt);tt=setInterval(tick,1000);lev();vis(p.k)}
 
@@ -367,6 +368,7 @@ function route(){
 const h=location.hash.slice(1)||"hjem",e=D.eps.find(x=>x.id===h)||D.ov.find(x=>x.id===h);
 if(rec)rec.stop();
 const A=window.ALGO,[h0,h1]=h.split("/");
+$("#leksknapp").hidden=!!e&&e.grp==="Prøveeksamener"; // der ligger knappen i toppfeltet, så den ikke dekker «Lever»
 if(e){S.last=e.id;save();episode(e)}else if(h0==="algoritmer"&&A&&A.side){$("#main").className="wide";A.side($("#main"),h1)}else if(h==="verksted"&&A&&A.verksted){$("#main").className="wide";A.verksted($("#main"))}else if(h==="leksikon"){page("");leks($("#main")).focus()}else if(h==="feller")page(D.feller);else if(h==="feillogg")page(D.feil);else if(h==="eksamener")page(D.exams);else home();
 nav();visDeler();scrollTo(0,0)}
 addEventListener("hashchange",route);
