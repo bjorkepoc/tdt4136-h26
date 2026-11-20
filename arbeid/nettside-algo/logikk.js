@@ -3,7 +3,6 @@
 (() => {
   const ALGO = window.ALGO;
   const nat = (a, b) => String(a).localeCompare(String(b), "nb", { numeric: true });
-  const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const liste = a => (a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " og " + a[a.length - 1]);
   const TF = b => (b ? "T" : "F");
   const tall = x => String(x).replace(".", ",");
@@ -112,17 +111,17 @@
     data.setninger.forEach((s, nr) => {
       const f0 = lesPL(s), sn = data.setninger.length > 1 ? `Setning ${nr + 1}` : "Setningen";
       linjer.push([String(linjer.length + 1), String(nr + 1), "start", "–", vis(f0)]);
-      scener.push({ tekst: `${sn}: <b>${esc(vis(f0))}</b>. Stegene er ⇔ ut, ⇒ ut, ¬ inn og ∨ over ∧, i den rekkefølgen.${nr === 0 && data.tekst ? " " + data.tekst : ""}`, graf: formGraf(f0), tabeller: [tab()] });
+      scener.push({ tekst: `${sn}: <b>${vis(f0)}</b>. Stegene er ⇔ ut, ⇒ ut, ¬ inn og ∨ over ∧, i den rekkefølgen.${nr === 0 && data.tekst ? " " + data.tekst : ""}`, graf: formGraf(f0), tabeller: [tab()] });
       const { steg, f } = tilCNF(f0);
       steg.forEach(st => {
         if (!st.navn) { linjer.push([String(linjer.length + 1), String(nr + 1), st.fase, "ingen endring", vis(st.f)]); return; }
         linjer.push([String(linjer.length + 1), String(nr + 1), st.fase, st.navn, vis(st.f)]);
-        scener.push({ tekst: `${st.fase}: ${st.navn} på den markerte delen gir <b>${esc(vis(st.f))}</b>.`, graf: formGraf(st.f, st.sti), tabeller: [tab()] });
+        scener.push({ tekst: `${st.fase}: ${st.navn} på den markerte delen gir <b>${vis(st.f)}</b>.`, graf: formGraf(st.f, st.sti), tabeller: [tab()] });
       });
       const { ut, tautologier } = klausuler(f);
       alle.push(...ut);
       scener.push({
-        tekst: `${sn} er i CNF. Den gir ${ut.length} klausul${ut.length === 1 ? "" : "er"}: ${esc(ut.map(kTekst).join(" · ")) || "ingen"}.${tautologier.length ? ` Strøk ${tautologier.length} tautologi${tautologier.length === 1 ? "" : "er"} (${esc(tautologier.map(kTekst).join(" · "))}), som alltid er sanne.` : ""}`,
+        tekst: `${sn} er i CNF. Den gir ${ut.length} klausul${ut.length === 1 ? "" : "er"}: ${ut.map(kTekst).join(" · ") || "ingen"}.${tautologier.length ? ` Strøk ${tautologier.length} tautologi${tautologier.length === 1 ? "" : "er"} (${tautologier.map(kTekst).join(" · ")}), som alltid er sanne.` : ""}`,
         graf: formGraf(f), tabeller: [tab(), { tittel: "Klausuler", kol: ["Nr", "Klausul"], rader: alle.map((k, i) => [String(i + 1), kTekst(k)]), marker: ut.map((_, i) => alle.length - ut.length + i) }]
       });
     });
@@ -180,7 +179,7 @@
     const tre = liten && n ? ALGO.tre(rot(0, "")) : null;
     const merke = r => (!r.K ? ["–", "beskaret"] : r.a ? ["✓", "mal"] : ["✗", "feil"]);
     const scener = [];
-    const intro = `${data.tekst ? data.tekst + " " : ""}KB = ${esc(navn.map((x, k) => (data.navn ? `${x}: ${vis(kb[k])}` : x)).join(" · ") || "{}")}, α = ${esc(vis(α))}. ${n} symboler gir 2<sup>${n}</sup> = ${N} rader; true prøves før false.`;
+    const intro = `${data.tekst ? data.tekst + " " : ""}KB = ${navn.map((x, k) => (data.navn ? `${x}: ${vis(kb[k])}` : x)).join(" · ") || "{}"}, α = ${vis(α)}. ${n} symboler gir 2<sup>${n}</sup> = ${N} rader; true prøves før false.`;
     const graf = (til, aktiv) => {
       if (!tre) return undefined;
       const g = ALGO.kopi(tre), sett = rader.slice(0, til);
@@ -208,7 +207,7 @@
         t = `Rad ${del[0].nr}–${del[del.length - 1].nr} (${faste}): KB er sann i ${k.length} av ${del.length} rader${k.some(r => !r.a) ? ", og i minst én av dem er α usann" : ""}. Tabellen viser bare radene der KB er sann.`;
       }
       scener.push({
-        tekst: esc(t).replace(/&lt;(\/?b)&gt;/g, "<$1>"),
+        tekst: t,
         graf: graf(fra + del.length, liten ? del[0] : null),
         tabeller: [{ tittel: "Sannhetstabell", kol, rader: vist.map(radTekst), marker: vist.map((r, i) => (r.K ? i : -1)).filter(i => i >= 0) }]
       });
@@ -218,7 +217,7 @@
     scener.push({
       tekst: !kbRader.length ? "KB er usann i alle rader (unsatisfiable), så KB ⊨ α for enhver α."
         : følger ? `KB er sann i ${kbRader.length} rad${kbRader.length === 1 ? "" : "er"} (${kbRader.map(r => r.nr).join(", ")}), og α er sann i alle: <b>KB ⊨ α</b>.`
-          : `I rad ${mot.nr} er KB sann og α usann (${esc(S.map(s => `${s} = ${TF(mot.m[s])}`).join(", "))}): <b>KB ⊭ α</b>.`,
+          : `I rad ${mot.nr} er KB sann og α usann (${S.map(s => `${s} = ${TF(mot.m[s])}`).join(", ")}): <b>KB ⊭ α</b>.`,
       graf: graf(N, null),
       tabeller: [{ tittel: "Radene der KB er sann", kol, rader: kbRader.map(radTekst), marker: kbRader.map((r, i) => (r.a ? -1 : i)).filter(i => i >= 0) }]
     });
@@ -303,9 +302,9 @@
     strøk.push(...rn.tautologier);
     rn.ut.forEach(l => legg(l, "¬α"));
     K.forEach((k, i) => { k.nr = "C" + (i + 1); });
-    const hendelser = [{ synlige: K.length, tekst: `${data.tekst ? data.tekst + " " : ""}KB ∧ ¬α i CNF gir ${K.length} klausuler. Negert mål: ${esc(vis(negert))}.${strøk.length ? ` Strøk ${strøk.length} tautologi${strøk.length === 1 ? "" : "er"} fra CNF-en.` : ""}` }];
-    let runde = 0, tom = null, stoppet = false;
-    while (!tom && !stoppet) {
+    const hendelser = [{ synlige: K.length, tekst: `${data.tekst ? data.tekst + " " : ""}KB ∧ ¬α i CNF gir ${K.length} klausuler. Negert mål: ${vis(negert)}.${strøk.length ? ` Strøk ${strøk.length} tautologi${strøk.length === 1 ? "" : "er"} fra CNF-en.` : ""}` }];
+    let runde = 0, tom = null;
+    while (!tom) {
       runde++;
       const N = K.length, ny = [];
       for (let j = 1; j < N && !tom; j++) for (let i = 0; i < j && !tom; i++) {
@@ -320,15 +319,12 @@
           K.push(k);
           hendelser.push({
             synlige: K.length, ny: K.length - 1,
-            tekst: `Runde ${runde}: ${K[i].nr} og ${K[j].nr} har ${esc(symb(l))} med motsatt fortegn. ${r.length ? `Resolventen er ${k.nr}: <b>${esc(k.tekst)}</b>.` : "Resolventen er den tomme klausulen <b>□</b>."}`
+            tekst: `Runde ${runde}: ${K[i].nr} og ${K[j].nr} har ${symb(l)} med motsatt fortegn. ${r.length ? `Resolventen er ${k.nr}: <b>${k.tekst}</b>.` : "Resolventen er den tomme klausulen <b>□</b>."}`
           });
           if (!r.length) { tom = K.length - 1; break; }
-          if (K.length > 60) { stoppet = true; break; }
         }
-        if (stoppet) break;
       }
       if (!ny.length) break;
-      if (runde >= 6 && !tom) stoppet = true;
     }
     const pos = plasser(K), scener = [];
     const bevis = tom != null ? bevisSett(K, tom) : null;
@@ -344,11 +340,11 @@
     }));
     scener.push({
       tekst: tom != null ? `□ er utledet: KB ∧ ¬α er unsatisfiable, så <b>KB ⊨ α</b>. Det markerte beviset bruker ${bevis.size - 1} av ${K.length - 1} klausuler; resten var bortkastet arbeid.`
-        : stoppet ? `Stopper visningen ved ${K.length} klausuler uten □. Resolusjonen er ikke ferdig, så dette sier ingenting om svaret. Sannhetstabellen gir KB ⊨ α: <b>${tt(data).følger ? "ja" : "nei"}</b>.` : `Runde ${runde} gir ingen nye klausuler (metning) uten □: <b>KB ⊭ α</b>.`,
+        : `Runde ${runde} gir ingen nye klausuler (metning) uten □: <b>KB ⊭ α</b>.`,
       graf: bokser(K, pos, K.length, i => (bevis ? (i === tom ? "mal" : bevis.has(i) ? "sti" : "ny") : "ny"), i => K[i].sym),
       tabeller: [tab(K.length, null)]
     });
-    return { scener, følger: tom != null || stoppet && tt(data).følger };
+    return { scener, følger: tom != null };
   }
 
   ALGO.legg({
@@ -379,31 +375,13 @@
 
   // ---------- Forward og backward chaining (Horn, proposisjonslogikk) ----------
   const lesHorn = kb => kb.map(s => {
-    const [v, h] = s.split("⇒").map(x => x.trim());
-    return h == null ? { prem: [], konkl: v, tekst: v } : { prem: v.split("∧").map(x => x.trim()), konkl: h, tekst: v.split("∧").map(x => x.trim()).join("∧") + "⇒" + h };
+    const [v, h] = s.split("⇒").map(x => x.trim()), prem = h == null ? [] : v.split("∧").map(x => x.trim());
+    return h == null ? { prem, konkl: v, tekst: v } : { prem, konkl: h, tekst: prem.join("∧") + "⇒" + h };
   });
   function hornOppsett(kb, fast) {
     const regler = kb.filter(r => r.prem.length), symb = [];
     kb.forEach(r => r.prem.concat(r.konkl).forEach(s => { if (!symb.includes(s)) symb.push(s); }));
-    const nivå = {};
-    symb.forEach(s => { if (!regler.some(r => r.konkl === s) || kb.some(r => !r.prem.length && r.konkl === s)) nivå[s] = 0; });
-    for (let endret = true; endret;) {
-      endret = false;
-      regler.forEach(r => {
-        if (r.prem.every(p => p in nivå)) {
-          const n = 1 + Math.max(...r.prem.map(p => nivå[p]));
-          if (!(r.konkl in nivå) || n < nivå[r.konkl]) { nivå[r.konkl] = n; endret = true; }
-        }
-      });
-    }
-    const maks = Math.max(0, ...Object.values(nivå));
-    symb.forEach(s => { if (!(s in nivå)) nivå[s] = maks + 1; });
-    const topp = Math.max(...symb.map(s => nivå[s])), pos = {};
-    for (let n = 0; n <= topp; n++) {
-      const her = symb.filter(s => nivå[s] === n);
-      her.forEach((s, k) => { pos[s] = { x: (k - (her.length - 1) / 2) * 170, y: (topp - n) * 170 }; });
-    }
-    if (fast) Object.entries(fast).forEach(([s, [x, y]]) => { pos[s] = { x, y }; });
+    const pos = Object.fromEntries(Object.entries(fast).map(([s, [x, y]]) => [s, { x, y }]));
     regler.forEach(r => {
       const søsken = regler.filter(q => q.konkl === r.konkl), k = søsken.indexOf(r);
       pos["r" + regler.indexOf(r)] = { x: pos[r.konkl].x + (k - (søsken.length - 1) / 2) * 110, y: pos[r.konkl].y + 85 };
@@ -428,7 +406,7 @@
       { tittel: "Forward chaining", kol: ["Tas ut", "Teller ned", "count etterpå", "Ny i agenda", "Agenda"], rader: hist.slice(), marker: [hist.length - 1] },
       { tittel: "count", kol: ["Regel", "count"], rader: regler.map((r, k) => [r.tekst, String(count[k])]), marker: nedtalt }
     ];
-    scener.push({ tekst: `Start: count = antall premisser i hver regel, og agendaen har faktaene ${esc(liste(agenda)) || "(ingen)"}. Spørsmål: ${esc(q)}.`, graf: graf(null), tabeller: tabs([]) });
+    scener.push({ tekst: `Start: count = antall premisser i hver regel, og agendaen har faktaene ${liste(agenda) || "(ingen)"}. Spørsmål: ${q}.`, graf: graf(null), tabeller: tabs([]) });
     let følger = false;
     while (agenda.length) {
       const p = agenda.shift();
@@ -436,12 +414,12 @@
       if (p === q) {
         følger = true;
         hist.push([p, "–", "–", "–", "return true"]);
-        scener.push({ tekst: `Tar ut ${esc(p)}. Det er spørsmålet: <b>return true</b>, altså KB ⊨ ${esc(q)}.`, graf: graf(p), tabeller: tabs([]) });
+        scener.push({ tekst: `Tar ut ${p}. Det er spørsmålet: <b>return true</b>, altså KB ⊨ ${q}.`, graf: graf(p), tabeller: tabs([]) });
         break;
       }
       if (inferred[p]) {
         hist.push([p, "allerede inferred", count.join(", "), "–", agenda.join(", ") || "–"]);
-        scener.push({ tekst: `Tar ut ${esc(p)}, men den er allerede inferred og hoppes over.`, graf: graf(p), tabeller: tabs([]) });
+        scener.push({ tekst: `Tar ut ${p}, men den er allerede inferred og hoppes over.`, graf: graf(p), tabeller: tabs([]) });
         continue;
       }
       inferred[p] = true;
@@ -456,11 +434,11 @@
       });
       hist.push([p, nedtalt.map(k => regler[k].tekst + (count[k] === 0 ? " (0)" : "")).join(", ") || "–", count.join(", "), nye.join(", ") || "–", agenda.join(", ") || "–"]);
       scener.push({
-        tekst: `Tar ut ${esc(p)} og markerer den som inferred. ${nedtalt.length ? `Teller ned ${esc(liste(nedtalt.map(k => regler[k].tekst)))}.` : `${esc(p)} er ikke premiss i noen regel.`}${nye.length ? ` count = 0 gir ${esc(liste(nye))} i agendaen.` : ""}`,
+        tekst: `Tar ut ${p} og markerer den som inferred. ${nedtalt.length ? `Teller ned ${liste(nedtalt.map(k => regler[k].tekst))}.` : `${p} er ikke premiss i noen regel.`}${nye.length ? ` count = 0 gir ${liste(nye)} i agendaen.` : ""}`,
         graf: graf(p, nedtalt), tabeller: tabs(nedtalt)
       });
     }
-    if (!følger) scener.push({ tekst: `Agendaen er tom uten at ${esc(q)} er tatt ut: <b>return false</b>, KB ⊭ ${esc(q)}.`, graf: graf(null), tabeller: tabs([]) });
+    if (!følger) scener.push({ tekst: `Agendaen er tom uten at ${q} er tatt ut: <b>return false</b>, KB ⊭ ${q}.`, graf: graf(null), tabeller: tabs([]) });
     return { scener, følger, rekkefølge: tatt };
   }
 
@@ -530,7 +508,7 @@
     const gå = n => { form[n.id] = n.form; n.barn.forEach(gå); };
     gå(topp);
     const scener = snaps.map(s => ({
-      tekst: esc(s.tekst),
+      tekst: s.tekst,
       graf: {
         retning: false,
         noder: g.noder.filter(n => s.vist.has(n.id)).map(n => ({ ...n, form: form[n.id], under: s.under[n.id] || "",
@@ -543,7 +521,7 @@
     if (følger) merk(topp);
     const slutt = snaps[snaps.length - 1];
     scener.push({
-      tekst: følger ? `${esc(q)} er bevist: <b>KB ⊨ ${esc(q)}</b>. Det markerte AND-OR-treet er beviset.` : `Ingen regel for ${esc(q)} lyktes: backward chaining svarer <b>false</b>.`,
+      tekst: følger ? `${q} er bevist: <b>KB ⊨ ${q}</b>. Det markerte AND-OR-treet er beviset.` : `Ingen regel for ${q} lyktes: backward chaining svarer <b>false</b>.`,
       graf: {
         retning: false,
         noder: g.noder.map(n => ({ ...n, form: form[n.id], under: slutt.under[n.id] || "", tilstand: sti.has(n.id) ? "sti" : ["feil", "beskaret"].includes(slutt.tilst[n.id]) ? slutt.tilst[n.id] : "ny" })),
@@ -610,7 +588,7 @@
     function kall(symbols, m, steg) {
       if (steg) { rad(steg.regel, m); scene(steg.tekst, m, steg.ekstra); }
       const s = st(m);
-      if (s.every(x => x === "T")) { rad("alle sanne", m); scene(`Alle klausulene er sanne: <b>return true</b>. Modellen er ${esc(modellTekst(S, m))}.`, m); return m; }
+      if (s.every(x => x === "T")) { rad("alle sanne", m); scene(`Alle klausulene er sanne: <b>return true</b>. Modellen er ${modellTekst(S, m)}.`, m); return m; }
       const f = s.indexOf("F");
       if (f >= 0) { rad(`C${f + 1} usann`, m); scene(`C${f + 1} er usann (alle literalene er usanne): <b>return false</b>, gå tilbake.`, m, { kl: { [f]: "feil" } }); return null; }
       for (const P of symbols) {
@@ -620,7 +598,7 @@
           const v = !fortegn.has(true);
           return kall(symbols.filter(x => x !== P), { ...m, [P]: v }, {
             regel: "pure", ekstra: { sym: { [P]: "aktiv" } },
-            tekst: `${esc(P)} står bare ${v ? "positivt" : "negativt"} i de åpne klausulene (${liste(hvor)}): pure symbol, <b>${esc(P)} = ${v}</b>.`
+            tekst: `${P} står bare ${v ? "positivt" : "negativt"} i de åpne klausulene (${liste(hvor)}): pure symbol, <b>${P} = ${v}</b>.`
           });
         }
       }
@@ -631,14 +609,14 @@
         const l = åpne[0], andre = C[k].filter(x => x !== l).map(litT);
         return kall(symbols.filter(x => x !== l.s), { ...m, [l.s]: !l.neg }, {
           regel: `unit C${k + 1}`, ekstra: { sym: { [l.s]: "aktiv" }, kl: { [k]: "aktiv" } },
-          tekst: `Ingen pure symboler. C${k + 1} er en unit clause${andre.length ? ` (${esc(liste(andre))} er usann${andre.length > 1 ? "e" : ""})` : ""}, så ${esc(litT(l))} må være sann: <b>${esc(l.s)} = ${!l.neg}</b>.`
+          tekst: `Ingen pure symboler. C${k + 1} er en unit clause${andre.length ? ` (${liste(andre)} er usann${andre.length > 1 ? "e" : ""})` : ""}, så ${litT(l)} må være sann: <b>${l.s} = ${!l.neg}</b>.`
         });
       }
       const P = symbols[0], rest = symbols.slice(1);
-      return kall(rest, { ...m, [P]: true }, { regel: "gjett", ekstra: { sym: { [P]: "aktiv" } }, tekst: `Ingen pure symboler og ingen unit clause: gjetter <b>${esc(P)} = true</b> (første symbol, true før false).` })
-        || kall(rest, { ...m, [P]: false }, { regel: "gjett", ekstra: { sym: { [P]: "aktiv" } }, tekst: `Grenen ${esc(P)} = true feilet: prøver <b>${esc(P)} = false</b>.` });
+      return kall(rest, { ...m, [P]: true }, { regel: "gjett", ekstra: { sym: { [P]: "aktiv" } }, tekst: `Ingen pure symboler og ingen unit clause: gjetter <b>${P} = true</b> (første symbol, true før false).` })
+        || kall(rest, { ...m, [P]: false }, { regel: "gjett", ekstra: { sym: { [P]: "aktiv" } }, tekst: `Grenen ${P} = true feilet: prøver <b>${P} = false</b>.` });
     }
-    scene(`${data.tekst ? data.tekst + " " : ""}Start med tom modell. Symbolene tas alfabetisk (${esc(S.join(", "))}). Hvert kall sjekker: alle sanne → én usann → pure → unit → gjett.`, {});
+    scene(`${data.tekst ? data.tekst + " " : ""}Start med tom modell. Symbolene tas alfabetisk (${S.join(", ")}). Hvert kall sjekker: alle sanne → én usann → pure → unit → gjett.`, {});
     const m = kall(S, {}, null);
     if (!m) scene("DPLL returnerer <b>false</b>: ingen modell gjør alle klausulene sanne, så setningen er unsatisfiable.", {});
     return { scener, sat: !!m, modell: m ? modellTekst(S, m) : "–" };
@@ -674,13 +652,12 @@
 
   function walksat(data) {
     const C = lesKlausuler(data.klausuler), S = [...new Set(C.flat().map(l => l.s))].sort(nat);
-    const m = { ...data.start }, p = data.p ?? 0.5, maks = data.maks ?? 10, trekk = (data.tilfeldig || []).slice();
-    let frø = 7;
-    const rnd = () => (trekk.length ? trekk.shift() : (frø = (frø * 16807) % 2147483647) / 2147483647);
+    const m = { ...data.start }, p = data.p ?? 0.5, maks = 10, trekk = data.tilfeldig.slice();
+    const rnd = () => trekk.shift();
     const sanne = mm => C.filter(c => status(c, mm) === "T").length;
     const scener = [], hist = [];
     const tab = ekstra => [{ tittel: "WalkSAT", kol: ["Flip", "Usann klausul", "Steg", "Flipper", "Modell etter", "Sanne"], rader: hist.slice(), marker: hist.length ? [hist.length - 1] : [] }].concat(ekstra || []);
-    scener.push({ tekst: `Startmodell ${esc(modellTekst(S, m))}, p = ${tall(p)}, max_flips = ${maks}. ${sanne(m)} av ${C.length} klausuler er sanne.`, graf: klausulGraf(S, C, m), tabeller: tab() });
+    scener.push({ tekst: `Startmodell ${modellTekst(S, m)}, p = ${tall(p)}, max_flips = ${maks}. ${sanne(m)} av ${C.length} klausuler er sanne.`, graf: klausulGraf(S, C, m), tabeller: tab() });
     let flip = 0;
     while (sanne(m) < C.length && flip < maks) {
       flip++;
@@ -692,7 +669,7 @@
       if (tilfeldig) {
         const r3 = rnd();
         valgt = kandidater[Math.floor(r3 * kandidater.length)];
-        grunn = `${tall(r2.toFixed(2))} &lt; p: random walk, tallet ${tall(r3.toFixed(2))} velger ${esc(valgt)}`;
+        grunn = `${tall(r2.toFixed(2))} &lt; p: random walk, tallet ${tall(r3.toFixed(2))} velger ${valgt}`;
       } else {
         const tellinger = kandidater.map(s => sanne({ ...m, [s]: !m[s] }));
         const best = Math.max(...tellinger);
@@ -706,11 +683,11 @@
       });
       m[valgt] = !m[valgt];
       hist.push([String(flip), "C" + (k + 1), tilfeldig ? "random walk" : "grådig", valgt, modellTekst(S, m), `${sanne(m)}/${C.length}`]);
-      scener.push({ tekst: `Flipper ${esc(valgt)} til ${m[valgt]}. Nå er ${sanne(m)} av ${C.length} klausuler sanne.`, graf: klausulGraf(S, C, m, { sym: { [valgt]: "aktiv" } }), tabeller: tab() });
+      scener.push({ tekst: `Flipper ${valgt} til ${m[valgt]}. Nå er ${sanne(m)} av ${C.length} klausuler sanne.`, graf: klausulGraf(S, C, m, { sym: { [valgt]: "aktiv" } }), tabeller: tab() });
     }
     const ok = sanne(m) === C.length;
     scener.push({
-      tekst: ok ? `Alle klausulene er sanne: WalkSAT returnerer <b>${esc(modellTekst(S, m))}</b> etter ${flip} flip${flip === 1 ? "" : "s"}.` : `max_flips = ${maks} er brukt opp: WalkSAT returnerer <b>failure</b>. Det beviser ikke at setningen er unsatisfiable.`,
+      tekst: ok ? `Alle klausulene er sanne: WalkSAT returnerer <b>${modellTekst(S, m)}</b> etter ${flip} flip${flip === 1 ? "" : "s"}.` : `max_flips = ${maks} er brukt opp: WalkSAT returnerer <b>failure</b>. Det beviser ikke at setningen er unsatisfiable.`,
       graf: klausulGraf(S, C, m), tabeller: tab()
     });
     return { scener, modell: ok ? modellTekst(S, m) : "failure", flips: flip };
@@ -819,20 +796,20 @@
       { tittel: "Steg", kol: ["#", "Par", "Resultat"], rader: steg.slice(), marker: merk ? [steg.length - 1] : [] },
       { tittel: "θ", kol: ["Variabel", "Binding", "Helt ut"], rader: θn ? [...θn].map(([v, t]) => [v, visT(t), visT(subst(θn, t))]) : [], marker: [] }
     ];
-    const scener = [{ tekst: `UNIFY(p, q) med p = ${esc(visT(p))} og q = ${esc(visT(q))}, og θ = {} ved start.`, graf: graf([], null), tabeller: tabs(new Map(), false) }];
+    const scener = [{ tekst: `UNIFY(p, q) med p = ${visT(p)} og q = ${visT(q)}, og θ = {} ved start.`, graf: graf([], null), tabeller: tabs(new Map(), false) }];
     let siste = new Map();
     log.forEach(h => {
       steg.push([String(steg.length + 1), h.par, h.res]);
       if (h.θ) siste = h.θ;
       scener.push({
-        tekst: `${esc(h.par)}: ${esc(h.res)}.${h.θ ? ` θ = ${esc(θTekst(h.θ))}.` : ""}`,
-        graf: graf([h.px, h.py].filter(Boolean), siste, h.θ ? null : null),
+        tekst: `${h.par}: ${h.res}.${h.θ ? ` θ = ${θTekst(h.θ)}.` : ""}`,
+        graf: graf([h.px, h.py].filter(Boolean), siste),
         tabeller: tabs(siste, true)
       });
       if (!h.θ) scener[scener.length - 1].graf.noder.forEach(n => { if ([h.px, h.py].includes(n.id)) n.tilstand = "feil"; });
     });
     scener.push(θ
-      ? { tekst: `Ferdig: MGU θ = <b>${esc(θTekst(θ))}</b>, helt ut ${esc(θHelt(θ))}. Begge blir ${esc(visT(subst(θ, p)))}.`, graf: graf([], θ, "sti"), tabeller: tabs(θ, false) }
+      ? { tekst: `Ferdig: MGU θ = <b>${θTekst(θ)}</b>, helt ut ${θHelt(θ)}. Begge blir ${visT(subst(θ, p))}.`, graf: graf([], θ, "sti"), tabeller: tabs(θ, false) }
       : { tekst: "UNIFY returnerer <b>failure</b>: det finnes ingen θ som gjør p og q like.", graf: graf([], siste, null), tabeller: tabs(siste, false) });
     return { scener, θ };
   }
@@ -880,7 +857,7 @@
   const forklar = v => {
     const g = {};
     v.forEach(([n, gr]) => (g[gr] = g[gr] || []).push(n));
-    return esc(Object.entries(g).map(([gr, ns]) => (gr === "gir bare kjente fakta" ? `${liste(ns)} gir bare kjente fakta` : `${liste(ns)} fyrer ikke (${gr})`)).join("; "));
+    return Object.entries(g).map(([gr, ns]) => (gr === "gir bare kjente fakta" ? `${liste(ns)} gir bare kjente fakta` : `${liste(ns)} fyrer ikke (${gr})`)).join("; ");
   };
   // Kanonisk form: variablene får navn etter rekkefølge, så P(x′1) og P(x) er samme fakta (en omdøping er ikke ny).
   const kanon = t => { const m = new Map(), g = t => (erVar(t) ? { n: m.get(t.n) || (m.set(t.n, "v" + m.size), m.get(t.n)) } : t.a ? { n: t.n, a: t.a.map(g) } : t); return visT(g(t)); };
@@ -894,11 +871,11 @@
     const kjent = new Set(F.map(f => kanon(f.a)));
     // Svar på spørsmålet: faktaens variabler standardiseres apart (får ′), og θ projiseres på spørsmålets variabler.
     const svarθ = f => { const φ = α && unify(α, omdøp(f, "′"), new Map(), null); return φ && new Map([...variabler(α)].map(v => [v, subst(φ, { n: v })]).filter(([v, t]) => !(erVar(t) && t.n === v))); };
-    const hend = [{ synlige: F.length, aktive: [], tekst: `${data.tekst ? data.tekst + " " : ""}Start med ${F.length} fakta. ${α ? `Spørsmål: ${esc(visT(α))}.` : "Ingen spørsmål: kjører til fixed point."}`, rader: [] }];
-    let runde = 0, svar = null, ferdig = false, avbrutt = false;
+    const hend = [{ synlige: F.length, aktive: [], tekst: `${data.tekst ? data.tekst + " " : ""}Start med ${F.length} fakta. ${α ? `Spørsmål: ${visT(α)}.` : "Ingen spørsmål: kjører til fixed point."}`, rader: [] }];
+    let runde = 0, svar = null, ferdig = false;
     const logg = [];
     const start = α && F.find(f => svarθ(f.a));
-    if (start) { svar = svarθ(start.a); ferdig = true; hend[0].tekst += ` ${esc(start.tekst)} står alt blant faktaene: ${svar.size ? `svaret er θ = ${esc(θTekst(svar))}` : "spørsmålet er besvart uten å bruke noen regel"}.`; }
+    if (start) { svar = svarθ(start.a); ferdig = true; hend[0].tekst += ` ${start.tekst} står alt blant faktaene: ${svar.size ? `svaret er θ = ${θTekst(svar)}` : "spørsmålet er besvart uten å bruke noen regel"}.`; }
     while (!ferdig) {
       runde++;
       const N = F.length, nye = [], rader = [], ventende = [];
@@ -925,31 +902,30 @@
         const ny = F.slice(før);
         hend.push({
           synlige: F.length, aktive: ny.map((_, k) => før + k), rader: logg.concat(rader),
-          tekst: `Runde ${runde}: ${ventende.length ? forklar(ventende) + ". " : ""}Regel ${esc(r.navn)} med ${ny.map(f => `θ = ${esc(f.θ)} gir <b>${esc(f.tekst)}</b>`).join(", ")}.${funnet ? ` ${esc(funnet)} unifiserer med spørsmålet${svar.size ? `: svaret er θ = ${esc(θTekst(svar))}` : ", som dermed er bevist"}.` : ""}`
+          tekst: `Runde ${runde}: ${ventende.length ? forklar(ventende) + ". " : ""}Regel ${r.navn} med ${ny.map(f => `θ = ${f.θ} gir <b>${f.tekst}</b>`).join(", ")}.${funnet ? ` ${funnet} unifiserer med spørsmålet${svar.size ? `: svaret er θ = ${θTekst(svar)}` : ", som dermed er bevist"}.` : ""}`
         });
         ventende.length = 0;
         if (svar) break;
       }
       if (svar) break;
       if (!nye.length) {
-        hend.push({ synlige: F.length, aktive: [], rader: logg.concat(rader), tekst: `Runde ${runde}: ${ventende.length ? forklar(ventende) + ". " : ""}Ingen nye fakta: <b>fixed point</b>.${α ? ` ${esc(visT(α))} følger ikke.` : ""}` });
+        hend.push({ synlige: F.length, aktive: [], rader: logg.concat(rader), tekst: `Runde ${runde}: ${ventende.length ? forklar(ventende) + ". " : ""}Ingen nye fakta: <b>fixed point</b>.${α ? ` ${visT(α)} følger ikke.` : ""}` });
         ferdig = true;
       } else if (ventende.length) {
-        hend.push({ synlige: F.length, aktive: [], rader: logg.concat(rader), tekst: `Runde ${runde}: ${forklar(ventende)}. Nye fakta fra runden (${esc(liste(nye))}) kan brukes først i neste runde.` });
+        hend.push({ synlige: F.length, aktive: [], rader: logg.concat(rader), tekst: `Runde ${runde}: ${forklar(ventende)}. Nye fakta fra runden (${liste(nye)}) kan brukes først i neste runde.` });
       }
       logg.push(...rader);
-      if (runde > 20 && !ferdig) { ferdig = avbrutt = true; hend.push({ synlige: F.length, aktive: [], rader: logg.slice(), tekst: "Stopper visningen etter 20 runder uten fixed point. Søket er ikke ferdig." }); }
     }
     const R = Math.max(...F.map(f => f.rad));
     // Fakta nederst og nye fakta over: plasser foreldrene først, og snu y etterpå.
-    const K = F, pos = plasser(F).map(p => ({ x: p.x, y: R * 120 - p.y }));
+    const pos = plasser(F).map(p => ({ x: p.x, y: R * 120 - p.y }));
     const scener = hend.map(h => ({
       tekst: h.tekst,
-      graf: bokser(K, pos, h.synlige, i => (h.aktive.includes(i) ? (svar && svarθ(F[i].a) ? "mal" : "aktiv") : F[i].rad ? "utvidet" : "ny"), i => F[i].regel || ""),
+      graf: bokser(F, pos, h.synlige, i => (h.aktive.includes(i) ? (svar && svarθ(F[i].a) ? "mal" : "aktiv") : F[i].rad ? "utvidet" : "ny"), i => F[i].regel || ""),
       tabeller: [{ tittel: "Utledet", kol: ["Runde", "Regel", "θ", "Ny fakta"], rader: h.rader, marker: h.aktive.length ? [h.rader.length - 1] : [] }]
     }));
     const avledet = F.filter(f => f.rad).map(f => f.tekst);
-    return { scener, svar: avbrutt ? null : α ? (svar ? θTekst(svar) : "false") : "fixed point", avledet, runder: runde };
+    return { scener, svar: α ? (svar ? θTekst(svar) : "false") : "fixed point", avledet, runder: runde };
   }
 
   const krim = {
@@ -987,7 +963,6 @@
     kjor: data => folFC(data).scener,
     svar(data) {
       const r = folFC(data);
-      if (r.svar == null) return [];
       return [{ id: "svar", navn: "Svar (θ), false eller fixed point", verdi: r.svar }, { id: "nye", navn: "Nye fakta i rekkefølge", verdi: r.avledet.join(", ") }, { id: "runder", navn: "Antall runder", verdi: String(r.runder) }];
     }
   });
@@ -1039,14 +1014,14 @@
       K.push(ny);
       if (!lits.length) { tom = true; svar = ans; }
       scener.push({
-        tekst: `Resolverer ${esc(a)} og ${esc(b)}${omd.size ? ` (standardiserer ${[...omd].map(([v, t]) => `${v} → ${t.n}`).join(", ")} i ${esc(b)})` : ""}: ${esc(visL(Ci.lits[ii]))} mot ${esc(visL(Cj.lits[jj]))} med θ = ${esc(θHelt(θ))}. `
-          + (lits.length ? `Resolvent ${esc(nr)}: <b>${esc(ny.tekst)}</b>.${rå.length > lits.length ? " Factoring slår sammen like literaler." : ""}` : "Resolventen er den tomme klausulen <b>□</b>."),
+        tekst: `Resolverer ${a} og ${b}${omd.size ? ` (standardiserer ${[...omd].map(([v, t]) => `${v} → ${t.n}`).join(", ")} i ${b})` : ""}: ${visL(Ci.lits[ii])} mot ${visL(Cj.lits[jj])} med θ = ${θHelt(θ)}. `
+          + (lits.length ? `Resolvent ${nr}: <b>${ny.tekst}</b>.${rå.length > lits.length ? " Factoring slår sammen like literaler." : ""}` : "Resolventen er den tomme klausulen <b>□</b>."),
         graf: graf(K.length - 1, [i, j]), tabeller: tabs([K.length - 1])
       });
     }
     const svarTekst = svar ? data.svarvar.map((v, k) => `${v} = ${visT(svar[k])}`).join(", ") : "";
     scener.push({
-      tekst: tom ? `□ er utledet, så KB ∧ ¬mål er unsatisfiable og <b>målet følger</b>.${svarTekst ? ` Bindingene fra det negerte målet gir svaret <b>${esc(svarTekst)}</b>.` : ""}` : "Stegene ga ikke □.",
+      tekst: tom ? `□ er utledet, så KB ∧ ¬mål er unsatisfiable og <b>målet følger</b>.${svarTekst ? ` Bindingene fra det negerte målet gir svaret <b>${svarTekst}</b>.` : ""}` : "Stegene ga ikke □.",
       graf: graf(-1, []), tabeller: tabs([])
     });
     return { scener, tom, svar: svarTekst, K };

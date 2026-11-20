@@ -15,25 +15,22 @@
 
   // Grafen som oppslag: naboer i tie-break-rekkefølge, rang for likhet, h, mål og start.
   function problem(data, valg) {
-    data = data || {};
-    const noder = Array.isArray(data.noder) ? data.noder : [];
+    const noder = data.noder;
     const pos = new Map(noder.map(n => [String(n.id), n]));
     const nab = new Map([...pos.keys()].map(id => [id, []]));
     const vh = valg.tie === VH;
     const tie = vh ? (a, b) => ((+pos.get(a).x || 0) - (+pos.get(b).x || 0)) || ((+pos.get(a).y || 0) - (+pos.get(b).y || 0)) || alfa(a, b) : alfa;
-    (Array.isArray(data.kanter) ? data.kanter : []).forEach((k, i) => {
-      const a = String(k.fra), b = String(k.til);
-      if (!nab.has(a) || !nab.has(b)) return;
-      const c = fin(k.kost) ? k.kost : 1;
+    data.kanter.forEach((k, i) => {
+      const a = String(k.fra), b = String(k.til), c = fin(k.kost) ? k.kost : 1;
       nab.get(a).push({ s: b, c, i });
       if (!data.retning && a !== b) nab.get(b).push({ s: a, c, i });
     });
     nab.forEach(l => l.sort((x, y) => tie(x.s, y.s) || x.c - y.c));
     const rang = new Map([...nab.keys()].sort(tie).map((id, i) => [id, i]));
     const h = id => (fin(pos.get(id).h) ? pos.get(id).h : 0);
-    const start = data.start != null && nab.has(String(data.start)) ? String(data.start) : null;
-    const mal = new Set((Array.isArray(data.mal) ? data.mal : []).map(String).filter(id => nab.has(id)));
-    return { data, noder, pos, nab, rang, h, start, mal, vh, harKost: (data.kanter || []).some(k => fin(k.kost)) };
+    const start = data.start != null ? String(data.start) : null;
+    const mal = new Set(data.mal.map(String));
+    return { data, noder, nab, rang, h, start, mal, vh };
   }
 
   const stien = n => { const s = []; for (; n; n = n.far) s.unshift(n.s); return s; };
@@ -60,7 +57,7 @@
     const h = n => P.h(n.s);
     const W = fin(+valg.W) ? +valg.W : 2;
     const sti = n => stien(n).join(" ");
-    const c = {
+    return {
       bfs: { navn: "BFS", under: n => "d=" + n.d, kol: ["Node", "Sti", "d"], rad: n => [n.s, sti(n), String(n.d)] },
       dfs: { f: n => -n.d, pri: n => "dybde " + n.d, fNavn: "dybde", under: n => "d=" + n.d, kol: ["Node", "Sti", "d"], rad: n => [n.s, sti(n), String(n.d)] },
       ucs: { f: n => n.g, pri: n => "g = " + fmt(n.g), fNavn: "g", under: n => "g=" + fmt(n.g), kol: ["Node", "Sti", "g"], rad: n => [n.s, sti(n), fmt(n.g)] },
@@ -68,7 +65,6 @@
       astar: { f: n => n.g + h(n), pri: n => `f = ${fmt(n.g)} + ${fmt(h(n))} = ${fmt(n.f)}`, fNavn: "f", visH: true, under: n => "f=" + fmt(n.f), kol: ["Node", "Sti", "g", "h", "f"], rad: n => [n.s, sti(n), fmt(n.g), fmt(h(n)), fmt(n.f)] },
       wastar: { f: n => n.g + W * h(n), pri: n => `f = ${fmt(n.g)} + ${fmt(W)}·${fmt(h(n))} = ${fmt(n.f)}`, fNavn: "f", visH: true, under: n => "f=" + fmt(n.f), kol: ["Node", "Sti", "g", "h", "f"], rad: n => [n.s, sti(n), fmt(n.g), fmt(h(n)), fmt(n.f)] }
     }[id];
-    return c;
   }
 
   // Lager én scene: grafen med tilstander, frontier-tabellen og minnet.
@@ -120,7 +116,7 @@
   // BFS etter Fig. 3.9: FIFO-kø, måltest når barnet genereres.
   function bfs(P, valg, medScener) {
     const C = oppsett("bfs", P, valg), minne = valg.minne || GRAF, sc = [];
-    let nr = 0, generert = 1;
+    let nr = 0;
     const lag = (s, far, c, i) => ({ s, g: far ? far.g + c : 0, d: far ? far.d + 1 : 0, far, i, nr: nr++ });
     const n0 = lag(P.start, null, 0, -1);
     const ut = [], utvidet = new Set(), tre = [], sist = new Map([[P.start, n0]]);
@@ -129,7 +125,7 @@
     const vis = medScener ? (tekst, ekstra = {}) => sc.push(scene(P, C, { frontier: q, utvidet, tre, sist, utListe: ut.join(" "), reached: minne === GRAF ? [...reached] : null, tekst, frTittel: "Frontier, FIFO-kø (neste tas ut øverst)", ...ekstra })) : () => {};
     if (P.mal.has(P.start)) {
       vis(`${P.start} er selv et mål. BFS tester startnoden før søket begynner, så svaret er stien ${P.start} med kostnad 0.`, { frontier: [], sti: n0 });
-      return { status: "funnet", node: n0, ut, generert, sc };
+      return { status: "funnet", node: n0, ut, sc };
     }
     vis(`Start: ${P.start} legges i frontier (FIFO-kø)${minne === GRAF ? ` og i reached` : ""}.${ingenMal(P)}`);
     while (q.length) {
@@ -143,14 +139,13 @@
       const notat = [], nye = [];
       for (const { s, c, i } of P.nab.get(n.s)) {
         const b = lag(s, n, c, i);
-        generert++;
         if (P.mal.has(s)) {
           sist.set(s, b);
           if (medScener) {
             const tekst = `Utvider <b>${n.s}</b>: ${notat.length ? notat.join("; ") + "; " : ""}genererer ${s}, og ${s} er mål. BFS tester målet når noden genereres (early goal test), så søket stopper her. Sti ${pil(b)}, kostnad ${fmt(b.g)}.`;
             vis(tekst, { aktiv: n, sti: b, utListe: [...ut, `(${s})`].join(" ") });
           }
-          return { status: "funnet", node: b, ut, generert, sc };
+          return { status: "funnet", node: b, ut, sc };
         }
         if (minne === GRAF && reached.has(s)) { notat.push(`${s} er allerede i reached`); continue; }
         if (minne === LUKKET && utvidet.has(s)) { notat.push(`${s} er allerede utvidet`); continue; }
@@ -162,7 +157,7 @@
     return slutt("failure");
     function slutt(status) {
       if (medScener) vis(status === "maks" ? `Stopper etter ${ut.length} utvidelser uten å ha nådd målet${minne === TRE ? ": tree-like search husker ikke hva den har sett, så den kan gå i ring" : " (grensen for animasjonen)"}. Søket er avbrutt, ikke ferdig, så det er ikke avgjort om en sti finnes.` : "Frontier er tom: ingen løsning (failure).", { frontier: status === "maks" ? q : [] });
-      return { status, ut, generert, sc };
+      return { status, ut, sc };
     }
   }
 
@@ -170,7 +165,7 @@
   function bestFirst(id, P, valg, medScener) {
     const C = oppsett(id, P, valg), minne = valg.minne || GRAF, sc = [];
     const cmp = (a, b) => a.f - b.f || P.rang.get(a.s) - P.rang.get(b.s) || a.nr - b.nr;
-    let nr = 0, generert = 1;
+    let nr = 0;
     const lag = (s, far, c, i) => { const n = { s, g: far ? far.g + c : 0, d: far ? far.d + 1 : 0, far, i, nr: nr++ }; n.f = Math.round(C.f(n) * 1e12) / 1e12; return n; };
     const n0 = lag(P.start, null, 0, -1);
     const fr = haug(cmp); fr.push(n0);
@@ -189,13 +184,12 @@
       }
       if (P.mal.has(n.s)) {
         if (medScener) vis(`Tar ut <b>${n.s}</b> (${C.pri(n)}). ${lik}${n.s} er mål, og målet testes når noden tas ut. Ferdig: sti ${pil(n)}, kostnad ${fmt(n.g)}.`, { aktiv: n, sti: n, utListe: [...ut, `(${n.s})`].join(" ") });
-        return { status: "funnet", node: n, ut, generert, sc };
+        return { status: "funnet", node: n, ut, sc };
       }
       ut.push(n.s); utvidet.add(n.s); tre.push(n); sist.set(n.s, n);
       const notat = [], nye = [];
       for (const { s, c, i } of P.nab.get(n.s)) {
         const b = lag(s, n, c, i);
-        generert++;
         if (minne === GRAF) {
           const r = reached.get(s);
           if (!r) notat.push(`${s} ny (${C.pri(b)})`);
@@ -213,14 +207,14 @@
     return slutt("failure");
     function slutt(status) {
       if (medScener) vis(status === "maks" ? `Stopper etter ${ut.length} utvidelser uten å ha nådd målet${minne === TRE ? ": tree-like search husker ikke hva den har sett, så den kan gå i løkke" : " (grensen for animasjonen)"}. Søket er avbrutt, ikke ferdig, så det er ikke avgjort om en sti finnes.` : "Frontier er tom: ingen løsning (failure).");
-      return { status, ut, generert, sc };
+      return { status, ut, sc };
     }
   }
 
   // DEPTH-LIMITED-SEARCH (Fig. 3.12, med teksten i 3.4.4): LIFO-stabel, noder på dybde ℓ testes men utvides ikke.
   function dls(P, valg, l, medScener, sc = [], forrige = []) {
     const C = oppsett("dfs", P, valg), syk = valg.syklus !== false;
-    let nr = 0, generert = 1;
+    let nr = 0;
     const n0 = { s: P.start, g: 0, d: 0, far: null, i: -1, nr: nr++ };
     const stabel = [n0], ut = [], utvidet = new Set(), cut = new Set(), tre = [], sist = new Map([[P.start, n0]]);
     let res = "failure";
@@ -233,7 +227,7 @@
       ut.push(n.s); sist.set(n.s, n);
       if (P.mal.has(n.s)) {
         if (medScener) vis(`Tar ut <b>${n.s}</b> (dybde ${n.d}). ${n.s} er mål. Ferdig: sti ${pil(n)}, kostnad ${fmt(n.g)}.`, { aktiv: n, sti: n });
-        return { status: "funnet", node: n, ut, generert, sc };
+        return { status: "funnet", node: n, ut, sc };
       }
       if (n.d >= l) {
         res = "cutoff"; cut.add(n.s);
@@ -245,13 +239,12 @@
       for (const { s, c, i } of P.nab.get(n.s)) {
         if (syk && paSti(n, s)) { hopp.push(s); continue; }
         barn.push({ s, g: n.g + c, d: n.d + 1, far: n, i, nr: nr++ });
-        generert++;
       }
       for (let k = barn.length - 1; k >= 0; k--) { stabel.push(barn[k]); sist.set(barn[k].s, barn[k]); }
       if (medScener && sc.length <= MAKS_SCENER) vis(`Tar ut <b>${n.s}</b> (dybde ${n.d}). Ikke mål. ${barn.length ? `Legger ${barn.map(b => b.s).join(", ")} på stabelen, ${barn[0].s} øverst.` : "Ingen nye barn."}${hopp.length ? ` ${hopp.join(", ")} ligger allerede på stien (cycle) og hoppes over.` : ""}`, { aktiv: n, nye: barn });
     }
     if (medScener) vis(res === "cutoff" ? `Stabelen er tom. Minst én node ble stoppet av grensen, så svaret er <b>cutoff</b> (ingen løsning innenfor ℓ = ${l}).` : res === "maks" ? `Stopper etter ${ut.length} uttak. Søket er avbrutt, så om svaret blir en sti, cutoff eller failure, er ikke avgjort.` : `Stabelen er tom og ingen node ble stoppet av grensen: <b>failure</b> (ingen løsning).`, { frontier: [] });
-    return { status: res, ut, generert, sc };
+    return { status: res, ut, sc };
   }
 
   function ids(P, valg, medScener) {
@@ -301,8 +294,7 @@
     [["A", "B", 5], ["A", "C", 7], ["B", "D", 8], ["B", "E", 3], ["D", "F", 4], ["E", "G", 17], ["F", "G", 6]]);
   const p25 = hh => G(false, "s", ["g"], { i: [81, 40, hh && 6], j: [157, 52, hh && 5], h: [33, 82, hh && 6], f: [95, 98, hh && 5], k: [240, 130, hh && 3], g: [208, 252, hh && 0], a: [389, 275, hh && 5], e: [87, 310, hh && 4], d: [103, 405, hh && 5], s: [343, 398, hh && 5], b: [279, 435, hh && 4], c: [169, 475, hh && 5] },
     [["h", "i", 1], ["i", "j", 1], ["h", "f", 1], ["j", "k", 3], ["f", "g", 5], ["k", "g", 3], ["k", "s", 6], ["g", "e", 4], ["e", "d", 2], ["d", "c", 2], ["c", "b", 2], ["b", "s", 1], ["s", "a", 4]], 1.35);
-  const P25 = p25(0), P25H = p25(1);
-  P25.noder.forEach(n => delete n.h);
+  const P25 = p25(), P25H = p25(1);
   const L23 = G(true, "S", ["G"], { S: [200, 28], A: [110, 115, 3], B: [290, 115, 3], C: [130, 210, 3], G: [300, 212, 0] },
     [["S", "A", 4], ["S", "B", 7], ["A", "A", 13], ["A", "C", 4], ["B", "G", 10], ["C", "G", 4]], 1.1);
   const r20 = { S: [35, 135, 5], D: [150, 25, 6], E: [290, 25, 5], G3: [405, 25, 0], C: [150, 140, 4], F: [290, 108, 6], G2: [310, 205, 0], B: [150, 245, 3], A: [150, 332, 7], G1: [345, 332, 0] };

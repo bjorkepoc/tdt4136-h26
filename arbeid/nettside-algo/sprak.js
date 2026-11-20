@@ -3,14 +3,9 @@
 (() => {
   const A = window.ALGO;
   const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const W = t => 7 * String(t).length + 40;
   // Desimaltall med komma, uten flyttallsstøy: 0.06 * 0.9 vises som 0,054.
-  const tall = x => {
-    if (x === 0) return "0";
-    let s = String(parseFloat(x.toPrecision(10)));
-    if (s.includes("e")) s = x.toFixed(-Math.floor(Math.log10(Math.abs(x))) + 9).replace(/0+$/, "");
-    return s.replace(".", ",");
-  };
+  const tall = x => String(parseFloat(x.toPrecision(10))).replace(".", ",");
+  const ferdigAktiv = nt => Object.keys(nt).forEach(k => { if (nt[k] === "aktiv") nt[k] = "utvidet"; });
 
   // ---------- brøker ----------
   const gcd = (a, b) => (b ? gcd(b, a % b) : a);
@@ -123,9 +118,8 @@
       tekst: `Gitteret for «${d.ord.join(" ")}». ${d.ord.slice(0, d.fra + 1).map((w, t) => `${w}/${d.tagger[t].join("|")}`).join(" ")} er entydig, og δ(${d.ord[d.fra]}/${d.tagger[d.fra][0]}) settes til ${tall(d.start[d.tagger[d.fra][0]])}, siden bare forholdstall teller.`,
       graf: graf(), tabeller: [transTab, emTab]
     }];
-    const ferdigAktiv = () => Object.keys(nt).forEach(k => { if (nt[k] === "aktiv") nt[k] = "utvidet"; });
     for (let t = d.fra + 1; t < T; t++) for (const c of d.tagger[t]) {
-      ferdigAktiv();
+      ferdigAktiv(nt);
       const w = d.ord[t], e = em(w, c);
       const kand = d.tagger[t - 1].map(p => ({ p, v: delta[t - 1][p] * tr(p, c) }));
       const best = kand.reduce((a, b) => (b.v > a.v ? b : a));
@@ -140,7 +134,7 @@
         graf: graf(), tabeller: [sporTab([spor.length - 1]), transTab, emTab]
       });
     }
-    ferdigAktiv();
+    ferdigAktiv(nt);
     const sist = d.tagger[T - 1].reduce((a, b) => (delta[T - 1][b] > delta[T - 1][a] ? b : a));
     nt[id(T - 1, sist)] = "mal";
     scener.push({ tekst: `Beste sluttilstand: ${d.ord[T - 1]}/${sist} med δ = ${tall(delta[T - 1][sist])} (${d.tagger[T - 1].map(c => `${c} ${tall(delta[T - 1][c])}`).join(" mot ")}).`, graf: graf(), tabeller: [sporTab(), transTab, emTab] });
@@ -190,9 +184,8 @@
     const spor = [];
     const sporTab = m => ({ tittel: "Chartet", kol: ["Spenn [i,k]", "Ord", "Innhold"], rader: spor.map(r => r.slice()), marker: m });
     const scener = [{ tekst: `CYK fyller én celle per spenn [i,k], korteste spenn først. Cellen holder beste sannsynlighet for hver ikke-terminal over ordene i..k.`, graf: graf(), tabeller: [regelTab] }];
-    const ferdig = () => Object.keys(nt).forEach(k => { if (nt[k] === "aktiv") nt[k] = "utvidet"; });
     for (let i = 1; i <= n; i++) {
-      ferdig();
+      ferdigAktiv(nt);
       const o = w[i - 1];
       if (!d.leks[o]) {
         scener.push({ tekst: `«${esc(o)}» finnes ikke i leksikonet. Parsingen stopper.`, graf: graf(), tabeller: [regelTab] });
@@ -214,7 +207,7 @@
       });
     }
     for (let L = 2; L <= n; L++) for (let i = 1; i + L - 1 <= n; i++) {
-      ferdig();
+      ferdigAktiv(nt);
       const k = i + L - 1, c = {}, b = {}, funn = [];
       for (let j = i; j < k; j++) for (const [X, Y, Z, p] of d.regler) {
         const py = P[key(i, j)][Y], pz = P[key(j + 1, k)][Z];
@@ -235,7 +228,7 @@
       if (d.merknad?.[key(i, k)]) t += " " + d.merknad[key(i, k)];
       scener.push({ tekst: t, graf: graf(), tabeller: [sporTab([spor.length - 1]), regelTab] });
     }
-    ferdig();
+    ferdigAktiv(nt);
     const topp = P[key(1, n)].S;
     // bakpekerne gir treet; cellene i treet markeres som sti
     let nr = 0;

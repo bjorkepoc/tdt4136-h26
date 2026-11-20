@@ -11,14 +11,11 @@
 
   // ---------- Treet fra tegneverktøyet: typer, navn, verdier og sannsynligheter gjøres trygge ----------
   function lagTre(rot) {
-    if (!rot || typeof rot !== "object" || (!(rot.barn && rot.barn.length) && (rot.verdi == null || rot.verdi === ""))) return null;
-    const brukt = new Set(), adv = [];
-    let k = 0;
+    if (!rot.barn.length && rot.verdi == null) return null;
+    const adv = [];
     const ga = (n, sist, far) => {
-      const barn = Array.isArray(n.barn) ? n.barn.filter(b => b && typeof b === "object") : [];
-      let id = n.id != null && n.id !== "" ? String(n.id) : "";
-      while (!id || brukt.has(id)) id = "n" + ++k;
-      brukt.add(id);
+      const barn = n.barn || [];
+      const id = String(n.id);
       const type = !barn.length ? "blad" : ["max", "min", "sjanse"].includes(n.type) ? n.type : sist === "max" ? "min" : "max";
       const navn = n.tekst != null && String(n.tekst).trim() ? String(n.tekst).trim() : id;
       const m = { id, navn, type, far, p: n.p, barn: [] };
@@ -45,8 +42,7 @@
     while (kø.length) { const n = kø.shift(); alle.push(n); kø.push(...n.barn); } // BFS-rekkefølge
     const inn = n => ({ id: n.id, type: n.type, tekst: n.navn, verdi: n.type === "blad" ? n.verdi : undefined, barn: n.barn.map(inn) });
     const lay = A.tre(inn(T));
-    const per = {};
-    alle.forEach(n => (per[n.id] = n));
+    const per = Object.fromEntries(alle.map(n => [n.id, n]));
     lay.noder.forEach(x => { x.tekst = per[x.id].navn; if (per[x.id].type === "blad") x.under = tall(per[x.id].verdi); else delete x.under; });
     lay.kanter.forEach(e => { const c = per[e.til]; e.tekst = c.far && c.far.type === "sjanse" ? tall(c.pe) : ""; });
     return { T, alle, per, lay, adv };
@@ -88,7 +84,7 @@
   const likeTrekk = (G, b, v = verdier(G)) => G.T.barn.filter(c => c !== b && lik(v[c.id], v[b.id])).map(c => c.navn);
 
   function verdiScener(G, ekspekt) {
-    const sc = [], st = {}, v = {};
+    const sc = [], st = {}, v = verdier(G);
     const har = G.alle.some(n => n.type === "sjanse");
     const start = `Startpunkt: ${G.alle.filter(n => n.type === "blad").length} blader. Verdiene fylles inn nedenfra, barn fra venstre mot høyre.` +
       (har && !ekspekt ? " Treet har sjansenoder; de regnes som forventning (expectiminimax)." : "") + (G.adv.length ? " " + G.adv.join(" ") : "");
@@ -99,24 +95,16 @@
       return sc;
     }
     const rek = n => {
-      if (n.type === "blad") return (v[n.id] = n.verdi);
-      const vs = n.barn.map(rek);
-      let x, regn;
-      if (n.type === "sjanse") {
-        x = n.barn.reduce((s, b, i) => s + b.pe * vs[i], 0);
-        regn = n.barn.map((b, i) => `${tall(b.pe)}·${tall(vs[i])}`).join(" + ");
-      } else {
-        x = n.type === "max" ? Math.max(...vs) : Math.min(...vs);
-        const ts = vs.map(y => tall(y));
-        regn = `${n.type}(${ts.join(ts.some(t => t.includes(",")) ? "; " : ", ")})`; // «max(4; 6,5)» når desimalkomma
-      }
-      v[n.id] = x;
+      if (n.type === "blad") return;
+      n.barn.forEach(rek);
+      const x = v[n.id], ts = n.barn.map(b => tall(v[b.id]));
+      const regn = n.type === "sjanse" ? n.barn.map((b, i) => `${tall(b.pe)}·${ts[i]}`).join(" + ")
+        : `${n.type}(${ts.join(ts.some(t => t.includes(",")) ? "; " : ", ")})`; // «max(4; 6,5)» når desimalkomma
       n.barn.forEach(b => settSt(st, b.id, { tilstand: "grense" }));
       settSt(st, n.id, { tilstand: "aktiv", under: tall(x) });
       sc.push(bilde(G, st, `${n.navn} (${TYPE[n.type]}) = ${regn} = <b>${tall(x)}</b>.`));
       n.barn.forEach(b => settSt(st, b.id, { tilstand: "utvidet" }));
       settSt(st, n.id, { tilstand: "utvidet" });
-      return x;
     };
     rek(G.T);
     const sti = [G.T];
@@ -380,7 +368,7 @@
     let best = tre.barn[0];
     tre.barn.forEach(c => { if (c.n > best.n) best = c; });
     if (best) push(`Når tiden er ute, returneres trekket med <b>flest playouts</b>, ikke høyest vinnerandel: ${UN(best)}.`, { slutt: best.id });
-    return { tre, hend, forste, best, alle };
+    return { tre, hend, forste, best, alle, spiller };
   }
 
   // Bokas Fig. 6.10 (sidegrenene under 1/10 og 2/11 er utelatt fordi tellingene i figuren ikke går opp). Roten teller hvite seire.
@@ -409,12 +397,9 @@
     ],
     kjor(d, valg = {}) {
       const C = isFinite(+valg.C) && valg.C !== "" && valg.C != null ? +valg.C : Math.SQRT2;
-      const { tre, hend } = mcts(d, C);
+      const { tre, hend, spiller } = mcts(d, C);
       const tilTre = n => ({ id: n.id, tekst: "", barn: n.barn.map(tilTre) });
       const lay = A.tre(tilTre(tre));
-      const annen = d.rotSpiller === "hvit" ? "svart" : "hvit";
-      const dyp = {};
-      (function g(n, k) { dyp[n.id] = k; n.barn.forEach(b => g(b, k + 1)); })(tre, 0);
       lay.noder.forEach(x => { x.x *= 1.5; x.form = "boks"; });
       return hend.map(h => {
         const tilst = id => (h.slutt === id ? "sti" : h.tilbake && h.tilbake.includes(id) ? "sti" : h.aktiv === id ? "aktiv" : h.kandidat && h.kandidat.includes(id) ? "grense" : h.sti && h.sti.includes(id) ? "utvidet" : "ny");
@@ -422,7 +407,7 @@
           tekst: h.tekst,
           graf: {
             retning: false,
-            noder: lay.noder.filter(x => h.synlig.has(x.id)).map(x => ({ ...x, tekst: h.stat[x.id], under: dyp[x.id] % 2 ? annen : d.rotSpiller, over: h.over && h.over[x.id], tilstand: tilst(x.id) })),
+            noder: lay.noder.filter(x => h.synlig.has(x.id)).map(x => ({ ...x, tekst: h.stat[x.id], under: spiller(x.id), over: h.over && h.over[x.id], tilstand: tilst(x.id) })),
             kanter: lay.kanter.filter(e => h.synlig.has(e.til)).map(e => ({ ...e, tilstand: ["aktiv", "sti"].includes(tilst(e.til)) ? tilst(e.til) : tilst(e.til) === "utvidet" ? "utvidet" : "ny" }))
           },
           tabeller: h.tabell ? [h.tabell] : undefined

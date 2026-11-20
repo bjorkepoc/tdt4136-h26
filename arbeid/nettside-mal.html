@@ -268,7 +268,7 @@ ${e.note}
 <button type="button" class="drag" title="Dra for å endre bredden. Dobbeltklikk for å nullstille." aria-label="Skillelinje mellom video og oppgaver. Piltastene endrer bredden."></button>
 <aside class="rgt"><h2 id="ov">Øv selv</h2>${e.intro}
 <p class="mut">Oppgavene står som på eksamen; svar gjerne på norsk. Spor for hånd på papir og skriv svaret i feltet${SR?", eller trykk «Diktér» og snakk":""}. ${API?"Trykk «Rett denne» når du vil ha tilbakemelding, så dukker den opp under oppgaven. Svarene lagres i <code>arbeid/svar/svar.json</code>.":"Start <code>python3 arbeid/server.py</code> og åpne http://localhost:8765/ for diktering og retting rett på siden. Til da: trykk «Kopier svarene» og lim dem inn i chatten."} ${e.tasks.some(t=>t.papir)&&API?"Logikkoppgavene kan du svare på papir, som på eksamen: ta bilde av arket og last det opp med «Svar på papir».":"Er det lettere på papir, skriv «papir» og send et bilde i chatten."}</p>
-<div id="tasks">${e.tasks.map((t,j)=>task(e,t,j)).join("")}</div>${e.outro}
+<div id="tasks">${e.tasks.map((t,j)=>task(e,t,j)).join("")}</div>
 <div class="row">${API?'<button class="pri" id="rettalle">Send alle besvarte til retting</button>':""}<button${API?"":' class="pri"'} id="copy">Kopier svarene</button><span class="mut" id="cmsg"></span></div><div id="cbox"></div>
 ${e.fasit?`<details class="fasit"><summary>Fasit til quizene i videoen</summary>${e.fasit}</details>`:""}</aside>`;
 const v=$("#v");if(v){const tr=v.addTextTrack("subtitles","Norsk","no");

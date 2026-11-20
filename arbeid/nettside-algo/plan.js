@@ -7,7 +7,6 @@
   // Boksmål som i motoren: halv bredde = 3,9 per tegn + 10, halv høyde = 8 per linje + 7.
   const W = t => Math.max(...String(t).split("\n").map(l => l.length)) * 7.8 + 30;
   const H = t => String(t).split("\n").length * 16 + 14;
-  const DY = 110;
   // Bryter en liste med literaler i linjer på høyst maks tegn: "At(A), At(B),\nAt(C)".
   const bryt = (xs, sep, maks, tom) => {
     const linjer = [];
@@ -34,7 +33,7 @@
 
   const skjema = d => {
     const h = lit(d.navn);
-    return { navn: h.p, param: h.args, pre: d.pre.map(lit), eff: d.eff.map(lit), tekst: d };
+    return { navn: h.p, param: h.args, pre: d.pre.map(lit), eff: d.eff.map(lit) };
   };
   function grunn(sk, verdier) {
     const th = Object.fromEntries(sk.param.map((v, i) => [v, verdier[i]]));
@@ -82,7 +81,7 @@
     const vis = s => s.filter(f => dyn.has(lit(f).p));
     // Handlinger som ikke endrer tilstanden (Fly(P1, SFO, SFO)) er applicable etter Fig. 11.1, men hoppes over i søket (11.1.1 foreslår from ≠ to).
     const alleApp = s => akts.filter(a => kanBrukes(s, a)), app = s => alleApp(s).filter(a => nokkel(resultat(s, a)) !== nokkel(s));
-    return { sks, dyn, akts, vis, app, alleApp };
+    return { dyn, akts, vis, app, alleApp };
   }
   const skjemaTabell = d => ({
     tittel: "Action schemas",
@@ -103,10 +102,19 @@
     const t = A.tre(rot);
     const maks = Math.max(...t.noder.map(n => W(n.tekst)));
     const f = Math.max(1, (maks + 30) / 80);
-    t.noder.forEach(n => { n.x *= f; n.y *= DY / 110; n.form = "boks"; delete n.under; });
+    t.noder.forEach(n => { n.x *= f; n.form = "boks"; delete n.under; });
     t.retning = true;
     return t;
   }
+  // Delen av treet T som er synlig nå: tilstand (og ev. under) per node, kanter inn i sti eller mål blir sti.
+  const delTre = (T, synlig, tilst, under) => ({
+    retning: T.retning,
+    noder: T.noder.filter(n => synlig.has(n.id)).map(n => ({ ...n, tilstand: tilst[n.id] || "ny", ...(under && { under: under[n.id] || "" }) })),
+    kanter: T.kanter.filter(k => synlig.has(k.til)).map(k => ({ ...k, tilstand: ["sti", "mal"].includes(tilst[k.til]) ? "sti" : "ny" }))
+  });
+  const ferdigAktiv = tilst => Object.keys(tilst).forEach(k => { if (tilst[k] === "aktiv") tilst[k] = "utvidet"; });
+  // Kjede av bokser ovenfra og ned: siste node får tilstanden siste; alle overstyrer alle noder og kanter.
+  const kjedeGraf = (kjede, kanter, siste, alle) => ({ retning: true, noder: kjede.map((n, i) => ({ ...n, form: "boks", tilstand: alle || (i === kjede.length - 1 ? siste : "utvidet") })), kanter: kanter.map(k => (alle ? { ...k, tilstand: alle } : { ...k })) });
 
   // ================= Forward search (progression) =================
   function fremover(d) {
@@ -145,9 +153,7 @@
     const synlig = new Set(["n0"]), tilst = { n0: "grense" }, ekstra = [];
     const scener = [];
     const scene = (tekst, tabeller) => {
-      const g = A.kopi(T);
-      g.noder = g.noder.filter(n => synlig.has(n.id)).map(n => ({ ...n, tilstand: tilst[n.id] || "ny" }));
-      g.kanter = g.kanter.filter(k => synlig.has(k.til)).map(k => ({ ...k, tilstand: tilst[k.til] === "sti" || tilst[k.til] === "mal" ? "sti" : "ny" }));
+      const g = delTre(T, synlig, tilst);
       g.kanter.push(...ekstra.map(k => ({ ...k })));
       scener.push({ tekst, graf: g, tabeller });
     };
@@ -159,7 +165,7 @@
       scene("s₀ oppfyller allerede målet. Planen er tom.", [skjemaTabell(d)]);
     }
     for (const h of H) {
-      Object.keys(tilst).forEach(k => { if (tilst[k] === "aktiv") tilst[k] = "utvidet"; });
+      ferdigAktiv(tilst);
       tilst[h.id] = "aktiv";
       h.barn.forEach(id => { synlig.add(id); tilst[id] = "grense"; });
       h.gamle.forEach(g => ekstra.push({ fra: h.id, til: g.til, tekst: g.a, tilstand: "beskaret" }));
@@ -242,9 +248,9 @@
   // POS(g′) = (POS(g) − ADD(a)) ∪ POS(PRECOND(a)),  NEG(g′) = (NEG(g) − DEL(a)) ∪ NEG(PRECOND(a)).
   // Rekkefølge som i notatet: det som blir igjen av g, så PRECOND i skjemaets rekkefølge.
   function regresser(g, a) {
-    const ut = g.filter(m => { const l = lit(m); return l.neg ? !a.del.includes(atom(l)) : !a.add.includes(atom(l)); });
-    for (const p of a.pre) if (!ut.includes(p)) ut.push(p);
-    return ut;
+    const rest = g.filter(m => { const l = lit(m); return l.neg ? !a.del.includes(atom(l)) : !a.add.includes(atom(l)); }), g2 = rest.slice();
+    for (const p of a.pre) if (!g2.includes(p)) g2.push(p);
+    return { rest, g2 };
   }
 
   function bakover(d) {
@@ -266,7 +272,7 @@
     for (let k = 0; k < d.steg.length && !ferdig; k++) {
       const kand = d.steg[k].map(n => {
         const a = handling(sks, n), r = relevans(g, a);
-        return { a, r, g2: r.ok ? regresser(g, a) : null };
+        return { a, r, ...(r.ok && regresser(g, a)) };
       });
       const valgt = kand.findIndex(c => c.r.ok);
       const tekster = kand.map(c => (c.r.ok ? gb(c.g2) : "ikke relevant"));
@@ -292,10 +298,9 @@
       }
       const c = kand[valgt];
       alt[valgt].tilstand = "aktiv";
-      const rest = g.filter(m => { const l = lit(m); return l.neg ? !c.a.del.includes(atom(l)) : !c.a.add.includes(atom(l)); });
       const regTab = {
         tittel: `Regresjon over ${c.a.navn}`, kol: ["", ""],
-        rader: [["g − ADD(a)", og(rest)], ["∪ PRECOND(a)", og(c.a.pre)], [`g${sub(k + 1)}`, og(c.g2)]]
+        rader: [["g − ADD(a)", og(c.rest)], ["∪ PRECOND(a)", og(c.a.pre)], [`g${sub(k + 1)}`, og(c.g2)]]
       };
       spor.push([`g${sub(k + 1)}`, c.a.navn, og(c.g2)]);
       g = c.g2;
@@ -351,21 +356,20 @@
     let s = d.init.slice();
     const kjede = [{ ...s0 }], kanter = [], spor = [];
     const sporTab = m => ({ tittel: "Relaksert plan (DEL ignoreres)", kol: ["Steg", "Handling", "ADD", "DEL (ignoreres)"], rader: spor.map(r => r.slice()), marker: m });
-    const graf = (siste, alle) => ({ retning: true, noder: kjede.map((n, i) => ({ ...n, form: "boks", tilstand: alle || (i === kjede.length - 1 ? siste : "utvidet") })), kanter: kanter.map(k => ({ ...k, tilstand: alle === "sti" ? "sti" : "ny" })) });
     for (let k = 0; k < d.avslappet.length; k++) {
       const a = P.akts.find(x => x.navn === d.avslappet[k]);
       if (!a || !kanBrukes(s, a)) throw new Error("Relaksert plan feiler ved " + d.avslappet[k]);
       const s2 = [...s, ...a.add.filter(x => !s.includes(x))];
       const beholdt = a.del.filter(x => s.includes(x));
       spor.push([String(k + 1), a.navn, komma(a.add), komma(a.del)]);
-      kanter.push({ fra: kjede[kjede.length - 1].id, til: "r" + (k + 1), tekst: a.navn });
+      kanter.push({ fra: kjede[kjede.length - 1].id, til: "r" + (k + 1), tekst: a.navn, tilstand: "ny" });
       const forrige = kjede[kjede.length - 1];
       kjede.push({ id: "r" + (k + 1), tekst: sb(s2), x: 0, y: forrige.y + H(forrige.tekst) / 2 + H(sb(s2)) / 2 + 44, over: "s" + sub(k + 1) + "⁺" });
       s = s2;
       let t = `<b>Ignore delete lists</b>, steg ${k + 1}: ${a.navn} legger til ${komma(a.add)}.`;
       if (beholdt.length) t += ` ${komma(beholdt)} blir stående, fordi DEL ignoreres.`;
       if (k === d.avslappet.length - 1) t += ` Nå holder målet: h = ${k + 1}.`;
-      scener.push({ tekst: t, graf: graf(k === d.avslappet.length - 1 ? "mal" : "aktiv"), tabeller: [sporTab([k]), tall(String(hPre), k === d.avslappet.length - 1 ? String(k + 1) : "?", String(hStjerne))] });
+      scener.push({ tekst: t, graf: kjedeGraf(kjede, kanter, k === d.avslappet.length - 1 ? "mal" : "aktiv"), tabeller: [sporTab([k]), tall(String(hPre), k === d.avslappet.length - 1 ? String(k + 1) : "?", String(hStjerne))] });
     }
     // i det ekte problemet feiler den relakserte planen
     let ekte = d.init.slice(), feil = null;
@@ -376,7 +380,7 @@
     }
     scener.push({
       tekst: `BFS i det relakserte problemet bekrefter at korteste relakserte plan har ${hPluss} steg.${feil ? ` I det ekte problemet feiler den ved ${feil.n}: ${komma(feil.mangler)} ble slettet tidligere.` : ""} ${hPre} ≤ ${hPluss} ≤ ${hStjerne}: begge er admissible, og ignore delete lists ligger nærmest h*.`,
-      graf: graf(null, "sti"), tabeller: [sporTab(), tall(String(hPre), String(hPluss), String(hStjerne))]
+      graf: kjedeGraf(kjede, kanter, null, "sti"), tabeller: [sporTab(), tall(String(hPre), String(hPluss), String(hStjerne))]
     });
     return { scener, hPre, hPluss, hStjerne };
   }
@@ -421,7 +425,7 @@
     const lag = id => ({ id, tekst: vis(N.find(x => x.id === id).plan), p: N.find(x => x.id === id).hla, barn: N.filter(x => x.far === id).map(x => lag(x.id)) });
     const T = boksTre(lag("p0"));
     const bib = {
-      tittel: "Bibliotek" + (d.ill ? " (ILLUSTRASJON fra videoen)" : ""), kol: ["Handling", "Refinements / PRECOND → EFFECT"],
+      tittel: "Bibliotek (ILLUSTRASJON fra videoen)", kol: ["Handling", "Refinements / PRECOND → EFFECT"],
       rader: [...Object.entries(ref).map(([h, rs]) => [`${d.fullt[h] || h} (HLA)`, rs.map(vis).join(" eller ")]),
         ...Object.entries(d.prim).map(([p, a]) => [d.fullt[p] || p, `${og(a.pre)} → ${og([...a.add, ...a.del.map(x => "¬" + x)])}`])]
     };
@@ -429,15 +433,10 @@
     const sporTab = m => ({ tittel: "Sporing", kol: ["POP", "Første HLA", "Hva skjer", "Frontier etterpå"], rader: spor.map(r => r.slice()), marker: m });
     const synlig = new Set(["p0"]), tilst = { p0: "grense" }, under = {};
     const scener = [];
-    const scene = (tekst, tab) => {
-      const g = A.kopi(T);
-      g.noder = g.noder.filter(n => synlig.has(n.id)).map(n => ({ ...n, tilstand: tilst[n.id] || "ny", under: under[n.id] || "" }));
-      g.kanter = g.kanter.filter(k => synlig.has(k.til)).map(k => ({ ...k, tilstand: ["sti", "mal"].includes(tilst[k.til]) ? "sti" : "ny" }));
-      scener.push({ tekst, graf: g, tabeller: tab });
-    };
+    const scene = (tekst, tab) => scener.push({ tekst, graf: delTre(T, synlig, tilst, under), tabeller: tab });
     scene(`Start: ${og(init)}. Mål: ${og(d.mal)}. Frontier er en FIFO-kø med planen ${vis([d.rot])}.`, [bib, sporTab()]);
     H.forEach((h, k) => {
-      Object.keys(tilst).forEach(x => { if (tilst[x] === "aktiv") tilst[x] = "utvidet"; });
+      ferdigAktiv(tilst);
       const n = N.find(x => x.id === h.id), frTxt = h.fr.map(x => vis(N.find(y => y.id === x).plan)).join(", ") || "tom";
       tilst[h.id] = "aktiv";
       let t;
@@ -496,9 +495,8 @@
     const kjede = [{ id: "b0", tekst: "True", under: mengde(ws), x: 0, y: 0, over: "b₀" }], kanter = [];
     const rader = [["–", mengde(ws), "True"]];
     const tab = m => ({ tittel: "Mengde (kap. 4) mot formel (kap. 11)", kol: ["Handling", "Kap. 4: mengde", "Kap. 11: formel"], rader: rader.map(r => r.slice()), marker: m });
-    const graf = siste => ({ retning: true, noder: kjede.map((n, i) => ({ ...n, form: "boks", tilstand: i === kjede.length - 1 ? siste : "utvidet" })), kanter: kanter.map(k => ({ ...k })) });
     const verdTab = { tittel: "Verdenene (Fig. 4.9)", kol: ["Nr.", "Plass", "Venstre", "Høyre"], rader: VERDENER.map(w => [String(w.n), w.pos, w.l ? "rent" : "skitt", w.r ? "rent" : "skitt"]) };
-    const scener = [{ tekst: "Uten sensorer vet agenten ingenting: b₀ = True, alle åtte verdenene. Open world: et fluent som ikke står i b, er ukjent.", graf: graf("aktiv"), tabeller: [verdTab, tab()] }];
+    const scener = [{ tekst: "Uten sensorer vet agenten ingenting: b₀ = True, alle åtte verdenene. Open world: et fluent som ikke står i b, er ukjent.", graf: kjedeGraf(kjede, kanter, "aktiv"), tabeller: [verdTab, tab()] }];
     let enCNF = true;
     d.plan.forEach((h, k) => {
       let t;
@@ -523,12 +521,12 @@
       const f = enCNF ? og(b) : disjunksjon(ws);
       rader.push([h, mengde(ws), f]);
       kanter.push({ fra: kjede[kjede.length - 1].id, til: "b" + (k + 1), tekst: h });
-      kjede.push({ id: "b" + (k + 1), tekst: f, under: mengde(ws), x: 0, y: (k + 1) * DY, over: "b" + sub(k + 1) });
-      scener.push({ tekst: t, graf: graf(enCNF ? "aktiv" : "feil"), tabeller: [tab([rader.length - 1])] });
+      kjede.push({ id: "b" + (k + 1), tekst: f, under: mengde(ws), x: 0, y: (k + 1) * 110, over: "b" + sub(k + 1) });
+      scener.push({ tekst: t, graf: kjedeGraf(kjede, kanter, enCNF ? "aktiv" : "feil"), tabeller: [tab([rader.length - 1])] });
     });
     const slutt = enCNF ? og(b) : disjunksjon(ws);
     const rent = ws.every(w => w.l && w.r);
-    scener.push({ tekst: `Til slutt: ${slutt} = ${mengde(ws)}.${rent ? " Begge rutene er rene i alle mulige verdener, så planen virker uten sensorer." : ""}${enCNF ? " Formelen er kort (O(n) for n fluents), mens mengden kan ha 2ⁿ verdener." : " Alternativet er å dele Suck i SuckL og SuckR med preconditions; da holder 1-CNF seg, men agenten vet ikke om de er applicable i True."}`, graf: graf(rent ? "mal" : enCNF ? "utvidet" : "feil"), tabeller: [tab()] });
+    scener.push({ tekst: `Til slutt: ${slutt} = ${mengde(ws)}.${rent ? " Begge rutene er rene i alle mulige verdener, så planen virker uten sensorer." : ""}${enCNF ? " Formelen er kort (O(n) for n fluents), mens mengden kan ha 2ⁿ verdener." : " Alternativet er å dele Suck i SuckL og SuckR med preconditions; da holder 1-CNF seg, men agenten vet ikke om de er applicable i True."}`, graf: kjedeGraf(kjede, kanter, rent ? "mal" : enCNF ? "utvidet" : "feil"), tabeller: [tab()] });
     return { scener, mengde: mengde(ws), formel: slutt, enCNF };
   }
 
@@ -543,9 +541,8 @@
     const kjede = [{ id: "m0", tekst: mb(b), under: `${ws.length} verdener, mål i ${mal(ws)}`, x: 0, y: 0, over: "b₀" }], kanter = [];
     const rader = [["b₀", "–", String(ws.length), String(mal(ws))]];
     const tab = m => ({ tittel: "Sensorless maling (verdener: ILLUSTRASJON med to farger)", kol: ["Steg", "Handling", "Verdener", "Målet sant i"], rader: rader.map(r => r.slice()), marker: m });
-    const graf = siste => ({ retning: true, noder: kjede.map((n, i) => ({ ...n, form: "boks", tilstand: i === kjede.length - 1 ? siste : "utvidet" })), kanter: kanter.map(k => ({ ...k })) });
     const skj = { tittel: "Skjemaene (11.5)", kol: ["", ""], rader: [["Init", "Object(Table) ∧ Object(Chair) ∧ Can(C1) ∧ Can(C2) ∧ InView(Table)"], ["Goal", "Color(Chair, c) ∧ Color(Table, c)"], ["RemoveLid(can)", "PRECOND Can(can), EFFECT Open(can)"], ["Paint(x, can)", "PRECOND Object(x) ∧ Can(can) ∧ Color(can, c) ∧ Open(can), EFFECT Color(x, c)"]] };
-    const scener = [{ tekst: "Agenten vet bare at alt har en farge, ∀x ∃c Color(x, c). Med Skolem-funksjonen C(x) blir det b₀ = Color(x, C(x)). Fargene er ukjente: open world.", graf: graf("aktiv"), tabeller: [skj, tab()] }];
+    const scener = [{ tekst: "Agenten vet bare at alt har en farge, ∀x ∃c Color(x, c). Med Skolem-funksjonen C(x) blir det b₀ = Color(x, C(x)). Fargene er ukjente: open world.", graf: kjedeGraf(kjede, kanter, "aktiv"), tabeller: [skj, tab()] }];
     for (let k = 0; k < d.plan.length; k++) {
       const l = lit(d.plan[k]);
       let t;
@@ -555,7 +552,7 @@
       } else {
         const [x, can] = l.args;
         if (!b.includes(`Open(${can})`)) {
-          scener.push({ tekst: `${d.plan[k]} er ikke applicable: Open(${can}) står ikke i b. En usann precondition gjør handlingen inapplicable.`, graf: graf("feil"), tabeller: [tab()] });
+          scener.push({ tekst: `${d.plan[k]} er ikke applicable: Open(${can}) står ikke i b. En usann precondition gjør handlingen inapplicable.`, graf: kjedeGraf(kjede, kanter, "feil"), tabeller: [tab()] });
           return { scener };
         }
         const i = OBJ.indexOf(x), j = OBJ.indexOf(can);
@@ -567,10 +564,10 @@
       kanter.push({ fra: kjede[kjede.length - 1].id, til: "m" + (k + 1), tekst: d.plan[k] });
       const forrige = kjede[kjede.length - 1];
       kjede.push({ id: "m" + (k + 1), tekst: mb(b), under: `${ws.length} verdener, mål i ${mal(ws)}`, x: 0, y: forrige.y + H(forrige.tekst) / 2 + H(mb(b)) / 2 + 70, over: "b" + sub(k + 1) });
-      scener.push({ tekst: t + ` Med to farger: ${ws.length} mulige verdener, målet sant i ${mal(ws)}.`, graf: graf("aktiv"), tabeller: [tab([rader.length - 1])] });
+      scener.push({ tekst: t + ` Med to farger: ${ws.length} mulige verdener, målet sant i ${mal(ws)}.`, graf: kjedeGraf(kjede, kanter, "aktiv"), tabeller: [tab([rader.length - 1])] });
     }
     const ok = mal(ws) === ws.length;
-    scener.push({ tekst: ok ? "Målet holder i alle verdenene: c = C(Can1). Agenten vet ikke hvilken farge det blir, bare at den er lik." : "Målet holder ikke i alle verdenene ennå.", graf: graf(ok ? "mal" : "utvidet"), tabeller: [tab()] });
+    scener.push({ tekst: ok ? "Målet holder i alle verdenene: c = C(Can1). Agenten vet ikke hvilken farge det blir, bare at den er lik." : "Målet holder ikke i alle verdenene ennå.", graf: kjedeGraf(kjede, kanter, ok ? "mal" : "utvidet"), tabeller: [tab()] });
     return { scener, verdener: ws.length, mal: mal(ws) };
   }
 
@@ -695,7 +692,7 @@
   });
 
   const HAWAII = {
-    ill: true, rot: "Act", bil: "Have(Car)", snu: "Go",
+    rot: "Act", bil: "Have(Car)", snu: "Go",
     ref: { Act: [["Go", "Fly"]], Go: [["Drive", "Shuttle"], ["Taxi"]] },
     prim: {
       Drive: { pre: ["At(Home)", "Have(Car)"], add: ["At(LTP)"], del: ["At(Home)"] },
@@ -728,9 +725,9 @@
       { navn: "Hawaii med bil (quiz kap. 2)", data: HAWAII, valg: { bil: true, snu: false } },
       { navn: "Med bil og [Taxi] først (Øv selv 4)", data: HAWAII, valg: { bil: true, snu: true } }
     ],
-    kjor: (d, v) => hierarkisk(d, v || {}).scener,
+    kjor: (d, v) => hierarkisk(d, v).scener,
     svar(d, v) {
-      const r = hierarkisk(d, v || {});
+      const r = hierarkisk(d, v);
       return r.plan ? [{ id: "plan", navn: "Planen som returneres", verdi: r.plan.join(", ") }] : [];
     }
   });

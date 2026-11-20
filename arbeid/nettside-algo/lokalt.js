@@ -67,7 +67,6 @@
     for (let i = 0; i <= tak; i++) {
       const cur = steg[steg.length - 1], nb = p.naboer(cur.s);
       cur.nb = nb;
-      if (!nb.length) return (cur.slutt = "ingen naboer"), steg;
       const bv = Math.max(...nb.map(x => x.v));
       cur.like = nb.filter(x => x.v === bv);
       const best = (cur.best = cur.like[Math.min(tie[i] || 0, cur.like.length - 1)]);
@@ -124,7 +123,7 @@
           hist.push([String(f + 1), String(i), q ? s.s : String(s.s), q ? String(-s.v) : String(s.v), trekk]);
           let tekst;
           if (s.slutt) {
-            const grunn = { topp: "Alle naboene er dårligere", flat: "Ingen nabo er strengt bedre (de beste er like gode)", grense: `Grensen på ${maks} sidesteg på rad er nådd`, "ingen naboer": "Tilstanden har ingen naboer", avbrutt: `Animasjonen stopper etter ${i} trekk` }[s.slutt];
+            const grunn = { topp: "Alle naboene er dårligere", flat: "Ingen nabo er strengt bedre (de beste er like gode)", grense: `Grensen på ${maks} sidesteg på rad er nådd`, avbrutt: `Animasjonen stopper etter ${i} trekk` }[s.slutt];
             tekst = p.mal(s.s)
               ? `${p.navn(s.s)}: dette er et mål${q ? " (h = 0)" : ", global maximum"}. ${grunn}, så søket stopper med en løsning.`
               : s.slutt === "avbrutt" ? `${p.navn(s.s)}. ${grunn}. Søket ville gått videre, så animasjonen viser ikke hvor det stopper.` : `${p.navn(s.s)}. ${grunn}, så hill climbing stopper ${s.slutt === "topp" ? (q ? "i en local minimum for h" : "i en local maximum") : "på et platå (en flat topp eller en shoulder)"}, ikke i et mål.`;
@@ -153,9 +152,7 @@
         });
         const slutt = steg[steg.length - 1];
         if (p.mal(slutt.s)) break;
-        if (f === starter.length - 1 && valg.restart) sc[sc.length - 1].tekst += " Ingen flere starter i lista.";
-        else if (valg.restart) sc[sc.length - 1].tekst += " Random restart: prøver fra en ny start.";
-        else if (!valg.restart) sc[sc.length - 1].tekst += " Slå på random restart for å prøve fra en ny start.";
+        sc[sc.length - 1].tekst += !valg.restart ? " Slå på random restart for å prøve fra en ny start." : f === starter.length - 1 ? " Ingen flere starter i lista." : " Random restart: prøver fra en ny start.";
         besokt = new Set();
       }
       return sc;
@@ -181,8 +178,7 @@
     for (let t = 1; ; t++) {
       const T = t <= d.T.length ? d.T[t - 1] : 0;
       if (T <= 0 || t > d.nabo.length + 1) { steg.push({ t, T: 0, s }); return steg; }
-      let n = s + d.nabo[t - 1];
-      if (n < 0 || n >= y.length) n = s - d.nabo[t - 1];
+      const n = s + d.nabo[t - 1];
       const dE = y[n] - y[s], P = dE >= 0 ? 1 : Math.exp(dE / T), r = d.r[t - 1];
       const ok = dE > 0 || r < P;
       steg.push({ t, T, s, n, dE, P, r, ok });
@@ -253,7 +249,6 @@
   function beam(y, start) {
     const k = start.length, mal = Math.max(...y), steg = [];
     let cur = [...new Set(start)];
-    if (cur.some(s => y[s] === mal)) return [{ cur, funnet: cur.find(s => y[s] === mal) }];
     for (let i = 0; i < 30; i++) {
       const etter = [...new Set(cur.flatMap(s => [s - 1, s + 1]).filter(t => t >= 0 && t < y.length))].sort((a, b) => y[b] - y[a] || a - b);
       const funnet = etter.find(s => y[s] === mal);
@@ -293,10 +288,6 @@
         return landskap(y, st);
       };
       sc.push({ tekst: `Start med k = ${k} tilstander: ${d.start.map(s => `x = ${s} (${y[s]})`).join(", ")}.`, graf: g([], [], d.start) });
-      if (steg.length && steg[0].funnet != null && !steg[0].etter) {
-        sc.push({ tekst: `x = ${steg[0].funnet} er allerede målet.`, graf: g([], [], [], steg[0].funnet) });
-        return sc;
-      }
       steg.forEach((s, i) => {
         const liste = tab(`Etterfølgere i steg ${i + 1}, sortert`, ["x", "Verdi", "Beholdes"], s.etter.map(x => [String(x), String(y[x]), s.valgt.includes(x) ? "ja" : ""]), s.etter.map((x, j) => (s.valgt.includes(x) ? j : -1)).filter(j => j >= 0));
         const tekst = `Steg ${i + 1}: etterfølgerne til {${s.cur.join(", ")}} er ${s.etter.map(x => `${x} (${y[x]})`).join(", ")}. ` +
@@ -312,7 +303,7 @@
     },
     svar(d) {
       const steg = beam(d.y, d.start), s = steg[steg.length - 1];
-      return [{ id: "steg", navn: "Antall steg til toppen", verdi: s.funnet != null ? String(s.etter ? steg.length : 0) : "ikke funnet" }];
+      return [{ id: "steg", navn: "Antall steg til toppen", verdi: s.funnet != null ? String(steg.length) : "ikke funnet" }];
     }
   });
 

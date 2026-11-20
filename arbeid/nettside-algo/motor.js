@@ -1,6 +1,6 @@
 // Motor for algoritmeanimasjonene og tegneverktøyet. Se KONTRAKT.md.
 // Skjelett: registeret og hjelperne under er en del av kontrakten og skal beholde signaturene.
-window.ALGO = window.ALGO || {
+window.ALGO = {
   alle: [],
   legg(a) { this.alle.push(a); },
   kopi: x => JSON.parse(JSON.stringify(x)),
@@ -8,10 +8,9 @@ window.ALGO = window.ALGO || {
   tre(rot) {
     const noder = [], kanter = [];
     let x = 0;
-    const form = { max: "max", min: "min", sjanse: "sjanse", blad: "blad" };
     const ga = (n, d, far) => {
       const barn = n.barn || [];
-      const me = { id: n.id, y: d * 110, tekst: n.tekst ?? "", form: form[n.type] || (barn.length ? "sirkel" : "blad") };
+      const me = { id: n.id, y: d * 110, tekst: n.tekst ?? "", form: ["max", "min", "sjanse", "blad"].includes(n.type) ? n.type : barn.length ? "sirkel" : "blad" };
       if (barn.length) {
         const xs = barn.map(b => ga(b, d + 1, n).x);
         me.x = (xs[0] + xs[xs.length - 1]) / 2;
@@ -39,8 +38,8 @@ window.ALGO = window.ALGO || {
   const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   // Tekstfeltene er HTML, men bare <b> <i> <code> <sub> <sup> (og entiteter) slipper gjennom. Alt annet vises som tekst.
   const html = s => esc(s).replace(/&lt;(\/?)(b|i|code|sub|sup)&gt;/g, "<$1$2>").replace(/&amp;(#?\w+);/g, "&$1;");
-  const fin = x => typeof x === "number" && Number.isFinite(x);
-  const fmt = x => (Number.isInteger(x) ? String(x) : String(+(+x).toFixed(3)));
+  const fin = Number.isFinite;
+  const fmt = x => String(+(+x).toFixed(3));
   const r1 = x => Math.round(x * 10) / 10;
   const kl = t => (TILST[t] ? t : "ny");
   let uidN = 0;
@@ -214,7 +213,7 @@ window.ALGO = window.ALGO || {
     });
     if (brukt.size < 2 && !mal && !start) return "";
     return `<div class="algo-leg">${Object.keys(TILST).filter(t => brukt.has(t)).map(t => `<span><i class="sw t-${t}"></i>${TILST[t]}</span>`).join("")}` +
-      (mal ? `<span><i class="sw ring"></i>måltilstand</span>` : "") + (start ? `<span><i class="sw pil">→</i>start</span>` : "") + "</div>";
+      (mal ? `<span><i class="sw ring"></i>måltilstand</span>` : "") + (start ? `<span><i class="pil">→</i>start</span>` : "") + "</div>";
   }
 
   const tabell = t => {
@@ -235,8 +234,8 @@ window.ALGO = window.ALGO || {
     const m = Number.isInteger(k.marker) && k.marker >= 0 && k.marker < n ? k.marker : -1;
     return `<div class="algo-tab"><svg class="algo-kurve" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(k.tittel || "Kurve")}">` +
       `<text class="kt" x="${l}" y="13">${esc(k.tittel || "")}</text><path class="ax" d="M${l} ${t}V${H - b}H${W - r}"/>` +
-      `<text class="kv" x="${l - 4}" y="${t + 4}" text-anchor="end">${fmt(y1)}</text><text class="kv" x="${l - 4}" y="${H - b}" text-anchor="end">${fmt(y0)}</text>` +
-      `<text class="kv" x="${l}" y="${H - 6}">${fmt(x0)}</text><text class="kv" x="${W - r}" y="${H - 6}" text-anchor="end">${fmt(x1)}</text>` +
+      `<text x="${l - 4}" y="${t + 4}" text-anchor="end">${fmt(y1)}</text><text x="${l - 4}" y="${H - b}" text-anchor="end">${fmt(y0)}</text>` +
+      `<text x="${l}" y="${H - 6}">${fmt(x0)}</text><text x="${W - r}" y="${H - 6}" text-anchor="end">${fmt(x1)}</text>` +
       `<polyline points="${pts}"/>${m >= 0 ? `<circle cx="${r1(X(xs[m]))}" cy="${r1(Y(ys[m]))}" r="4.5"/>` : ""}</svg></div>`;
   }
 
@@ -316,19 +315,19 @@ window.ALGO = window.ALGO || {
   }
 
   // ---------- Valg ----------
-  const stdValg = a => Object.fromEntries((a.valg || []).map(v => [v.id, v.std ?? (v.type === "bool" ? false : Array.isArray(v.type) ? v.type[0] : v.type === "tall" ? 0 : "")]));
+  const stdValg = a => Object.fromEntries((a.valg || []).map(v => [v.id, v.std]));
   function valgSkjema(el, a, verdier, endret) {
     el.innerHTML = (a.valg || []).map((v, k) => {
-      const x = verdier[v.id], id = uid();
+      const x = verdier[v.id];
       if (v.type === "bool") return `<label class="algo-v"><input type="checkbox" data-v="${k}"${x ? " checked" : ""}> ${esc(v.navn)}</label>`;
-      if (Array.isArray(v.type)) return `<label class="algo-v" for="${id}">${esc(v.navn)} <select id="${id}" data-v="${k}">${v.type.map(o => `<option${String(o) === String(x) ? " selected" : ""}>${esc(o)}</option>`).join("")}</select></label>`;
-      return `<label class="algo-v" for="${id}">${esc(v.navn)} <input class="in${v.type === "tall" ? " kort" : ""}" id="${id}" data-v="${k}" type="${v.type === "tall" ? "number" : "text"}"${v.type === "tall" ? ' step="any"' : ""} value="${esc(fin(x) ? fmt(x) : x ?? "")}"></label>`;
+      if (Array.isArray(v.type)) return `<label class="algo-v">${esc(v.navn)} <select data-v="${k}">${v.type.map(o => `<option${String(o) === String(x) ? " selected" : ""}>${esc(o)}</option>`).join("")}</select></label>`;
+      return `<label class="algo-v">${esc(v.navn)} <input class="in${v.type === "tall" ? " kort" : ""}" data-v="${k}" type="${v.type === "tall" ? "number" : "text"}"${v.type === "tall" ? ' step="any"' : ""} value="${esc(fin(x) ? fmt(x) : x ?? "")}"></label>`;
     }).join("");
     el.onchange = e => {
       const k = e.target.dataset.v; if (k == null) return;
       const v = a.valg[+k], t = e.target;
       if (v.type === "bool") verdier[v.id] = t.checked;
-      else if (v.type === "tall") { const x = parseFloat(String(t.value).replace(",", ".")); if (!fin(x)) { t.value = verdier[v.id]; return; } verdier[v.id] = x; }
+      else if (v.type === "tall") { const x = tallFra(t.value); if (!fin(x)) { t.value = verdier[v.id]; return; } verdier[v.id] = x; }
       else verdier[v.id] = t.value;
       endret();
     };
@@ -336,6 +335,7 @@ window.ALGO = window.ALGO || {
 
   const prov = (f, ...x) => { try { return { v: f(...x) }; } catch (e) { console.error(e); return { feil: e }; } };
   const feilTekst = e => `<p class="algo-feil">Algoritmen feilet på denne inputen: ${esc(e && e.message || e)}</p>`;
+  const visKjoring = (el, r) => { if (r.feil) el.innerHTML = feilTekst(r.feil); else spiller(el, r.v); };
 
   // ---------- #algoritmer ----------
   const forste = s => { const t = String(s || "").replace(/<[^>]+>/g, ""); const m = /^.*?[.!?](\s|$)/.exec(t); return (m ? m[0] : t).trim(); };
@@ -357,6 +357,43 @@ window.ALGO = window.ALGO || {
     ["Forward og backward planlegging", "progresjon:Progression (forward)|regresjon:Regression (backward)", "Samme state-space-søk i hver sin retning: progression fra starttilstanden, regression fra målet via relevante handlinger."]
   ].map(([navn, v, tekst]) => { const par = v.split("|").map(x => x.split(":")); return { navn, ids: par.map(x => x[0]), kort: Object.fromEntries(par), tekst }; });
   const gruppe = x => GRUPPER.find(g => g.ids.includes(x.id));
+  // «Ligner på X, bare at …» øverst på algoritmesiden: [id til X, resten av setningen]. Bare der sammenligningen hjelper.
+  const LIGNER = {
+    bfs: ["ucs", "bare at den ser bort fra kostnadene: frontieren er en FIFO-kø (lag for lag), og målet testes allerede når noden genereres (early goal test)."],
+    dfs: ["bfs", "bare at frontieren er en LIFO-stabel, så den dypeste noden utvides først."],
+    dls: ["dfs", "bare at noder på dybde ℓ testes, men ikke utvides. Stoppet grensen noe, blir svaret cutoff i stedet for failure."],
+    ids: ["dls", "bare at DLS kjøres på nytt med ℓ = 0, 1, 2, … til svaret ikke lenger er cutoff."],
+    ucs: ["bfs", "bare at den tar ut stien med lavest g(n) i stedet for den eldste, og tester målet når noden tas ut (late goal test)."],
+    greedy: ["astar", "bare at f(n) = h(n): den ser bort fra g(n), kostnaden hittil, så den finner ikke alltid den billigste stien."],
+    astar: ["ucs", "bare at f(n) = g(n) + h(n): heuristikken trekker søket mot målet."],
+    wastar: ["astar", "bare at h vektes: f(n) = g(n) + W·h(n) med W &gt; 1. Den utvider ofte færre noder, men kan finne en dyrere sti."],
+    "hill-climbing": ["greedy", "bare at den bare husker tilstanden den står i, aldri går tilbake og stopper når ingen nabo er strengt bedre."],
+    "simulated-annealing": ["hill-climbing", "bare at den velger en tilfeldig nabo og kan gå nedover med sannsynlighet e<sup>ΔE/T</sup>, som blir mindre etter hvert som T synker."],
+    "local-beam": ["hill-climbing", "bare at den holder k tilstander og beholder de k beste blant alle etterfølgerne samlet. Det er ikke k uavhengige restarter."],
+    genetisk: ["local-beam", "bare at barna lages av to foreldre med crossover og mutasjon, og foreldrene trekkes med sannsynlighet etter fitness."],
+    "and-or": ["dfs", "bare at handlinger kan ha flere utfall: en AND-node trenger en plan for hvert utfall, og svaret er en conditional plan, ikke en sti."],
+    "belief-state": ["bfs", "bare at hver node er en belief state (en mengde tilstander), og målet er nådd først når alle tilstandene i mengden er mål."],
+    backtracking: ["dfs", "bare at hvert nivå tilordner én variabel, og en verdi som bryter en constraint, følges aldri videre."],
+    "min-conflicts": ["hill-climbing", "bare at tilstandene er komplette tilordninger: den velger en tilfeldig variabel i konflikt og gir den verdien med færrest konflikter."],
+    "alfa-beta": ["minimax", "bare at den hopper over grener som ikke kan endre valget. Rotverdien og trekket blir de samme."],
+    expectiminimax: ["minimax", "bare at sjansenoder tar forventningen Σ P(r)·verdi i stedet for max eller min."],
+    mcts: ["minimax", "bare at en node vurderes med snittet av tilfeldige playouts i stedet for en evalueringsfunksjon, og treet vokser der UCB1 peker."],
+    "tt-entails": ["dpll", "bare at den går gjennom alle 2<sup>n</sup> modellene uten early termination, pure symbol eller unit clause."],
+    dpll: ["tt-entails", "bare at den sjekker satisfiability og kutter tidlig: early termination, pure symbol og unit clause."],
+    walksat: ["min-conflicts", "bare at variablene er symboler i en CNF-formel: den velger en usann klausul og flipper ett symbol, tilfeldig med sannsynlighet p, ellers det som gjør flest klausuler sanne."],
+    "pl-resolusjon": ["fol-resolusjon", "bare uten variabler: komplementære literaler må være like, så verken unifikasjon eller Skolemisering trengs."],
+    "fol-resolusjon": ["pl-resolusjon", "bare at komplementære literaler må unifiseres, og CNF-en trenger Skolem-konstanter og -funksjoner."],
+    "forward-chaining": ["backward-chaining", "bare at den går fra faktaene mot målet (datadrevet) i stedet for fra målet bakover."],
+    "backward-chaining": ["forward-chaining", "bare at den starter i målet q og leter bakover etter regler som gir q (måldrevet)."],
+    "fol-forward-chaining": ["forward-chaining", "bare at reglene har variabler: premissene matches mot faktaene med unifikasjon (Generalized Modus Ponens), runde for runde."],
+    progresjon: ["regresjon", "bare at den går forover fra starttilstanden med applicable actions: s′ = (s − DEL(a)) ∪ ADD(a)."],
+    regresjon: ["progresjon", "bare at den går bakover fra målet med relevante handlinger: g′ = (g − ADD(a)) ∪ PRECOND(a)."],
+    htn: ["bfs", "bare at nodene er planer: den tar ut den grunneste planen og erstatter første HLA med én refinement om gangen."],
+    sensorless: ["belief-state", "bare at belief staten er en formel, ikke en liste med tilstander: b′ = (b − DEL(a)) ∪ ADD(a)."],
+    viterbi: ["cyk", "bare at den går ord for ord gjennom setningen i stedet for å fylle et chart over alle delstrenger. Begge tar max og husker backpointers."],
+    cyk: ["viterbi", "bare at den fyller et chart over alle delstrenger (spenn) i stedet for å gå ord for ord. Begge tar max og husker backpointers."]
+  };
+  const ligner = a => (([id, resten] = []) => { const b = id && A.alle.find(y => y.id === id); return b ? `<p class="algo-ligner">Ligner på <a href="#algoritmer/${encodeURIComponent(id)}">${esc((gruppe(b) && gruppe(b).kort[id]) || b.navn.replace(/\s*[(:].*/, ""))}</a>, ${html(resten)}</p>` : ""; })(LIGNER[a.id]);
   // Søketeksten til et kort: navn, id, familie, episode og første setning, med små bokstaver.
   const sokTekst = (xs, ...ekstra) => esc(xs.flatMap(x => [x.navn, x.id, x.familie, x.ep, forste(x.kort)]).concat(ekstra).join(" ").replace(/<[^>]+>/g, "").toLowerCase());
   let sisteSok = "";
@@ -365,14 +402,13 @@ window.ALGO = window.ALGO || {
   A.side = (el, id) => {
     const a = id ? A.alle.find(x => x.id === id) : null;
     if (!a) {
-      const fams = FAM.concat([...new Set(A.alle.map(x => x.familie))].filter(f => !FAM.includes(f)));
       el.innerHTML = `<div class="algo"><h1>Algoritmer animert</h1>` +
         (id ? `<p class="algo-feil">Fant ingen algoritme med id «${esc(id)}».</p>` : "") +
         `<p>Velg en algoritme og se den steg for steg, med en kort forklaring under hvert steg. Vil du tegne en graf eller et tre fra en oppgave selv og få svaret ditt sjekket, bruk <a href="#verksted">Tegn og sjekk</a>.</p>` +
         `<p class="mut">Merkelappene sier hvor viktig algoritmen er, etter pensumlista og eksamenene 2019–2025:${[1, 2, 3].map(n => ` <span class="algo-pri p${n}">${PRIT[n][0]}</span> ${PRIT[n][1]}.`).join("")}</p>` +
         `<input type="search" class="in algo-sok" placeholder="Søk: A*, resolusjon, Nash, E07 …" aria-label="Søk etter algoritme"><p class="mut algo-ingen" hidden>Ingen treff.</p>` +
         (A.alle.length ? "" : `<p class="mut">Ingen algoritmer er lastet ennå.</p>`) +
-        fams.map(f => {
+        FAM.map(f => {
           const l = A.alle.filter(x => x.familie === f), vist = new Set();
           const kort = x => { const g = gruppe(x); if (!g) return enkelt(x); if (vist.has(g)) return ""; vist.add(g);
             const v = g.ids.map(id => A.alle.find(y => y.id === id)).filter(Boolean);
@@ -405,19 +441,16 @@ window.ALGO = window.ALGO || {
       if (sisteSok) { sok.value = sisteSok; filtrer(); }
       return;
     }
-    const ex = Array.isArray(a.eksempler) && a.eksempler.length ? a.eksempler : [{ navn: "Eksempel", data: null }];
+    const ex = a.eksempler;
     const ep = /^E\d\d$/.test(a.ep || "") ? `<a href="#${a.ep.toLowerCase()}">${a.ep}</a>` : esc(a.ep || "");
     const tegnbar = a.data === "graf" || a.data === "tre";
-    el.innerHTML = `<div class="algo"><p class="mut algo-sti"><a href="#algoritmer">← Alle algoritmer</a> · ${esc(a.familie || "")} · ${ep}${pri(a, 1)}</p><h1>${esc(a.navn)}</h1>` + (g => g ? `<div class="algo-faner" role="group" aria-label="${esc(g.navn)}">${g.ids.map(id => A.alle.find(y => y.id === id)).filter(Boolean).map(y => y === a ? `<span class="pa" aria-current="page">${esc(g.kort[y.id])}</span>` : `<a href="#algoritmer/${encodeURIComponent(y.id)}">${esc(g.kort[y.id])}</a>`).join("")}</div><p class="mut algo-fnote">${html(g.tekst)}</p>` : "")(gruppe(a)) +
+    el.innerHTML = `<div class="algo"><p class="mut algo-sti"><a href="#algoritmer">← Alle algoritmer</a> · ${esc(a.familie || "")} · ${ep}${pri(a, 1)}</p><h1>${esc(a.navn)}</h1>` + (g => g ? `<div class="algo-faner" role="group" aria-label="${esc(g.navn)}">${g.ids.map(id => A.alle.find(y => y.id === id)).filter(Boolean).map(y => y === a ? `<span class="pa" aria-current="page">${esc(g.kort[y.id])}</span>` : `<a href="#algoritmer/${encodeURIComponent(y.id)}">${esc(g.kort[y.id])}</a>`).join("")}</div><p class="mut algo-fnote">${html(g.tekst)}</p>` : "")(gruppe(a)) + ligner(a) +
       `<div class="algo-valg">${ex.length > 1 ? `<label class="algo-v">Eksempel <select data-ex>${ex.map((e, i) => `<option value="${i}">${esc(e.navn)}</option>`).join("")}</select></label>` : `<span class="mut">${esc(ex[0].navn)}</span>`}<span class="algo-vv"></span>` +
       (tegnbar ? `<button type="button" data-tegn>Tegn din egen</button><button type="button" data-tegn data-samm>Sammenlign med andre algoritmer</button>` : "") + `</div><div class="algo-anim"></div>` +
       `<div class="algo-om"><p>${html(a.kort)}</p>${Array.isArray(a.punkter) && a.punkter.length ? `<ul>${a.punkter.map(p => `<li>${html(p)}</li>`).join("")}</ul>` : ""}</div></div>`;
     const anim = el.querySelector(".algo-anim"), vv = el.querySelector(".algo-vv");
     let e = 0, verdier;
-    const kjor = () => {
-      const r = prov(() => a.kjor(A.kopi(ex[e].data ?? null), { ...verdier }));
-      if (r.feil) anim.innerHTML = feilTekst(r.feil); else spiller(anim, r.v);
-    };
+    const kjor = () => visKjoring(anim, prov(() => a.kjor(A.kopi(ex[e].data ?? null), { ...verdier })));
     const velg = i => { e = i; verdier = { ...stdValg(a), ...(ex[e].valg || {}) }; valgSkjema(vv, a, verdier, kjor); kjor(); };
     const sel = el.querySelector("[data-ex]");
     if (sel) sel.onchange = () => velg(+sel.value);
@@ -550,11 +583,9 @@ window.ALGO = window.ALGO || {
     const S = { type: "graf", data: null, algo: null, valg: {}, valgt: null, vb: null, angre: [], igjen: [], svar: {}, visFasit: false };
     let velgType = !inline;
     if (inline) {
-      S.type = opts.type === "tre" || opts.type === "graf" ? opts.type : typeAv(opts.data) || "graf";
-      velgType = !(opts.type === "tre" || opts.type === "graf");
+      velgType = opts.type !== "tre" && opts.type !== "graf";
+      S.type = velgType ? "graf" : opts.type;
       S.data = opts.data ? rens(S.type, A.kopi(opts.data)) : tom(S.type);
-      S.algo = opts.algo || null;
-      S.valg = opts.valg && typeof opts.valg === "object" ? { ...opts.valg } : {};
     } else {
       let lagret = ventende;
       S.sammStart = !!(lagret && lagret.samm);
@@ -563,7 +594,7 @@ window.ALGO = window.ALGO || {
       if (lagret && (lagret.type === "graf" || lagret.type === "tre")) { S.type = lagret.type; S.data = rens(S.type, lagret.data); S.algo = lagret.algo || null; S.valg = lagret.valg && typeof lagret.valg === "object" ? lagret.valg : {}; }
       else S.data = tom("graf");
     }
-    const algos = () => A.alle.filter(a => a.data === S.type && typeof a.kjor === "function");
+    const algos = () => A.alle.filter(a => a.data === S.type);
     const alg = () => algos().find(a => a.id === S.algo);
     const sikreAlgo = () => {
       if (!alg()) { const a = algos()[0]; S.algo = a ? a.id : null; S.valg = a ? stdValg(a) : {}; }
@@ -592,7 +623,7 @@ window.ALGO = window.ALGO || {
 
     // --- tilstand og endringer
     const lagre = () => {
-      if (inline) { if (typeof opts.endret === "function") opts.endret({ type: S.type, data: A.kopi(S.data) }); }
+      if (inline) opts.endret({ type: S.type, data: A.kopi(S.data) });
       else try { localStorage.setItem(NOKKEL, JSON.stringify({ type: S.type, data: S.data, algo: S.algo, valg: S.valg })); } catch (e) { /* privat modus o.l. */ }
     };
     let samle = null, samleTid = 0;
@@ -734,28 +765,30 @@ window.ALGO = window.ALGO || {
     };
 
     // --- inspektøren under tegneflaten
+    const navnFelt = n => `<b>Node ${esc(n.id)}</b><label class="algo-v">Navn <input class="in" data-f="navn" value="${esc(n.id)}" maxlength="30" autocomplete="off"></label>`;
+    const LUKK = `<button type="button" data-a="lukk" aria-label="Fjern markeringen" title="Fjern markeringen (Escape)">×</button></div><p class="mut algo-hint" data-m="insp" aria-live="polite"></p>`;
     function inspektor() {
       const v = S.valgt;
       if (v && S.type === "graf" && v[0] === "n" && gn(v.slice(1))) {
         const n = gn(v.slice(1)), c = csp(), andre = S.data.noder.filter(m => m.id !== n.id).concat(S.data.retning ? [n] : []);
-        insp.innerHTML = `<div class="algo-rad"><b>Node ${esc(n.id)}</b><label class="algo-v">Navn <input class="in" data-f="navn" value="${esc(n.id)}" maxlength="30" autocomplete="off"></label>` +
+        insp.innerHTML = `<div class="algo-rad">${navnFelt(n)}` +
           (c ? `<label class="algo-v">Domene <input class="in" data-f="domene" value="${esc((n.domene || []).join(", "))}" placeholder="1, 2, 3"></label>`
             : `<label class="algo-v">h <input class="in kort" data-f="h" inputmode="decimal" value="${fin(n.h) ? fmt(n.h) : ""}" placeholder="–"></label><label class="algo-v"><input type="checkbox" data-f="start"${S.data.start === n.id ? " checked" : ""}> Start</label><label class="algo-v"><input type="checkbox" data-f="mal"${S.data.mal.includes(n.id) ? " checked" : ""}> Mål</label>`) +
           (andre.length ? `<label class="algo-v">Ny kant til <select data-f="kobletil">${andre.map(m => `<option>${esc(m.id)}</option>`).join("")}</select></label><button type="button" data-a="kant">Legg til</button>` : "") +
-          `<button type="button" data-a="slett">Slett node</button><button type="button" data-a="lukk" aria-label="Fjern markeringen" title="Fjern markeringen (Escape)">×</button></div><p class="mut algo-hint" data-m="insp" aria-live="polite"></p>`;
+          `<button type="button" data-a="slett">Slett node</button>${LUKK}`;
       } else if (v && S.type === "graf" && v[0] === "e" && S.data.kanter[+v.slice(1)]) {
         const k = S.data.kanter[+v.slice(1)], c = csp();
         insp.innerHTML = `<div class="algo-rad"><b>${c ? `Begrensning ${esc(k.fra)} ${esc(k.rel || "≠")} ${esc(k.til)}` : `Kant ${esc(k.fra)} ${S.data.retning ? "→" : "–"} ${esc(k.til)}`}</b>` +
           (c ? "" : `<label class="algo-v">Kost <input class="in kort" data-f="kost" inputmode="decimal" value="${fin(k.kost) ? fmt(k.kost) : ""}" placeholder="1"></label>`) +
           (S.data.retning && k.fra !== k.til ? `<button type="button" data-a="snu">Snu retningen</button>` : "") +
-          `<button type="button" data-a="slett">Slett kant</button><button type="button" data-a="lukk" aria-label="Fjern markeringen" title="Fjern markeringen (Escape)">×</button></div><p class="mut algo-hint" data-m="insp" aria-live="polite"></p>`;
+          `<button type="button" data-a="slett">Slett kant</button>${LUKK}`;
       } else if (v && S.type === "tre" && tn(v.slice(1))) {
         const { n, far } = tn(v.slice(1));
-        insp.innerHTML = `<div class="algo-rad"><b>Node ${esc(n.id)}</b><label class="algo-v">Navn <input class="in" data-f="navn" value="${esc(n.id)}" maxlength="30" autocomplete="off"></label>` +
+        insp.innerHTML = `<div class="algo-rad">${navnFelt(n)}` +
           `<label class="algo-v">Type <select data-f="ttype">${["max", "min", "sjanse", "blad"].map(t => `<option${t === n.type ? " selected" : ""}${t === "blad" && n.barn.length ? " disabled" : ""}>${t}</option>`).join("")}</select></label>` +
           (n.type === "blad" ? `<label class="algo-v">Verdi <input class="in kort" data-f="verdi" inputmode="decimal" value="${fin(n.verdi) ? fmt(n.verdi) : ""}"></label>` : "") +
           (far && far.type === "sjanse" ? `<label class="algo-v">p <input class="in kort" data-f="p" inputmode="decimal" value="${fin(n.p) ? fmt(n.p) : ""}"></label>` : "") +
-          `<button type="button" data-a="barn">+ Barn</button>${far ? `<button type="button" data-a="slett">Slett deltre</button>` : ""}<button type="button" data-a="lukk" aria-label="Fjern markeringen" title="Fjern markeringen (Escape)">×</button></div><p class="mut algo-hint" data-m="insp" aria-live="polite"></p>`;
+          `<button type="button" data-a="barn">+ Barn</button>${far ? `<button type="button" data-a="slett">Slett deltre</button>` : ""}${LUKK}`;
       } else {
         S.valgt = null;
         insp.innerHTML = `<p class="mut algo-hint">${S.type === "tre" ? "Klikk på en node for å endre type og verdi, legge til barn eller slette deltreet. Treet ordnes automatisk. Dra i hjørnet nede til høyre for å gjøre tegneflaten høyere." :
@@ -766,12 +799,9 @@ window.ALGO = window.ALGO || {
     insp.addEventListener("input", e => {
       const f = e.target.dataset.f, v = S.valgt, t = e.target; if (!f || !v) return;
       const id = v.slice(1);
-      const tallFelt = (sett) => { const x = tallFra(t.value); t.setAttribute("aria-invalid", Number.isNaN(x)); if (Number.isNaN(x)) return inspMelding("Skriv et tall, f.eks. 3 eller 2,5."); inspMelding(""); endre(() => sett(x), { samle: f + v, beholdInsp: true }); };
-      const sett = (o, k) => x => { if (x === undefined) delete o[k]; else o[k] = x; };
-      if (f === "h") tallFelt(sett(gn(id), "h"));
-      else if (f === "kost") tallFelt(sett(S.data.kanter[+id], "kost"));
-      else if (f === "verdi") tallFelt(sett(tn(id).n, "verdi"));
-      else if (f === "p") tallFelt(sett(tn(id).n, "p"));
+      // Tallfeltene heter det samme som egenskapen de setter.
+      const eier = { h: () => gn(id), kost: () => S.data.kanter[+id], verdi: () => tn(id).n, p: () => tn(id).n }[f];
+      if (eier) { const o = eier(), x = tallFra(t.value); t.setAttribute("aria-invalid", Number.isNaN(x)); if (Number.isNaN(x)) return inspMelding("Skriv et tall, f.eks. 3 eller 2,5."); inspMelding(""); endre(() => { if (x === undefined) delete o[f]; else o[f] = x; }, { samle: f + v, beholdInsp: true }); }
       else if (f === "domene") endre(() => { const l = t.value.split(/[,;\s]+/).filter(Boolean).map(x => (fin(tallFra(x)) ? tallFra(x) : x)); if (l.length) gn(id).domene = l; else delete gn(id).domene; }, { samle: f + v, beholdInsp: true });
     });
     insp.addEventListener("change", e => {
@@ -811,13 +841,12 @@ window.ALGO = window.ALGO || {
     };
     const kjorAnim = () => {
       const a = alg(); if (!a) return;
-      const r = prov(() => a.kjor(A.kopi(S.data), { ...S.valg }));
-      if (r.feil) anim.innerHTML = feilTekst(r.feil); else spiller(anim, r.v);
+      visKjoring(anim, prov(() => a.kjor(A.kopi(S.data), { ...S.valg })));
       const sp = anim.querySelector(".algo-spiller"); if (sp) sp.focus({ preventScroll: true });
     };
     function algoListe() {
       const l = algos();
-      algoSel.innerHTML = l.length ? FAM.concat([...new Set(l.map(a => a.familie))].filter(f => !FAM.includes(f))).map(f => {
+      algoSel.innerHTML = l.length ? FAM.map(f => {
         const g = l.filter(a => a.familie === f);
         return g.length ? `<optgroup label="${esc(f)}">${g.map(a => `<option value="${esc(a.id)}"${a.id === S.algo ? " selected" : ""}>${esc(a.navn)}</option>`).join("")}</optgroup>` : "";
       }).join("") : `<option value="">(ingen lastet)</option>`;
@@ -845,7 +874,7 @@ window.ALGO = window.ALGO || {
         (kol.length ? tabell({ kol: ["Algoritme", ...kol], rader: kj.map(k => [kortNavn(k.b), ...kol.map(c => { const x = svarAv(k).find(y => navn(y) === c); return k.s.feil ? "feil" : x ? x.verdi : "–"; })]) }) : "") +
         `<div class="algo-rad"><button type="button" class="pri" data-a="sammspill">Spill alle fra start</button></div>` +
         `<div class="algo-sgrid">${kj.map((k, i) => `<section><h4>${esc(k.b.navn)}</h4><div data-sp="${i}"></div></section>`).join("")}</div></div>`;
-      kj.forEach((k, i) => { const el = anim.querySelector(`[data-sp="${i}"]`); if (k.sc.feil) el.innerHTML = feilTekst(k.sc.feil); else spiller(el, k.sc.v); });
+      kj.forEach((k, i) => visKjoring(anim.querySelector(`[data-sp="${i}"]`), k.sc));
     }
     anim.addEventListener("change", e => {
       const id = e.target.dataset.samm; if (!id) return;
@@ -915,7 +944,9 @@ window.ALGO = window.ALGO || {
         return;
       }
       if (e.button > 0) return;
-      const h = e.target.closest("[data-hand]"), k = e.target.closest("[data-k]");
+      // Et felt i inspektøren (navnet) lagres ved blur. Klikk på en node tar ikke fokus, så lagre det før markeringen flyttes, og finn målet på nytt etter omtegningen.
+      const mål = insp.contains(document.activeElement) ? (document.activeElement.blur(), document.elementFromPoint(e.clientX, e.clientY) || e.target) : e.target;
+      const h = mål.closest("[data-hand]"), k = mål.closest("[data-k]");
       drag = { id: e.pointerId, x0: e.clientX, y0: e.clientY, hand: h ? h.getAttribute("data-hand") : null, k: k ? k.getAttribute("data-k") : null, flyttet: false };
       try { svg.setPointerCapture(e.pointerId); } catch (z) { /* ikke støttet */ }
       if (drag.hand || (drag.k && drag.k[0] === "n")) e.preventDefault();

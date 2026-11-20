@@ -44,27 +44,6 @@ def drop(text, *names):
     return text
 
 
-def oppgaver(sec):
-    """Deler «Øv selv» i nummererte oppgaver. Tekst før første punkt og løse avsnitt etter blir intro og outro."""
-    intro, items, outro = [], [], []
-    for line in sec.splitlines():
-        m = re.match(r"(\d+)\. (.*)", line)
-        if m and not outro:
-            items.append([m.group(2)])
-        elif not items:
-            intro.append(line)
-        elif outro or (line and not line.startswith(" ")):
-            outro.append(line)
-        else:
-            items[-1].append(line[3:] if line.startswith("   ") else line)
-    tasks = []
-    for n, it in enumerate(items, 1):
-        first = re.sub(r"[*`]", "", it[0])
-        tasks.append({"t": f"Oppgave {n}", "s": first[:70] + ("…" if len(first) > 70 else ""),
-                      "d": md("\n".join(it)), "f": [["Svar", "area"]]})
-    return md("\n".join(intro)), tasks, md("\n".join(outro))
-
-
 PAPIR = {"e11", "e12", "e13", "e14", "e15", "e16", "a4"}  # logikken: kan besvares på papir, som oppgave 9 og 10 på eksamen 2025
 
 
@@ -113,16 +92,12 @@ for p in sorted((V / "notater").glob("e[0-9][0-9]-*.md")):
     out = (V / video).parent
     assert (V / video).exists(), video
     eid = ep.lower()
-    intro, tasks, outro = oppgaver(section(t, "Øv selv"))
-    egen = A / "nettside-oppgaver" / f"{eid}.json"
-    if egen.exists():  # utskrevne eksamensoppgaver med figurer, se nettside-oppgaver/
-        data = json.loads(egen.read_text())
-        intro, tasks, outro = md(data.get("intro", "")), klargjor(data["tasks"], eid in PAPIR), ""
+    data = json.loads((A / "nettside-oppgaver" / f"{eid}.json").read_text())  # utskrevne eksamensoppgaver med figurer
     body = drop(t, "Kapitler i videoen", "Øv selv", "Fasit")
     body = re.sub(r"\A# .*\n|^> (Pensum|Video): .*\n", "", body, flags=re.M)
     eps.append({"id": eid, "ep": ep, "title": html.escape(title), "pensum": html.escape(pensum), "video": "videoer/" + quote(video),
                 "len": length, "chap": kapitler(out / "chapters.txt"), "subs": tekst(out / "undertekster.srt"),
-                "note": md(body), "intro": intro, "tasks": tasks, "outro": outro, "fasit": md(quizfasit(section(t, "Fasit")) if egen.exists() else section(t, "Fasit"))})
+                "note": md(body), "intro": md(data.get("intro", "")), "tasks": klargjor(data["tasks"], eid in PAPIR), "fasit": md(quizfasit(section(t, "Fasit")))})
     feller.append(f'<h2><a href="#{eid}">{ep}</a> {html.escape(title)}</h2>' + md(section(t, "Eksamensfeller")))
 assert len(eps) == 21, len(eps)
 
@@ -149,7 +124,7 @@ for f, grp, art in filer:
     if o.get("vis_fra", "") > date.today().isoformat():  # AL3 bygger på 2020Qv2, spart til fullprøven 03.12
         continue
     ovinger.append({"id": o["id"], "ep": o["ep"], "title": html.escape(o["tittel"]), "kilde": o.get("kilde", ""),
-                    "note": md(o.get("om", "")), "intro": md(o.get("intro", "")), "tasks": klargjor(o["tasks"], o["id"] in PAPIR), "outro": "",
+                    "note": md(o.get("om", "")), "intro": md(o.get("intro", "")), "tasks": klargjor(o["tasks"], o["id"] in PAPIR),
                     "fasit": md(o.get("fasit", "")), "grp": grp, "art": art})
 
 valgfri = lambda p: md(p.read_text()) if p.exists() else ""  # seeplan og feillogg er personlige og finnes ikke i den offentlige kopien

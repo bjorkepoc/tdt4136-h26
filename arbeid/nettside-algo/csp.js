@@ -2,7 +2,6 @@
 (() => {
   const ALGO = window.ALGO;
   const nat = (a, b) => String(a).localeCompare(String(b), "nb", { numeric: true });
-  const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const mengde = v => "{" + v.join(", ") + "}";
   const hent = (valg, id, std) => (valg && valg[id] != null ? valg[id] : std);
   const liste = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " og " + a[a.length - 1];
@@ -82,7 +81,7 @@
       : "Grafen er tom: køen er tom, og AC-3 svarer true.", {}, {}, []);
     let svar = true;
     const tom = c.vars.find(v => !D[v].length);
-    if (tom) { svar = false; kø.length = 0; scene(`D(${esc(tom)}) er tom fra start: AC-3 svarer <b>false</b> uten å ta ut noen bue.`, { [tom]: "feil" }, {}, [c.vars.indexOf(tom)]); }
+    if (tom) { svar = false; kø.length = 0; scene(`D(${tom}) er tom fra start: AC-3 svarer <b>false</b> uten å ta ut noen bue.`, { [tom]: "feil" }, {}, [c.vars.indexOf(tom)]); }
     while (kø.length) {
       const før = kø.map(bue).join(" · ");
       const [i, j] = kø.shift();
@@ -101,15 +100,15 @@
       const nt = { [i]: D[i].length ? "aktiv" : "feil", [j]: "grense" };
       const kt = { [i + "|" + j]: { tilstand: D[i].length ? "aktiv" : "feil", tekst: bue([i, j]) } };
       const m = [c.vars.indexOf(i)];
-      let t = `Tar ut ${esc(bue([i, j]))}. `;
-      if (!stryk.length) t += `Hver verdi i D(${esc(i)}) har en partner i D(${esc(j)}), så ingenting strykes.`;
+      let t = `Tar ut ${bue([i, j])}. `;
+      if (!stryk.length) t += `Hver verdi i D(${i}) har en partner i D(${j}), så ingenting strykes.`;
       else if (!D[i].length) {
-        t += `${esc(liste(stryk))} mangler partner i D(${esc(j)}). D(${esc(i)}) er tom: AC-3 svarer <b>false</b>, og det finnes ingen løsning.`;
+        t += `${liste(stryk)} mangler partner i D(${j}). D(${i}) er tom: AC-3 svarer <b>false</b>, og det finnes ingen løsning.`;
         svar = false; scene(t, nt, kt, m); break;
       } else {
-        t += `${esc(liste(stryk))} har ingen partner i D(${esc(j)}) og strykes, så D(${esc(i)}) = ${esc(mengde(D[i]))}. `;
-        if (lagt.length) t += `Legger ${esc(liste(lagt))} bakerst i køen${fantes.length ? ` (${esc(liste(fantes))} står der alt)` : ""}.`;
-        else if (fantes.length) t += `${esc(liste(fantes))} står alt i køen, så ingenting legges til.`;
+        t += `${liste(stryk)} har ingen partner i D(${j}) og strykes, så D(${i}) = ${mengde(D[i])}. `;
+        if (lagt.length) t += `Legger ${liste(lagt)} bakerst i køen${fantes.length ? ` (${liste(fantes)} står der alt)` : ""}.`;
+        else if (fantes.length) t += `${liste(fantes)} står alt i køen, så ingenting legges til.`;
         else t += "Ingen andre naboer å sjekke på nytt.";
       }
       scene(t, nt, kt, m);
@@ -133,10 +132,6 @@
     noder: ids.map((id, k) => ({ id, x: k * 130, y: 0, domene: doms[k] })),
     kanter: rels.map(([fra, til, r]) => ({ fra, til, rel: r }))
   });
-  const forelesning = () => {
-    const d = [["A1", "A2", "B1", "B2"], ["A1", "A2", "B1", "B2", "C1", "C2"], ["A1", "A2"], ["C1", "C2"], ["B1", "B2", "C1", "C2"]];
-    return femkant(d);
-  };
   function femkant(d) {
     const p = [[100, 0], [210, 80], [0, 80], [40, 210], [170, 210]];
     const kanter = [];
@@ -169,7 +164,7 @@
         noder: [{ id: "V1", x: 0, y: 0, domene: ord5 }, { id: "V2", x: 260, y: 0, domene: ord4 }, { id: "V3", x: 0, y: 200, domene: ["ant", "oak", "old", "ten", "run"] }, { id: "V4", x: 260, y: 200, domene: ord4 }],
         kanter: [{ fra: "V1", til: "V2", rel: "3=1" }, { fra: "V1", til: "V3", rel: "5=1" }, { fra: "V4", til: "V2", rel: "2=3" }, { fra: "V4", til: "V3", rel: "4=3" }]
       } },
-      { navn: "Eksamen 2018 problem 1 / 2023 oppgave 4: forelesere og dager", data: forelesning() },
+      { navn: "Eksamen 2018 problem 1 / 2023 oppgave 4: forelesere og dager", data: femkant([["A1", "A2", "B1", "B2"], ["A1", "A2", "B1", "B2", "C1", "C2"], ["A1", "A2"], ["C1", "C2"], ["B1", "B2", "C1", "C2"]]) },
       { navn: "Eksamen 2015: X ≥ Y og Y > Z", data: rekke(["X", "Y", "Z"], [["1", "2", "3"], ["1", "2", "3"], ["1", "2", "3"]], [["X", "Y", "≥"], ["Y", "Z", ">"]]) },
       { navn: "Eksamen 2015, del 2: samme med Z = 2", data: rekke(["X", "Y", "Z"], [["1", "2", "3"], ["1", "2", "3"], ["2"]], [["X", "Y", "≥"], ["Y", "Z", ">"]]) },
       { navn: "Øv selv: Y = 2X og Z > Y", data: rekke(["X", "Y", "Z"], [["1", "2", "3", "4"], ["1", "2", "3", "4"], ["1", "2", "3", "4"]], [["X", "Y", "2x"], ["Y", "Z", "<"]]) },
@@ -189,7 +184,7 @@
   function backtracking(data, valg) {
     const c = lagCSP(data);
     const mrv = !!hent(valg, "mrv", true), deg = !!hent(valg, "degree", true), lcv = !!hent(valg, "lcv", true);
-    const inf = String(hent(valg, "inferens", "forward checking"));
+    const inf = String(hent(valg, "inferens", "forward checking")), infN = inf === "MAC" ? "MAC" : "Forward checking";
     const høy = String(hent(valg, "likhet", "først")).startsWith("sist");
     const orden = (a, b) => (høy ? nat(b, a) : nat(a, b));
     const D = tomt(), A = tomt(), scener = [], hist = [], rekkefølge = [];
@@ -285,48 +280,46 @@
         const r = inf === "MAC" ? mac(X) : inf === "ingen" ? { ok: true, rader: [] } : fc(X);
         let t = angret;
         angret = "";
-        if (først) t += `Velger ${esc(X)} (${esc(info)}). ${lcvInfo ? esc(lcvInfo) + ". " : ""}`;
+        if (først) t += `Velger ${X} (${info}). ${lcvInfo ? lcvInfo + ". " : ""}`;
         først = false;
-        if (forkastet.length) t += `${esc(liste(forkastet.map(f => X + " = " + f)))} bryter en constraint mot tilordningen. `;
+        if (forkastet.length) t += `${liste(forkastet.map(f => X + " = " + f))} bryter en constraint mot tilordningen. `;
         forkastet = [];
-        t += `Prøver <b>${esc(X)} = ${esc(v)}</b>. `;
+        t += `Prøver <b>${X} = ${v}</b>. `;
         const fjern = tomt();
         c.vars.forEach(Y => { if (Y !== X && !(Y in A) && lovlige(Y).length < før[Y]) fjern[Y] = før[Y] - lovlige(Y).length; });
         const endret = Object.keys(fjern);
         if (inf === "ingen") t += "Ingen inferens: domenene krymper ikke, men naboene har færre lovlige verdier.";
-        else if (r.ok) t += endret.length ? `${inf === "MAC" ? "MAC" : "Forward checking"} krymper ${esc(liste(endret))}.` : `${inf === "MAC" ? "MAC" : "Forward checking"} fjerner ingenting.`;
-        else t += `${inf === "MAC" ? "MAC" : "Forward checking"} tømmer D(${esc(r.tom)})${r.rest ? ` (${r.rest} buer i køen blir aldri behandlet)` : ""}: angrer ${esc(X)} = ${esc(v)}.`;
+        else if (r.ok) t += endret.length ? `${infN} krymper ${liste(endret)}.` : `${infN} fjerner ingenting.`;
+        else t += `${infN} tømmer D(${r.tom})${r.rest ? ` (${r.rest} buer i køen blir aldri behandlet)` : ""}: angrer ${X} = ${v}.`;
         rad(`${X} = ${v}${r.ok ? "" : " ✗"}`, endret.map(Y => `${Y} −${fjern[Y]}`).join(", ") || "–");
         const nt = { [X]: r.ok ? "aktiv" : "feil" };
         endret.forEach(Y => { nt[Y] = "grense"; });
         if (!r.ok) nt[r.tom] = "feil";
-        const ekstra = r.rader.length ? (inf === "MAC"
-          ? { tittel: `MAC etter ${X} = ${v}`, kol: ["Bue", "Fjerner", "Nytt domene", "Nye buer i køen"], rader: r.rader, marker: r.ok ? [] : [r.rader.length - 1] }
-          : { tittel: `Forward checking etter ${X} = ${v}`, kol: ["Bue", "Fjerner", "Nytt domene"], rader: r.rader, marker: r.ok ? [] : [r.rader.length - 1] }) : null;
+        const ekstra = r.rader.length ? { tittel: `${infN} etter ${X} = ${v}`, kol: ["Bue", "Fjerner", "Nytt domene"].concat(inf === "MAC" ? ["Nye buer i køen"] : []), rader: r.rader, marker: r.ok ? [] : [r.rader.length - 1] } : null;
         scene(t, nt, ekstra);
         if (r.ok && søk()) return true;
         if (stopp) return false;
         delete A[X];
         Object.assign(D, lagret);
         tilbake++;
-        if (r.ok) angret = `Angrer ${esc(X)} = ${esc(v)}. `;
+        if (r.ok) angret = `Angrer ${X} = ${v}. `;
       }
       let t = angret;
-      if (først) t += `Velger ${esc(X)} (${esc(info)}). `;
-      if (forkastet.length) t += `${esc(liste(forkastet.map(f => X + " = " + f)))} bryter en constraint. `;
-      t += vs.length ? `${esc(X)} har ingen verdier igjen: <b>failure</b>, tilbake ett nivå.` : `${esc(X)} har ingen lovlige verdier (${esc(info)}): <b>failure</b>, tilbake ett nivå.`;
+      if (først) t += `Velger ${X} (${info}). `;
+      if (forkastet.length) t += `${liste(forkastet.map(f => X + " = " + f))} bryter en constraint. `;
+      t += vs.length ? `${X} har ingen verdier igjen: <b>failure</b>, tilbake ett nivå.` : `${X} har ingen lovlige verdier (${info}): <b>failure</b>, tilbake ett nivå.`;
       angret = "";
       rad(`${X}: failure`, "–");
       scene(t, { [X]: "feil" });
       return false;
     }
 
-    const navnInf = { "ingen": "ingen inferens", "MAC": "MAC", "forward checking": "forward checking" }[inf] || inf;
+    const navnInf = inf === "ingen" ? "ingen inferens" : inf;
     scene(`Start. Variabel: ${mrv ? "MRV" : "fast rekkefølge"}${deg ? " og degree" : ""}; verdi: ${lcv ? "LCV" : "domenets rekkefølge"}; ${navnInf}; likhet: ${høy ? "høyeste først" : "alfabetisk/lavest først"}.${inf === "ingen" ? " Uten inferens krymper ikke domenene: tabellen viser lovlige verdier mot tilordningen." : ""}`);
     const løst = søk();
     const løsning = løst ? c.vars.map(v => `${v} = ${A[v]}`).join(", ") : stopp ? "avbrutt" : "failure";
     if (stopp) scene(`Stopper etter ${MAKS} steg. Søket er ikke ferdig, så det er ikke vist om en løsning finnes.`);
-    else if (løst) scene(c.vars.length ? `Alle variabler har en verdi: <b>${esc(løsning)}</b>. ${rekkefølge.length} tilordninger og ${tilbake} angret.` : "Ingen variabler: den tomme tilordningen er en løsning.",
+    else if (løst) scene(c.vars.length ? `Alle variabler har en verdi: <b>${løsning}</b>. ${rekkefølge.length} tilordninger og ${tilbake} angret.` : "Ingen variabler: den tomme tilordningen er en løsning.",
       Object.fromEntries(c.vars.map(v => [v, "sti"])));
     else scene(`Alle verdier er prøvd på øverste nivå: søket returnerer <b>failure</b>, så CSP-en har ingen løsning.`);
     return { scener, rekkefølge, løsning };
@@ -365,18 +358,12 @@
       { id: "likhet", navn: "Likhet brytes", type: ["først (alfabetisk/lavest)", "sist (høyest)"], std: "først (alfabetisk/lavest)" }
     ],
     eksempler: [
-      { navn: "Australia: MRV, degree, LCV og forward checking (notatets sporing)", data: kart(["B", "G", "R"]),
-        valg: { mrv: true, degree: true, lcv: true, inferens: "forward checking", likhet: "først (alfabetisk/lavest)" } },
-      { navn: "Eksamen 2018 problem 1 / 2023 oppgave 4: MRV og LCV uten FC", data: femkant([["B1"], ["A2", "B2", "C2"], ["A1"], ["C1", "C2"], ["B2", "C2"]]),
-        valg: { mrv: true, degree: false, lcv: true, inferens: "ingen", likhet: "først (alfabetisk/lavest)" } },
-      { navn: "Eksamen 2022 oppgave 4.2: firesifret oddetall (likhet → høyest)", data: ordnet(),
-        valg: { mrv: true, degree: false, lcv: true, inferens: "forward checking", likhet: "sist (høyest)" } },
-      { navn: "Øv selv: Australia med WA = R og Q = G gitt (forward checking)", data: kart(["B", "G", "R"], { WA: ["R"], Q: ["G"] }),
-        valg: { mrv: true, degree: true, lcv: true, inferens: "forward checking", likhet: "først (alfabetisk/lavest)" } },
-      { navn: "Samme kart med MAC", data: kart(["B", "G", "R"], { WA: ["R"], Q: ["G"] }),
-        valg: { mrv: true, degree: true, lcv: true, inferens: "MAC", likhet: "først (alfabetisk/lavest)" } },
-      { navn: "4 dronninger: ren backtracking uten heuristikker", data: fireDronninger(),
-        valg: { mrv: false, degree: false, lcv: false, inferens: "ingen", likhet: "først (alfabetisk/lavest)" } }
+      { navn: "Australia: MRV, degree, LCV og forward checking (notatets sporing)", data: kart(["B", "G", "R"]) },
+      { navn: "Eksamen 2018 problem 1 / 2023 oppgave 4: MRV og LCV uten FC", data: femkant([["B1"], ["A2", "B2", "C2"], ["A1"], ["C1", "C2"], ["B2", "C2"]]), valg: { degree: false, inferens: "ingen" } },
+      { navn: "Eksamen 2022 oppgave 4.2: firesifret oddetall (likhet → høyest)", data: ordnet(), valg: { degree: false, likhet: "sist (høyest)" } },
+      { navn: "Øv selv: Australia med WA = R og Q = G gitt (forward checking)", data: kart(["B", "G", "R"], { WA: ["R"], Q: ["G"] }) },
+      { navn: "Samme kart med MAC", data: kart(["B", "G", "R"], { WA: ["R"], Q: ["G"] }), valg: { inferens: "MAC" } },
+      { navn: "4 dronninger: ren backtracking uten heuristikker", data: fireDronninger(), valg: { mrv: false, degree: false, lcv: false, inferens: "ingen" } }
     ],
     kjor: (data, valg) => backtracking(data, valg).scener,
     svar(data, valg) {
