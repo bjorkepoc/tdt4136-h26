@@ -366,7 +366,6 @@ function page(h){$("#main").className="";$("#main").innerHTML=h}
 function route(){
 const h=location.hash.slice(1)||"hjem",e=D.eps.find(x=>x.id===h)||D.ov.find(x=>x.id===h);
 if(rec)rec.stop();
-$("#leksknapp").hidden=!!e&&e.grp==="Prøveeksamener"; // som på eksamen: ingen hjelpemidler
 const A=window.ALGO,[h0,h1]=h.split("/");
 if(e){S.last=e.id;save();episode(e)}else if(h0==="algoritmer"&&A&&A.side){$("#main").className="wide";A.side($("#main"),h1)}else if(h==="verksted"&&A&&A.verksted){$("#main").className="wide";A.verksted($("#main"))}else if(h==="leksikon"){page("");leks($("#main")).focus()}else if(h==="feller")page(D.feller);else if(h==="feillogg")page(D.feil);else if(h==="eksamener")page(D.exams);else home();
 nav();visDeler();scrollTo(0,0)}
