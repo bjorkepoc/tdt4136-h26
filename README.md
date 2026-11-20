@@ -5,7 +5,7 @@ En lokal nettside med alt du trenger for å lese og øve til eksamen i TDT4136 (
 - **21 forklaringsvideoer** på norsk, med undertekster og notater. Det er én video per pensumtema, fra agenter og søk til logikk, planlegging, NLP og etikk.
 - **Øv selv:** rundt 170 oppgaver, mange av dem ordrett fra tidligere eksamener med figurer. Korte svar som rekkefølger, stier og verdier sjekkes med en gang.
 - **Øvingene** (Assignment 1–4 og oppgaveforelesningene) med løsninger.
-- **Prøveeksamener i 2025-formatet**, vist som på eksamen: forside, én oppgave om gangen, nedtelling og «Lever». Etter levering får du sjekk og fasit, eller underveis hvis du slår på «Fasit underveis».
+- **Prøveeksamener i 2025-formatet**, vist som på eksamen: forside, én oppgave om gangen, nedtelling og «Lever». Etter levering får du sjekk og fasit, eller underveis hvis du slår på «Fasit underveis». Blar du opp for å lese oppgaven, blir svarfeltet du skriver i liggende nederst på skjermen.
 - **Tidligere eksamener** fra 2015 til 2025 ordrett med figurer (alle unntatt 2019 og ordinær 2020), i samme eksamensvisning. Algoritmene og leksikonet kan åpnes underveis, over oppgaven eller festet til høyre.
 - **40 algoritmer animert steg for steg:** søk, lokalt søk, CSP, spill, logikk, planlegging og NLP, med valg for fart og gjentakelse.
 - **Pseudokode** for alle algoritmene i forelesningene og pensumkapitlene, med figurnummer i boka og lysbilde i forelesningen. Den står samlet på én side og under hver animerte algoritme.

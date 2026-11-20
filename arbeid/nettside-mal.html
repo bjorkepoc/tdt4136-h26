@@ -66,6 +66,7 @@ details.fasit summary{cursor:pointer;font-weight:600}
 .alt label{display:flex;gap:10px;align-items:flex-start;padding:8px 12px;border:1px solid var(--border);border-radius:8px;margin:6px 0;cursor:pointer}
 .alt label:has(:checked){border-color:var(--accent);background:var(--accent-bg)}.alt input{margin-top:4px}
 .eks:not(.levert) .etter,.eks:not(.levert,.ov) :is(.sj,.rb,.spor,.sjm,.fb,.tfasit),.eks.levert :is(#lever,#ovE){display:none}
+.felt.flyt>.felt-i{position:fixed;z-index:4;background:var(--surface);box-shadow:0 -8px 0 var(--surface),0 -14px 14px -8px rgb(0 0 0/.35)}
 .eks-nav button{min-width:36px;padding:5px 8px}.eks-nav button.ok{background:var(--accent-bg);border-color:var(--accent)}
 .eks-nav button[aria-current]{outline:2px solid var(--accent);outline-offset:1px;font-weight:700}
 .task h3{margin:0 0 6px}
@@ -214,7 +215,7 @@ return[T.innerHTML,slutt,tn]}
 const bilder=p=>(p||"").split("\n").filter(Boolean).map(f=>`<span class="pbilde"><a href="${esc(f)}" target="_blank"><img src="${esc(f)}" alt="Papirsvar"></a><button type="button" class="pfjern" data-f="${esc(f)}" title="Fjern bildet fra svaret" aria-label="Fjern bildet">×</button></span>`).join("");
 function task(e,t,j){
 const a=svar(e)[j]||{},tg=(k,v,lab)=>`<button type="button" class="tg" data-j="${j}" data-k="${esc(k)}" data-v="${v}" aria-pressed="${a[k]===v}">${lab||v}</button>`;
-const fh=(t.f||[]).map(([l,ty,ph],n)=>{const v=esc(a[l]||""),p=esc(ph||""),id=`f${j}_${n}`;return `<div class="labrow"><span><label class="lab" for="${id}" style="display:inline">${esc(l)}</label><span class="sjr" data-n="${n}"></span></span>${SR?`<button type="button" class="mic" data-for="${id}">Diktér</button>`:""}</div>`+(ty==="area"?`<textarea class="in" id="${id}" data-j="${j}" data-k="${esc(l)}" placeholder="${p}">${v}</textarea>`:`<textarea class="in en" rows="1" id="${id}" data-j="${j}" data-k="${esc(l)}" placeholder="${p}">${v}</textarea>`)}),[d,slutt,tn]=flett_felt(t),vbh=window.ALGO&&ALGO.verksted?`<button type="button" class="vb" data-j="${j}" data-l="${vbl(t)}" title="Tegn en graf eller et spilltre, kjør en algoritme steg for steg og sjekk svaret ditt">${vbl(t)}</button>`:"";
+const fh=(t.f||[]).map(([l,ty,ph],n)=>{const v=esc(a[l]||""),p=esc(ph||""),id=`f${j}_${n}`;return `<div class="felt"><div class="felt-i"><div class="labrow"><span><label class="lab" for="${id}" style="display:inline">${esc(l)}</label><span class="sjr" data-n="${n}"></span></span>${SR?`<button type="button" class="mic" data-for="${id}">Diktér</button>`:""}</div>`+(ty==="area"?`<textarea class="in" id="${id}" data-j="${j}" data-k="${esc(l)}" placeholder="${p}">${v}</textarea>`:`<textarea class="in en" rows="1" id="${id}" data-j="${j}" data-k="${esc(l)}" placeholder="${p}">${v}</textarea>`)+"</div></div>"}),[d,slutt,tn]=flett_felt(t),vbh=window.ALGO&&ALGO.verksted?`<button type="button" class="vb" data-j="${j}" data-l="${vbl(t)}" title="Tegn en graf eller et spilltre, kjør en algoritme steg for steg og sjekk svaret ditt">${vbl(t)}</button>`:"";
 // Ber et delspørsmål deg tegne («Draw …», «tegn …»), ligger tegneverktøyet rett under svarfeltet til det delspørsmålet.
 if(tn>=0&&vbh)fh[tn]+=`<div class="row">${vbh}</div><div class="vk"></div>`;
 const fig=(t.fig||"")+(t.g?graf(typeof t.g==="string"?GR[t.g]:t.g):"")+(t.tre&&window.ALGO&&ALGO.figur?ALGO.figur("tre",t.tre):""),df=d.includes("<!--fig-->")?d.replace("<!--fig-->",()=>fig):d+fig;
@@ -375,6 +376,13 @@ q.value=S.lq||"";q.oninput();return q}
 function spor(li){const b=li.dataset.b,q=prompt(`Hva lurer du på om ${b}? La feltet stå tomt for en grundigere forklaring.`);if(q===null)return;const t=now();
 fetch("/api/rett",{method:"POST",body:JSON.stringify({leks:b,sporsmal:q.trim()||"Forklar dette grundigere, med et lite eksempel."})}).then(x=>{if(!x.ok)throw 0;(S.rett.leks||(S.rett.leks={}))[b]=t;save();visFB()}).catch(()=>{li.querySelector(".rs").textContent="Fikk ikke sendt. Kjører serveren?"})}
 // Mørk/lys modus: siden følger systemet til du trykker. Velger du det systemet allerede har, fjernes overstyringen igjen.
+// Svarfeltet du sist gikk inn i (F), flyter nederst, over oppgavelista på eksamen, når du blar opp for å lese oppgaven.
+// Fixed med plassholder, ikke sticky: mange felt står inne i et listepunkt, og sticky kan ikke forlate det.
+{let F=null;const ro=new ResizeObserver(()=>flyt()),flyt=()=>{if(!F)return;const i=F.firstElementChild,t=F.closest(".task"),nv=F.closest(".eks")&&F.closest(".eks").querySelector(".eks-nav"),
+bunn=nv?Math.min(innerHeight,nv.getBoundingClientRect().top):innerHeight,r=F.getBoundingClientRect(),h=i.offsetHeight,ja=r.height>0&&r.bottom>bunn&&(t?t.getBoundingClientRect().top:r.top)<bunn-h;
+F.classList.toggle("flyt",ja);F.style.height=ja?h+"px":"";i.style.cssText=ja?`left:${r.left}px;width:${r.width}px;bottom:${innerHeight-bunn}px`:""};
+document.addEventListener("focusin",e=>{const f=e.target.closest&&e.target.closest(".felt");if(f&&f!==F){const g=F;F=null;if(g){g.classList.remove("flyt");g.style.height=g.firstElementChild.style.cssText=""}F=f;ro.disconnect();ro.observe(f);ro.observe(f.firstElementChild);flyt()}});
+addEventListener("scroll",flyt,{passive:true,capture:true});addEventListener("resize",flyt)}
 {const m=document.querySelector('meta[name="color-scheme"]'),sys=matchMedia("(prefers-color-scheme: dark)"),k=$("#tema"),fra=()=>sys.matches?"dark":"light",naa=()=>m.content==="light dark"?fra():m.content;
 const vis=()=>{const d=naa()==="dark";k.textContent=d?"☀":"☾";k.title=k.ariaLabel=d?"Bytt til lys modus":"Bytt til mørk modus"};
 k.onclick=()=>{const t=naa()==="dark"?"light":"dark";try{t===fra()?localStorage.removeItem("tema"):localStorage.setItem("tema",t)}catch(e){}m.content=t===fra()?"light dark":t;vis()};
