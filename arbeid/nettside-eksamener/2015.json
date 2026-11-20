@@ -1,0 +1,616 @@
+{
+ "id": "ek2015",
+ "ep": "2015",
+ "tittel": "Ordinær eksamen",
+ "kilde": "../materiale/Files/Previous%20exams/2015Q.docx",
+ "om": "Norwegian University of Science and Technology<br>\nDepartment of Computer and Information Science\n\nFaglig kontakt under eksamen: Pinar Øzturk\n\n## Introduksjon til Kunstig Intelligens (TDT4136)\n\n30th November 2015 Tid: 09:00 – 13:00\n\nLanguage: English-Bokmål-Nynorsk\n\n**Aid - Tillatte hjelpemidler:**<br>\nNo printed or hand written material is allowed. Simple calculator is allowed. Ingen trykte eller håndskrevne hjelpemidler tillatt. Bestemt, enkel kalkulator tillatt.\n\nIf you think some necessary information is missing from a question please explain what assumptions you find it necessary to make.\n\n---\n\n*Poengene står ved hver oppgave og er til sammen 100. Oppgave 5 (GraphPlan) er ikke pensum i 2026. Fasiten bygger på løsningsforslaget (`2015Q&A.docx`).*",
+ "intro": "Etter «Lever» kan sant/usant i oppgave 1, flervalgene i oppgave 2 og 6, søket i oppgave 7 og minimax-verdiene og kuttene i oppgave 8 sjekkes med Sjekk. Grafen i oppgave 7 og treet i oppgave 8 kan åpnes i tegneverktøyet.",
+ "fasit": "**Poengfordeling:** oppgave 1: 20, 2: 15, 3: 15, 4: 10 (a 4, b 2, c 4 etter rettelsen på eksamen), 5: 10, 6: 10, 7: 10, 8: 10. Til sammen 100.\n\nLøsningsforslaget har ingen samlet sensorveiledning. Fasiten står under hver oppgave.",
+ "tasks": [
+  {
+   "t": "Oppgave 1 (20 p): True or False",
+   "d": "**Problem 1** (20 pts, 2pts each question)\n\nAnswer the following questions with TRUE or FALSE.",
+   "tf": [
+    "a) Knitting is a fully observable, episodic, stochastic, static and exciting agent environment.",
+    "b) Procedural attachment is used in semantic networks.",
+    "c) Ontology is not a key component in simple-reflex agents.",
+    "d) Recall is an evaluation metric used in information retrieval that measures the proportion of returned documents that are truly relevant",
+    "e) Simulated annealing is a local search method.",
+    "f) Term Frequency (TF) defines the count of a term t in a collection of documents..",
+    "g) A common heuristic function for 8-puzzle game is Manhattan distance which is the sum of the distances of the tiles to their goal positions.",
+    "h) If both H1 and H2 are admissible heuristics for a problem and H2<H1, then H2 is a better heuristic.",
+    "i) An agent must think like a human in order to pass the Turing test..",
+    "j) Iterative deepening search is optimal if step-costs is a constant, the search-space is finite and a goal exists."
+   ],
+   "sjekk": {
+    "tf": [
+     "usant",
+     "sant",
+     "sant",
+     "usant",
+     "sant",
+     "usant",
+     "sant",
+     "usant",
+     "usant",
+     "sant"
+    ],
+    "kilde": "2015Q&A.docx, Problem 1"
+   },
+   "fasit": "- **a) Usant.** Strikking er sequential (hver maske bygger på de forrige), og en handling har et sikkert utfall, så miljøet er deterministic, ikke stochastic. Løsningsforslaget: «not episodic, not stochastic». Fully observable og static kan forsvares, og «exciting» er ingen miljøegenskap. Løsningsforslaget har en merknad fra 2020: slike miljøspørsmål kan ha rimelige alternative svar, og senere eksamener gjør dem til drøftingsoppgaver der du forklarer antakelsene dine.\n- **b) Sant.** Semantiske nett bruker procedural attachment: et spørsmål om en relasjon kan kalle en egen prosedyre laget for den relasjonen, i stedet for den generelle inferensalgoritmen.\n- **c) Sant.** En simple-reflex agent velger handling med condition–action-regler rett fra den nåværende percepten. Den har ingen modell av verden og ingen kunnskapsbase, så en ontologi (hvilke objekter, kategorier og relasjoner som finnes) er ikke en nøkkelkomponent.\n- **d) Usant.** Andelen av de returnerte dokumentene som er relevante, er precision. Recall er andelen av alle relevante dokumenter som blir returnert.\n- **e) Sant.** Simulated annealing holder bare én nåværende tilstand og flytter til naboer, som hill climbing, men godtar et dårligere trekk med sannsynlighet e^(ΔE/T).\n- **f) Usant.** Term frequency TF(t, d) teller hvor mange ganger t står i *ett* dokument d. Hvor mange dokumenter i samlingen som inneholder t, er document frequency, som brukes i IDF.\n- **g) Sant.** Manhattan distance (h₂) summerer, for hver brikke, antall ruter horisontalt og vertikalt til målplassen. Den er admissible.\n- **h) Usant.** Er begge admissible og H2 < H1, ligger H1 nærmere den sanne kostnaden h\\*. H1 dominerer H2 og gir A\\* færre utvidede noder, så H1 er den beste.\n- **i) Usant.** Turing-testen måler oppførsel (acting humanly). Maskinen består hvis utspørreren ikke kan skille den fra et menneske i en skriftlig samtale. Hvordan den tenker inni, betyr ingenting for testen.\n- **j) Sant.** IDS går lag for lag som BFS og finner den grunneste løsningen. Med like stegkostnader er den også den billigste.\n\n*Kilde: løsningsforslaget til eksamen 2015, oppgave 1.*"
+  },
+  {
+   "t": "Oppgave 2 (15 p): Multiple choice",
+   "d": "**Problem 2** (15 pts, 3 pts each question)\n\nChoose the correct answers (one for each question) to the questions below.\n\na) Suppose the following action schema in a planning system for 8-puzzle.\\\nAction(Slide(t,s<sub>1</sub>,s<sub>2</sub>),\\\nPRECOND: On(t,s<sub>1</sub>)∧ Tile(t)∧ Blank(s<sub>2</sub>)∧ Adjacent(s<sub>1</sub>,s<sub>2</sub>)\\\nEFFECT: On(t,s<sub>2</sub>)∧ Blank(s<sub>1</sub>)∧ ¬On(t,s<sub>1</sub>)∧ ¬Blank(s<sub>2</sub>))\\\nWhich of the following needs to be removed from the action schema in order to get \"number-of-misplaced-tiles\" heuristic?\\\nA. Blank(s<sub>1</sub>)\\\nB. Blank(s<sub>2</sub>)\\\nC. Adjacent(s<sub>1</sub>,s<sub>2</sub>)\\\nD. Blank(s<sub>2</sub>)∧ Adjacent(s<sub>1</sub>,s<sub>2</sub>)\\\nE. None of the above\n\nb) We look at a Constraint Satisfaction Problem (CSP) with the three variables X, Y and Z. Let the domain for each of these variables be the set of integers from 1 to 3:\\\nD<sub>x</sub> = D<sub>y</sub> = D<sub>Z</sub> ={1,2,3}\\\nLet the following binary constraint C<sub>X,Y</sub> apply between X and Y, and C<sub>Y,Z</sub> between Y and Z:\\\nC<sub>X,Y</sub> =[(1,1),(2,1),(2,2),(3,1),(3,2),(3,3)]\\\nC<sub>Y,Z</sub> =[(2,1),(3,1),(3,2)]\\\nAfter running AC-3, what is the domain of X?\\\nA. {1,2,3}\\\nB. {2,3}\\\nC. {1,3}\\\nD. {1,2}\\\nE. {1}\\\nF. {2}\\\nG. {3}\\\nH. {}\n\nc) Z is then set to 2 in the CSP from the previous question, and AC-3 is run again. What is now the domain of X?\\\nA. {1,2,3}\\\nB. {2,3}\\\nC. {1,3}\\\nD. {1,2}\\\nE. {1}\\\nF. {2}\\\nG. {3}\\\nH. {}\n\nd) Consider the following (incomplete) game tree for tic-tac-toe. Tic-tac-toe is a two-player game where players “x” and “o” take alternating turns to place their respective symbols in an empty cell on the 3 x 3 game board, with the goal of getting three in a row (horizontally, vertically or diagonally):\\\n<img class=\"fig\" src=\"nettside-figurer/ek2015-q2.png\" alt=\"Det ufullstendige spilltreet for tic-tac-toe i oppgave 2 d\">\\\nWhich one of the following statements is true?\\\nA. Player x is guaranteed to win\\\nB. Player o is guaranteed to win\\\nC. Player x can win, but only if player o plays suboptimally\\\nD. Player o can win, but only if player x plays suboptimally\\\nE. Either player can win, if the other player plays suboptimally\\\nF. Neither/none of the players can win\n\ne) Which of the following may be most useful in generation of a semantic network automatically from documents?\\\nA. Information retrieval\\\nB. Sentiment analysis\\\nC. Syntactic parsing\\\nD. Information extraction\\\nE. none of the above.",
+   "f": [
+    [
+     "a) Svar",
+     "text",
+     "A, B, C, D eller E"
+    ],
+    [
+     "b) Svar",
+     "text",
+     "A–H"
+    ],
+    [
+     "c) Svar",
+     "text",
+     "A–H"
+    ],
+    [
+     "d) Svar",
+     "text",
+     "A–F"
+    ],
+    [
+     "e) Svar",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Svar": [
+      "D"
+     ],
+     "b) Svar": [
+      "B",
+      "{2, 3}"
+     ],
+     "c) Svar": [
+      "G",
+      "{3}"
+     ],
+     "d) Svar": [
+      "C"
+     ],
+     "e) Svar": [
+      "D"
+     ]
+    },
+    "kilde": "2015Q&A.docx, Problem 2. AC-3 i b og c kontrollert med et eget AC-3-skript."
+   },
+   "fasit": "- **a) D: Blank(s₂) ∧ Adjacent(s₁,s₂).**\n- **b) B: D(X) = {2, 3}.**\n- **c) G: D(X) = {3}.**\n- **d) C: Player x can win, but only if player o plays suboptimally.**\n- **e) D: Information extraction.**\n\n**a)** Et relaxed problem får du ved å fjerne forutsetninger. Fjerner du både Blank(s₂) og Adjacent(s₁,s₂), kan en brikke flyttes til hvilken som helst rute i ett trekk. Da trengs nøyaktig ett trekk per brikke som står feil, og den optimale kostnaden er antall brikker på feil plass (h₁). Fjerner du bare Blank(s₂), kan brikken bare gå til en nabo, og da får du Manhattan distance (h₂).\n\n**b)** Tuppellistene betyr C(X,Y): X ≥ Y og C(Y,Z): Y > Z. Kombinasjoner som ikke står i lista, er ulovlige. AC-3 med køen X→Y, Y→X, Y→Z, Z→Y:\n\n| # | Bue | Stryk | D etter | Legg til |\n|---|---|---|---|---|\n| 1 | X→Y | – | X = {1, 2, 3} | – |\n| 2 | Y→X | – | Y = {1, 2, 3} | – |\n| 3 | Y→Z | 1 (ingen Z < 1) | Y = {2, 3} | X→Y |\n| 4 | Z→Y | 3 (ingen Y > 3) | Z = {1, 2} | – |\n| 5 | X→Y | 1 (X = 1 krever Y = 1) | X = {2, 3} | – |\n\nVanlig feil: å ikke sjekke X→Y igjen etter at D(Y) har krympet. Da blir svaret A, {1, 2, 3}.\n\n**c)** Med Z = 2 krever Y→Z at Y > 2, så Y = {3}. Da krever X→Y at X ≥ 3, så X = {3}.\n\n**d)** x har tre trekk (de tre tomme rutene):\n- x øverst til høyre truer diagonalen øverst til høyre–midten–nederst til venstre. o må blokkere nederst til venstre, og x fyller siste rute: uavgjort. Tar o nederst til høyre i stedet, vinner x.\n- x nederst til venstre truer samme diagonal. o blokkerer øverst til høyre: uavgjort. Ellers vinner x.\n- x nederst til høyre gir ingen trussel, og spillet blir uavgjort.\n\no får bare ett trekk til og har ingen linje der to ruter er o og den tredje er tom, så o kan aldri vinne (B, D og E er feil). o kan alltid blokkere, så x er ikke sikret seier (A er feil). x vinner hvis o spiller dårlig, så F er også feil.\n\n**e)** Information extraction henter ut entiteter og relasjoner fra tekst («Pia works in restaurant R»), og det er nettopp nodene og lenkene i et semantisk nett. Information retrieval returnerer bare dokumenter, sentiment analysis klassifiserer meninger, og syntactic parsing gir setningsstrukturen, som bare er et mellomsteg.\n\n*Kilde: løsningsforslaget til eksamen 2015, oppgave 2. AC-3 i b og c er kontrollert med et eget skript.*"
+  },
+  {
+   "t": "Oppgave 3 (15 p): Logic",
+   "d": "**Problem 3** (15 points)\n\na) (2 points) For the following sentence in English, is the accompanying sentence in first-order logic a good translation? If yes, answer yes. If no, explain why not.\\\nNo two NTNU students have the same ID number.\\\n¬∃x,y,z(NTNUStudent(x)∧ NTNUStudent(y)∧ ¬ (x = y)) => (IDNum(x,z)∧ IDNum(y,z))\n\nb) (2 points) For the following sentence in English, is the accompanying sentence in first-order logic a good translation? If yes, answer yes. If no, explain why not.\\\nAll mammals except whales are similar to humans.\\\n∀x,yMammal(x)∧ ¬Whale(x) => Mammal(y)∧ Human(y)∧ Similar(x,y)\n\nc) (2 points) Consider the following knowledge base containing four sentences in propositional logic:\\\nA=> (B ∨ C)\\\n¬A=> (B ∨ C)\\\n¬C\\\n(B ∨ D) => E\\\nCan these four sentences be converted to a set of Horn clauses? If yes, write them down; if not, explain why not.\n\nd) (2 points) Consider the following knowledge base containing four sentences in propositional logic: A => (B ∨ C), ¬A => (B ∨ C), ¬C,  (B ∨ D) => E\\\nConvert the four sentences above into conjunctive normal form(CNF) and show the result as a set of clauses.\n\ne) (3 points) Is the following sentence (1) the correct skolemization (i.e., elimination of existential quantificator) of the sentence ∀xPerson(x) ⟺ ∃yHeart(y)∧ Has(x,y)?\\\n(1) ∀x Person(x) => Heart(H1)∧ Has(x,H1).\\\nWhy not? Write down the correct one.\n\nf) (4 points) Suppose the following facts are in the knowledge base:\\\n• Pia works in a restaurant R(Pia)\\\n• Georg works in a restaurant R(Georg)\\\n• Anyone who works in a restaurant and makes a big mistake is fired\\\n∀xR(x)∧ M(x) => F(x)\\\n• The restaurant owner is happy with anyone who doesn’t make a big mistake\\\n∀y ¬M(y) => H(owner,y)\\\n• Anyone who is happy with Pia is unhappy with Georg\\\n∀wH(w,Pia) => ¬H(w,Georg)\\\nUsing resolution refutation, prove that \"there exists someone who makes a big mistake and is fired\". Show your proof on a tree starting from the boxes in the figure below. Copy the boxes into your answer sheet and fill in the last box. Apply resolution and clearly indicate the clauses being resolved in each step. Show also the binding of variables in each step/link.\\\n<img class=\"fig\" src=\"nettside-figurer/ek2015-q3.svg\" alt=\"Boksene til oppgave 3 f: seks startklausuler øverst og en tom sluttboks nederst\">\\\n*Merknad:* Figuren med boksene mangler i eksamensfila. Den er tegnet på nytt med startboksene fra løsningsforslaget (de fem setningene og det negerte målet som klausuler) og en tom sluttboks.",
+   "f": [
+    [
+     "a) God oversettelse? Hvis ikke, hvorfor",
+     "area"
+    ],
+    [
+     "b) God oversettelse? Hvis ikke, hvorfor",
+     "area"
+    ],
+    [
+     "c) Horn-klausuler? Skriv dem eller forklar",
+     "area"
+    ],
+    [
+     "d) CNF som mengde klausuler",
+     "area",
+     "{…, …, …}"
+    ],
+    [
+     "e) Riktig? Hvorfor ikke, og den riktige",
+     "area"
+    ],
+    [
+     "f) Resolusjonsbeviset: par, binding og resultat per steg",
+     "area",
+     "3 + 6, {z/x}: …"
+    ]
+   ],
+   "fasit": "**a) Nei.** Under ∃ (her ¬∃) skal kroppen være en konjunksjon, ikke en implikasjon. ∃x,y,z (A ⇒ B) er sann så snart én kombinasjon gjør A usann, for eksempel x = y, så setningen sier nesten ingenting av det den skal. I tillegg står ⇒ utenfor parentesen til kvantoren. Riktig: ¬∃x,y,z (NTNUStudent(x) ∧ NTNUStudent(y) ∧ ¬(x = y) ∧ IDNum(x,z) ∧ IDNum(y,z)). Fasiten: «it uses => instead of ∧ when quantified by ∃».\n\n**b) Nei.** Setningen sier at hvis det finnes ett pattedyr som ikke er en hval, så er hver y et pattedyr og et menneske, og x ligner på alle. Human(y) må stå i premisset, ikke i konklusjonen. Riktig: ∀x,y (Mammal(x) ∧ ¬Whale(x) ∧ Human(y) ⇒ Similar(x,y)).\n\n**c) Nei, setning for setning.** A ⇒ (B ∨ C) blir ¬A ∨ B ∨ C, og ¬A ⇒ (B ∨ C) blir A ∨ B ∨ C. Begge har to positive literaler, og en Horn-klausul har høyst én. Fasiten: første setning har to literaler på høyresiden, så CNF-en har to positive literaler. (KB som helhet er likevel ekvivalent med Horn-mengden {B, ¬C, E}: de to første gir B ∨ C, og med ¬C gir det B og så E. Nevn gjerne begge deler.)\n\n**d) {¬A ∨ B ∨ C, A ∨ B ∨ C, ¬C, ¬B ∨ E, ¬D ∨ E}**\n1. A ⇒ (B ∨ C) blir ¬A ∨ B ∨ C (fjern ⇒).\n2. ¬A ⇒ (B ∨ C) blir ¬¬A ∨ B ∨ C, altså A ∨ B ∨ C (fjern ⇒, double negation).\n3. ¬C står som den er.\n4. (B ∨ D) ⇒ E blir ¬(B ∨ D) ∨ E, så (¬B ∧ ¬D) ∨ E (De Morgan), så (¬B ∨ E) ∧ (¬D ∨ E) (distribusjon).\n\n**e) Nei.** (1) sier at alle har det samme hjertet H1. ∃y står inne i virkeområdet til ∀x, så Skolem-termen må være en funksjon av x. Riktig: ∀x Person(x) ⇒ Heart(H(x)) ∧ Has(x, H(x)). Setningen i oppgaven står med ⟺, men både spørsmålet og løsningsforslaget behandler den som ⇒.\n\n**f) Den tomme klausulen □, så målet følger.** Klausulene (startboksene):\n\n| Nr | Klausul | Fra |\n|---|---|---|\n| 1 | R(Pia) | KB |\n| 2 | R(Georg) | KB |\n| 3 | ¬R(x) ∨ ¬M(x) ∨ F(x) | R(x) ∧ M(x) ⇒ F(x) |\n| 4 | M(y) ∨ H(owner, y) | ¬M(y) ⇒ H(owner, y) |\n| 5 | ¬H(w, Pia) ∨ ¬H(w, Georg) | H(w, Pia) ⇒ ¬H(w, Georg) |\n| 6 | ¬M(z) ∨ ¬F(z) | negert mål: ¬∃z (M(z) ∧ F(z)) |\n\n| Steg | Resolverer | Binding | Resultat |\n|---|---|---|---|\n| 7 | 3 og 6 (F mot ¬F) | {z/x} | ¬R(x) ∨ ¬M(x) (factoring av ¬M(x)) |\n| 8 | 7 og 4 (¬M mot M) | {y/x} | ¬R(x) ∨ H(owner, x) |\n| 9 | 8 og 1 | {x/Pia} | H(owner, Pia) |\n| 10 | 8 og 2 | {x/Georg} | H(owner, Georg) |\n| 11 | 10 og 5 | {w/owner} | ¬H(owner, Pia) |\n| 12 | 9 og 11 | {} | □ |\n\nKB ∧ ¬mål er altså unsatisfiable. Intuitivt: gjør verken Pia eller Georg en stor feil, er eieren fornøyd med begge, og det strider mot setning 5. Vanlig feil: å negere målet til ∃z (¬M(z) ∨ ¬F(z)) i stedet for ∀z.\n\n*Kilde: løsningsforslaget til eksamen 2015, oppgave 3. Beviset i f er kontrollert med FOL-resolusjonen i algoritmefila, og CNF-en i d med CNF-konverteringen der.*"
+  },
+  {
+   "t": "Oppgave 4 (10 p): Wumpus world",
+   "d": "**Problem 4** (10 points)\n\nNOTE: There is a correction in the points of the sub-questions. (a) should be 4 points and (b) is 2 points.\n\nWe changed the rules of the wumpus world. First of all, we are dealing only with wumpuses, not with gold, breeze, stench, etc. There may be more than one wumpus in the grid and they may be in any square. In the beginning of the game all squares are blank and the agent does not know which square(s) contains a wumpus. When the agent clicks on a square with a wumpus, she loses the game. If the square that the agent clicked on does not contain a wumpus, a number will appear on that square indicating the number of wumpuses adjacent to the square. Adjacency here means the four squares to the immediate left, right, top and bottom, excluding the diagonals. The goal of the game is to click on all squares which do not have wumpuses. Suppose you are playing the game in the following figure showing the current state of the grid. In the figure, squares marked a, b, c, and d are not clicked on yet. You may refer to these squares by these variables. The upper-left square is labeled 1, meaning that it is adjacent to exactly one wumpus. The other squares show the number of wumpuses in their adjacent squares.\n\n<table><tr><td>1</td><td>a</td></tr><tr><td>b</td><td>2</td></tr><tr><td>d</td><td>c</td></tr></table>\n\na) (4 points) Represent the current state of the grid using propositional logic. Use the predicate W(s) to express that square s contains a wumpus, and ¬W(s) s not having a wumpus.\n\nb) (2 points) Suppose you click on the lower-left square (which is a d in the beginning, see the figure) and number two (2) is revealed. This means that there is no wumpus in that square but two of squares adjacent to it have wumpuses. Represent this situation of the grid using propositional logic.\n\nc) (4 points) Prove ¬W(a), that is, the square labeled a does not contain a wumpus. For this use the combination of initial knowledge base and the new knowledge obtained by clicking on d. Show your proof by resolution refutation on a drawing.",
+   "f": [
+    [
+     "a) Tilstanden i proposisjonslogikk",
+     "area"
+    ],
+    [
+     "b) Etter klikket på d",
+     "area"
+    ],
+    [
+     "c) Resolusjonsbevis for ¬W(a)",
+     "area"
+    ]
+   ],
+   "fasit": "**a)** Øvre venstre rute viser 1 og har naboene a og b, så nøyaktig én av dem har en wumpus:\n(W(a) ∧ ¬W(b)) ∨ (W(b) ∧ ¬W(a)), eller i CNF (W(a) ∨ W(b)) ∧ (¬W(a) ∨ ¬W(b)). W(a) ⇔ ¬W(b) er likeverdig.\n\nMidtre høyre rute viser 2 og har naboene a, b og c, så nøyaktig to av dem:\n(W(a) ∧ W(b) ∧ ¬W(c)) ∨ (W(a) ∧ W(c) ∧ ¬W(b)) ∨ (W(b) ∧ W(c) ∧ ¬W(a)), i CNF (W(a) ∨ W(b)) ∧ (W(a) ∨ W(c)) ∧ (W(b) ∨ W(c)) ∧ (¬W(a) ∨ ¬W(b) ∨ ¬W(c)).\n\nFasiten godtar også bare W(c) for den andre delen når den første er riktig: én wumpus i {a, b} og to i {a, b, c} gir en i c.\n\n**b) W(b) ∧ W(c)** (og ¬W(d)). Nederste venstre rute har naboene b og c, og begge må ha en wumpus.\n\n**c)** Klausulene fra KB, og det negerte målet W(a):\n\n| Nr | Klausul | Fra |\n|---|---|---|\n| 1 | W(a) ∨ W(b) | a) |\n| 2 | ¬W(a) ∨ ¬W(b) | a) |\n| 3 | W(b) | b), and-elimination |\n| 4 | W(c) | b), and-elimination |\n| 5 | W(a) | negert mål |\n| 6 | ¬W(b) | 5 og 2 |\n| 7 | □ | 6 og 3 |\n\nDen tomme klausulen viser at KB ∧ W(a) er unsatisfiable, så KB ⊨ ¬W(a). Vanlig feil: å skrive bare W(a) ∨ W(b) for ruten med 1. Uten ¬W(a) ∨ ¬W(b) går ikke beviset.\n\n*Kilde: løsningsforslaget til eksamen 2015, oppgave 4. Kontrollert med sannhetstabell og PL-resolusjon i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 5 (10 p): Planning (GraphPlan)",
+   "d": "**Problem 5** (10 points)\n\n*Merknad:* GraphPlan er ikke pensum i 2026.\n\nThis is a planning problem to be solved using GraphPlan algorithm. The initial state is represented as {R,H,Q}. The goal state is {D,P,¬R}. There are four actions (Cx, Wx, Tx, and Vx) of which preconditions and effects (in terms of add and delete) are shown in the following figure.\n\n| Action | Precond | Add | Delete |\n|---|---|---|---|\n| Cx | {H} | {D} | {} |\n| Wx | {Q} | {P} | {} |\n| Tx | {} | {} | {H, R} |\n| Vx | {} | {} | {Q, R} |\n\na) (1 point) Under which conditions does a plan graph level off (i.e., stops expanding)?\n\nb) (3 points) Starting from state level zero (i.e., S<sub>0</sub>) draw the graph of the plan (i.e, the state and the action levels with mutex relations) applying the GraphPlan algorithm. Expand the graph as long as it is necessary for obtaining a plan. Use \"NOP\" for the persistence (no operation/maintenance) actions.\n\nc) (3 points) Is it possible to find a plan for this problem at state level S<sub>1</sub>? In case it is possible, write down the plan. In case it is not possible, justify your answer by writing down the mutex relation(s) that hinders the extraction of a plan from the graph. Write down each mutex relation (both those between the states and between the actions) and explain why it is mutex.\n\nd) (3 points) Are the following plans in (1) and (2) below valid plans, according to your answers above? Explain why or why not.\\\n1\\. Cx => Wx => Tx\\\n2\\. Wx => Cx => Tx",
+   "f": [
+    [
+     "a) Når flater grafen ut?",
+     "area"
+    ],
+    [
+     "b) Planleggingsgrafen med mutex",
+     "area",
+     "S0: … / A0: … / S1: …"
+    ],
+    [
+     "c) Plan på S1? Mutex-relasjonene",
+     "area"
+    ],
+    [
+     "d) Er plan (1) og (2) gyldige?",
+     "area"
+    ]
+   ],
+   "fasit": "*GraphPlan er ikke pensum i 2026. Fasiten er tatt med for fullstendighetens skyld.*\n\n**a)** Grafen flater ut (levels off) når to påfølgende tilstandsnivåer er like: samme literaler og samme mutex-relasjoner. Da endrer nye nivåer ingenting. Fasiten nevner også kravet for å hente ut en plan: alle målene står i siste nivå uten mutex seg imellom, og bakoversøket finner mutex-frie handlinger på hvert nivå helt tilbake til S₀.\n\n**b)**\n- **S₀:** R, H, Q, ¬D, ¬P.\n- **A₀:** Cx, Wx, Tx, Vx og NOP for hver literal i S₀.\n- **S₁:** R, H, Q, ¬D, ¬P, D, P, ¬H, ¬R, ¬Q.\n- **Mutex i A₀:** Tx–Cx (Tx sletter H, som Cx trenger: interference), Vx–Wx (Vx sletter Q, som Wx trenger), Tx–NOP(H), Tx–NOP(R), Vx–NOP(Q), Vx–NOP(R), Cx–NOP(¬D), Wx–NOP(¬P) (inconsistent effects).\n- **Mutex i S₁:** hver literal og negasjonen (H–¬H, R–¬R, Q–¬Q, D–¬D, P–¬P), og D–¬H, P–¬Q, R–¬H, R–¬Q (inconsistent support: de eneste handlingene som gir dem, er mutex).\n- Utvid til A₁ og S₂ på samme måte. Planen finnes på S₂.\n\n**c) Nei.** D, P og ¬R står alle i S₁ og er parvis ikke mutex, men D krever Cx, P krever Wx, og ¬R krever Tx eller Vx. Tx er mutex med Cx og Vx med Wx, så det finnes ingen mutex-fri mengde handlinger i A₀ som gir alle tre. På S₂ går det: A₀ = {Cx, Wx}, A₁ = {Tx, NOP(D), NOP(P)} (eller Vx i stedet for Tx). Løsningsforslaget finner også A₀ = {NOP(H), Wx}, A₁ = {Cx, NOP(P), Vx}. Det finnes flere planer.\n\n**d) Begge er gyldige.** Cx og Wx er ikke mutex og kan gjøres i hvilken som helst rekkefølge i første steg. Tx må komme etter Cx, fordi den sletter H. (1): {R,H,Q} → Cx gir D → Wx gir P → Tx sletter H og R, og målet {D, P, ¬R} holder. (2) er det samme med Wx først.\n\n*Kilde: løsningsforslaget til eksamen 2015, oppgave 5.*"
+  },
+  {
+   "t": "Oppgave 6 (10 p): Multiple choice",
+   "d": "**Problem 6** (10 pts, 2 pts each question)\n\nChoose the correct answers (one for each question) to the questions below.\n\na) What is the primary drawback of hill-climbing search?\\\nA. The search can get stuck in a local maximum\\\nB. The algorithm requires a lot of memory\\\nC. The search can get stuck in a global maximum\\\nD. The result depends strongly on the temperature schedule\n\nb) When we illustrate the Minimax algorithm, we use the symbols △ and ▽ for nodes in the search tree. A variation of the Minimax algorithm additionally uses the symbol ○ for some of the nodes. What does this symbol represent?\\\nA. A second opponent in a multiplayer game\\\nB. A game rule has been broken\\\nC. An element of chance in the game\\\nD. An estimated score, due to cutoff\\\nE. A tie between the players\n\nc) Which of the following researchers did not participate in the Dartmouth conference where the name \"artificial intelligence\" was coined?\\\nA. John McCarthy\\\nB. Marvin Minsky\\\nC. Herbert Simon\\\nD. Allen Newell\\\nE. Alan Turing\n\nd) Which of the following is the main inference mechanism in semantic networks?\\\nA. Resolution refutation\\\nB. Generalized modus ponens\\\nC. Inheritance\\\nD. Skolemization\\\nE. De Morgan’s law\n\ne) Which of the following would you choose as the unifier for\\\nUNIFY (Loves(Per,x),Loves(y,z))? Explain why. No points will be given without correct explanation.\\\nA. (y/Per, x/z)\\\nB. (y/Per, x/Per, z/Per)\\\nC. (y/Per, x/z, z/Siri)\\\nD. none of the above are suitable unifiers.",
+   "f": [
+    [
+     "a) Svar",
+     "text",
+     "A, B, C eller D"
+    ],
+    [
+     "b) Svar",
+     "text",
+     "A, B, C, D eller E"
+    ],
+    [
+     "c) Svar",
+     "text",
+     "A, B, C, D eller E"
+    ],
+    [
+     "d) Svar",
+     "text",
+     "A, B, C, D eller E"
+    ],
+    [
+     "e) Svar",
+     "text",
+     "A, B, C eller D"
+    ],
+    [
+     "e) Forklaring",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Svar": [
+      "A"
+     ],
+     "b) Svar": [
+      "C"
+     ],
+     "c) Svar": [
+      "E"
+     ],
+     "d) Svar": [
+      "C"
+     ],
+     "e) Svar": [
+      "A"
+     ]
+    },
+    "kilde": "2015Q&A.docx, Problem 6"
+   },
+   "fasit": "- **a) A:** the search can get stuck in a local maximum.\n- **b) C:** an element of chance in the game.\n- **c) E:** Alan Turing.\n- **d) C:** inheritance.\n- **e) A:** (y/Per, x/z), fordi det er most general unifier.\n\n**a)** Hill climbing ser bare på naboene til nåværende tilstand og stopper når ingen er strengt bedre, så den stopper på lokale maksima, platåer og ridges. B er feil: den lagrer bare én tilstand. C er feil: å havne i et globalt maksimum er målet. D gjelder simulated annealing.\n\n**b)** ○ er en chance node i expectiminimax, for eksempel et terningkast i backgammon. Verdien er forventningen Σ P(r) · verdi over utfallene. △ er MAX og ▽ er MIN.\n\n**c)** Turing døde i 1954, to år før Dartmouth-møtet sommeren 1956. McCarthy, som laget navnet, var med sammen med Minsky, Newell og Simon.\n\n**d)** Semantiske nett resonnerer ved å følge MemberOf- og SubsetOf-lenkene oppover til første kategori som har verdien. Resolution og generalized modus ponens er inferensregler for logikk, Skolemization er et steg i CNF-konverteringen, og De Morgan er en ekvivalens.\n\n**e) Forklaring:** Loves ~ Loves, Per ~ y gir y/Per, og x ~ z gir x/z. Begge blir Loves(Per, z). B og C unifiserer også, men binder mer enn nødvendig (B = MGU + {z/Per}, C = MGU + {z/Siri}). UNIFY returnerer most general unifier, som er unik opp til navnebytte av variabler. D er feil fordi A er en gyldig unifier. Fasiten: «Most general is chosen.»\n\n*Kilde: løsningsforslaget til eksamen 2015, oppgave 6.*"
+  },
+  {
+   "t": "Oppgave 7 (10 p): Search",
+   "d": "**Problem 7** (10 points)\n\nConsider the following search problem:\n\n<img class=\"fig\" src=\"nettside-figurer/ek2015-q7.svg\" alt=\"Søkegrafen i oppgave 7 med heuristikkverdien ved hver node\">\n\nThe initial node is A and the goal node is H. All step costs are 1, and a heuristic value is given for each node in the figure (for example, the heuristic value for node D is given as 3). Assume that there is a goal-test function which will be called by the search algorithm every time it needs to determine whether a node is a goal node.\n\na) (2 points) Using breadth-first search (BFS): What is the sequence of nodes for which the goal-test function will be called? Write the letters for each node, and in the correct order.\n\nb) (1 point) Using breadth-first search (BFS): What will be returned as the shortest path to the goal?\n\nc) (6 points) Using A\\*: What is the sequence of nodes for which the goal-test function will be called? Whenever several nodes have the same estimated cost, always choose the node that comes first alphabetically.\n\nd) (1 point) Using A\\*: What will be returned as the shortest path to the goal?\\\n*Merknad:* Deloppgaven er merket a) i oppgavefila og e) i løsningsforslaget. Her heter den d).",
+   "f": [
+    [
+     "a) BFS: nodene goal-testen kalles for, i rekkefølge",
+     "text",
+     "A, …"
+    ],
+    [
+     "b) BFS: stien som returneres",
+     "text",
+     "A, …, H"
+    ],
+    [
+     "c) A*: nodene goal-testen kalles for, i rekkefølge",
+     "text",
+     "A, …"
+    ],
+    [
+     "d) A*: stien som returneres",
+     "text",
+     "A, …, H"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) BFS: nodene goal-testen kalles for, i rekkefølge": [
+      "A, B, E, J, C, D, F, I, (H)",
+      "ABEJCDFI (H)",
+      "ABEJCDFIH",
+      "A, B, E, J, C, D, F, I, K, L, G, H",
+      "ABEJCDFIKLGH"
+     ],
+     "b) BFS: stien som returneres": [
+      "A, E, I, H",
+      "AEIH"
+     ],
+     "c) A*: nodene goal-testen kalles for, i rekkefølge": [
+      "A, B, E, I, (H)",
+      "ABEI (H)",
+      "ABEIH"
+     ],
+     "d) A*: stien som returneres": [
+      "A, E, I, H",
+      "AEIH"
+     ]
+    },
+    "merk": "a: løsningsforslaget gir de utvidede nodene med målet til slutt (ABEJCDFI(H)). Tester BFS målet ved generering slik Fig. 3.9 gjør, kalles goal-testen også for K, L og G før H, og det godtas også.",
+    "kilde": "2015Q&A.docx, Problem 7. BFS og A* kontrollert med søkealgoritmene i algoritmefila."
+   },
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "A",
+       "x": 330,
+       "y": 27,
+       "h": 2
+      },
+      {
+       "id": "B",
+       "x": 102,
+       "y": 141,
+       "h": 2
+      },
+      {
+       "id": "E",
+       "x": 330,
+       "y": 141,
+       "h": 2
+      },
+      {
+       "id": "J",
+       "x": 561,
+       "y": 141,
+       "h": 2
+      },
+      {
+       "id": "C",
+       "x": 42,
+       "y": 258,
+       "h": 2
+      },
+      {
+       "id": "D",
+       "x": 159,
+       "y": 258,
+       "h": 3
+      },
+      {
+       "id": "F",
+       "x": 273,
+       "y": 258,
+       "h": 2
+      },
+      {
+       "id": "I",
+       "x": 387,
+       "y": 258,
+       "h": 1
+      },
+      {
+       "id": "K",
+       "x": 501,
+       "y": 258,
+       "h": 2
+      },
+      {
+       "id": "L",
+       "x": 618,
+       "y": 258,
+       "h": 3
+      },
+      {
+       "id": "G",
+       "x": 273,
+       "y": 372,
+       "h": 1
+      },
+      {
+       "id": "H",
+       "x": 330,
+       "y": 486,
+       "h": 0
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "B",
+       "kost": 1
+      },
+      {
+       "fra": "A",
+       "til": "E",
+       "kost": 1
+      },
+      {
+       "fra": "A",
+       "til": "J",
+       "kost": 1
+      },
+      {
+       "fra": "B",
+       "til": "C",
+       "kost": 1
+      },
+      {
+       "fra": "B",
+       "til": "D",
+       "kost": 1
+      },
+      {
+       "fra": "E",
+       "til": "F",
+       "kost": 1
+      },
+      {
+       "fra": "E",
+       "til": "I",
+       "kost": 1
+      },
+      {
+       "fra": "J",
+       "til": "K",
+       "kost": 1
+      },
+      {
+       "fra": "J",
+       "til": "L",
+       "kost": 1
+      },
+      {
+       "fra": "F",
+       "til": "G",
+       "kost": 1
+      },
+      {
+       "fra": "G",
+       "til": "H",
+       "kost": 1
+      },
+      {
+       "fra": "I",
+       "til": "H",
+       "kost": 1
+      }
+     ],
+     "start": "A",
+     "mal": [
+      "H"
+     ]
+    }
+   },
+   "fasit": "- **a) A B E J C D F I (H)** (løsningsforslaget: «ABEJCDFI(H)», «notice the early goal check»)\n- **b) A E I H**\n- **c) A B E I (H)**\n- **d) A E I H**\n\nKantene er A–B, A–E, A–J, B–C, B–D, E–F, E–I, J–K, J–L, F–G, G–H og I–H, alle med kostnad 1.\n\n**a)** BFS tar ut nodene i FIFO-rekkefølge og tester målet når en node genereres:\n\n| Utvides | Genereres | Frontier etterpå |\n|---|---|---|\n| A | B, E, J | B, E, J |\n| B | C, D | E, J, C, D |\n| E | F, I | J, C, D, F, I |\n| J | K, L | C, D, F, I, K, L |\n| C, D | – | F, I, K, L |\n| F | G | I, K, L, G |\n| I | H: mål ved generering | – |\n\nLøsningsforslaget skriver de utvidede nodene og målet: A B E J C D F I (H). Leser du spørsmålet bokstavelig, kalles goal-testen på hver node som genereres (og på A ved start). Da blir rekkefølgen A B E J C D F I K L G H, fordi K, L og G genereres før H. Begge godtas av Sjekk, men skriv hvilken lesemåte du bruker.\n\n**b)** H nås fra I, som ble nådd fra E: A → E → I → H (3 steg).\n\n**c)** A\\* med f = g + h, tie-break alfabetisk, og målet testes når noden tas ut:\n\n| Steg | Tas ut | f = g + h | Frontier etterpå |\n|---|---|---|---|\n| 1 | A | 0 + 2 = 2 | B 3, E 3, J 3 |\n| 2 | B | 1 + 2 = 3 | E 3, J 3, C 4, D 5 |\n| 3 | E | 1 + 2 = 3 | I 3, J 3, C 4, F 4, D 5 |\n| 4 | I | 2 + 1 = 3 | H 3, J 3, C 4, F 4, D 5 |\n| 5 | H | 3 + 0 = 3 | mål |\n\nI og H vinner over J på f = 3 fordi de kommer først alfabetisk.\n\n**d)** A → E → I → H, kostnad 3. Det er optimalt, fordi h er admissible (og consistent).\n\nVanlig feil: å teste målet ved generering også i A\\*. Da stopper søket når H legges i frontier, og det er ikke trygt i A\\*.\n\n*Kilde: løsningsforslaget til eksamen 2015, oppgave 7. Kontrollert med BFS og A\\* i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 8 (10 p): Minimax and alpha-beta",
+   "d": "**Problem 8** (10 points)\n\nConsider the following Minimax tree:\n\n<img class=\"fig\" src=\"nettside-figurer/ek2015-q8.svg\" alt=\"Minimax-treet i oppgave 8 med nyttverdiene under bladene\">\n\nThe leaf nodes have their final utility values given as numbers below them.\n\na) (2 points) What is the final value in node A, after running Minimax?\n\nb) (3 points) What is the final value of the rest of the internal nodes, after running Minimax? Write the values for the nodes in alphabetical order, and do not include the root node or the leaf nodes. In other words, write the numbers in the order B, C, D, E, F, H, I, L, M.\n\nc) (5 points) Which nodes will be pruned when using alpha-beta pruning on this tree (assuming nodes are evaluated from left to right)? Give the answer as a list of the nodes’ letters in alphabetical order, and include all of the nodes in the branches that are pruned.",
+   "f": [
+    [
+     "a) Verdien i A",
+     "text"
+    ],
+    [
+     "b) Verdiene i B, C, D, E, F, H, I, L, M",
+     "text",
+     "…, …, …"
+    ],
+    [
+     "c) Nodene som kuttes, alfabetisk",
+     "text",
+     "…, …"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Verdien i A": [
+      "4"
+     ],
+     "b) Verdiene i B, C, D, E, F, H, I, L, M": [
+      "4, 2, 5, 4, 7, 8, 2, 4, 2",
+      "425478242"
+     ],
+     "c) Nodene som kuttes, alfabetisk": [
+      "H, I, O, P, Q, R, S, W",
+      "HIOPQRSW"
+     ]
+    },
+    "kilde": "2015Q&A.docx, Problem 8. Kontrollert med minimax og alpha-beta i algoritmefila."
+   },
+   "tegn": {
+    "type": "tre",
+    "data": {
+     "id": "A",
+     "type": "max",
+     "tekst": "A",
+     "barn": [
+      {
+       "id": "B",
+       "type": "min",
+       "tekst": "B",
+       "barn": [
+        {
+         "id": "D",
+         "type": "max",
+         "tekst": "D",
+         "barn": [
+          {
+           "id": "J",
+           "type": "blad",
+           "tekst": "J",
+           "verdi": 5
+          },
+          {
+           "id": "K",
+           "type": "blad",
+           "tekst": "K",
+           "verdi": 3
+          }
+         ]
+        },
+        {
+         "id": "E",
+         "type": "max",
+         "tekst": "E",
+         "barn": [
+          {
+           "id": "L",
+           "type": "min",
+           "tekst": "L",
+           "barn": [
+            {
+             "id": "T",
+             "type": "blad",
+             "tekst": "T",
+             "verdi": 6
+            },
+            {
+             "id": "U",
+             "type": "blad",
+             "tekst": "U",
+             "verdi": 4
+            }
+           ]
+          },
+          {
+           "id": "M",
+           "type": "min",
+           "tekst": "M",
+           "barn": [
+            {
+             "id": "V",
+             "type": "blad",
+             "tekst": "V",
+             "verdi": 2
+            },
+            {
+             "id": "W",
+             "type": "blad",
+             "tekst": "W",
+             "verdi": 5
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "id": "F",
+         "type": "max",
+         "tekst": "F",
+         "barn": [
+          {
+           "id": "N",
+           "type": "blad",
+           "tekst": "N",
+           "verdi": 7
+          },
+          {
+           "id": "O",
+           "type": "blad",
+           "tekst": "O",
+           "verdi": 1
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "C",
+       "type": "min",
+       "tekst": "C",
+       "barn": [
+        {
+         "id": "G",
+         "type": "blad",
+         "tekst": "G",
+         "verdi": 3
+        },
+        {
+         "id": "H",
+         "type": "max",
+         "tekst": "H",
+         "barn": [
+          {
+           "id": "P",
+           "type": "blad",
+           "tekst": "P",
+           "verdi": 4
+          },
+          {
+           "id": "Q",
+           "type": "blad",
+           "tekst": "Q",
+           "verdi": 8
+          }
+         ]
+        },
+        {
+         "id": "I",
+         "type": "max",
+         "tekst": "I",
+         "barn": [
+          {
+           "id": "R",
+           "type": "blad",
+           "tekst": "R",
+           "verdi": 1
+          },
+          {
+           "id": "S",
+           "type": "blad",
+           "tekst": "S",
+           "verdi": 2
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "fasit": "- **a) 4**\n- **b) 4, 2, 5, 4, 7, 8, 2, 4, 2** (B, C, D, E, F, H, I, L, M)\n- **c) H, I, O, P, Q, R, S, W**\n\nA er MAX (△), B og C er MIN (▽), D, E, F, H og I er MAX, L og M er MIN. G er et blad med verdien 3.\n\n**a) og b)** Nedenfra:\n- D = max(5, 3) = 5. L = min(6, 4) = 4, M = min(2, 5) = 2, E = max(4, 2) = 4. F = max(7, 1) = 7.\n- B = min(5, 4, 7) = 4.\n- H = max(4, 8) = 8, I = max(1, 2) = 2. C = min(3, 8, 2) = 2.\n- A = max(4, 2) = 4.\n\n**c)** Alpha-beta fra venstre mot høyre (kutt ved v ≥ β i MAX og v ≤ α i MIN):\n\n| Node | Hva skjer | α, β |\n|---|---|---|\n| D | J = 5, K = 3, D = 5 | B får β = 5 |\n| L | T = 6, U = 4, L = 4 | E får α = 4 |\n| M | V = 2 ≤ α = 4: **W kuttes** | M ≤ 2, E = 4, B får β = 4 |\n| F | N = 7 ≥ β = 4: **O kuttes** | B = 4, A får α = 4 |\n| C | G = 3 ≤ α = 4: **H og I kuttes** med P, Q, R, S | C ≤ 3, A = 4 |\n\nKuttede noder alfabetisk, med alle nodene i de kuttede grenene: H, I, O, P, Q, R, S, W.\n\nVanlig feil: å glemme bladene under H og I. Oppgaven ber om alle nodene i grenene som kuttes.\n\n*Kilde: løsningsforslaget til eksamen 2015, oppgave 8. Kontrollert med minimax og alpha-beta i algoritmefila.*"
+  }
+ ]
+}

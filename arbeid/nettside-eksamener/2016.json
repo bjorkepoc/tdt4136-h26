@@ -1,0 +1,416 @@
+{
+ "id": "ek2016",
+ "ep": "2016",
+ "tittel": "Ordinær eksamen",
+ "kilde": "../materiale/Files/Previous%20exams/2016Q.docx",
+ "om": "Department of Computer and Information Science\n\nExamination paper for (course code) (course title)\n\n## TDT4136 - Introduction to Artificial Intelligence\n\nAcademic contact during examination: Odd Erik Gundersen<br>\nExamination date: 19/12/2016<br>\nExamination time (from-to): 09:00 – 13:00\n\nPermitted examination support material: D No printed or handwritten material is permitted. Calculator is permitted.\n\nOther information:<br>\nResults: 19 January 2017<br>\nIf you believe that some information is missing in the formulation of a problem, briefly describe the necessary assumptions you made.\n\nLanguage: English<br>\nNumber of pages (front page excluded): 6<br>\nNumber of pages enclosed: 7\n\nChecked by:\n\n\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_<br>\nDate Signature\n\n(NOTE: All the answers need to be written down into answer sheets, not into the question list.)\n\n---\n\n*Poengene står ved hver oppgave og er til sammen 100. Fasiten bygger på løsningsforslaget (`2016Q&A.docx`).*",
+ "intro": "Etter «Lever» kan CNF-en, flervalget og sant/usant i oppgave 2, valget av søkealgoritme i 3 g, deloppgave c og heuristikkene i oppgave 4, og sant/usant og tallene i oppgave 6 sjekkes med Sjekk. Grafen i oppgave 3 kan åpnes i tegneverktøyet.",
+ "fasit": "**Poengfordeling:** oppgave 1: 10, 2: 20, 3: 20, 4: 20, 5: 10, 6: 20. Til sammen 100.\n\nLøsningsforslaget har ingen samlet sensorveiledning. Fasiten står under hver oppgave.",
+ "tasks": [
+  {
+   "t": "Oppgave 1 (10 p): Task Environment",
+   "d": "**TASK 1: Task Environment (10p)**\n\nSpecify the task environment of the following four agents.\n\nNote 2020: Several students have pointed out that there sometimes exists reasonable alternative answers to questions about agent environments. On future exams these kinds of questions will be discussion questions where you will explain your answers and what assumptions you make.\n\nPossible answers:\n\nObservable: Fully (F) or partially (P).\\\nAgents: Single (S) or Multi (M)\\\nDeterministic: Deterministic (D) or stochastic (S).\\\nEpisodic: Episodic (E) or sequential (S)\\\nStatic: Static (S), semi (I) or dynamic (D)\\\nDiscrete: Discrete (D) or continuous (C)\n\n**Agent 1: Deep Blue**\\\nDeep Blue is a chess playing agent that played and won against Garry Kasparov in 1997. Consider one game against Garry using a clock.\n\n**Agent 2: Roomba**\\\nRoomba is a vacuum-cleaning robot that drives around and vacuums the floors in all the rooms of a home.\n\n**Agent 3: A Tesla factory paint-robot.**\\\nA paint robot on the Tesla factory paints one and one car. The cars are transported by a transport robot to and from the paint robot. The paint robot uses a spray-painting robot arm to paint the cars.\n\n**Agent 4: Stats Monkey the robot journalist**\\\nStats Monkey collects box scores and play-by-play data to spit out credible accounts of college baseball games while the games are being played.\n\nAnswer to be written down into answer sheet following the given table:\n\n| Task Environment | Observable P/F | Agents S/M | Deterministic D/S | Episodic E/S | Static S/D/I | Discrete D/C |\n|---|---|---|---|---|---|---|\n| Deep Blue | | | | | | |\n| Roomba | | | | | | |\n| Paint robot | | | | | | |\n| Stats Monkey | | | | | | |",
+   "f": [
+    [
+     "Deep Blue",
+     "text",
+     "P/F, S/M, D/S, E/S, S/D/I, D/C"
+    ],
+    [
+     "Roomba",
+     "text",
+     "P/F, S/M, D/S, E/S, S/D/I, D/C"
+    ],
+    [
+     "Paint robot",
+     "text",
+     "P/F, S/M, D/S, E/S, S/D/I, D/C"
+    ],
+    [
+     "Stats Monkey",
+     "text",
+     "P/F, S/M, D/S, E/S, S/D/I, D/C"
+    ]
+   ],
+   "fasit": "**Løsningsforslaget:**\n\n| Task environment | Observable | Agents | Deterministic | Episodic | Static | Discrete |\n|---|---|---|---|---|---|---|\n| Deep Blue | F | M | D | S | I | D |\n| Roomba | P | S | S | S | D | C |\n| Paint robot | P | M | S | S | S | C |\n| Stats Monkey | P | S | D | S | I | C |\n\n**Begrunnelse og antakelser:**\n\n- **Deep Blue (F, M, D, S, I, D):** som chess with a clock i Fig. 2.6. Hele brettet er synlig, Kasparov er motspiller (competitive), trekkene har sikre utfall, hvert trekk påvirker resten av partiet, brettet står stille, men klokka går (semi), og det finnes endelig mange stillinger og trekk.\n- **Roomba (P, S, S, S, D, C):** den ser bare nærområdet. Mennesker og dyr regnes som en del av miljøet, så single. Hjulene kan skli og ny skitt dukker opp (stochastic). Der den har vasket, avgjør hva som gjenstår (sequential). Folk og kjæledyr flytter seg (dynamic), og posisjon og bevegelse er kontinuerlige.\n- **Paint robot (P, M, S, S, S, C):** den ser ikke alt, for eksempel små feil i lakken. Transportroboten er en annen agent (cooperative), så multi. Sprøytingen har usikkert resultat (stochastic). Hvert strøk bygger på det forrige (sequential), men episodic kan forsvares fordi hver bil er en egen episode, som part-picking robot i Fig. 2.6. Bilen står stille mens den lakkeres (static). Armposisjon og malingsmengde er kontinuerlige.\n- **Stats Monkey (P, S, D, S, I, C):** den ser bare dataene den får, ikke selve kampen. Ingen andre agenter påvirker dens performance (single), og å lage tekst fra data er deterministic. Teksten bygger på det som har skjedd tidligere i kampen (sequential). Kampen går videre mens den skriver. Fasiten sier semi, men dynamic kan forsvares. Fasiten sier continuous, men box scores, play-by-play og tekst er diskrete, så discrete er minst like godt begrunnet.\n\nMerknaden fra 2020 sier at begrunnede alternativer godtas. Skriv antakelsen din når svaret kan gå begge veier.\n\n*Kilde: løsningsforslaget til eksamen 2016, oppgave 1.*"
+  },
+  {
+   "t": "Oppgave 2 (20 p): Propositional and first-order logic",
+   "d": "**TASK 2: Propositional and first-order logic (20p)**\n\na) (4p) What are the advantages and disadvantages of the propositional logic ? What is the difference between implication and entailment in propositional logic ? (The answer should be shorter than one page).\n\nb) (4p) Convert the following formula to CNF (conjunctive normal form)\\\n(A ∧ B) ⇒ (¬A ⇔ B)\n\nc) (2p)  Multiple choice\\\nThe formula ∀x∃y P(x,y) → ∃q P(q,q) would be treated as a validity\\\n1\\. Under all possible circumstances\\\n2\\. By an inference engine that implements occurs check as Skolem functions\\\n3\\. By an inference engine that implements occurs check as Skolem constants\\\n4\\. Under no possible circumstances\n\nd) (3p) True or False (correct answer= 1p; wrong answer= -½p; total score will be 0-3p)\\\n1\\. Universal Instantiation is built on Skolemization.\\\n2\\. The Backward Chaining Algorithm can be described as follows:\\\n&nbsp;&nbsp;&nbsp;&nbsp;i. Pose the original query as a goal.\\\n&nbsp;&nbsp;&nbsp;&nbsp;ii. Find every clause in the knowledge base whose right-hand side unifies with the goal under some substitution.\\\n&nbsp;&nbsp;&nbsp;&nbsp;iii. Prove in turn every conjunct on the left-hand sides of each of these clauses, keeping track of the accumulated substitutions.\\\n3\\. There exists a sentence S in First Order Logic such that S cannot be converted into an inferentially equivalent sentence in Conjunctive Normal Form.\\\n*(Sant/usant-knappene står nederst i oppgaven.)*\n\ne) The statement “Every Russian school boy knows a game”¹ has two interpretations:\\\nA. There exists a game such that every Russian school boy knows this game.\\\nB. For each Russian school boy, there exists a game so that the boy knows this game.\\\nQuestions:\n\n1\\. (2p) Formulate each of these two interpretations in first order logic.\n\n2\\. (2p) Convert the formulas into clausal form. Since in the next task, we will prove B, you only have to convert the negated form of B.\n\n3\\. (3p) Use either a resolution proof or the Tableaux method to show that the logical formulation of interpretation A implies the logical formulation of interpretation B.\n\n<small>¹ The saying “Every Russian schoolboy knows …” (that you must recapture with the pawn!) is attributed to the Soviet chess Grandmaster David Bronstein who used it to imply how little Western chess players (in the 1950s) understood of the game compared to any Russian. However, Bronstein never met Magnus Carlsen ☺</small>",
+   "f": [
+    [
+     "a) Fordeler og ulemper, og implication mot entailment",
+     "area"
+    ],
+    [
+     "b) CNF",
+     "text"
+    ],
+    [
+     "c) Svar",
+     "text",
+     "1, 2, 3 eller 4"
+    ],
+    [
+     "1. A og B i FOL",
+     "area"
+    ],
+    [
+     "2. Klausulform",
+     "area"
+    ],
+    [
+     "3. Resolusjonsbevis (eller tableaux)",
+     "area"
+    ]
+   ],
+   "tf": [
+    "d1. Universal Instantiation is built on Skolemization.",
+    "d2. The Backward Chaining Algorithm can be described as follows: i. Pose the original query as a goal. ii. Find every clause in the knowledge base whose right-hand side unifies with the goal under some substitution. iii. Prove in turn every conjunct on the left-hand sides of each of these clauses, keeping track of the accumulated substitutions.",
+    "d3. There exists a sentence S in First Order Logic such that S cannot be converted into an inferentially equivalent sentence in Conjunctive Normal Form."
+   ],
+   "sjekk": {
+    "f": {
+     "b) CNF": [
+      "¬A ∨ ¬B",
+      "¬A∨¬B",
+      "¬B ∨ ¬A",
+      "¬B∨¬A"
+     ],
+     "c) Svar": [
+      "3"
+     ]
+    },
+    "tf": [
+     "usant",
+     "sant",
+     "usant"
+    ],
+    "kilde": "2016Q&A.docx, Task 2 b–d. CNF-en i b er kontrollert med sannhetstabell og CNF-konverteringen i algoritmefila."
+   },
+   "fasit": "**a)** *Fordeler:* proposisjonslogikk er *declarative* (deler av syntaksen svarer til fakta), den tillater delvis, disjunktiv og negert informasjon (P ∨ Q, ¬P), og den er *compositional*: betydningen av en setning er en funksjon av betydningen til delene. Inferens er sound og complete og kan gjøres mekanisk (sannhetstabell, resolution). *Ulemper:* svært begrenset uttrykkskraft. Det finnes ingen objekter, relasjoner eller kvantorer, så du trenger ett symbol per rute og tidspunkt og kan ikke si «alle ruter ved siden av en grop har breeze» med én setning. Model checking er i tillegg eksponentiell i antall symboler.\n\n*Implication* (α ⇒ β) er en setning i språket, usann bare når α er sann og β usann (α ⇒ β ≡ ¬α ∨ β). *Entailment* (α ⊨ β) er en påstand om setninger: β er sann i hver modell der α er sann, M(α) ⊆ M(β). Koblingen er deduction theorem: α ⊨ β hvis og bare hvis α ⇒ β er valid. Fasiten: «(S→Q) is true iff (¬S∨Q) is true», og KB ⊨ Q holder hvis hver tolkning som gjør alle setningene i KB sanne, også gjør Q sann.\n\n**b) ¬A ∨ ¬B**\n1. Fjern ⇒: ¬(A ∧ B) ∨ (¬A ⇔ B).\n2. Fjern ⇔: ¬(A ∧ B) ∨ ((¬A ⇒ B) ∧ (B ⇒ ¬A)) = ¬A ∨ ¬B ∨ ((A ∨ B) ∧ (¬B ∨ ¬A)).\n3. Distribuer ∨ over ∧: (¬A ∨ ¬B ∨ A ∨ B) ∧ (¬A ∨ ¬B ∨ ¬B ∨ ¬A).\n4. Den første klausulen er en tautologi og faller bort, og den andre forenkles: ¬A ∨ ¬B.\n\nKontroll: formelen er usann bare for A = B = T (da er ¬A ⇔ B = F ⇔ T = F), og det er nøyaktig ¬(A ∧ B).\n\n**c) 3.** Formelen er ikke valid: med to objekter og P(x, y) = «x ≠ y» er ∀x∃y P(x, y) sann og ∃q P(q, q) usann. Et resolusjonsbevis negerer formelen og får ∀x∃y P(x, y) og ∀q ¬P(q, q). Riktig Skolemisering gir P(x, F(x)), og å unifisere med ¬P(q, q) krever q = x og x = F(x). Occurs check stopper det, så ingen tom klausul (alternativ 2 gir riktig svar). Bruker motoren en Skolem-konstant i stedet, P(x, C), går unifiseringen med {x/C, q/C}, motoren finner □ og behandler formelen som valid. Fasiten viser til R&N s. 362 (3. utg.).\n\n**d)**\n- **d1. Usant.** Universal Instantiation setter inn en hvilken som helst ground term for en ∀-variabel. Skolem-konstanter hører til Existential Instantiation.\n- **d2. Sant.** Det er backward chaining (FOL-BC-ASK): målet unifiseres med konklusjonen (høyresiden) til definite clauses, og premissene bevises ett for ett mens substitusjonene samles opp.\n- **d3. Usant.** Hver FOL-setning kan gjøres om til en CNF-setning som er inferentially equivalent: den er unsatisfiable nøyaktig når originalen er det. Skolemiseringen bevarer satisfiability.\n\n**e) 1.** Med R(x): x er en russisk skolegutt, G(y): y er et spill og K(x, y): x kan y:\n- **A: ∃y [G(y) ∧ ∀x (R(x) ⇒ K(x, y))]**\n- **B: ∀x [R(x) ⇒ ∃y (G(y) ∧ K(x, y))]**\n\nYtterst i A står ∃ med ∧, og inni står ∀ med ⇒. I B er det omvendt.\n\n**e) 2.** A: fjern ⇒ og bytt ∃y med Skolem-konstanten S1: G(S1) ∧ (¬R(x) ∨ K(x, S1)), som gir **P1: G(S1)** og **P2: ¬R(x) ∨ K(x, S1)**.\n¬B: ¬∀x [R(x) ⇒ ∃y (G(y) ∧ K(x, y))] blir ∃x [R(x) ∧ ¬∃y (G(y) ∧ K(x, y))], så ∃x [R(x) ∧ ∀y (¬G(y) ∨ ¬K(x, y))] (¬ innover med De Morgan). Skolem-konstanten S2 for x gir **P3: R(S2)** og **P4: ¬G(y) ∨ ¬K(S2, y)**.\n\n**e) 3.**\n\n| Nr | Klausul | Resolverer | Binding |\n|---|---|---|---|\n| P5 | ¬K(S2, S1) | P1 og P4 | {y/S1} |\n| P6 | K(S2, S1) | P3 og P2 | {x/S2} |\n| P7 | □ | P5 og P6 | {} |\n\nA ∧ ¬B er unsatisfiable, så A ⊨ B. Det omvendte holder ikke: har gutt r1 bare spill g1 og gutt r2 bare spill g2, er B sann og A usann. Vanligste feil: å bytte om kvantorene og tro at de to tolkningene er like.\n\n*Kilde: løsningsforslaget til eksamen 2016, oppgave 2. Beviset i e er kontrollert med FOL-resolusjonen i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 3 (20 p): Search",
+   "d": "**TASK 3: Search (20p)**\n\nYou are going to evaluate search algorithms that can find the shortest indoor walking paths. Figure 2 illustrates seven rooms and the actual walking distances between them. Table 1 specifies the straight-line distances between room 127D and all the other rooms. The evaluation function f(n) evaluates node n.  When we evaluate the algorithms, we start our path search in room 181 and we want to find the shortest path to room 127D, which is our end node.\n\n*Merknad:* Teksten sier «Figure 2», men grafen er Figure 1 rett under.\n\n<img class=\"fig\" src=\"nettside-figurer/ek2016-q3.png\" alt=\"Figure 1: grafen med de sju rommene og gangavstandene mellom dem\">\n\nFigure 1: The graph represents the possible walking paths between the seven rooms 127D, 127E, 127C, 127, 127A, 127B and 181. The numbers close to the paths indicate the actual walking distances between the connected rooms.\n\nTable 1: Straight line distance between the rooms and 127D\n\n| Room | SLD from 127D |\n|---|---|\n| 127 | 7 |\n| 127A | 10 |\n| 127B | 9 |\n| 127C | 3 |\n| 127E | 2 |\n| 181 | 14 |\n\na) Greedy best-first search (3p):  What is the evaluation function f(n) for greedy best-first search? Write the function and describe the term(s) on the right hand side.\n\nb) A\\* (3p): What is the evaluation function for A\\*? Write the function and describe the term(s) on the right hand side.\n\nc) Greedy best first search (3p): For each step in the search, write the evaluation function for the node that is selected for expansion.\n\nd) A\\* (3p): For each step in the search, write the evaluation function including all the terms and their values for the node that is selected for expansion. In this task, we want you to work with an implementation of A\\* which does not assume a consistent heuristic.\n\ne) Admissible heuristics (4p): Explain what an admissible heuristics is in one sentence only. Give two examples of admissible heuristics for the 8-puzzle where the objective is to slide tiles horizontally or vertically into the open space until the goal state is reached.\n\nf) Optimality of A\\* for graph search (1p): Must the heuristics be both admissible and consistent in order for the Russel and Norvig version of A\\* to be optimal when applied to graph search? Alternatives: Yes or No.\n\ng) Search algorithms (3p): Which of the search algorithms 1) A\\*, 2) genetic algorithms, 3) minimax, 4) constraint propagation should be chosen for the following search problems:\n\n1\\. Search for a schedule of flights that has some restrictions.\n\n2\\. Search for best action in backgammon.\n\n3\\. Find the best design of a car.\n\n4\\. Find the shortest route for a self-diving car.",
+   "f": [
+    [
+     "a) f(n) for greedy best-first search",
+     "area"
+    ],
+    [
+     "b) f(n) for A*",
+     "area"
+    ],
+    [
+     "c) f(n) for hver node som velges",
+     "area",
+     "181: f = 14, …"
+    ],
+    [
+     "d) f(n) = g(n) + h(n) for hver node som velges",
+     "area",
+     "181: 0 + 14 = 14, …"
+    ],
+    [
+     "e) Admissible heuristic, og to eksempler",
+     "area"
+    ],
+    [
+     "f) Yes eller No",
+     "text"
+    ],
+    [
+     "1. Algoritme",
+     "text",
+     "1, 2, 3 eller 4"
+    ],
+    [
+     "2. Algoritme",
+     "text",
+     "1, 2, 3 eller 4"
+    ],
+    [
+     "3. Algoritme",
+     "text",
+     "1, 2, 3 eller 4"
+    ],
+    [
+     "4. Algoritme",
+     "text",
+     "1, 2, 3 eller 4"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "1. Algoritme": [
+      "4",
+      "constraint propagation"
+     ],
+     "2. Algoritme": [
+      "3",
+      "minimax"
+     ],
+     "3. Algoritme": [
+      "2",
+      "genetic algorithms",
+      "genetic algorithm"
+     ],
+     "4. Algoritme": [
+      "1",
+      "A*"
+     ]
+    },
+    "merk": "f har ingen Sjekk: svaret avhenger av utgaven av boka (se fasiten).",
+    "kilde": "2016Q&A.docx, Task 3 g"
+   },
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "127A",
+       "x": 337,
+       "y": 52,
+       "h": 10
+      },
+      {
+       "id": "127",
+       "x": 268,
+       "y": 96,
+       "h": 7
+      },
+      {
+       "id": "127B",
+       "x": 388,
+       "y": 168,
+       "h": 9
+      },
+      {
+       "id": "127E",
+       "x": 92,
+       "y": 182,
+       "h": 2
+      },
+      {
+       "id": "127C",
+       "x": 217,
+       "y": 210,
+       "h": 3
+      },
+      {
+       "id": "127D",
+       "x": 141,
+       "y": 254,
+       "h": 0
+      },
+      {
+       "id": "181",
+       "x": 546,
+       "y": 242,
+       "h": 14
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "127A",
+       "til": "127",
+       "kost": 1
+      },
+      {
+       "fra": "127A",
+       "til": "181",
+       "kost": 10
+      },
+      {
+       "fra": "127",
+       "til": "127E",
+       "kost": 7
+      },
+      {
+       "fra": "127",
+       "til": "127C",
+       "kost": 7
+      },
+      {
+       "fra": "127",
+       "til": "127B",
+       "kost": 5
+      },
+      {
+       "fra": "127B",
+       "til": "181",
+       "kost": 8
+      },
+      {
+       "fra": "127E",
+       "til": "127D",
+       "kost": 4
+      },
+      {
+       "fra": "127C",
+       "til": "127D",
+       "kost": 3
+      }
+     ],
+     "start": "181",
+     "mal": [
+      "127D"
+     ]
+    }
+   },
+   "fasit": "Kantene i Figure 1: 127A–127 1, 127A–181 10, 127–127E 7, 127–127C 7, 127–127B 5, 127B–181 8, 127E–127D 4, 127C–127D 3.\n\n**a) f(n) = h(n).** h(n) er heuristikken, et estimat av kostnaden fra n til målet, her luftlinjeavstanden (SLD) fra n til 127D.\n\n**b) f(n) = g(n) + h(n).** g(n) er den faktiske kostnaden fra start til n (gangavstanden så langt), og h(n) er heuristikken (SLD til 127D). f(n) er estimert kostnad for den billigste løsningen gjennom n.\n\n**c) f(181) = 14, f(127B) = 9, f(127) = 7, f(127E) = 2, f(127D) = 0.** Stien 181 → 127B → 127 → 127E → 127D har faktisk lengde 8 + 5 + 7 + 4 = 24.\n\n| Steg | Velges | f = h | Frontier etterpå |\n|---|---|---|---|\n| 1 | 181 | 14 | 127B 9, 127A 10 |\n| 2 | 127B | 9 | 127 7, 127A 10 |\n| 3 | 127 | 7 | 127E 2, 127C 3, 127A 10 |\n| 4 | 127E | 2 | 127D 0, 127C 3, 127A 10 |\n| 5 | 127D | 0 | mål |\n\n**d) Stien 181 → 127A → 127 → 127C → 127D, kostnad 21.**\n\n| Steg | Velges | g + h = f | Frontier etterpå |\n|---|---|---|---|\n| 1 | 181 | 0 + 14 = 14 | 127B 17, 127A 20 |\n| 2 | 127B | 8 + 9 = 17 | 127A 20, 127 20 (g = 13) |\n| 3 | 127A | 10 + 10 = 20 | 127 18 (g = 11 via 127A) |\n| 4 | 127 | 11 + 7 = 18 | 127E 20, 127C 21 |\n| 5 | 127E | 18 + 2 = 20 | 127C 21, 127D 22 (g = 22) |\n| 6 | 127C | 18 + 3 = 21 | 127D 21 (g = 21 via 127C) |\n| 7 | 127D | 21 + 0 = 21 | mål |\n\nHeuristikken er ikke consistent: h(127A) = 10 > c(127A, 127) + h(127) = 1 + 7. Derfor må A\\* kunne oppdatere en node når den finnes en billigere vei dit, som i steg 3 og 6. Løsningsforslaget velger 127A før 127 ved likt f = 20. Bryter du likheten alfabetisk (127 før 127A), utvides 127 først med g = 13 og så på nytt med g = 11 etter 127A. Stien og kostnaden blir de samme. Løsningsforslagets tabell oppgir g(127D) = 20, men 127D nås med g = 18 + 3 = 21.\n\n**e)** En admissible heuristic overvurderer aldri kostnaden til målet: h(n) ≤ h\\*(n) for alle n. To eksempler for 8-puzzle: **h₁ = antall brikker på feil plass** og **h₂ = summen av Manhattan-avstandene** fra hver brikke til målplassen.\n\n**f) Yes** (løsningsforslaget). I GRAPH-SEARCH fra 3. utgave av boka åpnes en node aldri på nytt når den er utvidet, og da må h være consistent (som også gjør den admissible) for at A\\* skal være optimal. Med best-first search fra 4. utgave (Fig. 3.7), som legger en node tilbake når den nås billigere, er admissible nok.\n\n**g)**\n1. **4, constraint propagation:** en flyplan med restriksjoner er en CSP.\n2. **3, minimax:** backgammon er et spill mot en motstander (med terning, så expectiminimax).\n3. **2, genetic algorithms:** et stort designrom uten kjent mål, der du bare kan vurdere hvor god en løsning er.\n4. **1, A\\*:** korteste vei i en graf med en god heuristikk (luftlinje).\n\n*Kilde: løsningsforslaget til eksamen 2016, oppgave 3. Greedy og A\\* i c og d er kontrollert med søkealgoritmene i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 4 (20 p): Constraint satisfaction",
+   "d": "**TASK 4: Constraint satisfaction (20p)**\n\nFigure 2 shows the water regions in Norway, which there are eleven of, and these are Finnmark (F), Troms (T), Norland (N), Sør-Trøndelag (ST), Møre og Romsdal (MR), Østfold (Ø), Sogn of Fjordane (SF), Hordaland (H), Buskerud (B), Rogaland (R) and Vest-Agder (VA).\n\n<img class=\"fig\" src=\"nettside-figurer/ek2016-q4.png\" alt=\"Figure 2: vannregionene i Norge\">\n\nFigure 2: Water regions of Norway.\n\nYou are going to color the map. Unlike the artist that has colored the map of figure 2, you can use three colors only (red, green and blue), but no neighboring regions can have the same color.  To solve this problem, you have to use your knowledge of constraint satisfaction. You will use the full constraint graph for b, and the reduced constraint graph for d and e. The reduced constraint graph only includes the regions south of Møre og Romsdal (that is we are not including Møre and Romsdal in the reduced constraint graph).\n\na) Constraint satisfaction problems (3p): Specify 1) the variables, 2) the domain and 3) give at least three examples of constraints.\n\nb) Graph (3p): Draw the full constraint graph illustrating the water regions of Norway. Use the abbreviations in your graph: F, T, N and so on.\n\nc) Description (3p): Which of the following terms describe the domain and the constraints of the specified problem?\\\n1\\. Discrete domain,\\\n2\\. Continuous domain,\\\n3\\. Finite domain,\\\n4\\. Infinite domain,\\\n5\\. Linear constraints\\\n6\\. Nonlinear constraints,\\\n7\\. Unary constraints,\\\n8\\. Binary constraints,\\\n9\\. N-ary constraints.\n\nd) Backtracking search (4p): Illustrate the first three levels of the search tree of backtracking search using the constraint graph. Each node in the tree should list all the assignments made by that point in the search. Use the reduced constraint graph. You should assign values to nodes in the following order: SF, H, R, VA, Ø.\n\ne) Forward checking (4p): Illustrate forward checking with a table. Each variable should have a column in the table, showing the remaining domain for that variable at each point in the search (represented by rows). Show three steps. Use the reduced constraint graph.\n\nf) Heuristics (3p):  Of the three heuristics minimum-remaining-values (MRV), degree (D) and least-constraining-value (LCV):\n\na. Which heuristic should be used to choose which region to color next?\n\nb. Which heuristic should be used to decide the order to examine values?",
+   "f": [
+    [
+     "a) Variabler, domene og minst tre constraints",
+     "area"
+    ],
+    [
+     "b) Den fulle constraint-grafen (kantene)",
+     "area",
+     "F–T, T–N, …"
+    ],
+    [
+     "c) Svar",
+     "text",
+     "{…}"
+    ],
+    [
+     "d) Søketreet, tre nivåer",
+     "area"
+    ],
+    [
+     "e) Forward checking-tabellen",
+     "area"
+    ],
+    [
+     "a. Heuristikk",
+     "text",
+     "MRV, D eller LCV"
+    ],
+    [
+     "b. Heuristikk",
+     "text",
+     "MRV, D eller LCV"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "c) Svar": [
+      "{1, 3, 8}",
+      "{a, c, h}",
+      "{Discrete domain, Finite domain, Binary constraints}"
+     ],
+     "a. Heuristikk": [
+      "MRV, D",
+      "MRV and degree",
+      "MRV, degree",
+      "MRV and D",
+      "MRV"
+     ],
+     "b. Heuristikk": [
+      "LCV",
+      "least-constraining-value"
+     ]
+    },
+    "merk": "c: løsningsforslaget svarer med bokstavene a, c og h. I oppgavefila er alternativene nummerert 1–9, så 1, 3 og 8 er de samme.",
+    "kilde": "2016Q&A.docx, Task 4 c og f"
+   },
+   "fasit": "**a)** *Variabler:* F, T, N, ST, MR, Ø, SF, H, B, R og VA. *Domene:* {red, green, blue} for hver. *Constraints:* naboregioner har ulik farge, for eksempel F ≠ T, T ≠ N og N ≠ ST.\n\n**b)** Kantene i den fulle constraint-grafen:\n\n| Region | Naboer |\n|---|---|\n| F | T |\n| T | F, N |\n| N | T, ST |\n| ST | N, MR, Ø |\n| MR | ST, SF, Ø |\n| Ø | ST, MR, SF, B |\n| SF | MR, Ø, H, B |\n| H | SF, B, R |\n| B | Ø, SF, H, R, VA |\n| R | H, B, VA |\n| VA | R, B |\n\nDet er 16 kanter: F–T, T–N, N–ST, ST–MR, ST–Ø, MR–SF, MR–Ø, SF–Ø, SF–H, SF–B, H–B, H–R, R–B, R–VA, VA–B og Ø–B. Den reduserte grafen (sør for MR) har SF, Ø, H, B, R og VA og kantene SF–Ø, SF–H, SF–B, Ø–B, H–B, H–R, R–B, R–VA og VA–B.\n\n**c) {1, 3, 8}: Discrete domain, Finite domain og Binary constraints.** Tre farger er et endelig, diskret domene, og hver constraint (X ≠ Y) gjelder to variabler. Løsningsforslaget skriver «a. Discrete domain, c. Finite Domain, h. Binary constraints».\n\n**d)** Backtracking search er depth-first search som tildeler én variabel om gangen og går tilbake når en variabel ikke har lovlige verdier igjen. Tre nivåer under roten med rekkefølgen SF, H, R:\n- Nivå 1: SF = red, SF = green, SF = blue (3 noder).\n- Nivå 2: under hver SF får H de to fargene som er forskjellige fra SF, for eksempel {SF = red, H = green} og {SF = red, H = blue} (6 noder).\n- Nivå 3: R er nabo til H (ikke til SF), så R får de to fargene som er forskjellige fra H, for eksempel {SF = red, H = green, R = red} og {SF = red, H = green, R = blue} (12 noder).\n\nHver node skal liste alle tildelingene så langt. Tegner du bare den venstre grenen helt ut og de andre som «…», viser du det samme.\n\n**e)** Med SF = red, H = green, R = blue (verdiene i rekkefølgen red, green, blue):\n\n| Steg | SF | Ø | H | B | R | VA |\n|---|---|---|---|---|---|---|\n| Initial | R G B | R G B | R G B | R G B | R G B | R G B |\n| After SF = red | R | G B | G B | G B | R G B | R G B |\n| After H = green | R | G B | G | B | R B | R G B |\n| After R = blue | R | G B | G | – | B | R G |\n\nForward checking fjerner verdien fra domenet til hver ikke-tildelt nabo. Etter R = blue er domenet til B tomt, så forward checking oppdager feilen her, og søket må gå tilbake og prøve R = red.\n\n**f)**\n- **a. MRV**, med degree (D) som tie-breaker, for eksempel for den første regionen der alle har like mange verdier.\n- **b. LCV:** prøv først verdien som fjerner færrest verdier hos naboene.\n\n*Kilde: løsningsforslaget til eksamen 2016, oppgave 4. Forward checking i e er kontrollert med et eget skript.*"
+  },
+  {
+   "t": "Oppgave 5 (10 p): Planning",
+   "d": "**TASK 5: Planning (10p)**\n\na) Characterizing planning (5p): How can a planning (problem) be characterized? Name two situations when planning is useful. (The answer should be shorter than one page).\n\nb) Plan representation (5p): Explain how a plan can be represented? Give an example of withdrawing cash from an ATM in either STRIPS or PDDL. (The answer should be shorter than one page.)",
+   "f": [
+    [
+     "a) Planlegging, og to situasjoner",
+     "area"
+    ],
+    [
+     "b) Representasjon, og ATM-eksempel i STRIPS eller PDDL",
+     "area"
+    ]
+   ],
+   "fasit": "**a)** Planlegging er problemløsning som ser på hva handlingene gjør (effektene). Det ligner søk, men søk flytter seg mellom atomiske tilstander, mens planlegging arbeider med faktoriserte tilstander: en tilstand er en mengde fakta (fluents), og handlingene beskrives med forutsetninger og effekter. Planleggeren kan da utnytte strukturen, for eksempel med domeneuavhengige heuristikker. Situasjoner der planlegging er nyttig (løsningsforslaget): når du møter en ny situasjon, når oppgaven er kompleks, når feil er kostbare eller risikable, og når du samarbeider med andre.\n\n**b)** Et planleggingsproblem beskrives med:\n- **States:** konjunksjoner av ground atoms (fakta) om objekter.\n- **Actions:** schemas med navn og parametere, en precondition (konjunksjon av literaler som må holde) og en effect (det som legges til og fjernes; i STRIPS en add list og en delete list).\n- **Goal:** en konjunksjon av literaler.\n\nEksempel i PDDL:\n\n```\nAction(Withdraw(p, a, c),\n  PRECOND: At(p, a) ∧ ATM(a) ∧ HasMoneyOnAccount(p) ∧ Cash(c)\n  EFFECT:  Have(p, c) ∧ ¬HasMoneyOnAccount(p))\n```\n\nI STRIPS: samme precondition, ADD-LIST: Have(p, c), DELETE-LIST: HasMoneyOnAccount(p). Løsningsforslaget bruker Action(withdraw(cash), PRECOND: At(ATM) ∧ Sells(ATM, cash, person) ∧ hasMoneyOnAccount(person), EFFECT: ¬hasMoneyOnAccount(person) ∧ have(cash)) og nevner situation calculus som en annen representasjon.\n\n*Kilde: løsningsforslaget til eksamen 2016, oppgave 5.*"
+  },
+  {
+   "t": "Oppgave 6 (20 p): Natural Language Processing",
+   "d": "**TASK 6: Natural Language Processing (20p)**\n\na) (6p) True or False (correct answer= 1p; wrong answer= -½p; total score will be 0-6p)\\\n● Sentiment analysis is a text classification application.\\\n• The purpose of smoothing is to avoid dramatic effects of low-frequency counts.\\\n• The bag of words model can be seen as a simple language model.\\\n• ‘Freeze’, ‘halt’, ‘cease’ and ‘finish’ are examples of stop words.\\\n• The task of Information Retrieval is to return the answer to a user query.\\\n• Information Extraction systems are often based on templates\\\n*(Sant/usant-knappene står nederst i oppgaven.)*\n\nb) (2p) What are the main features of human languages that make parsing of these different from the parsing of programming languages?\n\nc) (2p) Sentiment analysis of Twitter messages (tweets) faces several challenges. Give examples of at least four problems that need to be addressed.\n\nd) (4p) The documents in a collection that were returned respectively not returned by an Information Retrieval system in response to a given query were analysed for relevance and shown to be distributed as follows:\n\n| | Returned | Not returned |\n|---|---|---|\n| Relevant | 60 | 40 |\n| Not relevant | 20 | 180 |\n\n1\\. What was the system’s precision?\n\n2\\. What was the system’s recall?\n\n3\\. What is F<sub>1</sub> score?\n\n4\\. Calculate the F<sub>1</sub> score of the system.\n\ne) (6p) Suppose you have access to the following knowledge sources:\\\n• Dictionaries of basic word forms (lemmas) for English and Norwegian,\\\n• Morphological inflection rules for the same two languages,\\\n• A large set of English e-mails already classified as spam,\\\n• A large set of Norwegian e-mails already classified as spam,\\\n• A large set of English e-mails already classified as not being spam,\\\n• A large set of Norwegian e-mails already classified as not being spam,\\\n• A huge set of unclassified e-mails written in a wide range of human languages, and\\\n• A stream of incoming messages, each of the length of no more than one sentence.\\\nDescribe how you would go about building a system which would analyze each incoming message and produce one of the following outputs:\\\n1\\. The message is not written in a human language.\\\n2\\. The message is written in a human language which is neither English nor Norwegian.\\\n3\\. The message is written in English and is spam.\\\n4\\. The message is written in Norwegian and is spam.\\\n5\\. The message is written in English and is not spam.\\\n6\\. The message is written in Norwegian and is not spam.\\\nYou do not need to produce a complete solution, but rather sketch the steps that would have to be taken.",
+   "tf": [
+    "a1. Sentiment analysis is a text classification application.",
+    "a2. The purpose of smoothing is to avoid dramatic effects of low-frequency counts.",
+    "a3. The bag of words model can be seen as a simple language model.",
+    "a4. ‘Freeze’, ‘halt’, ‘cease’ and ‘finish’ are examples of stop words.",
+    "a5. The task of Information Retrieval is to return the answer to a user query.",
+    "a6. Information Extraction systems are often based on templates"
+   ],
+   "f": [
+    [
+     "b) Svar",
+     "area"
+    ],
+    [
+     "c) Minst fire problemer",
+     "area"
+    ],
+    [
+     "1. Precision",
+     "text"
+    ],
+    [
+     "2. Recall",
+     "text"
+    ],
+    [
+     "3. Hva er F1 score?",
+     "area"
+    ],
+    [
+     "4. F1 score for systemet",
+     "text"
+    ],
+    [
+     "e) Skisse av systemet",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "tf": [
+     "sant",
+     "sant",
+     "sant",
+     "usant",
+     "usant",
+     "sant"
+    ],
+    "f": {
+     "1. Precision": [
+      "0.75",
+      "3/4",
+      "75%"
+     ],
+     "2. Recall": [
+      "0.6",
+      "3/5",
+      "60%"
+     ],
+     "4. F1 score for systemet": [
+      "0.67",
+      "2/3",
+      "0.667",
+      "0.6667",
+      "67%",
+      "66.7%"
+     ]
+    },
+    "kilde": "2016Q&A.docx, Task 6 a og d"
+   },
+   "fasit": "**a)**\n- **a1. Sant.** Sentiment analysis klassifiserer en tekst som positiv eller negativ (eller etter grad), altså text classification.\n- **a2. Sant.** Smoothing jevner ut estimatene, slik at n-gram med lave tellinger (0 eller 1) ikke gir ekstreme sannsynligheter, som P = 0 for en hel setning.\n- **a3. Sant.** Bag-of-words er en unigram-modell: hvert ord trekkes uavhengig av de andre, og det gir en sannsynlighetsfordeling over tekster.\n- **a4. Usant.** Stop words er svært vanlige ord med lite innhold, som «the», «a», «of». Freeze, halt, cease og finish er innholdsord (synonymer).\n- **a5. Usant.** Information retrieval finner og returnerer dokumenter som er relevante for spørringen, ikke selve svaret. Å gi svaret er question answering.\n- **a6. Sant.** Information extraction fyller ofte ut en template, et skjema med felt som adresse, pris eller dato, med verdier hentet fra teksten.\n\n**b)** Menneskespråk er tvetydige (ambiguity: samme setning kan ha flere parsetrær og flere betydninger) og redundante, mens et programmeringsspråk har en entydig, formell grammatikk. Menneskespråk endrer seg også hele tiden og avhenger mer av kontekst.\n\n**c)** For eksempel (minst fire):\n- ordets betydning avhenger av domenet («unpredictable» er bra om en film, dårlig om en bil);\n- negasjon og andre modifikatorer snur eller endrer betydningen;\n- ironi, sarkasme og humor;\n- svært korte meldinger, slang, idiomer, ugrammatisk tekst og stavefeil;\n- hashtags, emojis, lenker, bilder og henvisninger til andre brukere og tweets;\n- blanding av språk.\n\n**d)**\n1. **Precision = 0.75:** relevante returnerte / alle returnerte = 60 / (60 + 20) = 3/4.\n2. **Recall = 0.6:** relevante returnerte / alle relevante = 60 / (60 + 40) = 3/5.\n3. **F₁** kombinerer precision og recall som det harmoniske gjennomsnittet: F₁ = 2PR / (P + R).\n4. **F₁ = 2/3 ≈ 0.67:** 2 · 0.75 · 0.6 / (0.75 + 0.6) = 0.9 / 1.35 = 2/3.\n\n**e)** Flere løsninger er mulige. Én er å se det som språkmodellering og klassifisering:\n1. Forbehandle alle e-postene: fjern tegnsetting og gjør om til små bokstaver.\n2. Normaliser ordene i de klassifiserte e-postene: bruk bøyningsreglene og slå hvert ord opp i grunnform (lemma) i ordbøkene.\n3. Lag fem språkmodeller (bag of words eller bigrammer): engelsk spam, engelsk ikke-spam, norsk spam, norsk ikke-spam, og menneskespråk generelt (fra de uklassifiserte e-postene).\n4. For hver innkommende melding: finn modellen den passer best med, enten med sannsynlighetene fra språkmodellene eller med en klassifikator trent på dataene. Passer den dårlig med menneskespråk-modellen, gir det utfall 1. Passer den med menneskespråk, men verken med engelsk eller norsk, gir det utfall 2. Ellers gir beste modell utfall 3–6.\n\nAlternativt som information retrieval: behandle meldingen som en spørring mot de analyserte e-postene, hent de N beste treffene (for eksempel 100) og gi meldingen klassen som flertallet av dem har.\n\n*Kilde: løsningsforslaget til eksamen 2016, oppgave 6.*"
+  }
+ ]
+}

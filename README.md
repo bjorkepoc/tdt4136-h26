@@ -6,7 +6,7 @@ En lokal nettside med alt du trenger for å lese og øve til eksamen i TDT4136 (
 - **Øv selv:** rundt 170 oppgaver, mange av dem ordrett fra tidligere eksamener med figurer. Korte svar som rekkefølger, stier og verdier sjekkes med en gang.
 - **Øvingene** (Assignment 1–4 og oppgaveforelesningene) med løsninger.
 - **Prøveeksamener i 2025-formatet**, vist som på eksamen: forside, én oppgave om gangen, nedtelling og «Lever». Etter levering får du sjekk og fasit, eller underveis hvis du slår på «Fasit underveis».
-- **Tidligere eksamener** fra 2017 til 2025 ordrett med figurer (alle unntatt 2019 og ordinær 2020), i samme eksamensvisning. Algoritmene og leksikonet kan åpnes underveis, over oppgaven eller festet til høyre.
+- **Tidligere eksamener** fra 2015 til 2025 ordrett med figurer (alle unntatt 2019 og ordinær 2020), i samme eksamensvisning. Algoritmene og leksikonet kan åpnes underveis, over oppgaven eller festet til høyre.
 - **40 algoritmer animert steg for steg:** søk, lokalt søk, CSP, spill, logikk, planlegging og NLP, med valg for fart og gjentakelse.
 - **Leksikon** med rundt 300 begreper fra hele pensum, med søk. Knappen oppe til høyre åpner det over oppgaven du står i, eller festet til høyre. Siste søk huskes, og forklaringer du bruker ofte, kan festes øverst.
 - **Mørk og lys modus:** knappen ☾/☀ øverst til venstre. Siden følger systemet til du trykker.
