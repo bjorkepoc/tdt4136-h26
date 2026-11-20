@@ -86,6 +86,10 @@
 .algo-vv{display:contents}
 .algo-om{max-width:760px}
 .algo-om ul{padding-left:1.2em}
+.algo-pseudo{max-width:760px;margin-top:18px;border:1px solid var(--border);border-radius:10px;padding:8px 14px}
+.algo-pseudo summary{cursor:pointer;font-weight:600}
+.algo-pseudo h3,.algo-pseudoside h3{font-family:ui-monospace,monospace}
+.algo-pseudoside{max-width:900px}
 .algo-kortliste{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
 .algo-kort{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--fg);text-decoration:none;line-height:1.35}
 .algo-kort:hover,.algo-kort:focus-visible{border-color:var(--accent)}

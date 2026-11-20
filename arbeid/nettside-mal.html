@@ -128,6 +128,7 @@ main.ep.uv,main.ep.uh{grid-template-columns:minmax(0,1fr)}main.ep.uv .rgt,main.e
 <!-- Algoritmeanimasjoner og tegneverktøy, se nettside-algo/KONTRAKT.md -->
 <script src="nettside-algo/motor.js"></script><script src="nettside-algo/sok.js"></script><script src="nettside-algo/lokalt.js"></script><script src="nettside-algo/spill.js"></script><script src="nettside-algo/csp.js"></script><script src="nettside-algo/logikk.js"></script><script src="nettside-algo/plan.js"></script><script src="nettside-algo/sprak.js"></script>
 <script>
+if(window.ALGO)ALGO.pseudo=D.pseudo;
 // Grafene i E02/E03 er tegnet av fra eksamensfigurene. n = {navn: [x, y, h-tekst, dx, dy, mål?]}, e = [[fra, til, kost, side]].
 function graf(o){
 const R=15,N=o.n;let s=`<svg class="ov-g" viewBox="0 0 ${o.w} ${o.h}" style="max-width:${o.mw||o.w*1.25}px" role="img" aria-label="${o.al}">`;
@@ -180,7 +181,7 @@ const nDone=e=>e.tasks.filter((t,j)=>filled(svar(e)[j])).length;
 
 function nav(){
 const h=location.hash.slice(1)||"hjem",c=x=>h===x?' class="cur"':"";
-$("#nav").innerHTML=`<div class="top">TDT4136 eksamensløp</div><a href="#hjem"${c("hjem")}>Plan og fremdrift</a><a href="oversiktsark.pdf" target="_blank">Oversiktsark / cheat sheet (PDF) ↗</a><a href="#algoritmer"${h.startsWith("algoritmer")?' class="cur"':""}>Algoritmer animert</a><a href="#verksted"${c("verksted")}>Tegn og sjekk</a><a href="#leksikon"${c("leksikon")}>Leksikon</a><div class="grp">Episoder</div>`+
+$("#nav").innerHTML=`<div class="top">TDT4136 eksamensløp</div><a href="#hjem"${c("hjem")}>Plan og fremdrift</a><a href="oversiktsark.pdf" target="_blank">Oversiktsark / cheat sheet (PDF) ↗</a><a href="#algoritmer"${h.startsWith("algoritmer")&&h!=="algoritmer/pseudokode"?' class="cur"':""}>Algoritmer animert</a>${D.pseudo.side?`<a href="#algoritmer/pseudokode"${c("algoritmer/pseudokode")}>Pseudokode</a>`:""}<a href="#verksted"${c("verksted")}>Tegn og sjekk</a><a href="#leksikon"${c("leksikon")}>Leksikon</a><div class="grp">Episoder</div>`+
 D.eps.map(e=>`<a href="#${e.id}"${c(e.id)} title="${e.title}"><b>${e.ep}</b><span class="tt">${e.title}</span><span class="pr${S.seen[e.id]?" seen":""}">${S.seen[e.id]?"✓ ":""}${nDone(e)}/${e.tasks.length}</span></a>`).join("")+
 [...new Set(D.ov.map(e=>e.grp))].map(g=>`<div class="grp">${g}</div>`+D.ov.filter(e=>e.grp===g).map(e=>`<a href="#${e.id}"${c(e.id)} title="${e.title}"><b>${e.ep}</b><span class="tt">${e.title}</span><span class="pr">${nDone(e)}/${e.tasks.length}</span></a>`).join("")).join("")+
 `<div class="grp">Mer</div><a href="#feller"${c("feller")}>Alle eksamensfeller</a>${D.feil?`<a href="#feillogg"${c("feillogg")}>Feillogg</a>`:""}<a href="#eksamener"${c("eksamener")}>Eksamener</a>`}

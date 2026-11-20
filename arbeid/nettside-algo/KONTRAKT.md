@@ -101,6 +101,7 @@ Hver familiefil skal ha en `if (typeof module !== "undefined")`-blokk eller en e
 ## Sidene (motoren)
 
 - `ALGO.side(el, id)`: fyller `el` (`#main`, klassen `wide`) med algoritmesiden. `id` er algoritmen som vises (fra `#algoritmer/<id>`), ellers en oversikt. Naviger ved å sette `location.hash = "algoritmer/" + id`; siden tegnes da på nytt av ruteren.
+- `ALGO.pseudo = {side, per}` settes av siden fra `arbeid/PSEUDOKODE.md` (bygd av `lag-nettside.py`). `#algoritmer/pseudokode` viser `side`, hele samlingen, med lenker til animasjonene. Algoritmesiden viser `per[id]` i en lukket «Pseudokode»-boks under forklaringen. En blokk i PSEUDOKODE.md knyttes til algoritmer med `<!-- algo: id1, id2 -->` rett under `### NAVN`.
 - `ALGO.verksted(el)`: hele tegneverktøyet som egen side (`#verksted`). Tegneflaten kan dras høyere i hjørnet nede til høyre; tegningen får da mer plass. Høyreklikk og dra (eller Ctrl og dra) flytter utsnittet uten å endre grafen.
 - `ALGO.verksted(el, {type, data, endret})`: kompakt utgave inni et oppgavekort (ned til 300 px bredt). `type` er `"graf"`, `"tre"` eller `undefined` (velg selv). `data` er startdata eller `undefined`. Kall `endret({type, data})` ved hver endring. Algoritmen er den første registrerte for datatypen. Inline lagres ingenting annet enn via `endret`; helsiden lagrer i `localStorage` (`tdt4136-verksted`).
 - `LIGNER` i `motor.js` gir linjen «Ligner på X, bare at …» øverst på algoritmesiden: `id: [id til X, "bare at …"]`. Lenken får kortnavnet fra `GRUPPER`, ellers navnet uten parentes.

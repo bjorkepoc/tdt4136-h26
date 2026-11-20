@@ -42,5 +42,5 @@ Studieside for eksamen i TDT4136 ved NTNU. Les [README.md](README.md) for hva so
 ## Når du endrer innholdet
 
 - Bygg siden på nytt etter endringer i notater, oppgavefiler eller malen: `uv run arbeid/lag-nettside.py`.
-- Algoritmene og tegneverktøyet i `arbeid/nettside-algo/` følger `KONTRAKT.md` der. Prøveeksamenene følger `arbeid/nettside-prover/LES-MEG.md`.
+- Algoritmene og tegneverktøyet i `arbeid/nettside-algo/` følger `KONTRAKT.md` der. Pseudokoden står i `arbeid/PSEUDOKODE.md`: `### NAVN`, `<!-- algo: id -->`, kildelinje og én `text`-blokk per algoritme. Prøveeksamenene følger `arbeid/nettside-prover/LES-MEG.md`.
 - Tidligere eksamener står ordrett med alle figurer. Figurene ligger i `arbeid/nettside-figurer/`.

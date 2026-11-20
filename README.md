@@ -8,6 +8,7 @@ En lokal nettside med alt du trenger for å lese og øve til eksamen i TDT4136 (
 - **Prøveeksamener i 2025-formatet**, vist som på eksamen: forside, én oppgave om gangen, nedtelling og «Lever». Etter levering får du sjekk og fasit, eller underveis hvis du slår på «Fasit underveis».
 - **Tidligere eksamener** fra 2015 til 2025 ordrett med figurer (alle unntatt 2019 og ordinær 2020), i samme eksamensvisning. Algoritmene og leksikonet kan åpnes underveis, over oppgaven eller festet til høyre.
 - **40 algoritmer animert steg for steg:** søk, lokalt søk, CSP, spill, logikk, planlegging og NLP, med valg for fart og gjentakelse.
+- **Pseudokode** for alle algoritmene i forelesningene og pensumkapitlene, med figurnummer i boka og lysbilde i forelesningen. Den står samlet på én side og under hver animerte algoritme.
 - **Leksikon** med rundt 300 begreper fra hele pensum, med søk. Knappen oppe til høyre åpner det over oppgaven du står i, eller festet til høyre. Siste søk huskes, og forklaringer du bruker ofte, kan festes øverst.
 - **Mørk og lys modus:** knappen ☾/☀ øverst til venstre. Siden følger systemet til du trykker.
 - **«Tegn og sjekk»:** tegn din egen graf eller ditt eget spilltre, og sjekk svaret ditt mot algoritmen.
@@ -55,6 +56,7 @@ Har du bare en vanlig chat uten tilgang til filene, trykker du «Kopier svarene�
 | Tidligere eksamener (format i `LES-MEG.md`) | `arbeid/nettside-eksamener/*.json` |
 | Notater til videoene | `arbeid/videoer/notater/*.md` |
 | Leksikonet | `arbeid/LEKSIKON.md` |
+| Pseudokoden | `arbeid/PSEUDOKODE.md` |
 | Algoritmene og tegneverktøyet (regler i `KONTRAKT.md`) | `arbeid/nettside-algo/` |
 | Malen for siden | `arbeid/nettside-mal.html` |
 

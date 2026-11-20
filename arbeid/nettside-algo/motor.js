@@ -400,11 +400,18 @@ window.ALGO = {
   const pri = (x, lang) => { const n = Object.keys(PRI).find(k => PRI[k].split(" ").includes(x.id)); return n ? ` <span class="algo-pri p${n}" title="${PRIT[n][1]}">${PRIT[n][0]}${lang ? ": " + PRIT[n][1] : ""}</span>` : ""; };
 
   A.side = (el, id) => {
+    // A.pseudo ({side, per}) settes av siden fra PSEUDOKODE.md; #algoritmer/pseudokode viser hele samlingen.
+    const ps = A.pseudo || { side: "", per: {} };
+    if (id === "pseudokode" && ps.side) {
+      el.innerHTML = `<div class="algo algo-pseudoside"><p class="mut algo-sti"><a href="#algoritmer">← Alle algoritmer</a></p>${ps.side}</div>`;
+      el.querySelectorAll(".algo-pl").forEach(p => { const l = p.dataset.algo.split(" ").map(i => A.alle.find(x => x.id === i)).filter(Boolean); p.innerHTML = l.length ? "Animert: " + l.map(x => `<a href="#algoritmer/${encodeURIComponent(x.id)}">${esc(x.navn)}</a>`).join(" · ") : ""; });
+      return;
+    }
     const a = id ? A.alle.find(x => x.id === id) : null;
     if (!a) {
       el.innerHTML = `<div class="algo"><h1>Algoritmer animert</h1>` +
         (id ? `<p class="algo-feil">Fant ingen algoritme med id «${esc(id)}».</p>` : "") +
-        `<p>Velg en algoritme og se den steg for steg, med en kort forklaring under hvert steg. Vil du tegne en graf eller et tre fra en oppgave selv og få svaret ditt sjekket, bruk <a href="#verksted">Tegn og sjekk</a>.</p>` +
+        `<p>Velg en algoritme og se den steg for steg, med en kort forklaring under hvert steg. Vil du tegne en graf eller et tre fra en oppgave selv og få svaret ditt sjekket, bruk <a href="#verksted">Tegn og sjekk</a>.${ps.side ? ` Pseudokoden fra boka og forelesningene står samlet under <a href="#algoritmer/pseudokode">Pseudokode</a>.` : ""}</p>` +
         `<p class="mut">Merkelappene sier hvor viktig algoritmen er, etter pensumlista og eksamenene 2019–2025:${[1, 2, 3].map(n => ` <span class="algo-pri p${n}">${PRIT[n][0]}</span> ${PRIT[n][1]}.`).join("")}</p>` +
         `<input type="search" class="in algo-sok" placeholder="Søk: A*, resolusjon, Nash, E07 …" aria-label="Søk etter algoritme"><p class="mut algo-ingen" hidden>Ingen treff.</p>` +
         (A.alle.length ? "" : `<p class="mut">Ingen algoritmer er lastet ennå.</p>`) +
@@ -447,7 +454,8 @@ window.ALGO = {
     el.innerHTML = `<div class="algo"><p class="mut algo-sti"><a href="#algoritmer">← Alle algoritmer</a> · ${esc(a.familie || "")} · ${ep}${pri(a, 1)}</p><h1>${esc(a.navn)}</h1>` + (g => g ? `<div class="algo-faner" role="group" aria-label="${esc(g.navn)}">${g.ids.map(id => A.alle.find(y => y.id === id)).filter(Boolean).map(y => y === a ? `<span class="pa" aria-current="page">${esc(g.kort[y.id])}</span>` : `<a href="#algoritmer/${encodeURIComponent(y.id)}">${esc(g.kort[y.id])}</a>`).join("")}</div><p class="mut algo-fnote">${html(g.tekst)}</p>` : "")(gruppe(a)) + ligner(a) +
       `<div class="algo-valg">${ex.length > 1 ? `<label class="algo-v">Eksempel <select data-ex>${ex.map((e, i) => `<option value="${i}">${esc(e.navn)}</option>`).join("")}</select></label>` : `<span class="mut">${esc(ex[0].navn)}</span>`}<span class="algo-vv"></span>` +
       (tegnbar ? `<button type="button" data-tegn>Tegn din egen</button><button type="button" data-tegn data-samm>Sammenlign med andre algoritmer</button>` : "") + `</div><div class="algo-anim"></div>` +
-      `<div class="algo-om"><p>${html(a.kort)}</p>${Array.isArray(a.punkter) && a.punkter.length ? `<ul>${a.punkter.map(p => `<li>${html(p)}</li>`).join("")}</ul>` : ""}</div></div>`;
+      `<div class="algo-om"><p>${html(a.kort)}</p>${Array.isArray(a.punkter) && a.punkter.length ? `<ul>${a.punkter.map(p => `<li>${html(p)}</li>`).join("")}</ul>` : ""}</div>` +
+      (ps.per[a.id] ? `<details class="algo-pseudo"><summary>Pseudokode</summary>${ps.per[a.id]}<p class="mut"><a href="#algoritmer/pseudokode">All pseudokoden samlet</a></p></details>` : "") + `</div>`;
     const anim = el.querySelector(".algo-anim"), vv = el.querySelector(".algo-vv");
     let e = 0, verdier;
     const kjor = () => visKjoring(anim, prov(() => a.kjor(A.kopi(ex[e].data ?? null), { ...verdier })));

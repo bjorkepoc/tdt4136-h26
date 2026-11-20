@@ -131,7 +131,16 @@ for f, grp, art in filer:
 
 valgfri = lambda p: md(p.read_text()) if p.exists() else ""  # seeplan og feillogg er personlige og finnes ikke i den offentlige kopien
 intro, _, rest = (A / "LEKSIKON.md").read_text().partition("\n## ")
-D = {"eps": eps, "ov": ovinger, "leks": {"intro": md(re.sub(r"^# .*\n", "", intro)), "body": md("## " + rest)}, "plan": valgfri(V / "SEEPLAN.md"), "feil": valgfri(A / "FEILLOGG.md"),
+# Pseudokoden: hele fila som én side, og hver ###-blokk under algoritme-id-ene i <!-- algo: … -->.
+pseudo = {"side": "", "per": {}}
+if (A / "PSEUDOKODE.md").exists():
+    pk = (A / "PSEUDOKODE.md").read_text()
+    pseudo["side"] = re.sub(r"<!-- algo: (.*?) -->", lambda m: f'<p class="algo-pl" data-algo="{m[1].replace(",", "")}"></p>', md(pk))
+    for blokk in pk.split("\n### ")[1:]:
+        m = re.search(r"<!-- algo: (.*?) -->", blokk)
+        for i in (m[1].replace(",", " ").split() if m else []):
+            pseudo["per"][i] = pseudo["per"].get(i, "") + md("### " + blokk.split("\n## ")[0])
+D = {"pseudo": pseudo, "eps": eps, "ov": ovinger, "leks": {"intro": md(re.sub(r"^# .*\n", "", intro)), "body": md("## " + rest)}, "plan": valgfri(V / "SEEPLAN.md"), "feil": valgfri(A / "FEILLOGG.md"),
      "feller": "<h1>Alle eksamensfeller</h1><p>Sjekklista for den siste uka, samlet fra alle episodene.</p>" + "".join(feller), "exams": eksamener}
 page = (A / "nettside-mal.html").read_text().replace("__DATA__", json.dumps(D, ensure_ascii=False).replace("</", "<\\/"))
 (A / "nettside.html").write_text(page)
