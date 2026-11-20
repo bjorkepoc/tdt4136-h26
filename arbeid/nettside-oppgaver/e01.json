@@ -72,7 +72,7 @@
   },
   {
    "t": "Sant eller usant",
-   "d": "Fig. 2.6 er lærebokas tabell over eksempler på task environments og egenskapene deres.",
+   "d": "Fig. 2.6 er lærebokas tabell over eksempler på task environments og egenskapene deres.\n\n<details><summary>Fig. 2.6 i boka (klikk for å vise, gir svaret på d og f)</summary>\n\n| Task environment | Observable | Agents | Deterministic | Episodic | Static | Discrete |\n|---|---|---|---|---|---|---|\n| Crossword puzzle | Fully | Single | Deterministic | Sequential | Static | Discrete |\n| Chess with a clock | Fully | Multi | Deterministic | Sequential | Semi | Discrete |\n| Poker | Partially | Multi | Stochastic | Sequential | Static | Discrete |\n| Backgammon | Fully | Multi | Stochastic | Sequential | Static | Discrete |\n| Taxi driving | Partially | Multi | Stochastic | Sequential | Dynamic | Continuous |\n| Medical diagnosis | Partially | Single | Stochastic | Sequential | Dynamic | Continuous |\n| Image analysis | Fully | Single | Deterministic | Episodic | Semi | Continuous |\n| Part-picking robot | Partially | Single | Stochastic | Episodic | Dynamic | Continuous |\n| Refinery controller | Partially | Single | Stochastic | Sequential | Dynamic | Continuous |\n| English tutor | Partially | Multi | Stochastic | Sequential | Dynamic | Discrete |\n\n</details>",
    "tf": [
     "a) Et miljø som er known, er også fully observable.",
     "b) En model-based reflex agent velger handling med søk.",

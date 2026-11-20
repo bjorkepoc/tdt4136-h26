@@ -119,7 +119,7 @@
   },
   {
    "t": "Disjoint, Exhaustive eller Partition?",
-   "d": "Bruk bokas definisjoner av Disjoint, ExhaustiveDecomposition og Partition. Avgjør for hver mengde av kategorier om den er Disjoint, en ExhaustiveDecomposition og/eller en Partition av Integers.",
+   "d": "Bruk bokas definisjoner av Disjoint, ExhaustiveDecomposition og Partition. Avgjør for hver mengde av kategorier om den er Disjoint, en ExhaustiveDecomposition og/eller en Partition av Integers.\n\nBokas definisjoner:\n\n```\nDisjoint(s) ⇔ (∀c₁, c₂ c₁ ∈ s ∧ c₂ ∈ s ∧ c₁ ≠ c₂ ⇒ Intersection(c₁, c₂) = { })\nExhaustiveDecomposition(s, c) ⇔ (∀i i ∈ c ⇔ ∃c₂ c₂ ∈ s ∧ i ∈ c₂)\nPartition(s, c) ⇔ Disjoint(s) ∧ ExhaustiveDecomposition(s, c)\n```",
    "f": [
     [
      "a) {Primes, EvenNumbers}",
@@ -136,7 +136,7 @@
   },
   {
    "t": "Allens intervallrelasjoner",
-   "d": "La j = [4, 10]. Bruk bokas definisjoner av Meet, Before, After, During, Overlap, Starts, Finishes og Equals. I a–c: hvilken relasjon holder mellom intervallet i og j?",
+   "d": "La j = [4, 10]. Bruk bokas definisjoner av Meet, Before, After, During, Overlap, Starts, Finishes og Equals. I a–c: hvilken relasjon holder mellom intervallet i og j?\n\nBokas definisjoner:\n\n| Relasjon | Definisjon |\n|---|---|\n| `Meet(i, j)` | `End(i) = Begin(j)` |\n| `Before(i, j)` | `End(i) < Begin(j)` |\n| `After(j, i)` | `Before(i, j)` |\n| `During(i, j)` | `Begin(j) < Begin(i) < End(i) < End(j)` |\n| `Overlap(i, j)` | `Begin(i) < Begin(j) < End(i) < End(j)` |\n| `Starts(i, j)` | `Begin(i) = Begin(j)` |\n| `Finishes(i, j)` | `End(i) = End(j)` |\n| `Equals(i, j)` | `Begin(i) = Begin(j) ∧ End(i) = End(j)` |",
    "f": [
     [
      "a) i = [3, 5]",

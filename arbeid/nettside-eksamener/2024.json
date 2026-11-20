@@ -1,0 +1,737 @@
+{
+ "id": "ek2024",
+ "ep": "2024",
+ "tittel": "Ordinær eksamen",
+ "kilde": "../materiale/Files/Previous%20exams/2024Q%26A.docx",
+ "om": "## TDT4136 Introduction to Artificial Intelligence\n\n*Merknad:* Kilden (`2024Q&A.docx`) har ikke med forsiden. Den har bare skjermbilder av de 20 oppgavene, med løsningsforslaget under hver. Poengene står på 14 av oppgavene, til sammen 73 poeng. På oppgave 9, 11, 13, 18, 19 og 20 er linjen «Maximum marks» klippet bort, så de står uten poeng her. Overskriftene til oppgave 4 og 5 mangler også i skjermbildene og er hentet fra løsningsforslaget. Eksamenen hadde ingen vedlegg i kilden, heller ikke noe formelark.",
+ "intro": "Alle oppgavene er flervalg eller korte tallsvar. Når eksamenen er levert, kan alle svarene sjekkes med Sjekk, grafene i oppgave 4–5 og treet i oppgave 11 kan åpnes i «Tegn og sjekk», og fasiten vises under hver oppgave og nederst.",
+ "fasit": "**Fasit for eksamen 2024.** Svarene følger løsningsforslaget (`2024Q&A.docx`). Der løsningsforslaget godtok flere svar, gir Sjekk riktig for alle.\n\n| Oppgave | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |\n|---|---|---|---|---|---|---|---|---|---|---|\n| Poeng | 4 | 4 | 6 | 6 | 6 | 5 | 4 | 6 | ? | 6 |\n| Svar | A (C) | A (B) | D | A, D, E | D | A | E | D3 = {2}, D4 = {3} | a) random, b) 1 | a) 3,5, b) 2 |\n\n| Oppgave | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 |\n|---|---|---|---|---|---|---|---|---|---|---|\n| Poeng | ? | 4 | ? | 6 | 6 | 5 | 5 | ? | ? | ? |\n| Svar | a) 6, −1, b) −∞, c) 2 | π1 = π2 = 1/4 | π1 = π2 = 0 i begge runder | C | A | D | A | A | D | B |\n\nPoengene for oppgave 9, 11, 13 og 18–20 står ikke i kilden. De kjente oppgavene gir 73 poeng.",
+ "tasks": [
+  {
+   "t": "Oppgave 1 (4 p): Agents and environments",
+   "d": "Which of the following sentences is NOT true?\n\n**Select one alternative:**\n\n- A. The set of actions that the agent can take is called \"transition model\"\n- B. Model based reflex agents use condition-action rules to decide the next action to take.\n- C. A vacuum cleaner agent with a dirt sensor but no location sensor may behave intelligently only if it can randomize its action choices.\n- D. An agents that knows how the world changes can handle partial observability\n- E. The goal is represented in reflex agents implicitly through condition-action rules",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "A",
+      "C"
+     ]
+    },
+    "merk": "Fasiten 2024 godtok både A og C. A er usann fordi transition model beskriver hva en handling fører til, ikke mengden handlinger. C er også usann på grunn av «only»: randomisering er ikke den eneste måten.",
+    "kilde": "2024Q&A.docx, Q1 – Agents"
+   },
+   "fasit": "**A** (fasiten godtok også **C**).\n\n- **A er usann.** Mengden handlinger agenten kan gjøre, er ACTIONS(s). Transition model, RESULT(s, a), sier hva en handling fører til: gitt tilstand og handling gir den den nye tilstanden.\n- **B er sann.** En model-based reflex agent velger med condition-action rules, men på sin interne state.\n- **C er også usann** på grunn av «only». Randomisering er én måte å komme ut av løkka på (myntkast gir i snitt 2 steg), men ikke den eneste. En agent med hukommelse kan for eksempel suge hvis skittent, gå Right, suge, gå Left og suge, og da har den dekket begge rutene uansett hvor den startet.\n- **D er sann.** En agent som vet hvordan verden endrer seg (en modell), kan holde styr på det den ikke ser, og takle partial observability.\n- **E er sann.** En reflex agent har ikke noe eksplisitt mål. Målet ligger implisitt i reglene designeren skrev.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 1.*"
+  },
+  {
+   "t": "Oppgave 2 (4 p): Miscellaneous - Mixture of Chapters",
+   "d": "**Which of the following sentences is FALSE?**\n\n**Select one alternative:**\n\n- A. In nondeterministic environments agent can apply AND-OR search to generate adversive plans\n- B. Consider that our simple vacuum cleaner has a suction mechanism that doesn’t suck properly. This is then a fully observable and nondeterministic environment\n- C. “Proof by refutation” can also be called proof by contradiction\n- D. A sentence is “satisfiable” if it is true in some models\n- E. Generalized Modus Ponens is complete for definite clauses\n- F. When the environment is partially observable, the belief state represents the set of possible states that the agent might be in.\n- G. Agent functions map the percepts to actions",
+   "f": [
+    [
+     "Svar",
+     "text",
+     "A, B, C, D, E, F eller G"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Svar": [
+      "A",
+      "B"
+     ]
+    },
+    "merk": "Fasiten 2024 godtok både A og B. A er usann fordi AND-OR search gir contingency plans, ikke «adversive plans». B ble også godtatt fordi «our» vacuum cleaner kunne leses som agenten uten lokasjonssensor i Q1, og da er miljøet partially observable.",
+    "kilde": "2024Q&A.docx, Q2 – Mixture of chapters"
+   },
+   "fasit": "**A** (fasiten godtok også **B**).\n\n- **A er usann.** AND-OR search i nondeterministic miljøer gir contingency plans (betingede planer, «hvis dette skjer, gjør det»), ikke «adversive plans».\n- **B** er sann for den vanlige støvsugeren med lokasjons- og skittsensor: den ser alt (fully observable), og Suck virker ikke alltid (nondeterministic). Den ble likevel godtatt som usann, fordi «our» kunne leses som støvsugeren uten lokasjonssensor fra Q1, og da er miljøet partially observable.\n- **C er sann.** Proof by refutation er det samme som proof by contradiction: legg til ¬α i KB og utled en motsigelse.\n- **D er sann.** Satisfiable betyr sann i minst én modell.\n- **E er sann.** Generalized Modus Ponens (forward og backward chaining) er complete for first-order definite clauses.\n- **F er sann.** Belief state er mengden tilstander agenten kan være i.\n- **G regnes som sann.** Presist avbilder agent function hele percept sequence, ikke enkeltpercepter. Fasiten nevner at formuleringen kan forvirre.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 2.*"
+  },
+  {
+   "t": "Oppgave 3 (6 p): Informed and Uninformed Search",
+   "d": "Select the statement that is **False**\n\n**Select one alternative:**\n\n- A. Greedy Best First search can be understood as a special version of a weighted A\\* (with the form f(n) = w<sub>1</sub>g(n) + w<sub>2</sub>h(n), where g(n) is the cost to reach n, and h(n) is the estimated cost from n to the goal) with w<sub>1</sub> = 0 and w<sub>2</sub> = 1\n- B. A\\* is guaranteed to be optimally efficient if we use a heuristic which is consistent\n- C. DFS can fail to find a solution if it is implemented as tree search on a graph with loops\n- D. In Uniform-Cost search, we only care about the expected distance of reaching a node (*our guess*) but not its actual cost (as we assume all actions have an uniform cost)\n- E. In A\\* search, we use a heuristic function f(n) = g(n) + h(n) where g is the cost so far of reaching n, and h is the estimated cost from n to the goal",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "D"
+     ]
+    },
+    "kilde": "2024Q&A.docx, Q3 – Informed and Uninformed"
+   },
+   "fasit": "**Svar: D.** Uniform-cost search bruker bare den faktiske kostnaden g(n) og ingen gjetning om avstanden til målet. UCS er laget nettopp for at handlinger kan koste ulikt; med like kostnader oppfører den seg som BFS.\n\n- **A er sann.** Med f(n) = w1·g(n) + w2·h(n), w1 = 0 og w2 = 1 blir f(n) = h(n), som er greedy best-first search.\n- **B er sann.** Med en consistent heuristikk er A\\* optimally efficient: ingen annen algoritme som utvider stier fra starten og bruker samme heuristikk, er garantert å utvide færre noder (bortsett fra likheter med f = C\\*).\n- **C er sann.** DFS som tree search på en graf med løkker kan gå i ring for alltid og aldri finne målet.\n- **D er usann**, se over.\n- **E regnes som sann.** Strengt tatt er f(n) = g(n) + h(n) evalueringsfunksjonen og h(n) selve heuristikken, men innholdet stemmer.\n\nVanlig feil: å blande UCS (bare g) med greedy (bare h). A\\* bruker begge.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 3.*"
+  },
+  {
+   "t": "Oppgave 4 (6 p): Search algorithms",
+   "d": "<img class=\"fig\" src=\"nettside-figurer/ek2024-q4.png\" alt=\"Grafen med S, A, B, C, D, E og G, kantkostnader og h-verdier\">\n\nConsider the graph shown in the Figure, where G is the goal node. Which of the following states is **false**? In case of a tie, use lexicographical order.\n\n**Select one alternative:**\n\n- A. Uniform-cost search (implemented as tree-search) expands SABCEDG, finding the path SACDG with cost 10\n- B. Breadth-first search (implemented as graph-search) expands SABCD, finding the path SACDG with cost 10\n- C. Depth-first search (implemented as tree-search) expands SACBS and then it loops\n- D. A\\* search (implemented as tree-search) expands SACDEBG, finding the path SACDG with cost 10\n- E. Greedy Best-first search (implemented as tree-search) expands SACEDC and then it loops",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "start": "S",
+     "mal": [
+      "G"
+     ],
+     "noder": [
+      {
+       "id": "S",
+       "x": 158,
+       "y": 60
+      },
+      {
+       "id": "A",
+       "x": 158,
+       "y": 200,
+       "h": 6
+      },
+      {
+       "id": "B",
+       "x": 360,
+       "y": 140,
+       "h": 6
+      },
+      {
+       "id": "C",
+       "x": 308,
+       "y": 298,
+       "h": 3
+      },
+      {
+       "id": "D",
+       "x": 210,
+       "y": 435,
+       "h": 1
+      },
+      {
+       "id": "E",
+       "x": 390,
+       "y": 398,
+       "h": 3
+      },
+      {
+       "id": "G",
+       "x": 240,
+       "y": 608,
+       "h": 0
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "S",
+       "til": "A",
+       "kost": 2
+      },
+      {
+       "fra": "S",
+       "til": "B",
+       "kost": 4
+      },
+      {
+       "fra": "A",
+       "til": "C",
+       "kost": 3
+      },
+      {
+       "fra": "B",
+       "til": "C",
+       "kost": 3
+      },
+      {
+       "fra": "C",
+       "til": "D",
+       "kost": 2
+      },
+      {
+       "fra": "C",
+       "til": "E",
+       "kost": 1
+      },
+      {
+       "fra": "D",
+       "til": "E",
+       "kost": 2
+      },
+      {
+       "fra": "D",
+       "til": "G",
+       "kost": 3
+      },
+      {
+       "fra": "E",
+       "til": "G",
+       "kost": 5
+      }
+     ]
+    }
+   },
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "A",
+      "D",
+      "E"
+     ]
+    },
+    "merk": "Løsningsforslaget fant tre usanne utsagn og godtok A, D og E. A og D stemmer for graph search, men som tree search utvider UCS og A* noder flere ganger. E er usann fordi greedy finner SACDG.",
+    "kilde": "2024Q&A.docx, Q4 – Search algorithms"
+   },
+   "fasit": "**Svar: A, D eller E.** Løsningsforslaget fant tre usanne utsagn og godtok hvert av dem.\n\n- **A er usann.** UCS som tree search sjekker ikke reached, så S, A, B og C legges inn igjen og utvides flere ganger. Rekkefølgen SABCEDG er den du får med graph search.\n- **B er sann.** BFS (graph search, målet testes ved generering): S gir A og B, A gir C, B gir ingenting nytt, C gir D og E, og D genererer G. Utvidet S, A, B, C, D, og stien S–A–C–D–G koster 2 + 3 + 2 + 3 = 10.\n- **C regnes som sann.** Går DFS aldri rett tilbake til noden den kom fra, blir det S → A → C → B → S → A … for alltid. Uten noen sjekk går den i ring enda tidligere (S, A, C, A, C, …), men den løkker uansett.\n- **D er usann.** Som graph search utvider A\\* S, A (f = 8), C (8), D (8), E (9), B (10) og G (10), altså SACDEBG. Som tree search kommer blant annet D, B og C tilbake i frontier og utvides flere ganger.\n- **E er usann.** Greedy følger lavest h: S, A (h = 6, før B alfabetisk), C (3), D (1), og D genererer G (0), som tas ut neste gang. Den finner S–A–C–D–G med kostnad 10, som er den billigste stien, og løkker ikke.\n\nKontroll med algoritmefila (h(S) er ikke oppgitt og settes til 0):\n\n| Algoritme | Graph search | Tree-like search |\n|---|---|---|\n| UCS | S A B C E D (G) | S A B S C A E C C D … (G), 40 utvidelser |\n| A\\* | S A C D E B (G) | S A S C D E D B S C C D D (G) |\n| Greedy | S A C D (G) | S A S C D (G) |\n| BFS | S A B C D (G) | |\n\nAlle finner S–A–C–D–G med kostnad 10.\n\nVanlig feil: å lese «tree-search» som graph search. Uten reached kan samme tilstand utvides mange ganger.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 4.*"
+  },
+  {
+   "t": "Oppgave 5 (6 p): A*",
+   "d": "<img class=\"fig\" src=\"nettside-figurer/ek2024-q5.png\" alt=\"Grafen med S, A, B, C og G, kantkostnader og h-verdier\">\n\nGiven the figure, you are going to use tree-like A\\* search algorithm. Consider that S is the starting node, and G is the goal. Which of the following statements is **true**?\n\n**Select one alternative:**\n\n- A. With the heuristics on the figure, A\\* does not expand any node more than once\n- B. With the given heuristics on the figure, A\\* expands only the nodes on the cost optimal path\n- C. When h(A) = 2 instead of 3, A\\* does not expand any node that is not on the cost optimal path, and it does not expand any node more than once\n- D. When h(A) = 2 instead of 3, A\\* expands at least one node more than once\n- E. A\\* cannot find the cost-optimal path with the heuristics of the figure",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "start": "S",
+     "mal": [
+      "G"
+     ],
+     "noder": [
+      {
+       "id": "S",
+       "x": 158,
+       "y": 60
+      },
+      {
+       "id": "A",
+       "x": 158,
+       "y": 200,
+       "h": 3
+      },
+      {
+       "id": "B",
+       "x": 360,
+       "y": 140,
+       "h": 2.5
+      },
+      {
+       "id": "C",
+       "x": 308,
+       "y": 298,
+       "h": 0.5
+      },
+      {
+       "id": "G",
+       "x": 308,
+       "y": 432,
+       "h": 0
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "S",
+       "til": "A",
+       "kost": 1
+      },
+      {
+       "fra": "S",
+       "til": "B",
+       "kost": 1
+      },
+      {
+       "fra": "A",
+       "til": "C",
+       "kost": 1
+      },
+      {
+       "fra": "B",
+       "til": "C",
+       "kost": 2
+      },
+      {
+       "fra": "C",
+       "til": "G",
+       "kost": 2
+      }
+     ]
+    }
+   },
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "D"
+     ]
+    },
+    "merk": "Med h(A) = 2 utvider tree-like A* S, A, C, B, C og G: C utvides to ganger.",
+    "kilde": "2024Q&A.docx, Q5 – A*"
+   },
+   "fasit": "**Svar: D.** Med h(A) = 2 utvider A\\* noden C to ganger.\n\nDen billigste stien er S–A–C–G med kostnad 1 + 1 + 2 = 4 (S–B–C–G koster 5). Heuristikken er admissible (h(A) = 3 ≤ 3, h(B) = 2,5 ≤ 4, h(C) = 0,5 ≤ 2), men ikke consistent: h(A) = 3 > c(A, C) + h(C) = 1,5. Det samme gjelder h(A) = 2. Derfor kan C bli tatt ut via en dyr sti først og så på nytt via en billigere.\n\nTree-like search uten reached; en node legger ikke til sin egen forelder igjen (h(S) er ikke oppgitt). Med h(A) = 3:\n\n| Tas ut (f) | Nye i frontier | Frontier etterpå |\n|---|---|---|\n| S | A 1 + 3 = 4, B 1 + 2,5 = 3,5 | B 3,5, A 4 |\n| B (3,5) | C 3 + 0,5 = 3,5 | C 3,5, A 4 |\n| C (3,5), via B | A 4 + 3 = 7, G 5 + 0 = 5 | A 4, G 5, A 7 |\n| A (4) | C 2 + 0,5 = 2,5 | C 2,5, G 5, A 7 |\n| C (2,5), via A | B 4 + 2,5 = 6,5, G 4 + 0 = 4 | G 4, G 5, B 6,5, A 7 |\n| G (4): mål | | |\n\nMed h(A) = 2:\n\n| Tas ut (f) | Nye i frontier | Frontier etterpå |\n|---|---|---|\n| S | A 1 + 2 = 3, B 3,5 | A 3, B 3,5 |\n| A (3) | C 2 + 0,5 = 2,5 | C 2,5, B 3,5 |\n| C (2,5), via A | B 6,5, G 4 | B 3,5, G 4, B 6,5 |\n| B (3,5) | C 3 + 0,5 = 3,5 | C 3,5, G 4, B 6,5 |\n| C (3,5), via B | A 4 + 2 = 6, G 5 | G 4, G 5, A 6, B 6,5 |\n| G (4): mål | | |\n\nUtvidet S, A, C, B, C, G, som løsningsforslagets «ACBCG».\n\n- **A er usann:** C utvides to ganger også med h(A) = 3.\n- **B er usann:** B ligger ikke på den billigste stien, men utvides.\n- **C er usann:** med h(A) = 2 utvides både B og C to ganger.\n- **D er sann.**\n- **E er usann:** h er admissible, og da finner tree-like A\\* den billigste stien, S–A–C–G med kostnad 4.\n\nVanlig feil: å tro at en admissible h hindrer at noder utvides flere ganger. Det krever consistency (eller graph search med reached).\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 5. Kontrollert med A\\* i algoritmefila: uten cycle check og med h(S) = 0 utvides også S på nytt (S B S C A S C og S A S C B S C før G), men C utvides to ganger og stien er S–A–C–G i begge tilfeller.*"
+  },
+  {
+   "t": "Oppgave 6 (5 p): Local Search",
+   "d": "Hill-climbing and gradient descent are forms of local search. Select from the following, the statement which **does not** describe a mechanism for escaping local optima when doing local search.\n\n**Select one alternative:**\n\n- A. Use a heuristic that is both admissible and consistent to have a monotonically non-decreasing objective function\n- B. Gradually vary the frequency of non-optimal decisions through the search process\n- C. Search on multiple paths by using a population of solutions\n- D. Consider *jumping* across the search space using either a restart or a perturbation\n- E. Make some stochastic decisions, for example taking non-optimal steps sometimes",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "A"
+     ]
+    },
+    "kilde": "2024Q&A.docx, Q6 – Local search"
+   },
+   "fasit": "**Svar: A.** Admissible og consistent er egenskaper ved heuristikker i A\\*-søk, ikke ved objektivfunksjonen i lokalt søk. I lokalt søk kjenner vi ikke verdien til en tilstand før vi besøker den, og en «monotont ikke-avtakende» objektivfunksjon hjelper ikke mot lokale optima.\n\nDe andre er mekanismer for å komme ut av lokale optima:\n\n- **B:** simulated annealing, der temperaturen styrer hvor ofte et dårligere trekk godtas, og den synker gradvis.\n- **C:** local beam search og genetiske algoritmer, som holder en populasjon av tilstander.\n- **D:** random restart, eller å hoppe med en perturbasjon (mutasjon).\n- **E:** stokastiske valg, som stochastic hill climbing eller å ta et ikke-optimalt steg av og til.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 6.*"
+  },
+  {
+   "t": "Oppgave 7 (4 p): Constraints",
+   "d": "Given variables X<sub>1</sub> and X<sub>2</sub> with domains D<sub>1</sub> = {1, 2, 3} and D<sub>2</sub> = {1, 2}, you are given the task of rewriting the functional constraints {(X<sub>1</sub> − X<sub>2</sub>)<sup>2</sup> = 1, X<sub>1</sub> ≤ X<sub>2</sub>} into a constraint of tuples of values in the format {⟨(X<sub>1</sub>, X<sub>2</sub>), {…}⟩}.\n\nWhich tuples should be included in that tuples of values constraint?\n\n**Select one alternative:**\n\n- A. (2, 1), (3, 2)\n- B. (1, 2), (2, 3)\n- C. (1, 2), (2, 1), (3, 2)\n- D. (1, 2), (2, 1)\n- E. (1, 2)",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "E"
+     ]
+    },
+    "kilde": "2024Q&A.docx, Q7 – Constraints"
+   },
+   "fasit": "**Svar: E, (1, 2).**\n\n- (X1 − X2)² = 1 betyr |X1 − X2| = 1. Med X1 ∈ {1, 2, 3} og X2 ∈ {1, 2} gir det (1, 2), (2, 1) og (3, 2).\n- X1 ≤ X2 gir (1, 1), (1, 2) og (2, 2).\n- Begge constraints må holde, så du tar snittet: bare (1, 2).\n\nConstrainten blir ⟨(X1, X2), {(1, 2)}⟩. C er bare den første constrainten. A, B og D bryter X1 ≤ X2 eller bruker X2 = 3, som ikke er i domenet.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 7.*"
+  },
+  {
+   "t": "Oppgave 8 (6 p): AC-3",
+   "d": "Consider the following constraint satisfaction problem:\n\n- Variables: {X<sub>1</sub>, X<sub>2</sub>, X<sub>3</sub>, X<sub>4</sub>}\n- Domains: D<sub>1</sub> = D<sub>2</sub> = D<sub>3</sub> = D<sub>4</sub> = {1, 2, 3}\n- Constraints: {X<sub>1</sub> ≠ X<sub>2</sub>, X<sub>1</sub> ≠ X<sub>3</sub>, X<sub>1</sub> ≠ X<sub>4</sub>, X<sub>2</sub> ≠ X<sub>4</sub> X<sub>3</sub> ≠ X<sub>4</sub>}\n\nAfter making the assignment {X<sub>1</sub> = 1, X<sub>2</sub> = 2} and D<sub>1</sub> = {1}, D<sub>2</sub> = {2}, the AC-3 algorithm is applied initialised with all arcs in the queue, in both directions. What are the remaining domains after the AC-3 algorithm has completed?\n\nD<sub>3</sub> =\n\n**Select one alternative:**\n\n- A. {1,3}\n- B. {}\n- C. {1,2}\n- D. {3}\n- E. {1,2,3}\n- F. {1}\n- G. {2}\n- H. {2,3}\n\nD<sub>4</sub> =\n\n- A. {2}\n- B. {}\n- C. {3}\n- D. {2,3}\n- E. {1}\n- F. {1,3}\n- G. {1,2,3}\n- H. {1,2}",
+   "f": [
+    [
+     "D3",
+     "text",
+     "Bokstav (A–H) eller mengden"
+    ],
+    [
+     "D4",
+     "text",
+     "Bokstav (A–H) eller mengden"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "D3": [
+      "G",
+      "{2}"
+     ],
+     "D4": [
+      "C",
+      "{3}"
+     ]
+    },
+    "kilde": "2024Q&A.docx, Q8 – AC-3"
+   },
+   "fasit": "**D3 = {2} (G).**\n\n**D4 = {3} (C).**\n\nStartdomener: D1 = {1}, D2 = {2}, D3 = D4 = {1, 2, 3}. X2 og X3 er ikke naboer.\n\nBuene som stryker noe, i rekkefølgen de skjer med sortert kø:\n\n| Bue | Constraint | Stryk | D etter |\n|---|---|---|---|\n| X3→X1 | X1 ≠ X3 | 1 | D3 = {2, 3} |\n| X4→X1 | X1 ≠ X4 | 1 | D4 = {2, 3} |\n| X4→X2 | X2 ≠ X4 | 2 | D4 = {3} |\n| X3→X4 | X3 ≠ X4 | 3 | D3 = {2} |\n\nEtter X4→X2 legges X1→X4 til, og etter X3→X4 legges X1→X3 til. Ingen av dem stryker mer. Resultatet er X1 = 1, X2 = 2, X3 = 2 og X4 = 3, som er lovlig fordi X2 = X3 er tillatt.\n\nVanlig feil: å stoppe etter første runde med D3 = {2, 3}. Når D4 krymper til {3}, må X3→X4 sjekkes på nytt.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 8. Kontrollert med AC-3 i algoritmefila (14 buer tatt ut av køen).*"
+  },
+  {
+   "t": "Oppgave 9 (poeng ikke oppgitt): Local search (CSP)",
+   "img": [
+    "nettside-figurer/e07-2024-q9.png"
+   ],
+   "d": "Consider the following 4-queens problem:\n\n- Variables: {X<sub>1</sub>, X<sub>2</sub>, X<sub>3</sub>, X<sub>4</sub>}\n- Domains: D<sub>1</sub> = D<sub>2</sub> = D<sub>3</sub> = D<sub>4</sub> = {1, 2, 3, 4}\n- Constraints: alldiff(X<sub>1</sub>, X<sub>2</sub>, X<sub>3</sub>, X<sub>4</sub>) ∪ {|X<sub>i</sub> − X<sub>j</sub>| ≠ |i − j|} where i ≠ j and i, j ∈ {1, 2, 3, 4}\n\nThe initial assignment for the constraint satisfaction problem is {X<sub>1</sub> = 2, X<sub>2</sub> = 4, X<sub>3</sub> = 1, X<sub>4</sub> = 2}:\n\nThe min-conflicts local search algorithm will be used to find a solution to the problem.\n\n<ul style=\"list-style:none;padding-left:0\"><li><p>a) Which variable will be chosen in the first iteration of the algorithm?</p><p><strong>Select one alternative:</strong></p><ul><li>A. X<sub>1</sub></li><li>B. X<sub>2</sub></li><li>C. X<sub>3</sub></li><li>D. X<sub>4</sub></li><li>E. random</li></ul></li></ul>\n\n<ul style=\"list-style:none;padding-left:0\"><li><p>b) In the best-case scenario, how many iterations are needed by the algorithm to find a solution?</p><p><strong>Select one alternative</strong></p><ul><li>A. 2</li><li>B. 3</li><li>C. 4</li><li>D. 5 or more</li><li>E. 1</li><li>F. 0</li></ul></li></ul>",
+   "f": [
+    [
+     "a) Variable chosen in the first iteration",
+     "text",
+     "A, B, C, D eller E"
+    ],
+    [
+     "b) Iterations needed in the best case",
+     "text",
+     "A, B, C, D, E eller F"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Variable chosen in the first iteration": [
+      "E",
+      "random"
+     ],
+     "b) Iterations needed in the best case": [
+      "E",
+      "1"
+     ]
+    },
+    "merk": "Min-conflicts velger en tilfeldig variabel blant dem som er i konflikt. Trekkes X4 først, gir rad 3 null konflikter, og brettet er løst etter 1 iterasjon.",
+    "kilde": "2024Q&A.docx, Q9 – Local search (CSP)"
+   },
+   "fasit": "**a) E: random.** Min-conflicts velger variabelen tilfeldig blant dem som er i konflikt. Det er bare verdien som velges grådig.\n\n**b) E: 1 iterasjon.**\n\n**Begrunnelse:** Startbrettet X1 = 2, X2 = 4, X3 = 1, X4 = 2 har tre konflikter:\n- X1–X4 på samme rad (begge 2)\n- X2–X4 på skrå: |4 − 2| = |2 − 4| = 2\n- X3–X4 på skrå: |1 − 2| = |3 − 4| = 1\n\nAlle fire variablene er i konflikt, så alle kan trekkes (a).\n\nI beste fall trekkes X4. Konflikter for X4 i rad 1–4 er 1, 3, 0 og 1. Rad 3 gir null konflikter, og (2, 4, 1, 3) er en løsning etter én iterasjon. Ingen av de andre kan løse brettet i ett trekk. Flyttes X1, står X2–X4 og X3–X4 igjen. Flyttes X2 eller X3, står X1–X4 og den andre skråkonflikten igjen.\n\nVanlig feil: å velge X4 i a) fordi den har flest konflikter. Det er ikke slik min-conflicts velger variabel.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 9. Kontrollert med min-conflicts i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 10 (6 p): Adversarial search",
+   "d": "You can choose between three buckets: A, B or C. The buckets contain the following values:\n\n- Bucket A: 2 and 3\n- Bucket B: 1 and 6\n- Bucket C: -2 and -1\n\nYour goal is to get the highest sum of values over many games.\n\na) After you choose a bucket, your opponent will give you the first value in that bucket with probability 0.5, and the second value otherwise.\\\nIf you optimise the bucket choice, the expected value will be: ☐ .\n\nb) After you choose a bucket, your opponent will give you the lowest value in that bucket.\\\nIf you optimise the bucket choice, the value in each game will be: ☐ .",
+   "f": [
+    [
+     "a) Expected value",
+     "text"
+    ],
+    [
+     "b) Value in each game",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Expected value": [
+      "3.5"
+     ],
+     "b) Value in each game": [
+      "2"
+     ]
+    },
+    "merk": "a) Forventet verdi 2,5, 3,5 og −1,5: velg B (3,5). b) Laveste verdi 2, 1 og −2: velg A (2).",
+    "kilde": "2024Q&A.docx, Q10 – Adversarial search"
+   },
+   "fasit": "**a) A: 0,5 · 2 + 0,5 · 3 = 2,5. B: 0,5 · 1 + 0,5 · 6 = 3,5. C: 0,5 · (−2) + 0,5 · (−1) = −1,5. Velg B.**\n\n**a) Optimal forventet verdi: 3,5.**\n\n**b) A: min(2, 3) = 2. B: min(1, 6) = 1. C: min(−2, −1) = −2. Velg A.**\n\n**b) Verdien i hvert spill: 2.**\n\na) er expectimax: motstanderen velger tilfeldig, så hver bøtte er en chance node med p = 0,5 på hvert tall. MAX tar største forventning, 3,5 i B.\n\nb) er minimax: motstanderen er MIN og gir det laveste tallet. MAX tar det beste av de verste utfallene, 2 i A. B frister med 6, men gir bare 1 mot en motstander som vil deg vondt.\n\nSamme bøtter gir ulikt valg etter hvordan motstanderen modelleres. Oppgave 11 kjører alpha-beta på b) (se notatet til E08, håndsporing 6): 6 i B og −1 i C besøkes aldri.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 10.*"
+  },
+  {
+   "t": "Oppgave 11 (poeng ikke oppgitt): Alpha-beta pruning",
+   "d": "You can choose between three buckets: A, B or C. The buckets contain the following values:\n\n- Bucket A: 2 and 3\n- Bucket B: 1 and 6\n- Bucket C: -2 and -1\n\nYour goal in the game is to get the highest value.\n\nAfter you choose a bucket, your opponent will give you the lowest value in that bucket.\n\nYou apply the alpha-beta pruning algorithm, and the algorithm visits the buckets in alphabetical order (A first), and the values in ascending order (smallest first).\n\n<ul style=\"list-style:none;padding-left:0\"><li><p>a) Which values will never be visited by the alpha-beta pruning algorithm?</p><p><strong>Select one alternative:</strong></p><ul><li>A. 6</li><li>B. 3, 6, -1</li><li>C. 3, -1</li><li>D. -1</li><li>E. 3, 6</li><li>F. 3</li><li>G. 6, -1</li></ul></li></ul>\n\n<ul style=\"list-style:none;padding-left:0\"><li><p>b) When the alpha-beta pruning algorithm visits bucket A, what is the alpha parameter set to at this function call?</p><p><strong>Select one alternative</strong></p><ul><li>A. 1</li><li>B. -inf</li><li>C. -1</li><li>D. 6</li><li>E. 3</li><li>F. -2</li><li>G. 2</li></ul></li></ul>\n\n<ul style=\"list-style:none;padding-left:0\"><li><p>c) When the alpha-beta pruning algorithm visits bucket B, what is the alpha parameter set to at this function call?</p><p><strong>Select one alternative</strong></p><ul><li>A. 2</li><li>B. -1</li><li>C. -inf</li><li>D. 3</li><li>E. 6</li><li>F. 1</li><li>G. -2</li></ul></li></ul>",
+   "tegn": {
+    "type": "tre",
+    "data": {
+     "id": "Du",
+     "type": "max",
+     "tekst": "Du",
+     "barn": [
+      {
+       "id": "A",
+       "type": "min",
+       "tekst": "A",
+       "barn": [
+        {
+         "id": "A1",
+         "type": "blad",
+         "tekst": "2",
+         "verdi": 2
+        },
+        {
+         "id": "A2",
+         "type": "blad",
+         "tekst": "3",
+         "verdi": 3
+        }
+       ]
+      },
+      {
+       "id": "B",
+       "type": "min",
+       "tekst": "B",
+       "barn": [
+        {
+         "id": "B1",
+         "type": "blad",
+         "tekst": "1",
+         "verdi": 1
+        },
+        {
+         "id": "B2",
+         "type": "blad",
+         "tekst": "6",
+         "verdi": 6
+        }
+       ]
+      },
+      {
+       "id": "C",
+       "type": "min",
+       "tekst": "C",
+       "barn": [
+        {
+         "id": "C1",
+         "type": "blad",
+         "tekst": "-2",
+         "verdi": -2
+        },
+        {
+         "id": "C2",
+         "type": "blad",
+         "tekst": "-1",
+         "verdi": -1
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "f": [
+    [
+     "a) Values never visited",
+     "text",
+     "A–G"
+    ],
+    [
+     "b) Alpha when bucket A is visited",
+     "text",
+     "A–G"
+    ],
+    [
+     "c) Alpha when bucket B is visited",
+     "text",
+     "A–G"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Values never visited": [
+      "G",
+      "{6, -1}"
+     ],
+     "b) Alpha when bucket A is visited": [
+      "B",
+      "-inf",
+      "−∞"
+     ],
+     "c) Alpha when bucket B is visited": [
+      "A",
+      "2"
+     ]
+    },
+    "merk": "A gir 2 (begge verdiene besøkes), så α = 2. I B er 1 ≤ α = 2, og 6 hoppes over. I C er −2 ≤ 2, og −1 hoppes over.",
+    "kilde": "2024Q&A.docx, Q11 – Alpha-Beta alg"
+   },
+   "fasit": "- **a) G: 6 og −1** besøkes aldri.\n- **b) B: −∞** (inf) når bøtte A besøkes.\n- **c) A: 2** når bøtte B besøkes.\n\nDu er MAX i roten, og hver bøtte er en MIN-node (motstanderen gir laveste verdi). Verdiene besøkes i stigende rekkefølge.\n\n| Bøtte | α, β inn | Verdier | Det som skjer |\n|---|---|---|---|\n| A | −∞, +∞ | 2, 3 | 2 > α = −∞, ingen kutt, så 3 besøkes også. A = 2, og roten får α = 2 |\n| B | 2, +∞ | 1 | v = 1 ≤ α = 2: kutt, **6 besøkes ikke** |\n| C | 2, +∞ | −2 | v = −2 ≤ α = 2: kutt, **−1 besøkes ikke** |\n\nRoten velger A med verdi 2, som i oppgave 10 b).\n\nVanlig feil: å tro at α i B er 3 (den største verdien i A). α er det beste MAX er garantert så langt, og det er min(2, 3) = 2.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 11. Kontrollert med alpha-beta i algoritmefila (rotverdi 2, kuttet 6 i B og −1 i C).*"
+  },
+  {
+   "t": "Oppgave 12 (4 p): Mixed strategy",
+   "d": "Stag hunt is a game that represents the conflict between safety and cooperation.\n\nTwo hunters have to decide separately which animal to hunt. There are three animals in total: a stag and two hares. Hunting the stag requires two hunters, while hunting a hare is much easier and thus a sole hunter can catch both of the hares. If both hunters hunt the hares, they will get one hare each.\n\nLet the payoff matrix of the stag hunt game be as follows:\n\n<table><thead><tr><th colspan=\"2\"></th><th colspan=\"2\">P2</th></tr><tr><th colspan=\"2\"></th><th>Stag</th><th>Hare</th></tr></thead><tbody><tr><th rowspan=\"2\">P1</th><th>Stag</th><td>5,5</td><td>0,2</td></tr><tr><th>Hare</th><td>2,0</td><td>1,1</td></tr></tbody></table>\n\nFor example, if P1 chooses Hare and P2 chooses Stag, P1 will receive utility 2 and P2 will receive utility 0.\n\nLet π<sub>1</sub> be the probability that P1 chooses Stag, and π<sub>2</sub> be the probability that P2 chooses Stag.\n\nWhat is the mixed strategy Nash equilibrium?\n\nπ<sub>1</sub> = ☐\\\nπ<sub>2</sub> = ☐",
+   "f": [
+    [
+     "π1 =",
+     "text"
+    ],
+    [
+     "π2 =",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "π1 =": [
+      "0.25",
+      "1/4"
+     ],
+     "π2 =": [
+      "0.25",
+      "1/4"
+     ]
+    },
+    "kilde": "2024Q&A.docx, Q12 – Mixed strategy"
+   },
+   "fasit": "**π1 = 1/4 og π2 = 1/4.**\n\nI en blandet likevekt må hver spiller være likegyldig mellom sine to handlinger. Sannsynligheten til P1 bestemmes derfor av at **P2** skal være likegyldig:\n\n- P2 Stag: 5π1 + 0(1 − π1)\n- P2 Hare: 2π1 + 1(1 − π1)\n- 5π1 = π1 + 1, så **π1 = 1/4**.\n\nSpillet er symmetrisk, så P1 er likegyldig når 5π2 = 2π2 + 1(1 − π2), altså **π2 = 1/4**.\n\nKontroll: med π2 = 1/4 gir Stag 5 · 1/4 = 1,25 og Hare 2 · 1/4 + 1 · 3/4 = 1,25 for P1.\n\nSpillet har også to rene likevekter, (Stag, Stag) og (Hare, Hare), men oppgaven spør etter den blandede.\n\nVanlig feil: å regne ut π1 fra P1s egne utbetalinger. Her gir symmetrien samme tall, men i et usymmetrisk spill blir det feil.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 12.*"
+  },
+  {
+   "t": "Oppgave 13 (poeng ikke oppgitt): Iterated game",
+   "d": "Let the payoff matrix of a game be as follows:\n\n<table><thead><tr><th colspan=\"2\"></th><th colspan=\"2\">P2</th></tr><tr><th colspan=\"2\"></th><th>Left</th><th>Right</th></tr></thead><tbody><tr><th rowspan=\"2\">P1</th><th>Up</th><td>2,2</td><td>0,3</td></tr><tr><th>Down</th><td>3,0</td><td>1,1</td></tr></tbody></table>\n\nFor example, if P1 chooses Down and P2 chooses Left, P1 will receive utility 3 and P2 will receive utility 0.\n\nLet π<sub>1</sub> be the probability that P1 chooses Up, and π<sub>2</sub> be the probability that P2 chooses Left.\n\nThe game is going to be played for two rounds. What are the optimal strategies at the different rounds?\n\nFirst round:\n\nπ<sub>1</sub> = ☐\\\nπ<sub>2</sub> = ☐\n\nSecond round:\n\nπ<sub>1</sub> = ☐\\\nπ<sub>2</sub> = ☐",
+   "f": [
+    [
+     "First round: π1 =",
+     "text"
+    ],
+    [
+     "First round: π2 =",
+     "text"
+    ],
+    [
+     "Second round: π1 =",
+     "text"
+    ],
+    [
+     "Second round: π2 =",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "First round: π1 =": [
+      "0"
+     ],
+     "First round: π2 =": [
+      "0"
+     ],
+     "Second round: π1 =": [
+      "0"
+     ],
+     "Second round: π2 =": [
+      "0"
+     ]
+    },
+    "merk": "Down og Right er strengt dominante. Runde 2 er et engangsspill, og da blir runde 1 det også: (Down, Right) begge ganger.",
+    "kilde": "2024Q&A.docx, Q13 – Iterated game"
+   },
+   "fasit": "**Første runde: π1 = 0, π2 = 0. Andre runde: π1 = 0, π2 = 0.** Begge spiller (Down, Right) i begge rundene.\n\nSpillet er et fangens dilemma. Down dominerer Up strengt for P1 (3 > 2 mot Left, 1 > 0 mot Right), og Right dominerer Left strengt for P2 (3 > 2 og 1 > 0). Den eneste Nash-likevekten i ett spill er (Down, Right), selv om (Up, Left) gir begge mer.\n\nBackward induction:\n\n- **Runde 2** er siste runde. Det som skjedde før, kan ikke belønnes eller straffes etterpå, så den er et vanlig engangsspill: (Down, Right).\n- **Runde 1:** utfallet av runde 2 er det samme uansett hva som skjer nå, så runde 1 er også et engangsspill: (Down, Right).\n\nVanlig feil: å tro at gjentakelse gir samarbeid (Up, Left). Med et fast, kjent og endelig antall runder gir backward induction svik i alle runder.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 13.*"
+  },
+  {
+   "t": "Oppgave 14 (6 p): Entailment",
+   "d": "Given the following small knowledge base consisting of 1 sentence, which of the alternative sentences is true?\n\nKB:\\\n(P ∨ Q) ∧ (S ∧ P)\n\n**Select one alternative:**\n\n- A. Q ∧ (P ⟹ S)\n- B. S ∧ P ∧ Q\n- C. P ⟹ Q ∨ (S ∧ P)\n- D. P ⟹ S ∧ Q",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C eller D"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "C"
+     ]
+    },
+    "kilde": "2024Q&A.docx, Q14 – Entailment"
+   },
+   "fasit": "**C: P ⇒ Q ∨ (S ∧ P).**\n\nKB = (P ∨ Q) ∧ (S ∧ P) er sann nøyaktig når P = T og S = T. Q kan være begge deler, så KB har to modeller:\n\n| P | Q | S | KB | A: Q ∧ (P ⇒ S) | B: S ∧ P ∧ Q | C: P ⇒ Q ∨ (S ∧ P) | D: P ⇒ S ∧ Q |\n|---|---|---|---|---|---|---|---|\n| T | T | T | T | T | T | T | T |\n| T | F | T | T | **F** | **F** | T | **F** |\n\n⇒ binder svakest, så C er P ⇒ (Q ∨ (S ∧ P)) og D er P ⇒ (S ∧ Q).\n- C er sann i begge KB-modellene, fordi S ∧ P er sann. Altså KB ⊨ C.\n- A, B og D krever Q, og Q er usann i KB-modellen P = T, Q = F, S = T. Ingen av dem følger.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 14. Kontrollert med en sannhetstabell over P, Q og S.*"
+  },
+  {
+   "t": "Oppgave 15 (6 p): CNF",
+   "d": "Given these sentences:\\\n¬(P ∧ ¬Q) ∨ ¬(¬S ∧ ¬T)\\\n¬(T ∨ Q)\\\nU ⟹ (¬T ⟹ (¬S ∧ P))\n\nWhich of the following represents the Conjuctive Normal Form of the 3 sentences above. Clauses are separated with an \";\" in the alternatives below.\n\n**Select one alternative:**\n\n- A. (¬U ∨ T ∨ ¬S); (¬U ∨ T ∨ P); ¬T; ¬Q; (¬P ∨ Q ∨ S ∨ T)\n- B. (¬P ∨ Q ∨ S ∨ T); ¬T; ¬Q; (¬U ∨ T ∨ S); (T ∨ P)\n- C. ¬T; ¬Q; (¬U ∨ T); (T ∨ S); (T ∨ S ∨ ¬U); (T ∨ ¬U ∨ P)\n- D. None of these alternatives is the correct CNF version of the given sentences",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C eller D"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "A"
+     ]
+    },
+    "kilde": "2024Q&A.docx, Q15 – CNF"
+   },
+   "fasit": "**Svar: A.** (¬U ∨ T ∨ ¬S); (¬U ∨ T ∨ P); ¬T; ¬Q; (¬P ∨ Q ∨ S ∨ T), fem klausuler.\n\n1. ¬(P ∧ ¬Q) ∨ ¬(¬S ∧ ¬T): De Morgan på begge gir (¬P ∨ Q) ∨ (S ∨ T), altså klausulen **(¬P ∨ Q ∨ S ∨ T)**.\n2. ¬(T ∨ Q): De Morgan gir ¬T ∧ ¬Q, altså to klausuler **¬T** og **¬Q**.\n3. U ⟹ (¬T ⟹ (¬S ∧ P)): fjern den indre implikasjonen, ¬T ⟹ X blir T ∨ X, og så den ytre: ¬U ∨ (T ∨ (¬S ∧ P)). Distribuer ∨ over ∧: (¬U ∨ T ∨ ¬S) ∧ (¬U ∨ T ∨ P), altså **(¬U ∨ T ∨ ¬S)** og **(¬U ∨ T ∨ P)**.\n\n- **B** har (¬U ∨ T ∨ S) med feil fortegn på S, og (T ∨ P) mangler ¬U.\n- **C** har (¬U ∨ T) og (T ∨ S), som ikke følger av setningene, og mangler klausulen fra den første setningen.\n- **D** er feil fordi A er riktig.\n\nVanlig feil: å glemme at ¬T ⟹ X blir T ∨ X (dobbel negasjon), eller å distribuere ¬U bare inn i én av klausulene.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 15. Kontrollert med en sannhetstabell over alle 32 tilordninger: A er ekvivalent med de tre setningene, B er det ikke.*"
+  },
+  {
+   "t": "Oppgave 16 (5 p): Skolemization",
+   "d": "Which of the alternatives is correct skolemization of existential quantifier in the following sentence?\n\n∀x [∃y Animal(y) ∧ ¬Loves(x, y)] ∨ [∃z Loves(z, x)]\n\n**Select one alternative:**\n\n- A. ∀x Animal(F1(x)) ∧ ¬Loves(x, F1(x)) ∨ Loves(F1(x), x)\n- B. ∀x Animal(F1(x)) ∧ ¬Loves(x, F2(x)) ∨ Loves(F3(x), x)\n- C. ∀x Animal(F1(x)) ∧ ¬Loves(x, F2(x)) ∨ Loves(F2(x), x))\n- D. ∀x Animal(F1(x) ∧ ¬Loves(x, F1(x)) ∨ Loves(F2(x), x)\n\n*Merknad:* Parentesfeilene i C og D står slik i originalen.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C eller D"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "D"
+     ]
+    },
+    "merk": "Fasiten skriver svaret som ∀x Animal(F1(x)) ∧ ¬Loves(x, F1(x)) ∨ Loves(F2(x), x): samme y gir F1 begge steder, og z får en ny funksjon F2. Alternativ D har en parentesfeil i originalen, men er det som menes.",
+    "kilde": "2024Q&A.docx, Q16 – Skolemization"
+   },
+   "fasit": "**Svar: D**, altså ∀x [Animal(F1(x)) ∧ ¬Loves(x, F1(x))] ∨ Loves(F2(x), x).\n\n**Begrunnelse:** Både ∃y og ∃z står inne i ∀x og ingen annen ∀, så begge blir funksjoner av x.\n- y står i Animal(y) og i ¬Loves(x, y). Det er samme variabel, så den får samme funksjon F1(x) begge steder.\n- z er en annen ∃ og får en ny funksjon, F2(x).\n- A bruker F1 også for z, og påstår da at den som elsker x, er det samme objektet som dyret x ikke elsker. B og C gir y to ulike funksjoner.\n- D mangler en parentes i originalen, men det er den løsningsforslaget skriver.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 16.*"
+  },
+  {
+   "t": "Oppgave 17 (5 p): Unification",
+   "d": "Which of the following alternatives is the correct unification for the following 2 sentences?\n\nF(x, F(u, x))\\\nF(F(y, A), F(z, F(B, z)))\n\n**Select one alternative:**\n\n- A. x/F(y, A); u/z; y/B; z/A\n- B. x/F(x, A); y/x; u/z; z/A\n- C. It is not possible to unify these sentences.\n- D. y/A; u/z; x/z; z/A",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C eller D"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "A"
+     ]
+    },
+    "kilde": "2024Q&A.docx, Q17 – Unification"
+   },
+   "fasit": "**Svar: A** (x/F(y, A); u/z; y/B; z/A), samme form som løsningsforslaget.\n- B har x/F(x, A). Der står x inne i sin egen binding, og occur check stopper den.\n- D gir x = z = A, men x må unifisere med F(y, A). En konstant kan ikke bli lik en funksjonsterm.\n- C er feil, fordi en unifier finnes.\n\n**UNIFY steg for steg:**\n\n| Steg | Par | Resultat |\n|---|---|---|\n| 1 | F ~ F | like, argumentene parvis |\n| 2 | x ~ F(y, A) | x/F(y, A) |\n| 3 | F(u, x) ~ F(z, F(B, z)) | like funksjoner, argumentene parvis |\n| 4 | u ~ z | u/z |\n| 5 | x ~ F(B, z) | x er F(y, A), så F(y, A) ~ F(B, z) |\n| 6 | y ~ B | y/B |\n| 7 | A ~ z | z/A |\n\nθ = {x/F(y, A), u/z, y/B, z/A}. Satt helt inn: {x/F(B, A), u/A, y/B, z/A}, og begge uttrykkene blir F(F(B, A), F(A, F(B, A))).\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 17.*"
+  },
+  {
+   "t": "Oppgave 18 (poeng ikke oppgitt): Planning",
+   "d": "<img class=\"fig\" src=\"nettside-figurer/ek2024-q18.png\" alt=\"Towers of Hanoi: fem disker på Tower A, Tower B og Tower C er tomme\">\n\nThe **Towers of Hanoi** is a classic mathematical puzzle that involves three pegs and a number of disks of different sizes. The puzzle starts with all the disks stacked in ascending order of size on one peg, with the largest disk at the bottom and the smallest at the top. The goal is to move the entire stack of disks from the starting peg to another peg, following these rules:\n\n**Legal Moves**:\n\n1. Only one disk can be moved at a time\n2. Each move consists of taking the top disk from one of the stacks and placing it on top of another stack or on an empty peg\n3. No disk may be placed on top of a smaller disk\n\nConsider the following action described in PDDL.\n\n*Action*(*Move*(*disk*, *from*, *to*),\\\n&emsp;PRECOND: NothingOnTop(disk) ∧ At(disk, from) ∧ (Smaller(disk, to) ∨ Empty(to))\\\n&emsp;EFFECT: ¬At(disk, from) ∧ At(disk, to))\n\nWhich of the following statements is a **valid and well-formed** description of the first step in the Towers of Hanoi puzzle, given the PDDL description and the initial state in the figure?\n\n**Select one alternative:**\n\n- A. Move(Disk1, TowerA, TowerC)\n- B. Move(disk, TowerA, TowerC))\n- C. Move(Disk1, TowerB, TowerA)\n- D. Move(disk(Disk1), Tower(A), Tower(B))\n- E. Move(disk, from(A), to(B))",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "A"
+     ]
+    },
+    "kilde": "2024Q&A.docx, Q18 – Planning"
+   },
+   "fasit": "**Svar: A.** Move(Disk1, TowerA, TowerC).\n\nEt steg i en plan er en ground action: skjemaet med konstanter i stedet for variablene disk, from og to. A er det, og forutsetningene holder i starttilstanden: Disk1 ligger øverst (NothingOnTop(Disk1)), At(Disk1, TowerA) er sann, og TowerC er tom (Empty(TowerC)). Effekten er ¬At(Disk1, TowerA) ∧ At(Disk1, TowerC).\n\n- **B:** disk er en variabel, ikke et objekt, så handlingen er ikke instansiert, og det er en parentes for mye.\n- **C:** Disk1 står på TowerA, ikke TowerB, så At(Disk1, TowerB) er usann.\n- **D og E:** PDDL har ingen funksjonssymboler. Argumentene må være konstanter som Disk1 og TowerA, ikke termer som disk(Disk1), Tower(A) eller from(A).\n\nLøsningsforslaget begrunner med at PDDL ikke kan ha negerte literaler eller instansieringer. Ikke lær det som en regel: skjemaet har selv ¬At(disk, from) i EFFECT, og en handling i en plan er nettopp et instansiert skjema. Poenget er at alternativene B, D og E ikke er gyldige ground actions.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 18.*"
+  },
+  {
+   "t": "Oppgave 19 (poeng ikke oppgitt): NLP",
+   "d": "Select only one correct statement from the below that is correct about Natural Language Processing (NLP)\n\n**Select one alternative:**\n\n- A. Named Entity Recognition (NER) in NLP is used to quantify entities' importances like names, locations, and dates in text.\n- B. NLP techniques are solely based on syntactic analysis, ignoring semantic meaning.\n- C. No matter the task, Stop Words must be removed in NLP because they do not carry significant meaning.\n- D. NLP enables computers to interpret and generate human language.\n- E. Tokenization is a technique in NLP used to transform structured data into unstructured text.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "D"
+     ]
+    },
+    "kilde": "2024Q&A.docx, Q19 – NLP"
+   },
+   "fasit": "**D.** NLP lar datamaskiner tolke og generere menneskelig språk.\n\n- **A** er feil: Named Entity Recognition finner og klassifiserer navngitte enheter (personer, steder, datoer) i tekst. Den måler ikke hvor viktige de er.\n- **B** er feil: NLP bruker både syntaks og semantikk, for eksempel word embeddings som fanger betydning.\n- **C** er feil: om stop words skal fjernes, avhenger av oppgaven. I en språkmodell, maskinoversettelse eller sentimentanalyse («not good») bærer de viktig mening.\n- **E** er feil: retningen er motsatt. Tokenization deler ustrukturert tekst i enheter (tokens, som ord og tegn), som et første steg mot strukturerte data.\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 19.*"
+  },
+  {
+   "t": "Oppgave 20 (poeng ikke oppgitt): AI-Ethics",
+   "d": "Select only one statement from the below that is incorrect about debiasing techniques in Natural Language Processing (NLP).\n\n**Select one alternative:**\n\n- A. Fairness constraints can be applied during model training to encourage equitable predictions across different demographic groups.\n- B. Debiasing in NLP ensures that the model increases its accuracy.\n- C. Data augmentation is a technique used in debiasing to increase the diversity of training data and reduce bias.\n- D. Adversarial training involves training a model to detect and remove bias by learning from adversarial examples.\n- E. Word embedding debiasing can reduce bias by altering word representations to minimize associations with sensitive attributes.",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "B"
+     ]
+    },
+    "merk": "Debiasing gir ingen garanti for høyere accuracy, og kan til og med koste accuracy.",
+    "kilde": "2024Q&A.docx, Q20 – AI-ethics"
+   },
+   "fasit": "**B** er feil. Debiasing reduserer skjevhet i modellen, men gir ingen garanti for høyere accuracy. Fairness og accuracy kan trekke mot hverandre, så debiasing kan til og med koste litt accuracy.\n\nDe andre er riktige beskrivelser av debiasing-teknikker: fairness constraints under trening (A), data augmentation for mer mangfoldige data (C), adversarial training (D) og debiasing av word embeddings ved å endre ordvektorene slik at de ikke assosieres med sensitive attributter som kjønn (E).\n\n*Kilde: løsningsforslaget til eksamen 2024, oppgave 20.*"
+  }
+ ]
+}

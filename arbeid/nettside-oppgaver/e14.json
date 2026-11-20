@@ -73,7 +73,10 @@
   },
   {
    "t": "Modellen i fig. 8.2: sant eller usant?",
-   "d": "Modellen i bokas fig. 8.2 (AIMA 8.2.1) har fem objekter: Richard Løvehjerte (R), kong John (J), Richards venstre bein, Johns venstre bein og en krone.\n\n- Konstantene: `Richard` peker på R, `John` peker på J.\n- `Brother` = {⟨R, J⟩, ⟨J, R⟩}\n- `OnHead` = {⟨krone, J⟩}\n- `Person` = {R, J}, `King` = {J}, `Crown` = {krone}\n- Funksjonen `LeftLeg`: R ↦ Richards venstre bein, J ↦ Johns venstre bein. Funksjoner i FOL er totale, så også kronen og beina må ha et venstre bein. Boka løser det med et ekstra «usynlig» objekt i domenet, som er venstre bein for alt som ikke har et venstre bein, også seg selv. Det står ikke i noen av relasjonene over.\n\nAvgjør om hver setning er sann i denne modellen.",
+   "d": "Modellen i bokas fig. 8.2 (AIMA 8.2.1) har fem objekter: Richard Løvehjerte (R), kong John (J), Richards venstre bein, Johns venstre bein og en krone.\n\n<!--fig-->\n\n- Konstantene: `Richard` peker på R, `John` peker på J.\n- `Brother` = {⟨R, J⟩, ⟨J, R⟩}\n- `OnHead` = {⟨krone, J⟩}\n- `Person` = {R, J}, `King` = {J}, `Crown` = {krone}\n- Funksjonen `LeftLeg`: R ↦ Richards venstre bein, J ↦ Johns venstre bein. Funksjoner i FOL er totale, så også kronen og beina må ha et venstre bein. Boka løser det med et ekstra «usynlig» objekt i domenet, som er venstre bein for alt som ikke har et venstre bein, også seg selv. Det står ikke i noen av relasjonene over.\n\nAvgjør om hver setning er sann i denne modellen.",
+   "img": [
+    "nettside-figurer/e14-fig8-2-modell.svg"
+   ],
    "tf": [
     "a) ∀x Person(x) ⇒ ∃y Brother(x, y)",
     "b) ∀x ∃y Brother(x, y)",

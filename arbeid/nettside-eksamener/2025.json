@@ -1,0 +1,443 @@
+{
+ "id": "ek2025",
+ "ep": "2025",
+ "tittel": "Ordinær eksamen",
+ "kilde": "../materiale/Files/Previous%20exams/2025QA.pdf",
+ "om": "## Cover Page\n\n**Examination paper for TDT4136 Introduction to Artificial Intelligence**<br>\n**Date: 8th of December 2025**<br>\n**Time: 09:00 - 13:00**\n\n**Course contact: Ole Christian Eidheim**<br>\n**Present at the exam location: YES, at 10:00**\n\n**Permitted examination support material: D**: No printed or hand-written support material is allowed. A specific basic calculator is allowed.\n\n**OTHER INFORMATION**\n\nThere are 13 questions in this exam. The first 4 are multiple choice questions.<br>\nFor questions about logic, there is a ‘Formula Sheet’ at the very end of the exam, after all the questions.\n\n**Read the questions carefully** and make your own assumptions. In your answers, explain clearly what assumptions you have made and how you have understood or limited the assignment.\n\nIf there are direct errors or omissions in the assignment set and you cannot make your own assumptions, please refer to the information about complaints regarding formal errors on the NTNU website “Explanation of grades and appeals”.\n\n**SPECIFIC INFORMATION FOR YOUR COURSE**\n\n**Paper drawings:**<br>\nFor question 9 (Generalized Modus Ponens) and 10 (Resolution Inference Algorithm) you can answer on handwritten sheets. Other questions must be answered directly in Inspera. At the bottom of the question, you will find a seven-digit code. Fill in this code in the top left corner of the sheets you wish to submit.<br>\n**Please note that only blue or black ballpoint pens are allowed**\n\nWe recommend that you do this during the exam. If you require access to the codes after the examination time ends, click “Show submission”.<br>\nYou are responsible for filling in the correct codes on the handwritten sheets. Therefore, read the cover sheet carefully. The Examination Office cannot guarantee that incorrectly completed sheets will be added to your assignment.\n\n**Weighting:**<br>\nWeights for questions and sub-questions are given in each question.\n\n**Withdrawing from the exam:**<br>\nIf you wish to submit a blank test/withdraw from the exam for another reason, go to the menu in the top right-hand corner and click “Submit blank”. This cannot be undone, even if the test is still open.\n\n**Access to your answers:**<br>\nAfter the exam, you can find your answers under previous tests in Inspera. Be aware that it may take a working day until any hand-written material is available in “previous tests”.",
+ "intro": "Når eksamenen er levert, kan flervalgsoppgavene 1–4 og de korte svarene i oppgave 5, 6 og 8 sjekkes med Sjekk, grafene i oppgave 5–6 og treet i oppgave 8 kan åpnes i «Tegn og sjekk», og fasiten vises under hver oppgave og nederst.",
+ "vedlegg": "### Standard Logical Equivalences\n\n<img class=\"fig\" src=\"nettside-figurer/e14-2025-formelark.svg\" alt=\"Formelarket\">",
+ "fasit": "**Fasit for eksamen 2025.** Svarene følger løsningsforslaget (`2025QA.pdf`). Utregningene i oppgave 5–8 er regnet på nytt med algoritmene i `nettside-algo/` og for hånd.\n\n| Oppgave | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | Sum |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| Poeng | 5 | 5 | 5 | 5 | 8 | 12 | 10 | 10 | 5 | 20 | 5 | 5 | 5 | 100 |\n\n- **1–4 (flervalg):** 1 A, 2 C, 3 A, 4 E.\n- **5:** BFS og UCS finner den billigste stien s–k–g (kostnad 9), BFS utvider færrest. BFS {a, b, k}, DFS {a, b, c, d, e}, UCS {b, c, a, d, k, e} (s ikke regnet med).\n- **6:** h er admissible og consistent. A\\* utvider s, b, c, a, k og finner s–k–g med kostnad 9.\n- **7:** lineær tid, O(nd²). D4 = {1, 2}, D1 = {3}; X1 = 3, X2 = 1, X3 = 2, X4 = 1, X5 = 3.\n- **8:** minimax-verdi 15. I og N (med O og P) besøkes ikke.\n- **9:** θ = {x/Alice, y/Carrie, z/Bob} gir Jealous(Alice, Carrie).\n- **10:** Skolem-konstant C1 og Skolem-funksjon F(x), ti klausuler og seks resolusjonssteg til □.\n- **11–13:** tekstsvar, se fasiten under hver oppgave.",
+ "tasks": [
+  {
+   "t": "Oppgave 1 (5 p): Intelligent Agents",
+   "d": "This question aims to identify the differences between these 3 types of agents: simple reflex, model-based reflex, and goal-based agents, along with action selection or reasoning mechanisms.\n\nFill in the boxes in the table using one of the following: “Rule matching”, “Search”, “Search and Plan”\n\n<table><thead><tr><th></th><th colspan=\"3\">Agent type</th></tr><tr><th></th><th>1. Simple reflex agent</th><th>2. Model-based reflex agent</th><th>3. Goal-based agent</th></tr></thead><tbody><tr><th>Action selection/<br>Reasoning method</th><td></td><td></td><td></td></tr></tbody></table>\n\nWhich of the following alternatives best reflects the action selection/reasoning method of these agents?\n\n**Select one alternative:**\n\n- A. 1. Rule matching; 2. Rule matching; 3. Search and Plan\n- B. 1. Rule matching; 2. Rule matching; 3. Search\n- C. 1. Search; 2. Search and Plan; 3. Search and Plan\n- D. 1. Rule matching; 2. Search; 3. Search and Plan",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C eller D"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "A"
+     ]
+    },
+    "kilde": "2025QA.pdf, Solution to 1"
+   },
+   "fasit": "**Svar: A.** 1. Rule matching; 2. Rule matching; 3. Search and Plan.\n\n- **Simple reflex agent:** condition-action rules på nåværende percept, altså rule matching.\n- **Model-based reflex agent:** de samme reglene, men brukt på intern state. Modellen gir bare bedre input til reglene, så det er fortsatt rule matching.\n- **Goal-based agent:** ser framover («hva skjer hvis jeg gjør A?») og finner handlingssekvenser som når målet, altså search and planning.\n\nVanlig feil: å velge D fordi model-based «har en modell». Modellen brukes til å oppdatere state, ikke til å søke.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 1.*"
+  },
+  {
+   "t": "Oppgave 2 (5 p): Local Search",
+   "d": "Which of the following statements is **false**?\n\n**Select one alternative:**\n\n- A. Local search uses a single node and moves to a neighboring node depending on the heuristic function\n- B. To escape local optima, a local search algorithm needs to move to non-locally-optimal states from time to time\n- C. Gradient descent, in contrast to hill-climbing algorithms, will always escape local optima\n- D. The Genetic Algorithm is a population-based local search method\n- E. Hill-climbing is a local search procedure which will always choose the best state in the neighborhood of a solution",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "C"
+     ]
+    },
+    "kilde": "2025QA.pdf, Solution to 2"
+   },
+   "fasit": "**Svar: C.** Gradient descent er ikke bedre enn hill climbing til å unnslippe lokale optima.\n\n- **C er usann.** Gradient descent er hill climbing i et kontinuerlig rom: den går i retningen der gradienten sier at objektivfunksjonen blir best, og stopper der gradienten er 0. Det kan like gjerne være et lokalt optimum. Den har ingen innebygd mekanisme for å komme seg ut.\n- **A er sann.** Lokalt søk holder bare den nåværende tilstanden (én node) og flytter til en nabo ut fra heuristikken eller objektivfunksjonen.\n- **B er sann.** For å komme ut av et lokalt optimum må algoritmen av og til gå til en dårligere tilstand, slik simulated annealing og random restarts gjør.\n- **D er sann.** En genetisk algoritme holder en populasjon av tilstander og lager nye med seleksjon, crossover og mutasjon.\n- **E er sann** for steepest-ascent hill climbing, som alltid velger den beste naboen. Stochastic hill climbing og first-choice hill climbing er varianter som ikke gjør det.\n\nVanlig feil: å tro at kontinuerlige metoder unngår lokale optima. Gradient descent og hill climbing har samme svakhet.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 2.*"
+  },
+  {
+   "t": "Oppgave 3 (5 p): Constraint Satisfaction Problems",
+   "d": "There are three houses in a row, numbered 1, 2, and 3 (with 1 being the leftmost). Each house has a different colour: red, green, or blue. Alice, Bob, and Carrie each live in one of the houses, and no two people live in the same house.\n\n- Alice lives in the house to the right of the red house.\n- Bob lives in the blue house.\n- Carrie lives in the second house.\n\nIt is possible to state the conditions above as a constraint satisfaction problem, such that one can find the color of each house and who lives where.<br>Which of the following alternatives is the correct definition of the variables and their domains?\n\n**Select one alternative:**\n\n- A. Alice, Bob, Carrie, Red, Green, Blue ∈ {1, 2, 3}\n- B. X<sub>1</sub> ∈ {Alice, Bob, Carrie}, X<sub>2</sub> ∈ {Red, Green, Blue}\n- C. X<sub>1</sub>, X<sub>2</sub>, X<sub>3</sub> ∈ {Red, Blue, Green, Alice, Bob, Carrie}\n- D. Alice, Bob, Carrie ∈ {Red, Green, Blue}",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C eller D"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "A"
+     ]
+    },
+    "kilde": "2025QA.pdf, Solution to 3"
+   },
+   "fasit": "**Svar: A.** Alice, Bob, Carrie, Red, Green, Blue ∈ {1, 2, 3}, der verdien er husnummeret.\n\nMed denne modellen kan alle tre betingelsene skrives som constraints:\n\n- Alice = Red + 1 (Alice bor i huset til høyre for det røde)\n- Bob = Blue\n- Carrie = 2\n- Alldiff(Alice, Bob, Carrie) og Alldiff(Red, Green, Blue)\n\nLøsningen: Carrie = 2. Alice = Red + 1 gir Alice ∈ {2, 3}, og Alice ≠ Carrie gir Alice = 3 og Red = 2. Da er Bob = 1 = Blue og Green = 3. Hus 1 er blått (Bob), hus 2 rødt (Carrie) og hus 3 grønt (Alice).\n\nHvorfor de andre ikke virker:\n\n- **B:** X1 ∈ personer og X2 ∈ farger beskriver bare én beboer og én farge, altså ett hus.\n- **C:** Hvert hus kan få bare én verdi, enten en farge eller en person, ikke begge.\n- **D:** Gir hver person en farge, men ingen husnummer, så «til høyre for» og «det andre huset» kan ikke uttrykkes.\n\nGrepet er det samme som i zebra-gåten: personer og farger er variabler, og husnummeret er verdien.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 3.*"
+  },
+  {
+   "t": "Oppgave 4 (5 p): Game Theory",
+   "d": "Let the payoff matrix of a game be as follows:\n\n<table><thead><tr><th colspan=\"2\"></th><th colspan=\"2\">P2</th></tr><tr><th colspan=\"2\"></th><th>Left</th><th>Right</th></tr></thead><tbody><tr><th rowspan=\"2\">P1</th><th>Up</th><td>P1: 1, P2: 1</td><td>P1: 0, P2: 0</td></tr><tr><th>Down</th><td>P1: 0, P2: 0</td><td>P1: 0, P2: 0</td></tr></tbody></table>\n\nFor example, if player P1 chooses Up and P2 chooses Left, both P1 and P2 will receive utility 1.\n\nLet π<sub>1</sub> be the probability that P1 chooses Up, and π<sub>2</sub> be the probability that P2 chooses Left.\n\nHow many Nash equilibria are there in this game?\n\n**Select one alternative:**\n\n- A. No Nash equilibrium\n- B. More than four Nash equilibria\n- C. Four Nash equilibria: π<sub>1</sub> = 1, π<sub>2</sub> = 1 and π<sub>1</sub> = 1, π<sub>2</sub> = 0 and π<sub>1</sub> = 0, π<sub>2</sub> = 1 and π<sub>1</sub> = 0, π<sub>2</sub> = 0\n- D. One Nash equilibrium: π<sub>1</sub> = 1, π<sub>2</sub> = 1\n- E. Two Nash equilibria: π<sub>1</sub> = 1, π<sub>2</sub> = 1 and π<sub>1</sub> = 0, π<sub>2</sub> = 0",
+   "f": [
+    [
+     "Alternativ",
+     "text",
+     "A, B, C, D eller E"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Alternativ": [
+      "E"
+     ]
+    },
+    "kilde": "2025QA.pdf, Solution to 4"
+   },
+   "fasit": "**Svar: E.** To Nash-likevekter: π1 = 1, π2 = 1 (Up, Left) og π1 = 0, π2 = 0 (Down, Right).\n\nSjekk hver rene strategiprofil: kan én spiller tjene på å bytte alene?\n\n| Profil | P1 bytter | P2 bytter | Nash? |\n|---|---|---|---|\n| (Up, Left): 1, 1 | Down gir 0 < 1 | Right gir 0 < 1 | ja (strengt) |\n| (Down, Right): 0, 0 | Up gir 0 = 0 | Left gir 0 = 0 | ja (svakt) |\n| (Up, Right): 0, 0 | Down gir 0 = 0 | Left gir 1 > 0 | nei |\n| (Down, Left): 0, 0 | Up gir 1 > 0 | Right gir 0 = 0 | nei |\n\nBlandede strategier: E1 = E2 = π1·π2. Er π2 > 0, er Up strengt best for P1, så π1 = 1, og da er Left strengt best for P2 (π2 = 1). Er π2 = 0, er P1 likegyldig, men P2 vil bare holde π2 = 0 hvis π1 = 0. Det finnes altså ingen andre likevekter, og løsningsforslaget viser de to med E1(1, 1) ≥ E1(π1, 1), E2(1, 1) ≥ E2(1, π2) og E1(0, 0) = E1(π1, 0), E2(0, 0) = E2(0, π2) for alle π1, π2 ∈ [0, 1].\n\nVanlige feil: å overse den svake likevekten (Down, Right) og velge D, eller å tro at like utbetalinger gjør alle fire profilene til likevekter (C).\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 4.*"
+  },
+  {
+   "t": "Oppgave 5 (8 p): Uninformed Search",
+   "img": [
+    "nettside-figurer/e02-2025-q5.png"
+   ],
+   "d": "Consider the graph shown above where **s** is the starting state and **g** is the goal state.\n\nUse **Breadth-First Search (BFS), Depth-First Search with memory (DFS),** and **Dijkstra/Uniform Cost Search (UCS)**, with alphabetical order as a tie breaker for all of them, to answer the **three** following questions.\n\n- **a)** Which of these algorithms will find the cheapest path to the goal? (2 pts.)\n- **b)** Which of these algorithms will expand the fewest nodes? (2 pts.)\n- **c)** Which nodes were necessary to expand on each algorithm in order to be able to answer **a)** and **b)** ? (4 pts.)",
+   "f": [
+    [
+     "a) Algorithm(s) that find the cheapest path",
+     "text",
+     "BFS, DFS og/eller UCS"
+    ],
+    [
+     "b) Algorithm that expands the fewest nodes",
+     "text"
+    ],
+    [
+     "c) Nodes expanded by each algorithm",
+     "area",
+     "BFS: …\nDFS: …\nUCS: …"
+    ]
+   ],
+   "tegn": "P25",
+   "sjekk": {
+    "f": {
+     "a) Algorithm(s) that find the cheapest path": [
+      "{BFS, UCS}",
+      "{BFS og UCS}",
+      "{BFS and UCS}"
+     ],
+     "b) Algorithm that expands the fewest nodes": [
+      "BFS"
+     ]
+    },
+    "kilde": "2025QA.pdf, Solution to 5"
+   },
+   "fasit": "**a) BFS og UCS.** Begge finner s–k–g med kostnad 9. DFS finner s–b–c–d–e–g med kostnad 11.\n\n**b) BFS**, med tre utvidelser.\n\n**c) BFS: {a, b, k}. DFS: {a, b, c, d, e}. UCS: {b, c, a, d, k, e}.** Løsningsforslaget teller ikke s.\n\n**BFS** (FIFO, målet testes når det genereres):\n\n| Ekspanderer | Frontier etterpå |\n|---|---|\n| s | a, b, k |\n| a | b, k (s er allerede nådd) |\n| b | k, c |\n| k | g genereres og er mål |\n\nSti s–k–g, kostnad 6 + 3 = 9.\n\n**DFS med minne** (LIFO, alfabetisk):\n\n| Ekspanderer | Frontier etterpå (øverst først) |\n|---|---|\n| s | a, b, k |\n| a | b, k |\n| b | c, k |\n| c | d, k |\n| d | e, k |\n| e | g, k |\n| g: mål | k |\n\nSti s–b–c–d–e–g, kostnad 1 + 2 + 2 + 2 + 4 = 11.\n\n**UCS** (prioritetskø på g):\n\n| Tas ut (g) | Frontier etterpå |\n|---|---|\n| s (0) | b 1, a 4, k 6 |\n| b (1) | c 3, a 4, k 6 |\n| c (3) | a 4, d 5, k 6 |\n| a (4) | d 5, k 6 |\n| d (5) | k 6, e 7 |\n| k (6) | e 7, g 9, j 9 |\n| e (7) | g 9, j 9 (g via e koster 11 og forkastes) |\n| g (9): mål | j 9 (likt, g alfabetisk først) |\n\nSti s–k–g, kostnad 9.\n\nBFS fant den billigste veien bare fordi den korteste stien også var den billigste. BFS er bare garantert optimal når alle steg koster likt. Løsningsforslaget skriver «Add G and J to frontier, G is goal» ved k. Etter Fig. 3.9 testes g straks den genereres, men svaret blir det samme.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 5. Kontrollert med BFS, DFS og UCS i algoritmefila (eksempelet «Eksamen 2025, oppgave 5»).*"
+  },
+  {
+   "t": "Oppgave 6 (12 p): Informed Search",
+   "img": [
+    "nettside-figurer/e03-2025-q6.png"
+   ],
+   "d": "Consider the shown graph where **s** is the starting state, **g** is the goal state, and each node has its heuristic values as shown. Answer the **three** following questions.\n\n**a)** Is the heuristic **admissible**? Why? (2 pts.)\n\n**b)** Is the heuristic **consistent**? Why? (2 pts.)\n\n**c)** Execute the search carried out by **A\\*** on the graph, using alphabetical order as a tie breaker. Show your steps and highlight clearly what are the expanded nodes and what is the path found, if any (8 pts.)",
+   "f": [
+    [
+     "a) Admissible? (yes/no)",
+     "text"
+    ],
+    [
+     "a) Why?",
+     "area"
+    ],
+    [
+     "b) Consistent? (yes/no)",
+     "text"
+    ],
+    [
+     "b) Why?",
+     "area"
+    ],
+    [
+     "c) A* steps (frontier with f = g + h)",
+     "area",
+     "Pop s: frontier = …\nPop …"
+    ],
+    [
+     "c) Expanded nodes, in order",
+     "text",
+     "s, …, (g)"
+    ],
+    [
+     "c) Path found",
+     "text",
+     "s → … → g"
+    ]
+   ],
+   "tegn": "P25H",
+   "sjekk": {
+    "f": {
+     "a) Admissible? (yes/no)": [
+      "yes",
+      "ja"
+     ],
+     "b) Consistent? (yes/no)": [
+      "yes",
+      "ja"
+     ],
+     "c) Expanded nodes, in order": [
+      "s, b, c, a, k, (g)",
+      "s, b, c, a, k",
+      "b, c, a, k, (g)",
+      "b, c, a, k"
+     ],
+     "c) Path found": [
+      "s, k, g"
+     ]
+    },
+    "merk": "A* tar ut s, b, c, a og k før g (f = 9). a går før k ved likhet (begge f = 9) fordi a kommer først alfabetisk.",
+    "kilde": "2025QA.pdf, Solution to 6"
+   },
+   "fasit": "**a) Ja.** Ingen h-verdi er større enn den ekte billigste restkostnaden h\\*, så heuristikken overestimerer aldri:\n\n| Node | s | a | b | c | d | e | f | g | h | i | j | k |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| h | 5 | 5 | 4 | 5 | 5 | 4 | 5 | 0 | 6 | 6 | 5 | 3 |\n| h\\* | 9 | 13 | 10 | 8 | 6 | 4 | 5 | 0 | 6 | 7 | 6 | 3 |\n\nDet følger også av b): consistent med h(g) = 0 gir admissible.\n\n**b) Ja.** For hver kant gjelder h(n) ≤ c(n, n′) + h(n′). Grafen er urettet, så hver kant må holde begge veier: |h(n) − h(n′)| ≤ c. De trangeste kantene er s–b (|5 − 4| = 1 ≤ 1), e–g (4 ≤ 4), f–g (5 ≤ 5), k–g (3 ≤ 3), i–j (1 ≤ 1) og h–f (1 ≤ 1). Resten har god margin, for eksempel s–k (2 ≤ 6). Løsningsforslaget peker også på at h er luftlinjeavstand (straight-line distance), som oppfyller trekantulikheten.\n\n**c) A\\*, alfabetisk tie-break:**\n\n| Tas ut (f = g + h) | Nye i frontier | Frontier etterpå |\n|---|---|---|\n| s (0 + 5 = 5) | a 4 + 5 = 9, b 1 + 4 = 5, k 6 + 3 = 9 | b 5, a 9, k 9 |\n| b (5) | c 3 + 5 = 8 | c 8, a 9, k 9 |\n| c (8) | d 5 + 5 = 10 | a 9, k 9, d 10 |\n| a (9, alfabetisk før k) | ingen nye (s er nådd) | k 9, d 10 |\n| k (9) | g 9 + 0 = 9, j 9 + 5 = 14 | g 9, d 10, j 14 |\n| g (9): mål | | |\n\n**Ekspandert s, b, c, a, k, (g). Sti s–k–g, kostnad 6 + 3 = 9.** Løsningsforslaget teller fire utvidelser og regner ikke med s.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 6. Kontrollert med A\\* i algoritmefila (eksempelet «Eksamen 2025, oppgave 6»).*"
+  },
+  {
+   "t": "Oppgave 7 (10 p): Tree-structured CSP",
+   "d": "Consider the following constraint graph:\n\n<img class=\"fig\" src=\"nettside-figurer/ek2025-q7.png\" alt=\"Constraint-grafen: X1 er koblet til X2, X3 og X4, og X4 til X5, med domenene D1 = {1, 2, 3}, D2 = {1}, D3 = {2}, D4 = {1, 2, 3} og D5 = {3}\">\n\n**a)** What is the main advantage of solving tree-structured CSPs compared to non-tree-structured CSPs? (2 pts.)\n\n**b)** In the figure above, a tree-structured CSP with variables and domains X<sub>1</sub> ∈ D<sub>1</sub>, X<sub>2</sub> ∈ D<sub>2</sub>, …, X<sub>5</sub> ∈ D<sub>5</sub> is shown. Solve the constraint satisfaction problem using the Tree-Csp-Solver algorithm, with the root node set to X<sub>1</sub>. All the steps must be shown in the correct order, including each domain reduction and each variable assignment. (8 pts.)\n\nYou must structure the answer to **b)** as follows:\n\n1. Show the result of the topological sort.\n2. Show the domain reductions.\n3. Show the variable assignments.",
+   "f": [
+    [
+     "a) Main advantage",
+     "area"
+    ],
+    [
+     "1. Topological sort",
+     "text",
+     "X1, …"
+    ],
+    [
+     "2. Domain reductions",
+     "area",
+     "(X4, X5): D4 = …\n…"
+    ],
+    [
+     "3. Variable assignments",
+     "area",
+     "X1 = …\n…"
+    ]
+   ],
+   "fasit": "**a) Lineær tid.** Et tre-strukturert CSP med n variabler og domenestørrelse d løses i O(nd²), mens et generelt CSP i verste fall krever O(dⁿ) (eksponentiell tid). Grunnen er at når constraint-grafen er et tre, gjør directed arc consistency fra bladene mot roten at verdiene kan tilordnes fra roten og nedover uten backtracking.\n\n**b)** Kantene er ≠-constraints, som i løsningsforslaget. Figuren sier det ikke, så skriv antakelsen i svaret.\n\n**1. Topologisk sortering med rot X1: X1, X2, X3, X4, X5.** X2, X3 og X4 er barn av X1, og X5 er barn av X4. Andre rekkefølger der forelderen står før barnet er også riktige, for eksempel X1, X4, X5, X2, X3, men da kommer stegene under i en annen rekkefølge.\n\n**2. Domenereduksjoner**, baklengs fra j = n til 2 med MAKE-ARC-CONSISTENT(PARENT(Xj), Xj). Verdiene fjernes fra forelderens domene:\n\n| j | Bue (forelder, barn) | Fjernes | Domene etter |\n|---|---|---|---|\n| 5 | (X4, X5), D5 = {3} | 3 fra D4 | D4 = {1, 2} |\n| 4 | (X1, X4), D4 = {1, 2} | ingenting | D1 = {1, 2, 3} |\n| 3 | (X1, X3), D3 = {2} | 2 fra D1 | D1 = {1, 3} |\n| 2 | (X1, X2), D2 = {1} | 1 fra D1 | D1 = {3} |\n\n**3. Tilordninger**, forlengs fra j = 1 til n, hver gang en verdi som er konsistent med forelderen:\n\n1. X1 = 3: {X1 = 3}\n2. X2 = 1: {X1 = 3, X2 = 1}\n3. X3 = 2: {X1 = 3, X2 = 1, X3 = 2}\n4. X4 = 1: {X1 = 3, X2 = 1, X3 = 2, X4 = 1}\n5. X5 = 3: {X1 = 3, X2 = 1, X3 = 2, X4 = 1, X5 = 3}\n\nX4 = 2 er også konsistent med X1 = 3 og X5 = 3. Løsningsforslaget tar den første verdien.\n\nVanlige feil: å gjøre buene forlengs fra roten, eller å fjerne verdier fra barnets domene i stedet for forelderens. Tree-CSP-Solver gjør én bue per kant, og etter den baklengs runden trengs ingen backtracking.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 7. Kontrollert med AC-3 i algoritmefila (samme sluttdomener D1 = {3} og D4 = {1, 2}) og backtracking (løsningen X1 = 3, X2 = 1, X3 = 2, X4 = 1, X5 = 3).*"
+  },
+  {
+   "t": "Oppgave 8 (10 p): Minimax and Alpha-Beta Pruning",
+   "img": [
+    "nettside-figurer/ek2025-q8.png"
+   ],
+   "d": "Consider the following game tree:\n\n**a)** What is the minimax value for node A? (4 pts.)\n\n**b)** Which nodes will **not** be visited if the alpha-beta pruning algorithm is used, assuming the children of each node will be visited in alphabetical order? For each non-visited node, explain why it is skipped by referring to the responsible alpha and beta values. (6 pts.)",
+   "tegn": {
+    "type": "tre",
+    "data": {
+     "id": "A",
+     "type": "max",
+     "tekst": "A",
+     "barn": [
+      {
+       "id": "B",
+       "type": "blad",
+       "tekst": "B",
+       "verdi": 10
+      },
+      {
+       "id": "C",
+       "type": "min",
+       "tekst": "C",
+       "barn": [
+        {
+         "id": "D",
+         "type": "blad",
+         "tekst": "D",
+         "verdi": 18
+        },
+        {
+         "id": "E",
+         "type": "max",
+         "tekst": "E",
+         "barn": [
+          {
+           "id": "F",
+           "type": "blad",
+           "tekst": "F",
+           "verdi": 1
+          },
+          {
+           "id": "G",
+           "type": "min",
+           "tekst": "G",
+           "barn": [
+            {
+             "id": "H",
+             "type": "blad",
+             "tekst": "H",
+             "verdi": 5
+            },
+            {
+             "id": "I",
+             "type": "blad",
+             "tekst": "I",
+             "verdi": 2
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "J",
+       "type": "min",
+       "tekst": "J",
+       "barn": [
+        {
+         "id": "K",
+         "type": "blad",
+         "tekst": "K",
+         "verdi": 15
+        },
+        {
+         "id": "L",
+         "type": "max",
+         "tekst": "L",
+         "barn": [
+          {
+           "id": "M",
+           "type": "blad",
+           "tekst": "M",
+           "verdi": 20
+          },
+          {
+           "id": "N",
+           "type": "min",
+           "tekst": "N",
+           "barn": [
+            {
+             "id": "O",
+             "type": "blad",
+             "tekst": "O",
+             "verdi": 2
+            },
+            {
+             "id": "P",
+             "type": "blad",
+             "tekst": "P",
+             "verdi": 5
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "Q",
+       "type": "blad",
+       "tekst": "Q",
+       "verdi": 12
+      }
+     ]
+    }
+   },
+   "f": [
+    [
+     "a) Minimax value of A",
+     "text"
+    ],
+    [
+     "b) Nodes not visited",
+     "text",
+     "{…}"
+    ],
+    [
+     "b) Why each node is skipped (α and β)",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) Minimax value of A": [
+      "15"
+     ],
+     "b) Nodes not visited": [
+      "{I, N, O, P}",
+      "{I, N}"
+     ]
+    },
+    "merk": "I kuttes i G fordi H = 5 ≤ α = 10. N (med O og P) kuttes i L fordi M = 20 ≥ β = 15.",
+    "kilde": "2025QA.pdf, Solution to 8"
+   },
+   "fasit": "**a) 15**, via A → J → K.\n\nNedenfra: G = min(5, 2) = 2, E = max(1, 2) = 2, C = min(18, 2) = 2. N = min(2, 5) = 2, L = max(20, 2) = 20, J = min(15, 20) = 15. A = max(10, 2, 15, 12) = 15.\n\n**b) I og N besøkes ikke, og dermed heller ikke O og P.**\n\n- **I** hoppes over fordi H = 5 ≤ α = 10 i MIN-noden G. α = 10 kommer fra B = 10 i roten. G blir høyst 5, og MAX i A har allerede 10.\n- **N** (med O og P) hoppes over fordi M = 20 ≥ β = 15 i MAX-noden L. β = 15 kommer fra K = 15 i J. L blir minst 20, og MIN i J har allerede 15.\n\nAlpha-beta, barna fra venstre (alfabetisk), kutt ved v ≤ α i MIN og v ≥ β i MAX:\n\n| Node | α, β inn | Det som skjer |\n|---|---|---|\n| A (MAX) | −∞, +∞ | B = 10 gir v = 10, α = 10 |\n| C (MIN) | 10, +∞ | D = 18 gir v = 18, β = 18 |\n| E (MAX) | 10, 18 | F = 1 gir v = 1, α er fortsatt 10 |\n| G (MIN) | 10, 18 | H = 5 gir v = 5 ≤ α = 10: **kutt, I besøkes ikke**. G returnerer 5 |\n| E | | v = max(1, 5) = 5, returnerer 5 |\n| C | | v = min(18, 5) = 5, returnerer 5. A har fortsatt v = 10 |\n| J (MIN) | 10, +∞ | K = 15 gir v = 15, β = 15 |\n| L (MAX) | 10, 15 | M = 20 gir v = 20 ≥ β = 15: **kutt, N besøkes ikke**. L returnerer 20 |\n| J | | v = min(15, 20) = 15, returnerer 15 |\n| A | 15, +∞ | v = 15, α = 15. Q = 12 endrer ingenting. A = 15 |\n\nQ besøkes, fordi roten er MAX og β er +∞ der, så ingenting kan kutte i A.\n\nVanlig feil: å kutte i G fordi H = 5 er mindre enn D = 18. Det er α fra roten (B = 10) som gir kuttet, ikke verdiene i C.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 8. Kontrollert med minimax og alpha-beta i algoritmefila (rotverdi 15, kuttet I og N).*"
+  },
+  {
+   "t": "Oppgave 9 (5 p): Generalized Modus Ponens",
+   "d": "Given the knowledge base KB = {\\\n&emsp;∀x, y, z Loves(x, z) ∧ Loves(y, z) ⇒ Jealous(x, y),\\\n&emsp;Loves(Alice, Bob),\\\n&emsp;Loves(Carrie, Bob)\\\n}\n\nShow that KB ⊨ Jealous(Alice, Carrie) using Generalized Modus Ponens. The answer must show all the steps, including unification(s) and substitution(s).",
+   "f": [
+    [
+     "GMP proof: premises, unification θ and substitution",
+     "area",
+     "Premises: …\nθ = UNIFY(…, …) = {…}\nSUBST(θ, …) = …"
+    ]
+   ],
+   "fasit": "**Premisser:** p₁′ = Loves(Alice, Bob) og p₂′ = Loves(Carrie, Bob). Regelen er Loves(x, z) ∧ Loves(y, z) ⇒ Jealous(x, y), med p₁ = Loves(x, z), p₂ = Loves(y, z) og q = Jealous(x, y).\n\n**Generalized Modus Ponens:** p₁′, p₂′, (p₁ ∧ p₂ ⇒ q) ⊢ SUBST(θ, q), der SUBST(θ, pᵢ′) = SUBST(θ, pᵢ) for i = 1, 2.\n\n**Unification:**\n- Loves(Alice, Bob) ~ Loves(x, z) gir x/Alice og z/Bob.\n- Loves(Carrie, Bob) ~ Loves(y, z) gir y/Carrie. z er allerede Bob, og Bob ~ Bob er like.\n\n**θ = UNIFY(Loves(Alice, Bob) ∧ Loves(Carrie, Bob), Loves(x, z) ∧ Loves(y, z)) = {x/Alice, y/Carrie, z/Bob}.**\n\n**SUBST(θ, Jealous(x, y)) = Jealous(Alice, Carrie).** GMP er sound, så KB ⊨ Jealous(Alice, Carrie).\n\nLøsningsforslaget godtar også Universal Instantiation med {x/Alice}, {y/Carrie} og {z/Bob} først, og så vanlig Modus Ponens. Merk at Loves(Alice, Bob) kan matche begge premissene. Da blir θ = {x/Alice, y/Alice, z/Bob}, og Jealous(Alice, Alice) følger også, men det var ikke spurt om.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 9.*"
+  },
+  {
+   "t": "Oppgave 10 (20 p): Resolution Inference Algorithm",
+   "d": "Given the knowledge base KB = {\\\n&emsp;∃x Vase(x) ∧ IsOn(x, KitchenTable),\\\n&emsp;∀x Vase(x) ⇒ (∃y Flower(y) ∧ IsIn(y, x)),\\\n&emsp;∀x, y, z IsOn(y, x) ∧ IsIn(z, y) ⇒ IsOn(z, x)\\\n}\n\nUse the resolution inference algorithm, with proof by contradiction/refutation, to show that:\\\nKB ⊨ ∃x Flower(x) ∧ IsOn(x, KitchenTable).\n\nThe answer must include the sentences in conjunctive normal forms and the resolution steps. For each resolution step, it is sufficient to show which two sentences are used, with which substitution, and the result.",
+   "f": [
+    [
+     "Sentences in CNF (KB and negated goal)",
+     "area",
+     "n  clause  (CNF of …)"
+    ],
+    [
+     "Resolution steps",
+     "area",
+     "n  Resolve i, j, θ = {…}: result"
+    ]
+   ],
+   "fasit": "**Setningene og det negerte målet i CNF (linje 5–10):**\n- Setning 1 har en ∃ ytterst, og Skolem-konstanten C1 gir to klausuler.\n- Setning 2: ∀x ¬Vase(x) ∨ (∃y Flower(y) ∧ IsIn(y, x)). ∃y står inne i ∀x, fordi blomsten avhenger av vasen, så y blir F(x). Distribusjonen gir to klausuler.\n- Setning 3: eliminate ⇒ og De Morgan gir én klausul.\n- Det negerte målet: ¬∃x (Flower(x) ∧ IsOn(x, KitchenTable)) ≡ ∀x ¬Flower(x) ∨ ¬IsOn(x, KitchenTable).\n\n| Nr | Klausul | Begrunnelse |\n|---|---|---|\n| 1 | ∃x Vase(x) ∧ IsOn(x, KitchenTable) | Assumption |\n| 2 | ∀x Vase(x) ⇒ (∃y Flower(y) ∧ IsIn(y, x)) | Assumption |\n| 3 | ∀x,y,z IsOn(y, x) ∧ IsIn(z, y) ⇒ IsOn(z, x) | Assumption |\n| 4 | ¬(∃x Flower(x) ∧ IsOn(x, KitchenTable)) | Negated goal |\n| 5 | Vase(C1) | CNF of 1 |\n| 6 | IsOn(C1, KitchenTable) | CNF of 1 |\n| 7 | ¬Vase(x) ∨ Flower(F(x)) | CNF of 2 |\n| 8 | ¬Vase(x) ∨ IsIn(F(x), x) | CNF of 2 |\n| 9 | ¬IsOn(y, x) ∨ ¬IsIn(z, y) ∨ IsOn(z, x) | CNF of 3 |\n| 10 | ¬Flower(x) ∨ ¬IsOn(x, KitchenTable) | CNF of 4 |\n\n**Resolusjonsstegene (linje 11–16):**\n\n| Nr | Resolvent | Par og θ |\n|---|---|---|\n| 11 | Flower(F(C1)) | Resolve 5, 7, θ = {x/C1} |\n| 12 | IsIn(F(C1), C1) | Resolve 5, 8, θ = {x/C1} |\n| 13 | ¬IsIn(z, C1) ∨ IsOn(z, KitchenTable) | Resolve 6, 9, θ = {y/C1, x/KitchenTable} |\n| 14 | ¬Flower(z) ∨ ¬IsIn(z, C1) | Resolve 10, 13, θ = {x/z} |\n| 15 | ¬Flower(F(C1)) | Resolve 12, 14, θ = {z/F(C1)} |\n| 16 | □ | Resolve 11, 15, θ = {} |\n\nDen tomme klausulen viser at KB ∧ ¬mål er unsatisfiable, så KB ⊨ ∃x Flower(x) ∧ IsOn(x, KitchenTable). Blomsten er F(C1). Løsningsforslaget kaller variabelen i linje 13 x og skriver θ = {} i linje 14. Det er det samme beviset med andre variabelnavn.\n\nVanligste feil: Flower(C2) i stedet for Flower(F(x)). ∃y står inne i ∀x og må bli en Skolem-funksjon.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 10.*"
+  },
+  {
+   "t": "Oppgave 11 (5 p): Automated Planning",
+   "d": "**a)** What is a **High-Level Action (HLA)** in **hierarchical planning**, and what does it mean for a refinement to be an implementation of an HLA? (2 pts.)\n\n**b)** Describe briefly **classical planning** and **sensorless planning** and highlight the main differences between them. (3 pts.)",
+   "f": [
+    [
+     "a) HLA and implementation",
+     "area"
+    ],
+    [
+     "b) Classical vs. sensorless planning",
+     "area"
+    ]
+   ],
+   "fasit": "**a) En high-level action (HLA) er en abstrakt handling for en større oppgave på et høyere abstraksjonsnivå, og en refinement er en implementation av HLA-en når den bare består av primitive handlinger.**\n\nEn HLA, for eksempel Go(Home, SFO), kan ikke utføres direkte, men må brytes ned. Hver HLA har én eller flere **refinements**: sekvenser av handlinger som utfører den, og som selv kan være HLA-er eller primitive handlinger. Eksempler er [Taxi(Home, SFO)] og [Drive(Home, SFOLongTermParking), Shuttle(SFOLongTermParking, SFO)]. En refinement er en **implementation** når alle handlingene er primitive, slik at agenten kan utføre sekvensen direkte. En høynivåplan når målet hvis minst én av implementasjonene gjør det, fordi agenten selv velger refinement.\n\n**b) Klassisk planlegging antar et discrete, deterministic, static og fully observable miljø. Sensorless (conformant) planning antar at agenten ikke får noen observasjoner under utførelsen.**\n\nI klassisk planlegging kjenner agenten starttilstanden. En tilstand er en mengde ground fluents med closed world assumption, og planen er en fast sekvens funnet ved søk i tilstandsrommet.\n\nI sensorless planning kjenner agenten ikke starttilstanden helt og kan ikke se hva som skjer, så den må finne én plan som virker i alle mulige tilstander. Den holder en belief state, skrevet som en formel. Generelt er b′ = {RESULT(s, a) : s ∈ b}, altså etterfølgerne til alle tilstandene agenten kan være i. Når b er en konjunksjon av literaler (1-CNF), blir hvert atom i DEL(a) kjent usant (¬ℓ legges inn) og hvert atom i ADD(a) kjent sant. Boka skriver det som b′ = (b − DEL(a)) ∪ ADD(a), men å bare fjerne ℓ ville gjort atomet ukjent. Et fluent som ikke står i b, er ukjent, ikke usant (open world). Eksempel: i malingsproblemet kjenner agenten ikke fargen på boksene, men [RemoveLid(Can1), Paint(Chair, Can1), Paint(Table, Can1)] gir stol og bord samme farge uansett.\n\n| | Klassisk | Sensorless |\n|---|---|---|\n| Observerbarhet | full | ingen observasjoner |\n| Verdensmodell | closed world | open world |\n| Søkerom | tilstander (state space) | belief states (belief space) |\n\nVanlig feil: å blande open og closed world. I sensorless planning betyr «ikke nevnt» ukjent; i klassisk planlegging betyr det usant.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 11.*"
+  },
+  {
+   "t": "Oppgave 12 (5 p): Natural Language Processing",
+   "d": "**a)** Explain why **smoothing** is necessary in *n-gram* language models. In your answer, briefly describe a possible type of smoothing. (2 pts.)\n\n**b)** Explain the difference between **top-down** and **bottom-up** parsing strategies. In your answer, briefly describe how each strategy constructs a parser and mention one **drawback** of each approach. (3 pts.)",
+   "f": [
+    [
+     "a) Smoothing",
+     "area"
+    ],
+    [
+     "b) Top-down vs. bottom-up parsing",
+     "area"
+    ]
+   ],
+   "fasit": "**a) Smoothing trengs fordi usette n-gram ellers får sannsynlighet 0, og da blir hele setningen 0.**\n\nTreningskorpuset inneholder aldri alle mulige n-gram. Maximum likelihood-estimatet c(forrige w)/c(forrige) gir et n-gram som ikke er sett, P = 0 når historien (forrige) er sett. Er heller ikke historien sett, blir estimatet 0/0 og udefinert. Sannsynligheten for en setning er et produkt av n-gram-sannsynlighetene, så én null gjør hele setningen umulig, selv om den er helt grei og alle ordene er kjent. Smoothing flytter litt sannsynlighetsmasse fra vanlige n-gram til sjeldne og usette, slik at ingen får 0.\n\nEksempel: **Laplace (add-one) smoothing** legger 1 til alle tellinger: P(w | forrige) = (c(forrige w) + 1)/(c(forrige) + V), der V er antall ord i vokabularet. +V under brøkstreken gjør at fordelingen fortsatt summerer til 1. Backoff (gå ned til (n − 1)-gram når tellingene er for få) og linear interpolation (λ₃P(trigram) + λ₂P(bigram) + λ₁P(unigram), Σλ = 1) er også gode svar.\n\n**b) Top-down starter i S og utvider mot ordene; bottom-up starter i ordene og bygger oppover mot S.**\n\n- **Top-down parsing** starter i startsymbolet S og bruker grammatikkreglene til å utvide det til stadig mindre konstituenter (S → NP VP, NP → Article Noun, …), ned mot ordene, og sjekker om utvidelsene passer med input. *Ulempe:* den bruker tid på utvidelser som aldri kan matche de faktiske ordene.\n- **Bottom-up parsing** starter i ordene og slår dem sammen til større konstituenter etter reglene (Article + Noun → NP, NP + VP → S) til den når S over hele setningen. *Ulempe:* den bygger delstrukturer som aldri blir del av en fullstendig parse, for eksempel S over «wumpus smells» i «the wumpus smells».\n\nBegge kan gjenta arbeid i blindveier. I bokas «Have the students in section 2 of Computer Science 101 take/taken the exam» avgjør først ord 11 om setningen er en ordre eller et spørsmål, og en feil gjetning gjør at NP-en må parses på nytt. Løsningen er en **chart parser** som lagrer hver frase over hvert spenn én gang, for eksempel CYK (bottom-up, krever Chomsky Normal Form, O(n³m)).\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 12.*"
+  },
+  {
+   "t": "Oppgave 13 (5 p): Knowledge Representation and Ethics",
+   "d": "**a)** Define briefly what an **ontology** is in AI and describe how **categories** support reasoning by **inheritance**. Give **one example** where inheritance allows an agent to infer a property of an individual object. (2 pts.)\n\n**b)** Explain the *argument from informality of behavior* and the *mathematical objection* as proposed **limits of artificial intelligence**. For each argument, state its central claim and describe one specific reason why the claim may not be decisive. (3 pts.)",
+   "f": [
+    [
+     "a) Ontology, categories and inheritance",
+     "area"
+    ],
+    [
+     "b) Informality of behavior and the mathematical objection",
+     "area"
+    ]
+   ],
+   "fasit": "**a)**\n\n**Ontologi:** En ontologi i AI er en strukturert beskrivelse av hvilke slags entiteter som finnes i et domene (objekter, kategorier, egenskaper, hendelser, tid) og hvilke relasjoner som finnes mellom dem. Den gir et felles vokabular og rammeverk for å organisere kunnskap, slik at den kan brukes på tvers av domener. Øverst ligger en upper ontology med de generelle begrepene (fig. 10.1), og domenespesifikke begreper henges på under.\n\n**Kategorier og arv:** Objekter organiseres i kategorier, og kategoriene kobles med subclass-relasjoner (Subset, ⊂) til en taxonomy. En egenskap som gjelder alle medlemmene av en kategori, gjelder dermed også medlemmene av hver underkategori. Agenten kan derfor utlede egenskapene til et objekt fra kategoriene det tilhører (Member, ∈), uten at egenskapen er lagret på selve objektet.\n\n**Eksempel:** `∀x x ∈ Food ⇒ Edible(x)`, `Fruit ⊂ Food`, `Apples ⊂ Fruit` og `Apple₁ ∈ Apples` gir `Edible(Apple₁)`. Et annet eksempel fra fig. 10.4: `Mary ∈ FemalePersons`, `FemalePersons ⊂ Persons` og `∀x x ∈ Persons ⇒ Legs(x, 2)` gir `Legs(Mary, 2)`.\n\nVanlig feil: å blande Member og Subset. «Apple₁ er et eple» er ∈, mens «epler er frukt» er ⊂.\n\n**b)**\n\n**Informality of behavior.** *Påstand:* Menneskelig oppførsel er for kompleks til å fanges av et formelt regelsett. Mennesker følger uformelle retningslinjer som aldri kan skrives ned som regler, og derfor kan de ikke kodes i et dataprogram. Turing ga argumentet navnet, og Dreyfus er den kjente kritikeren. *Hvorfor ikke avgjørende:* Kritikken treffer en bestemt stil av AI, good old-fashioned AI (GOFAI) med eksplisitte logiske regler, ikke datamaskiner som sådan. Probabilistic reasoning og maskinlæring krever ikke komplette regler og har lyktes med oppgaver preget av usikkerhet og uformell oppførsel. Argumentet viser altså en grense for én programmeringsstil, ikke for AI.\n\n**Mathematical objection.** *Påstand:* Etter Gödels ufullstendighetsteorem har et konsistent, effektivt aksiomatisert formelt system F (aksiomene kan listes opp av et program) som er sterkt nok til aritmetikk, en setning G(F) som er sann, men ikke kan bevises i F. En maskin er et formelt system og kan derfor ikke innse at G(F) er sann, mens et menneske kan det. Altså er mennesker overlegne tenkere (Lucas, Penrose). *Hvorfor ikke avgjørende* (én grunn holder):\n\n- **Ingen skam i å ha grenser:** mennesker har også sanne setninger de ikke kan hevde, for eksempel «Lucas kan ikke konsistent påstå at denne setningen er sann».\n- **Gjelder matematikk, ikke sinn:** ingen, heller ikke mennesker, kan bevise det ubeviselige, og mennesker er langt fra konsistente.\n- **Datamaskiner er endelige:** teoremet gjelder formelle systemer som er sterke nok til aritmetikk, som Turing-maskiner med uendelig bånd. En ekte datamaskin har endelig minne og kan beskrives i proposisjonslogikk, der Gödel ikke gjelder.\n\nVanlig feil: bare å navngi argumentet. Hvert argument gir poeng for påstanden og én konkret grunn til at den ikke avgjør.\n\n*Kilde: løsningsforslaget til eksamen 2025, oppgave 13. Løsningsforslaget har ikke noe eksempel i a); eksemplene er bokas (10.2).*"
+  }
+ ]
+}

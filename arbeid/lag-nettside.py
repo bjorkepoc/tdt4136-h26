@@ -119,12 +119,14 @@ eksamener = ("<h1>Eksamener 2015–2025</h1><p>Filene ligger i <code>materiale/F
 ovinger = []
 filer = [(f, "Øvinger", "øving") for f in sorted((A / "nettside-ovinger").glob("*.json"), key=lambda f: (f.stem.startswith("al"), f.stem))]
 filer += [(f, "Prøveeksamener", "prøveeksamen") for f in sorted((A / "nettside-prover").glob("*.json"), key=lambda f: (f.stem.startswith("b"), f.stem))]
+# Tidligere eksamener ordrett (nettside-eksamener/), nyeste først, i samme eksamensvisning. 2019 og 2020 ordinær er spart til fullprøvene.
+filer += [(f, "Tidligere eksamener", "eksamen") for f in sorted((A / "nettside-eksamener").glob("*.json"), reverse=True)]
 for f, grp, art in filer:
     o = json.loads(f.read_text())
     if o.get("vis_fra", "") > date.today().isoformat():  # AL3 bygger på 2020Qv2, spart til fullprøven 03.12
         continue
     ovinger.append({"id": o["id"], "ep": o["ep"], "title": html.escape(o["tittel"]), "kilde": o.get("kilde", ""),
-                    "note": md(o.get("om", "")), "intro": md(o.get("intro", "")), "tasks": klargjor(o["tasks"], o["id"] in PAPIR),
+                    "note": md(o.get("om", "")), "intro": md(o.get("intro", "")), "tasks": klargjor(o["tasks"], o["id"] in PAPIR or art == "eksamen"), "vedlegg": md(o.get("vedlegg", "")),
                     "fasit": md(o.get("fasit", "")), "grp": grp, "art": art})
 
 valgfri = lambda p: md(p.read_text()) if p.exists() else ""  # seeplan og feillogg er personlige og finnes ikke i den offentlige kopien

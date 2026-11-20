@@ -1,0 +1,678 @@
+{
+ "id": "ek2018",
+ "ep": "2018",
+ "tittel": "Ordinær eksamen",
+ "kilde": "../materiale/Files/Previous%20exams/2018Q.docx",
+ "om": "**EXAM TDT4136 HØST-2018 ORDINARY.**\n\n---\n\n*Originalfila har ikke mer forside enn dette: tid, hjelpemidler og totalpoeng står ikke. Poengene står i hver oppgave, bortsett fra problem 8, som her er satt til 10 p slik at summen blir 100. Fasiten bygger på løsningsforslaget (`2018Q&A.docx`).*",
+ "intro": "Etter «Lever» kan sant/usant i oppgave 3, ekspanderte noder og stier i oppgave 4, tabellen og dominansen i oppgave 5, svaret i oppgave 6, det tomme feltet i oppgave 8 og arc consistency i oppgave 1 sjekkes med Sjekk. Treet i oppgave 2 og grafen i oppgave 4 kan åpnes i tegneverktøyet.",
+ "fasit": "**Fasit og poeng for eksamen 2018.** Svarene og poengfordelingen er fra løsningsforslaget (`2018Q&A.docx`). Utregningene er kontrollert med algoritmene i `nettside-algo/`.\n\n| Oppgave | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | Sum |\n|---|---|---|---|---|---|---|---|---|---|---|\n| Tema | CSP | Minimax og alpha-beta | Sant/usant | Søk | A\\*-heuristikker | PL-resolusjon | Spillteori | Kortsvar | FOL | |\n| Poeng | 10 | 10 | 20 | 10 | 10 | 10 | 10 | (10) | 10 | 100 |\n| Fordeling | 2-2-1-2-3 | 3-7 | 10 × 2 | 5 × 2 | 6-2-1-1 | | 5-5 | ikke oppgitt | 5 × 2 | |\n\nOppgave 3 gir −1 for hvert galt svar og 0 for ubesvart, med sum mellom 0 og 20. Poengene for oppgave 8 er ikke oppgitt. Fasiten står under hver oppgave.",
+ "tasks": [
+  {
+   "t": "Oppgave 1 (10 p): CSP",
+   "d": "**Problem 1: CSP (10 POINTS)**\n\nIn a 2-days seminar, there are 5 lectures to be allocated to 3 professors. Each professor can teach at most 1 lecture on a day. Each professor has knowledge to teach only a subset of the lectures. The following table shows which professor has the knowledge to teach which lectures where “L” means “lecture”:\n\n<table><tr><td>Prof. Arne</td><td>L1, L2, L3</td></tr><tr><td>Prof. Berit</td><td>L1, L2, L5</td></tr><tr><td>Prof. Carl</td><td>L2, L4, L5</td></tr></table>\n\nThere are some constraints about the sequence that the lectures can be given: Day(L1) < Day(L2), i.e., Lecture 1 must be taught the day before the day of Lecture 2, and Day(L3) < Day(L5). Each lecture will be assigned to a professor and to a day.\n\n1\\) Complete the following drawing to a constraint graph that represents this problem. Nodes represent the lectures that are the Variables in this Constraint Satisfaction Problem. You will draw the links between the nodes in the graph.<br>\n<img class=\"fig\" src=\"nettside-figurer/e06-2018-p1.svg\" alt=\"Fem noder L1–L5 uten kanter\">\n\n2\\. Write down the domains of the variables. Each value in the domain of a variable shows the combination of a professor that can teach the course and the time it can be taught. Instead of the whole name of a professor use only the first letter of his/her name, i.e., A, B, C shows the three professors. A domain value, hence looks like this: A2 (i.e., Arne on Day=2), B1 (i.e., Berit on Day=1. You can write the domain values by filling in the curly brackets for each variable ( L1,…., L5).<br>\n<br>\nL1: { ……… }<br>\nL2: { }<br>\nL3: { }<br>\nL4: { }<br>\nL5: { }\n\n3\\) Write down all the constraints, as implicit constraints, for this problem. Hint: You can use n-ary Alldiff to represent one type of the constraints you need.\n\n4\\) Is this initial constraint graph arc-consistent? If not, apply AC-3 arc consistency algorithm and find the reduced domains. Write these domains for each variable in the form:<br>\n<br>\nL1: { ……… }<br>\nL2: { }<br>\nL3: { }<br>\nL4: { }<br>\nL5: { }\n\n5\\) Apply Backtracking on this arc-consistent graph without forward checking. Use Minimum Remaining Value for variable ordering (tie breaking in numerical order), and Least Constraining Value for value ordering (tie breaking alphanumerically). What order are the variables are assigned and what are their values? Your answer will look like this:<br>\n<br>\nThe 1. assigned variable is ………………., and its value is …………………<br>\nThe 2. assigned variable is ………………., and its value is …………………<br>\nThe 3. assigned variable is ………………., and its value is …………………<br>\nThe 4. assigned variable is ………………., and its value is …………………<br>\nThe 5. assigned variable is ………………., and its value is …………........<br>\n<br>\nIn this question you should calculate the Least Constraining Value by counting how many values in the domains of the neighboring variables in the constraint graph no longer satisfy the constraint between themselves and the variable being assigned to. You should also count no longer valid answers in the domains of already assigned variables.\n\n*Merknad:* I Word-fila er 3) og 4) automatisk nummerert, og der står de som 2) og 3), slik at 2 kommer to ganger og 4 mangler. Her følger nummereringen løsningsforslaget, 1)–5).",
+   "f": [
+    [
+     "1) Kantene i constraint-grafen",
+     "area",
+     "L1–L2, …"
+    ],
+    [
+     "2. Domenene",
+     "area",
+     "L1: { … }\nL2: { … }\nL3: { … }\nL4: { … }\nL5: { … }"
+    ],
+    [
+     "3) Constraints",
+     "area"
+    ],
+    [
+     "4) Arc-consistent? (ja/nei)",
+     "text"
+    ],
+    [
+     "4) Domenene etter AC-3",
+     "area",
+     "L1: { … }\nL2: { … }\nL3: { … }\nL4: { … }\nL5: { … }"
+    ],
+    [
+     "5) Variabel og verdi i rekkefølge",
+     "area",
+     "1. … = …\n2. … = …\n3. … = …\n4. … = …\n5. … = …"
+    ]
+   ],
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "L1",
+       "x": 100,
+       "y": 0
+      },
+      {
+       "id": "L2",
+       "x": 330,
+       "y": 0
+      },
+      {
+       "id": "L3",
+       "x": 40,
+       "y": 150
+      },
+      {
+       "id": "L4",
+       "x": 390,
+       "y": 150
+      },
+      {
+       "id": "L5",
+       "x": 215,
+       "y": 260
+      }
+     ],
+     "kanter": []
+    }
+   },
+   "sjekk": {
+    "f": {
+     "4) Arc-consistent? (ja/nei)": [
+      "nei",
+      "no"
+     ]
+    },
+    "merk": "Etter AC-3: L1 = {B1}, L2 = {A2, B2, C2}, L3 = {A1}, L4 = {C1, C2}, L5 = {B2, C2}.",
+    "kilde": "2018Q&A.docx, Problem 1; AC-3 og backtracking i nettside-algo/csp.js"
+   },
+   "fasit": "**1) Fullt koblet graf: kant mellom alle 10 par** (L1–L2, L1–L3, L1–L4, L1–L5, L2–L3, L2–L4, L2–L5, L3–L4, L3–L5, L4–L5). En verdi er en kombinasjon av professor og dag, og to forelesninger kan ikke ha samme kombinasjon, så alle par er bundet av Alldiff. L1–L2 og L3–L5 har i tillegg rekkefølgen på dagene. Løsningsforslaget gir 2 poeng bare hvis hver node har kant til alle de andre.\n\n**2. Domenene:**\n- **L1: {A1, A2, B1, B2}**\n- **L2: {A1, A2, B1, B2, C1, C2}**\n- **L3: {A1, A2}**\n- **L4: {C1, C2}**\n- **L5: {B1, B2, C1, C2}**\n\n**3) Constraints:**\n- **Alldiff(L1, L2, L3, L4, L5)**\n- **Day(L1) < Day(L2)**\n- **Day(L3) < Day(L5)**\n\n**4) Nei, ikke arc-consistent.** Etter AC-3:\n- **L1: {B1}**\n- **L2: {A2, B2, C2}**\n- **L3: {A1}**\n- **L4: {C1, C2}**\n- **L5: {B2, C2}**\n\n| Bue | Stryker | Hvorfor | Domenet etterpå |\n|---|---|---|---|\n| L1→L2 | A2, B2 | L2 kan ikke ligge på dag 3 | L1 = {A1, B1} |\n| L2→L1 | A1, B1, C1 | L1 kan ikke ligge på dag 0 | L2 = {A2, B2, C2} |\n| L3→L5 | A2 | ingen L5 etter dag 2 | L3 = {A1} |\n| L5→L3 | B1, C1 | ingen L3 før dag 1 | L5 = {B2, C2} |\n| L1→L3 | A1 | Alldiff: L3 = A1 er eneste verdi | L1 = {B1} |\n\nResten av buene har en partner for hver verdi.\n\n**5) L1 = B1, L3 = A1, L4 = C1, L5 = B2, L2 = A2.**\n\nUten forward checking krymper ikke domenene, så MRV teller verdiene som fortsatt er lovlige mot tilordningene så langt. LCV teller verdiene som faller bort hos de andre variablene, også i domenene til variabler som alt er tilordnet, slik oppgaven sier.\n\n| Steg | MRV (lovlige verdier) | LCV | Valg |\n|---|---|---|---|\n| 1 | L1 1, L3 1, L4 2, L5 2, L2 3 → L1 (tallrekkefølge) | B1 er eneste verdi | **L1 = B1** |\n| 2 | L3 1, L4 2, L5 2, L2 3 → L3 | A1 er eneste verdi | **L3 = A1** |\n| 3 | L4 2, L5 2, L2 3 → L4 (tallrekkefølge) | C1: 0, C2: 2 (C2 hos L2 og L5) | **L4 = C1** |\n| 4 | L5 2, L2 3 → L5 | B2: 1 (B2 hos L2), C2: 2 (C2 hos L2 og i domenet til L4) | **L5 = B2** |\n| 5 | L2 {A2, C2} (B2 er tatt) | A2: 0, C2: 2 (C2 i domenene til L4 og L5) | **L2 = A2** |\n\nIngen verdi fører til en blindvei, så backtracking går rett gjennom uten å angre. Poengfordelingen i løsningsforslaget er 2-2-1-2-3.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 1. 4) og 5) kontrollert med AC-3 og backtracking (MRV, LCV, uten forward checking) i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 2 (10 p): Adversarial Search",
+   "img": [
+    "nettside-figurer/e08-2018-p2.png"
+   ],
+   "d": "**Problem 2: Adversarial Search (10 POINTS)**\n\n1\\) Write the minimax values in the nodes (s, j,k,l….h,i) at different layers of the search tree above the leaf nodes.\n\n2\\) Apply alpha-beta pruning algorithm to prune the parts of the tree that don’t need to be examined.<br>\nFor each pruned part (i.e., one or more leaf nodes) of the tree write down which nodes are pruned and why, referring to V and Alpha/Beta values, in the following format:<br>\n<br>\nPRUNE &lt;The letter(s) that represent the pruned leaf nodes&gt; BECAUSE : &lt;Reason&gt;<br>\n<br>\nThe “reason” is either<br>\nV= &lt;value&gt; &lt; Alpha = &lt;value&gt; or<br>\nV= &lt;value&gt; &gt; Beta = &lt;value&gt;<br>\n<br>\nExample (not necessarily correct, just to show the requested format):<br>\n<br>\nPrune A,B,C because: v=4 &lt; Alpha=7<br>\n<br>\nSo, if there are more than one leaf nodes next to each other write them at once and together as in the example above.",
+   "f": [
+    [
+     "1) Minimax-verdiene",
+     "area",
+     "s: …\nj: … k: … l: …\na: … b: … c: … d: … e: … f: … g: … h: … i: …"
+    ],
+    [
+     "2) Kutt med begrunnelse",
+     "area",
+     "PRUNE … BECAUSE: V = … > Beta = …"
+    ]
+   ],
+   "tegn": {
+    "type": "tre",
+    "data": {
+     "id": "s",
+     "type": "max",
+     "tekst": "s",
+     "barn": [
+      {
+       "id": "j",
+       "type": "min",
+       "tekst": "j",
+       "barn": [
+        {
+         "id": "a",
+         "type": "max",
+         "tekst": "a",
+         "barn": [
+          {
+           "id": "A",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "A"
+          },
+          {
+           "id": "B",
+           "type": "blad",
+           "verdi": 6,
+           "tekst": "B"
+          }
+         ]
+        },
+        {
+         "id": "b",
+         "type": "max",
+         "tekst": "b",
+         "barn": [
+          {
+           "id": "C",
+           "type": "blad",
+           "verdi": 1,
+           "tekst": "C"
+          },
+          {
+           "id": "D",
+           "type": "blad",
+           "verdi": 6,
+           "tekst": "D"
+          },
+          {
+           "id": "E",
+           "type": "blad",
+           "verdi": 8,
+           "tekst": "E"
+          }
+         ]
+        },
+        {
+         "id": "c",
+         "type": "max",
+         "tekst": "c",
+         "barn": [
+          {
+           "id": "F",
+           "type": "blad",
+           "verdi": 4,
+           "tekst": "F"
+          },
+          {
+           "id": "G",
+           "type": "blad",
+           "verdi": 9,
+           "tekst": "G"
+          },
+          {
+           "id": "H",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "H"
+          },
+          {
+           "id": "I",
+           "type": "blad",
+           "verdi": 5,
+           "tekst": "I"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "k",
+       "type": "min",
+       "tekst": "k",
+       "barn": [
+        {
+         "id": "d",
+         "type": "max",
+         "tekst": "d",
+         "barn": [
+          {
+           "id": "J",
+           "type": "blad",
+           "verdi": 8,
+           "tekst": "J"
+          },
+          {
+           "id": "K",
+           "type": "blad",
+           "verdi": 4,
+           "tekst": "K"
+          }
+         ]
+        },
+        {
+         "id": "e",
+         "type": "max",
+         "tekst": "e",
+         "barn": [
+          {
+           "id": "L",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "L"
+          },
+          {
+           "id": "M",
+           "type": "blad",
+           "verdi": 10,
+           "tekst": "M"
+          },
+          {
+           "id": "N",
+           "type": "blad",
+           "verdi": 5,
+           "tekst": "N"
+          }
+         ]
+        },
+        {
+         "id": "f",
+         "type": "max",
+         "tekst": "f",
+         "barn": [
+          {
+           "id": "O",
+           "type": "blad",
+           "verdi": 3,
+           "tekst": "O"
+          },
+          {
+           "id": "P",
+           "type": "blad",
+           "verdi": 9,
+           "tekst": "P"
+          },
+          {
+           "id": "Q",
+           "type": "blad",
+           "verdi": 6,
+           "tekst": "Q"
+          },
+          {
+           "id": "R",
+           "type": "blad",
+           "verdi": 3,
+           "tekst": "R"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "l",
+       "type": "min",
+       "tekst": "l",
+       "barn": [
+        {
+         "id": "g",
+         "type": "max",
+         "tekst": "g",
+         "barn": [
+          {
+           "id": "S",
+           "type": "blad",
+           "verdi": 4,
+           "tekst": "S"
+          },
+          {
+           "id": "T",
+           "type": "blad",
+           "verdi": 3,
+           "tekst": "T"
+          }
+         ]
+        },
+        {
+         "id": "h",
+         "type": "max",
+         "tekst": "h",
+         "barn": [
+          {
+           "id": "U",
+           "type": "blad",
+           "verdi": 5,
+           "tekst": "U"
+          },
+          {
+           "id": "W",
+           "type": "blad",
+           "verdi": 6,
+           "tekst": "W"
+          },
+          {
+           "id": "X",
+           "type": "blad",
+           "verdi": 9,
+           "tekst": "X"
+          },
+          {
+           "id": "V",
+           "type": "blad",
+           "verdi": 4,
+           "tekst": "V"
+          }
+         ]
+        },
+        {
+         "id": "i",
+         "type": "max",
+         "tekst": "i",
+         "barn": [
+          {
+           "id": "Y",
+           "type": "blad",
+           "verdi": 9,
+           "tekst": "Y"
+          },
+          {
+           "id": "Z1",
+           "type": "blad",
+           "verdi": 8,
+           "tekst": "Z1"
+          },
+          {
+           "id": "Z2",
+           "type": "blad",
+           "verdi": 9,
+           "tekst": "Z2"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "fasit": "**1) s = 8; j = 6, k = 8, l = 4; a = 6, b = 8, c = 9, d = 8, e = 10, f = 9, g = 4, h = 9, i = 9.**\n\n**2) Kutt:**\n- **PRUNE H, I BECAUSE: V = 9 > Beta = 6**\n- **PRUNE N BECAUSE: V = 10 > Beta = 8**\n- **PRUNE Q, R BECAUSE: V = 9 > Beta = 8**\n- **PRUNE U, W, X, V (hele h) og Y, Z1, Z2 (hele i) BECAUSE: V = 4 < Alpha = 8**\n- **E**: V = 6 = Beta = 6. Oppgavens format bruker strenge < og >, og da kuttes ikke E. Med bokas regel (kutt ved v ≥ β) kuttes E. Fasiten godtok begge.\n\n**1) Minimax nedenfra** (s er MAX, j–l MIN, a–i MAX):\n\n| Node | Regning | Verdi |\n|---|---|---|\n| a, b, c | max(2, 6), max(1, 6, 8), max(4, 9, 2, 5) | 6, 8, 9 |\n| d, e, f | max(8, 4), max(2, 10, 5), max(3, 9, 6, 3) | 8, 10, 9 |\n| g, h, i | max(4, 3), max(5, 6, 9, 4), max(9, 8, 9) | 4, 9, 9 |\n| j, k, l | min(6, 8, 9), min(8, 10, 9), min(4, 9, 9) | 6, 8, 4 |\n| s | max(6, 8, 4) | **8** |\n\nFasiten lister det samme lag for lag: 8; 6, 8, 4; 6, 8, 9; 8, 10, 9; 4, 9, 9.\n\n**2) Alpha-beta**, barn fra venstre:\n\n| Steg | Node | α | β | v | Hva skjer |\n|---|---|---|---|---|---|\n| 1 | a ser A = 2, B = 6 | 6 | ∞ | 6 | a = 6 |\n| 2 | j | −∞ | 6 | 6 | j er MIN og får β = 6 |\n| 3 | b ser C = 1, D = 6 | 6 | 6 | 6 | V = 6 ≥ β = 6: E kuttes bare hvis du kutter ved likhet. Ellers ses E = 8, og b = 8 |\n| 4 | c ser F = 4, G = 9 | 9 | 6 | 9 | **kutt H og I: V = 9 > β = 6** (β fra j) |\n| 5 | j, s | 6 | ∞ | 6 | j = 6, og s får α = 6 |\n| 6 | d ser J = 8, K = 4 | 8 | ∞ | 8 | d er MAX og sammenligner med β = ∞. d = 8 |\n| 7 | k | 6 | 8 | 8 | k er MIN og får β = 8 |\n| 8 | e ser L = 2, M = 10 | 10 | 8 | 10 | **kutt N: V = 10 > β = 8** (β fra k) |\n| 9 | f ser O = 3, P = 9 | 9 | 8 | 9 | **kutt Q og R: V = 9 > β = 8** |\n| 10 | k, s | 8 | ∞ | 8 | k = 8, og s får α = 8 |\n| 11 | g ser S = 4, T = 3 | 8 | ∞ | 4 | g = 4 |\n| 12 | l | 8 | 4 | 4 | **kutt h og i: V = 4 < α = 8** (α fra s) |\n| 13 | s | 8 | ∞ | 8 | **s = 8** via k. 15 av 27 blader er sett (14 hvis E kuttes) |\n\nVanlige feil: å kutte K under d (d er MAX og sammenligner med β = ∞), og å glemme at α = 8 i steg 12 kommer helt fra roten.\n\nPoengfordelingen i løsningsforslaget er 3-7.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 2. Kontrollert med minimax og alpha-beta i algoritmefila, med og uten kutt ved likhet.*"
+  },
+  {
+   "t": "Oppgave 3 (20 p): True/False Questions",
+   "d": "**PROBLEM 3 True/False Questions (2 points for each correct answer, -1 point for each wrong answer, 0 for each unanswered question. Total score between 0-20 points)**",
+   "tf": [
+    "1. Reactive agents typically use partial planning.",
+    "2. This is procedural knowledge about two cities in Norway: bigger (Oslo, Trondheim)",
+    "3. Expectimax is better suited for a deterministic environment than minimax.",
+    "4. In simulating annealing search the states represent a complete solution.",
+    "5. Principal of rationality (due to Allen Newell) maintains that the agent chooses actions in order to achieve its goal using the knowledge it has the knowledge it might gather.",
+    "6. Shortcoming of hill climbing algorithms are local maximas and plateaus.",
+    "7. Consider a block world problem where On(A,B), On(B,C) is the goal, and the KB Consists of these sentences: On(C,A), On(B,Table), On(A,Table), Clear(C), Clear(B), Block(A), Block(B), Block(C). Suppose a planner that, given subgoals G1,...,Gn, solves each subgoal consecutively (i.e., first one goal, and then the next one,…). If we use such a planner to solve the planning problem above and solve the goals in the given order (i.e., On(A,B), On(B,C)) the planning will obtain an optimal plan.",
+    "8. “Frames” as knowledge representation language combines declarative and procedural knowledge through their resolution mechanism.",
+    "9. Semantic networks allow multiple inheritance on the basis of specificity in the hierarchy.",
+    "10. Precision measures an NLP system’s ability not to exclude a relevant document from the list of retrieved documents"
+   ],
+   "sjekk": {
+    "tf": [
+     "usant",
+     "usant",
+     "usant",
+     "sant",
+     "usant",
+     "sant",
+     "usant",
+     "usant",
+     "sant",
+     "usant"
+    ],
+    "merk": "Fasitrekka: F F F T F T F F T F.",
+    "kilde": "2018Q&A.docx, Problem 3 (svarrekka F F F T F T F F T F)"
+   },
+   "fasit": "Løsningsforslaget: **F F F T F T F F T F.**\n\n- **1. Usant.** Reaktive agenter (simple reflex) går rett fra persepsjon til handling med condition-action-regler og planlegger ikke.\n- **2. Usant.** bigger(Oslo, Trondheim) er et faktum, altså deklarativ kunnskap. Prosedural kunnskap er kunnskap om hvordan noe gjøres, for eksempel en prosedyre som regner ut svaret.\n- **3. Usant.** Expectimax regner forventning over chance nodes og er laget for miljøer med tilfeldighet. I et deterministisk spill mot en optimal motstander er minimax riktig modell.\n- **4. Sant.** Simulated annealing er lokalt søk med complete-state formulation: hver tilstand er en fullstendig (men kanskje dårlig) løsning, og søket endrer den litt om gangen.\n- **5. Usant.** Newells principle of rationality sier at hvis agenten *vet* at en handling fører til et av målene, så velger den den handlingen. Det handler om kunnskapen agenten har, ikke kunnskap den kunne samlet inn.\n- **6. Sant.** Hill climbing kan stoppe på lokale maksima og plateauer (og ridges).\n- **7. Usant.** Dette er Sussman anomaly. Løser planleggeren On(A, B) først, flytter den C til bordet og A oppå B. For å få On(B, C) må den så ta A ned igjen, så planen blir lengre enn den optimale (C på bordet, B på C, A på B). Blocks world er utenfor årets pensum (notatet til E18).\n- **8. Usant.** Frames har ingen resolution-mekanisme. De kombinerer deklarativ og prosedural kunnskap gjennom slots med defaults og procedural attachment, og resonnerer med arv.\n- **9. Sant.** Et objekt kan arve fra flere foreldre (multiple inheritance), og ved oppslag vinner verdien fra den mest spesifikke kategorien i hierarkiet.\n- **10. Usant.** Evnen til ikke å utelate relevante dokumenter er recall. Precision er andelen av de hentede dokumentene som er relevante.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 3 (svarrekka F F F T F T F F T F; begrunnelse bare for 8).*"
+  },
+  {
+   "t": "Oppgave 4 (10 p): Search Algorithms",
+   "img": [
+    "nettside-figurer/e02-2018-p4.svg"
+   ],
+   "d": "**PROBLEM 4 (Search Algorithms) (10 POINT)**\n\nIn the following tree, the goals are shown by squares - there are three goals. Heuristic values and the step costs are as shown in the figure.\n\nFor each of the following algorithms, write the list of expanded nodes, and the path found. Ties are broken alphabetically.\n\n1\\. Depth-first search<br>\nExpanded nodes:<br>\nThe final path:\n\n2\\. Breadth first search<br>\nExpanded nodes:<br>\nThe final path:\n\n3\\. Uniform Cost search<br>\nExpanded nodes:<br>\nThe final path:\n\n4\\. Greedy Best First search<br>\nExpanded nodes:<br>\nThe final path:\n\n5\\. A\\* search<br>\nExpanded nodes:<br>\nThe final path:",
+   "f": [
+    [
+     "1. DFS: Expanded nodes",
+     "text",
+     "S, …"
+    ],
+    [
+     "1. DFS: The final path",
+     "text",
+     "S, …"
+    ],
+    [
+     "2. BFS: Expanded nodes",
+     "text",
+     "S, …"
+    ],
+    [
+     "2. BFS: The final path",
+     "text",
+     "S, …"
+    ],
+    [
+     "3. UCS: Expanded nodes",
+     "text",
+     "S, …"
+    ],
+    [
+     "3. UCS: The final path",
+     "text",
+     "S, …"
+    ],
+    [
+     "4. Greedy: Expanded nodes",
+     "text",
+     "S, …"
+    ],
+    [
+     "4. Greedy: The final path",
+     "text",
+     "S, …"
+    ],
+    [
+     "5. A*: Expanded nodes",
+     "text",
+     "S, …"
+    ],
+    [
+     "5. A*: The final path",
+     "text",
+     "S, …"
+    ]
+   ],
+   "tegn": "T18",
+   "sjekk": {
+    "f": {
+     "1. DFS: Expanded nodes": [
+      "S B E F",
+      "SBEF",
+      "S B E"
+     ],
+     "1. DFS: The final path": [
+      "S B F",
+      "SBF"
+     ],
+     "2. BFS: Expanded nodes": [
+      "S",
+      "S D"
+     ],
+     "2. BFS: The final path": [
+      "S D",
+      "SD"
+     ],
+     "3. UCS: Expanded nodes": [
+      "S C B G",
+      "SCBG",
+      "S C B"
+     ],
+     "3. UCS: The final path": [
+      "S C G",
+      "SCG"
+     ],
+     "4. Greedy: Expanded nodes": [
+      "S D",
+      "SD",
+      "S"
+     ],
+     "4. Greedy: The final path": [
+      "S D",
+      "SD"
+     ],
+     "5. A*: Expanded nodes": [
+      "S C G",
+      "SCG",
+      "S C"
+     ],
+     "5. A*: The final path": [
+      "S C G",
+      "SCG"
+     ]
+    },
+    "merk": "Målet kan stå med eller uten parentes i rekkefølgen. BFS tester målet når det genereres, så bare S utvides.",
+    "kilde": "2018Q&A.docx, Problem 4; BFS, DFS, UCS, greedy og A* i nettside-algo/sok.js"
+   },
+   "fasit": "Treet: S→B 2, S→C 1, S→D 3, B→E 2, B→F 1, C→G 1, C→H 3, D→I 1, D→J 1. Målene (kvadratene) er D, F og G. h(S) = 2, h(B) = h(C) = 1, resten 0. Målet står i parentes i rekkefølgen fordi det ikke utvides. Løsningsforslaget skriver det med (SBEF, SCBG).\n\n**1. DFS: expanded S, B, E, (F). Path S–B–F** (kostnad 3).\n\n| Utvider | Frontier etterpå (øverst først) |\n|---|---|\n| S | B, C, D |\n| B | E, F, C, D |\n| E | F, C, D (E har ingen barn) |\n| F: mål | |\n\n**2. BFS: expanded S, (D). Path S–D** (kostnad 3). S gir B, C og D. D er et mål og testes straks den genereres (early goal test), så bare S utvides. Løsningsforslaget: «Children(S): B,C,D where goal test immediately, D is goal».\n\n**3. UCS: expanded S, C, B, (G). Path S–C–G** (kostnad 2).\n\n| Tas ut (g) | Frontier etterpå |\n|---|---|\n| S (0) | C 1, B 2, D 3 |\n| C (1) | B 2, G 2, D 3, H 4 (likt: B før G) |\n| B (2) | G 2, D 3, F 3, E 4, H 4 |\n| G (2): mål | |\n\n**4. Greedy best-first: expanded S, (D). Path S–D** (kostnad 3). S gir B (h = 1), C (h = 1) og D (h = 0). D har lavest h, tas ut og er et mål. Greedy ser bare på h og finner et mål fort, men ikke det billigste.\n\n**5. A\\*: expanded S, C, (G). Path S–C–G** (kostnad 2).\n\n| Tas ut (f = g + h) | Frontier etterpå |\n|---|---|\n| S (0 + 2 = 2) | C 1 + 1 = 2, B 2 + 1 = 3, D 3 + 0 = 3 |\n| C (2) | G 2 + 0 = 2, B 3, D 3, H 4 + 0 = 4 |\n| G (2): mål | |\n\nA\\* finner den billigste stien, som UCS, men utvider færre noder fordi h styrer søket. h er admissible (h(S) = 2 ≤ 2, h(B) = 1 ≤ 1, h(C) = 1 ≤ 1). Poengfordelingen er 2-2-2-2-2.\n\nVanlig feil: å teste målet først når det tas ut i BFS. Kurset følger Fig. 3.9 med early goal test, og da utvides bare S.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 4. Kontrollert med BFS, DFS, UCS, greedy og A\\* i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 5 (10 p): A* heuristics",
+   "img": [
+    "nettside-figurer/e03-2018-p5.svg"
+   ],
+   "d": "**PROBLEM 5 (A\\* heuristics) (10 POINTS)**\n\nConsider A\\* search for the following search graph where S is the starting and G is the goal node. There are 4 different heuristic functions (H1-H4) of which values for the S, G, A nodes are shown in the table on the right of the graph.\n\n1\\) For each heuristic function fill in the following table with Y/N for admissibility and consistency for the search graph above. Explain your answer for each Yes or No.\n\n| Heuristic | Admissible (Yes/No) | Consistency (Yes/No) |\n|---|---|---|\n| H1 | | |\n| H2 | | |\n| H3 | | |\n| H4 | | |\n\n2\\) Dominance of Heuristics. Remember that domination has a special meaning in the context of heuristic functions. What does it mean that a heuristic function dominates another one? Write the definition of dominance of heuristics.\n\nNow your task is to investigate the dominance relationship between H1 – H4.\n\n3\\) Do heuristic functions H3 and H4 have a dominance relationship?\n\n4\\) Is there a dominance relationship between Heuristic function H4 and H1?",
+   "grid": [
+    "H1",
+    "H2",
+    "H3",
+    "H4"
+   ],
+   "f": [
+    [
+     "1) Forklaring for hvert ja/nei",
+     "area"
+    ],
+    [
+     "2) Definisjonen av dominance",
+     "area"
+    ],
+    [
+     "3) H3 og H4",
+     "text"
+    ],
+    [
+     "4) H4 og H1",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "3) H3 og H4": [
+      "nei",
+      "no",
+      "ingen"
+     ],
+     "4) H4 og H1": [
+      "ja",
+      "yes",
+      "H4 dominerer H1",
+      "H4 dominates H1"
+     ]
+    },
+    "grid": {
+     "H1 admissible": "ja",
+     "H1 consistent": "nei",
+     "H2 admissible": "nei",
+     "H2 consistent": "nei",
+     "H3 admissible": "ja",
+     "H3 consistent": "ja",
+     "H4 admissible": "ja",
+     "H4 consistent": "nei"
+    },
+    "merk": "Fasiten: H3 og H4 har ingen dominansrelasjon, mens H4 dominerer H1.",
+    "kilde": "2018Q&A.docx, Problem 5"
+   },
+   "fasit": "**1) Tabellen:**\n\n| Heuristic | Admissible | Consistent |\n|---|---|---|\n| H1 | Ja | Nei |\n| H2 | Nei | Nei |\n| H3 | Ja | Ja |\n| H4 | Ja | Nei |\n\nEkte restkostnader: h\\*(S) = min(6, 2 + 3) = 5, h\\*(A) = 3, h\\*(G) = 0. Kantene er S→A 2, A→G 3 og S→G 6.\n\n- **H1 = (4, 1, 0):** admissible, fordi 4 ≤ 5 og 1 ≤ 3. Ikke consistent: h(S) = 4 > c(S, A) + h(A) = 2 + 1 = 3.\n- **H2 = (5, 4, 0):** ikke admissible, fordi h(A) = 4 > h\\*(A) = 3. Ikke consistent: h(A) = 4 > c(A, G) + h(G) = 3 (og consistent ville gitt admissible).\n- **H3 = (4, 3, 0):** admissible, fordi 4 ≤ 5 og 3 ≤ 3. Consistent på alle kantene: S→A 4 ≤ 2 + 3, A→G 3 ≤ 3 + 0, S→G 4 ≤ 6 + 0.\n- **H4 = (5, 2, 0):** admissible, fordi 5 ≤ 5 og 2 ≤ 3. Ikke consistent: h(S) = 5 > c(S, A) + h(A) = 2 + 2 = 4.\n\n**2) Dominance:** h₂ dominerer h₁ hvis h₂(n) ≥ h₁(n) for alle noder n (begge admissible). Er begge også consistent, ekspanderer A\\* med h₂ aldri flere noder enn med h₁, bortsett fra noder med f = C\\*, der tie-break avgjør (AIMA 3.6.1). Den dominerende heuristikken er nærmere h\\* og vanligvis bedre. For heuristikker som bare er admissible, gjelder ikke garantien når A\\* åpner noder igjen: med S→X 5, S→A 1, A→X 1, X→G 10, h₁ = 0 overalt og h₂(A) = 10 (ellers 0) utvider h₂ S, X, A, X, mens h₁ utvider S, A, X.\n\n**3) Nei.** H3 og H4 har ingen dominansrelasjon: h₃(S) = 4 < 5 = h₄(S), men h₃(A) = 3 > 2 = h₄(A).\n\n**4) Ja, H4 dominerer H1:** 5 ≥ 4, 2 ≥ 1 og 0 ≥ 0, og begge er admissible.\n\nPoengfordelingen i løsningsforslaget er 6-2-1-1.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 5.*"
+  },
+  {
+   "t": "Oppgave 6 (10 p): Propositional Logic",
+   "d": "**PROBLEM 6 (Propositional Logic) 10 POINTS**\n\nFour bunny rabbits played together in the forest. Each bunny is either brown or white. However, none of them could see each other very clearly, and their views were obscured by bushes.<br>\nBunny 1 says, “One of bunnies 2 & 3 is brown and one is white, but I can’t tell which.”<br>\nBunny 2 says, “One of bunnies 3 & 4 is brown and one is white, but I can’t tell which.”<br>\nBunny 3 says, “Bunny 4 is brown.”<br>\nBunny 4 says, \"It is not the case that both Bunny 1 and Bunny 4 are brown.\"\n\nBunny 1 asks, “Is it true that I am a white bunny rabbit?”\n\nConverting these statements into propositional logic and using resolution refutation, can we answer the question of Bunny 1? Use Bi for \"Bunny i is brown\", e.g., B2: Bunny 2 is brown.\n\nShow all the steps you have taken to prove/answer this question.",
+   "f": [
+    [
+     "Er Bunny 1 hvit? (ja/nei)",
+     "text"
+    ],
+    [
+     "Setningene i PL, CNF og resolusjonsstegene",
+     "area",
+     "Bunny 1: …\nBunny 2: …\nBunny 3: …\nBunny 4: …\nSpørsmålet: …  Negert: …\nKlausuler:\n1. …\nResolusjon:\n…"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Er Bunny 1 hvit? (ja/nei)": [
+      "ja",
+      "yes",
+      "true",
+      "sant"
+     ]
+    },
+    "merk": "B4 og ¬(B1 ∧ B4) gir ¬B1: Bunny 1 er hvit.",
+    "kilde": "2018Q&A.docx, Problem 6; PL-resolusjon og sannhetstabell i nettside-algo/logikk.js"
+   },
+   "fasit": "**Ja. Bunny 1 er hvit: KB ⊨ ¬B1.**\n\n**Setningene:**\n- Bunny 1: (B2 ∧ ¬B3) ∨ (¬B2 ∧ B3). Nøyaktig én av 2 og 3 er brun. Løsningsforslaget trekker for B2 ∨ B3, som ikke sier at de har ulik farge.\n- Bunny 2: (B3 ∧ ¬B4) ∨ (¬B3 ∧ B4)\n- Bunny 3: B4\n- Bunny 4: ¬(B1 ∧ B4)\n\nSpørsmålet «er jeg hvit?» er ¬B1. Det negerte målet er **B1**.\n\n**KB i CNF pluss negert mål:**\n1. B2 ∨ B3\n2. ¬B2 ∨ ¬B3\n3. B3 ∨ B4\n4. ¬B3 ∨ ¬B4\n5. B4\n6. ¬B1 ∨ ¬B4\n7. B1 (negert mål)\n\n(B2 ∧ ¬B3) ∨ (¬B2 ∧ B3) blir (B2 ∨ B3) ∧ (¬B2 ∨ ¬B3) når du distribuerer (de to andre klausulene, B2 ∨ ¬B2 og B3 ∨ ¬B3, er tautologier). ¬(B1 ∧ B4) blir ¬B1 ∨ ¬B4 med De Morgan.\n\n**Resolusjon:**\n- 5 og 6: ¬B1\n- ¬B1 og 7: □ (tom klausul)\n\nKB ∧ B1 er unsatisfiable, så ¬B1 følger: Bunny 1 er hvit. KB alene er satisfiable og har nøyaktig én modell (B1 usann, B2 sann, B3 usann, B4 sann), så svaret er ikke tomt fordi KB er selvmotsigende.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 6. Kontrollert med PL-resolusjon og sannhetstabell i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 7 (10 p): Game Theory",
+   "d": "**PROBLEM 7 (GAME THEORY) (10 POINTS)**\n\nThis problem is about watering rice farms in Sumatra. Two farms are located in the riverside, upstream and downstream farms. Water is not sufficient---meaning if both farmers water their rice crops at the same time the upward one gets enough water but the downstream one is not watered sufficiently. However, if they don’t water their crops at the same time, both farms will suffer from a pest problem.\n\nThe game is about the timing of watering. Assume two possible times for watering, A and B.\n\nLet x represent the utility loss for the farmer who gets reduced water and let y represent the loss in utility due to pests. Assume that when there is no crop loss due to lack of water or a pest problem, then the payoff is equal to 1.\n\n1. Draw the payoff matrix using A and B as actions. Use x and y to define the payoffs for the upward and downward farms.\n2. Under which conditions does a strongly dominant strategy equilibrium arise?",
+   "f": [
+    [
+     "1. Payoff-matrisen",
+     "area",
+     "rad = oppstrøms, kolonne = nedstrøms, celle = (oppstrøms, nedstrøms)\n(A, A): …\n(A, B): …\n(B, A): …\n(B, B): …"
+    ],
+    [
+     "2. Betingelser for strongly dominant strategy equilibrium, med begrunnelse",
+     "area"
+    ]
+   ],
+   "fasit": "**1. Payoff-matrisen** (rad = oppstrøms, kolonne = nedstrøms, celle = (oppstrøms, nedstrøms)):\n\n| Oppstrøms \\ Nedstrøms | A | B |\n|---|---|---|\n| **A** | 1, 1 − x | 1 − y, 1 − y |\n| **B** | 1 − y, 1 − y | 1, 1 − x |\n\nVanner begge samtidig, får oppstrøms nok vann (1), og nedstrøms mister x. Vanner de til ulik tid, kommer skadedyrene, og begge mister y.\n\n**2. Det finnes ingen strongly dominant strategy equilibrium for noen x, y > 0.**\n\nEn dominant strategy equilibrium krever at begge spillerne har en strengt dominant strategi.\n- **Oppstrøms:** mot A gir A 1 og B 1 − y, så A er best. Mot B gir B 1 og A 1 − y, så B er best. Beste svar avhenger av hva nedstrøms gjør, så oppstrøms har ingen dominant strategi når y > 0.\n- **Nedstrøms (fasitens argument):** for at A skal være strengt best mot A, må 1 − x > 1 − y, altså x < y. For at A også skal være best mot B, må 1 − y > 1 − x, altså y < x. Begge kan ikke gjelde, så (A, A) er ingen DSE. Det samme gjelder (B, B).\n- (A, B) og (B, A) gir begge 1 − y, og oppstrøms tjener på å bytte til samme tid (1 > 1 − y). De er heller ingen DSE.\n\nEkstra: når x < y, er (A, A) og (B, B) rene Nash-likevekter, et koordineringsspill. Når x > y, finnes ingen ren likevekt.\n\nPoengfordelingen er 5-5. Løsningsforslaget gir 1 poeng i 2. for bare definisjonen av strongly dominant strategy, og full uttelling i 2. hvis matrisen er feil, men har samme nyttestruktur.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 7. Kontrollert med dominans og Nash i algoritmefila for x < y, x > y og x = y.*"
+  },
+  {
+   "t": "Oppgave 8 (10 p): Short Questions",
+   "d": "**PROBLEM 8 SHORT QUESTIONS**\n\n1\\. In some environments randomized behaviour can be rational. Describe what type of environments and give an example.\n\n2\\. Entailment for first-order logic is semidecidable. What does this mean? Explain very briefly.\n\n3\\. Convert this sentence into Conjunctional normal form and show all the steps in this process:<br>\n∀Y (∀X taller(Y,X) V wise(X)) => wise(Y)\n\n5 Fill in the blank so that the sentence becomes correct.<br>\nA entails B if and only if (. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ) is unsatisfiable.\n\n*Merknad:* Poengene for problem 8 står verken i oppgaven eller i løsningsforslaget. 10 p er det som mangler for at summen skal bli 100. Originalen hopper fra 3 til 5.",
+   "f": [
+    [
+     "1. Type miljø og eksempel",
+     "area"
+    ],
+    [
+     "2. Hva semidecidable betyr",
+     "area"
+    ],
+    [
+     "3. CNF med alle stegene",
+     "area",
+     "1. Fjern ⇒: …\n2. Flytt ¬ innover: …\n3. Standardiser variabler: …\n4. Skolemiser: …\n5. Dropp ∀: …\n6. Distribuer ∨ over ∧: …"
+    ],
+    [
+     "5 Det tomme feltet",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "5 Det tomme feltet": [
+      "A ∧ ¬B",
+      "A∧¬B",
+      "¬B ∧ A",
+      "¬B∧A",
+      "A and not B",
+      "A og ikke B"
+     ]
+    },
+    "merk": "A ⊨ B hvis og bare hvis A ∧ ¬B er unsatisfiable.",
+    "kilde": "2018Q&A.docx, Problem 8 (svaret står der som punkt 4: «A ∧ ¬B»)"
+   },
+   "fasit": "**1. Competitive multiagent environments.** Der kan en motstander utnytte deterministisk, forutsigbar oppførsel. Randomisering unngår «the pitfalls of predictability» (løsningsforslaget). Eksempler: stein-saks-papir, der den eneste likevekten er å velge hver med sannsynlighet 1/3 (mixed strategy), straffespark i fotball og bløff i poker. Randomisering kan også hjelpe en simple reflex agent i et partially observable miljø (støvsugeren uten lokasjonssensor kommer ut av løkka).\n\n**2. Det finnes algoritmer som svarer ja på hver setning som følger av KB, men ingen algoritme som også svarer nei på hver setning som ikke følger.** Følger setningen ikke, kan søket etter et bevis gå for alltid, og du vet aldri om du bare må vente lenger. Semidecidable betyr ikke «undecidable i alle tilfeller»: ja-delen kan alltid avgjøres (resolution er refutation-complete).\n\n**3. CNF: (¬taller(y, S(y)) ∨ wise(y)) ∧ (¬wise(S(y)) ∨ wise(y)),** der S er en Skolem-funksjon.\n\nSetningen leses som i løsningsforslaget: ∀y [(∀x taller(y, x) ∨ wise(x)) ⇒ wise(y)].\n1. **Fjern ⇒:** ∀y [¬(∀x taller(y, x) ∨ wise(x)) ∨ wise(y)]\n2. **Flytt ¬ innover:** ¬∀x p blir ∃x ¬p, og ¬(a ∨ b) blir ¬a ∧ ¬b: ∀y [∃x (¬taller(y, x) ∧ ¬wise(x)) ∨ wise(y)]\n3. **Standardiser variabler:** x og y er alt forskjellige.\n4. **Skolemiser:** ∃x står inne i ∀y, så x blir S(y): ∀y [(¬taller(y, S(y)) ∧ ¬wise(S(y))) ∨ wise(y)]\n5. **Dropp ∀:** (¬taller(y, S(y)) ∧ ¬wise(S(y))) ∨ wise(y)\n6. **Distribuer ∨ over ∧:** (¬taller(y, S(y)) ∨ wise(y)) ∧ (¬wise(S(y)) ∨ wise(y))\n\nVanlig feil: å bruke en Skolem-konstant i steg 4. x avhenger av y, så det må være en funksjon av y.\n\n**5: A ∧ ¬B.** A ⊨ B betyr at B er sann i alle modeller der A er sann. Da finnes ingen modell der A er sann og B usann, så A ∧ ¬B er unsatisfiable. Dette er grunnlaget for refutation (AIMA 7.5).\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 8 (svarene 1, 2, den håndskrevne CNF-utledningen og «4) A ∧ ¬B»).*"
+  },
+  {
+   "t": "Oppgave 9 (10 p): Logic",
+   "d": "**PROBLEM 9 (LOGIC) (10 points, 2 point each)**\n\nTranslation from English to Logic.\n\n1\\) There is a mouse that every cat chases.\n\n2\\) For every flavor, there is some person who likes that flavor.\n\n3\\) “There was no student who scored 100 on every quiz.”\n\n4\\) There is a barber who shaves all men in town who do not shave themselves.\n\n5\\) There exists a lawyer all of whose clients are doctors",
+   "f": [
+    [
+     "1) FOL",
+     "text"
+    ],
+    [
+     "2) FOL",
+     "text"
+    ],
+    [
+     "3) FOL",
+     "text"
+    ],
+    [
+     "4) FOL",
+     "text"
+    ],
+    [
+     "5) FOL",
+     "text"
+    ]
+   ],
+   "fasit": "**1) ∃y Mouse(y) ∧ ∀x (Cat(x) ⇒ Chases(x, y))**, eller som i løsningsforslaget ∃y ∀x Mouse(y) ∧ [Cat(x) ⇒ Chases(x, y)]. ∃ kommer først fordi det er én og samme mus for alle kattene.\n\n**2) ∀f Flavor(f) ⇒ ∃p (Person(p) ∧ Likes(p, f))**, eller som i løsningsforslaget ∀f ∃p Flavor(f) ⇒ [Person(p) ∧ Likes(p, f)]. Her kommer ∀ først: personen kan være en annen for hver smak.\n\n**3) ¬∃s [Student(s) ∧ ∀q (Quiz(q) ⇒ Scored100(s, q))]**, som er det samme som løsningsforslagets ∀s ∃q Student(s) ⇒ [Quiz(q) ∧ ¬Scored100(s, q)]: hver student har minst én quiz uten 100.\n\n**4) ∃x Barber(x) ∧ ∀y [(Man(y) ∧ ¬Shaves(y, y)) ⇒ Shaves(x, y)]** (løsningsforslaget). Parentesene teller: Man(y) ∧ ¬Shaves(y, y) er hele premisset. ∃x ∀y Barber(x) ∧ [Man(y) ∧ (¬Shaves(y, y) ⇒ Shaves(x, y))] er ikke det samme, for den sier at alle y er menn. «In town» kan tas med som et ekstra ledd, InTown(y), i premisset.\n\n**5) ∃x Lawyer(x) ∧ ∀y (Client(y, x) ⇒ Doctor(y))**, eller som i løsningsforslaget ∃p1 ∀p2 Occupation(p1, Lawyer) ∧ [Customer(p2, p1) ⇒ Occupation(p2, Doctor)].\n\nVanlige feil: ∃ med ⇒ (∃y Mouse(y) ⇒ … er sann så snart noe ikke er en mus) og ∀ med ∧ (∀x Cat(x) ∧ … sier at alt er katter). 2 poeng per setning.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 9.*"
+  }
+ ]
+}

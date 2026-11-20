@@ -1,0 +1,546 @@
+{
+ "id": "ek2020k",
+ "ep": "2020 K",
+ "tittel": "Kontinuasjon (aug. 2021)",
+ "kilde": "../materiale/Files/Previous%20exams/2020ResitQ.docx",
+ "om": "**KONT EKSAMEN AUGUST 2021--- QUESTIONS**\n\n**Weighting:** There are 5 questions in this exam. The weights are as following: Q1:25 points, Q2:25 pts, Q3: 25pts, Q4: 10pts, and and Q5 15 pts each\n\n---\n\n*Originalfila har ikke mer forside enn dette: tid og hjelpemidler står ikke. Fasiten bygger på løsningsforslaget (`2020ResitA.docx`).*",
+ "intro": "Etter «Lever» kan stiene og kostnadene i oppgave 2, domenene etter AC-3 i oppgave 3, rotverdien og kuttene i oppgave 4 og ja/nei-spørsmålene i oppgave 5 sjekkes med Sjekk. Grafen i oppgave 2 og treet i oppgave 4 kan åpnes i tegneverktøyet.",
+ "tasks": [
+  {
+   "t": "Oppgave 1 (25 p): Logic",
+   "d": "Given the following three sentences, you will prove ¬ S is true.\n\nP∧Q (1)\\\nP→¬(Q∧R) (2)\\\nS→R (3)\n\na) Show ¬S is true by using the inference and the re-writing rules.\n\nb) Show that ¬S is true by enumeration method on a Truth Table.\n\nc) Show that ¬S is true by resolution refutation.\n\nd) Use resolution refutation to prove Green(Sophie) given the information below. You must first convert each(all) sentence into CNF. Clearly show Skolemizations. Show only the applications of the resolution rule that lead to the desired conclusion. For each application of the resolution rule, show the unification bindings, θ.\\\n• Electric(Tesla)\\\n• Drives(Sophie, Tesla)\\\n• ∀x Green(x) ↔ Bikes(x) ∨ [∃y : Drives(x, y) ∧Electric(y)]",
+   "f": [
+    [
+     "a) Beviset med inferens- og omskrivingsregler",
+     "area",
+     "1. P ∧ Q (premiss)\n2. …"
+    ],
+    [
+     "b) Sannhetstabellen og konklusjonen",
+     "area",
+     "P Q R S | (1) (2) (3) | ¬S\n…"
+    ],
+    [
+     "c) CNF-klausulene og resolusjonsstegene",
+     "area"
+    ],
+    [
+     "d) CNF med Skolemisering, og resolusjonsstegene med θ",
+     "area"
+    ]
+   ],
+   "fasit": "**a) ¬S følger med inferens- og omskrivingsregler:**\n\n| Nr | Setning | Begrunnelse |\n|---|---|---|\n| 1 | P ∧ Q | premiss (1) |\n| 2 | P | And-Elimination fra 1 |\n| 3 | Q | And-Elimination fra 1 |\n| 4 | P → ¬(Q ∧ R) | premiss (2) |\n| 5 | ¬(Q ∧ R) | Modus Ponens, 2 og 4 |\n| 6 | ¬Q ∨ ¬R | De Morgan på 5 (omskriving) |\n| 7 | ¬R | Unit Resolution, 3 og 6 (Q og ¬Q ∨ ¬R) |\n| 8 | S → R | premiss (3) |\n| 9 | ¬R → ¬S | kontraposisjon av 8 (omskriving) |\n| 10 | **¬S** | Modus Ponens, 7 og 9 |\n\nSteg 9–10 kan også skrives som Modus Tollens rett fra 7 og 8, slik løsningsforslaget gjør.\n\n**b) Sannhetstabell: KB = (1) ∧ (2) ∧ (3) er sann i bare én rad (P = T, Q = T, R = F, S = F), og der er ¬S sann. Altså KB ⊨ ¬S.**\n\n| P | Q | R | S | (1) P ∧ Q | (2) P → ¬(Q ∧ R) | (3) S → R | (1) ∧ (2) ∧ (3) | ¬S |\n|---|---|---|---|---|---|---|---|---|\n| T | T | T | T | T | F | T | F | F |\n| T | T | T | F | T | F | T | F | T |\n| T | T | F | T | T | T | F | F | F |\n| **T** | **T** | **F** | **F** | **T** | **T** | **T** | **T** | **T** |\n| T | F | T | T | F | T | T | F | F |\n| T | F | T | F | F | T | T | F | T |\n| T | F | F | T | F | T | F | F | F |\n| T | F | F | F | F | T | T | F | T |\n| F | T | T | T | F | T | T | F | F |\n| F | T | T | F | F | T | T | F | T |\n| F | T | F | T | F | T | F | F | F |\n| F | T | F | F | F | T | T | F | T |\n| F | F | T | T | F | T | T | F | F |\n| F | F | T | F | F | T | T | F | T |\n| F | F | F | T | F | T | F | F | F |\n| F | F | F | F | F | T | T | F | T |\n\nEnumeration-metoden (TT-ENTAILS) sjekker at α er sann i *alle* rader der KB er sann. Rader der KB er usann, sier ingenting. Det holder å vise at (1) bare er sann når P = Q = T, og så de fire radene med R og S, men hele tabellen har 2⁴ = 16 rader.\n\n**c) Resolution refutation: KB ∧ S gir den tomme klausulen, så KB ⊨ ¬S.**\n\nKlausulene (CNF):\n1. P (fra (1))\n2. Q (fra (1))\n3. ¬P ∨ ¬Q ∨ ¬R (fra (2): P → ¬(Q ∧ R) ≡ ¬P ∨ ¬(Q ∧ R) ≡ ¬P ∨ ¬Q ∨ ¬R)\n4. ¬S ∨ R (fra (3))\n5. S (negert mål: ¬¬S)\n\n| Nr | Resolvent | Fra |\n|---|---|---|\n| 6 | R | 4 og 5 |\n| 7 | ¬P ∨ ¬Q | 3 og 6 |\n| 8 | ¬P | 2 og 7 |\n| 9 | □ (tom klausul) | 1 og 8 |\n\nVanlig feil: å resolvere med ¬S i stedet for det negerte målet S. Refutation starter alltid med KB ∧ ¬α.\n\n**d) CNF og resolusjon: Green(Sophie) følger. Bare den fjerde klausulen fra definisjonen av Green trengs.**\n\nKonverteringen av ∀x Green(x) ⇔ Bikes(x) ∨ [∃y Drives(x, y) ∧ Electric(y)] (stegene i 9.5.1):\n\n1. **Eliminate ⇔:** ∀x [Green(x) ⇒ Bikes(x) ∨ ∃y (Drives(x, y) ∧ Electric(y))] ∧ [Bikes(x) ∨ ∃y (Drives(x, y) ∧ Electric(y)) ⇒ Green(x)]\n2. **Eliminate ⇒:** ∀x [¬Green(x) ∨ Bikes(x) ∨ ∃y (Drives(x, y) ∧ Electric(y))] ∧ [¬(Bikes(x) ∨ ∃y (Drives(x, y) ∧ Electric(y))) ∨ Green(x)]\n3. **Move ¬ inwards:** ¬(Bikes(x) ∨ ∃y (…)) ≡ ¬Bikes(x) ∧ ∀y (¬Drives(x, y) ∨ ¬Electric(y)), som gir\\\n   ∀x [¬Green(x) ∨ Bikes(x) ∨ ∃y (Drives(x, y) ∧ Electric(y))] ∧ [(¬Bikes(x) ∧ ∀y (¬Drives(x, y) ∨ ¬Electric(y))) ∨ Green(x)]\n4. **Standardize variables:** den andre y-en heter z: ∀z (¬Drives(x, z) ∨ ¬Electric(z))\n5. **Skolemize:** ∃y står inne i ∀x, så y blir Skolem-funksjonen F(x), ikke en konstant: … ∨ (Drives(x, F(x)) ∧ Electric(F(x)))\n6. **Drop ∀:** [¬Green(x) ∨ Bikes(x) ∨ (Drives(x, F(x)) ∧ Electric(F(x)))] ∧ [(¬Bikes(x) ∧ (¬Drives(x, z) ∨ ¬Electric(z))) ∨ Green(x)]\n7. **Distribute ∨ over ∧:** fire klausuler, C1–C4 under.\n\nKlausulene (variablene er standardisert fra hverandre per klausul):\n\n| Nr | Klausul | Kilde |\n|---|---|---|\n| C1 | ¬Green(x) ∨ Bikes(x) ∨ Drives(x, F(x)) | definisjonen |\n| C2 | ¬Green(x) ∨ Bikes(x) ∨ Electric(F(x)) | definisjonen |\n| C3 | ¬Bikes(x) ∨ Green(x) | definisjonen |\n| C4 | ¬Drives(x, z) ∨ ¬Electric(z) ∨ Green(x) | definisjonen |\n| C5 | Electric(Tesla) | gitt |\n| C6 | Drives(Sophie, Tesla) | gitt |\n| C7 | ¬Green(Sophie) | negert mål |\n\nResolusjonsstegene:\n\n| Nr | Resolvent | Fra og θ |\n|---|---|---|\n| 8 | ¬Drives(x, Tesla) ∨ Green(x) | C4 og C5, θ = {z/Tesla} |\n| 9 | Green(Sophie) | 8 og C6, θ = {x/Sophie} |\n| 10 | □ | 9 og C7, θ = {} |\n\nDen tomme klausulen viser at KB ∧ ¬Green(Sophie) er unsatisfiable, så Green(Sophie) følger. Løsningsforslaget beholder navnet y i C4 og skriver θ = {y/Tesla}. Vanlige feil: en Skolem-konstant i stedet for F(x) (y avhenger av x), og å glemme ⇐-retningen av ⇔, som er den som gir C4.\n\n*Kilde: løsningsforslaget til kontinuasjonseksamen august 2021 (2020ResitA), problem 1. Kontrollert med TT-ENTAILS og PL-resolusjon i algoritmefila (KB ⊨ ¬S, én modell) og en sannhetstabell i et eget skript.*"
+  },
+  {
+   "t": "Oppgave 2 (25 p): Informed and Uninformed Search",
+   "img": [
+    "nettside-figurer/e02-2020kont-p2.png"
+   ],
+   "d": "You are given the following graph in the figure where S is the start node and there are three goal nodes, G1, G2 and G3. You are asked to use some search algorithms on this graph (algorithms a-d listed below.) You will use tree search versions of these algorithms that avoid re-expanding the nodes that are already expanded. In case of a tie, break will be done in alphabetical order. In all the algorithms, you don’t need to continue after finding a goal, i.e, you don’t need to search for more than one goal.\n\nFor each of the asked algorithms,\n\n- write down the expanded nodes in the order of expansion,\n- write down the solution path and its cost.\n- Is the found path optimal? Discuss the optimality of the algorithm.\n\nThe algorithms are:\n\na) Uniform cost search\n\nb) Breadth first search\n\nc) Depth first search\n\nd) A\\* search. The heuristic values are as follows:\\\nh(S)=5\\\nh(A)=7\\\nh(B)=3\\\nh(C)=4\\\nh(D)=6\\\nh(E)=5\\\nh(F)=6\\\nh(G1)=h(G2)=h(G3)=0",
+   "f": [
+    [
+     "a) UCS: ekspanderte noder i rekkefølge",
+     "text",
+     "S, …"
+    ],
+    [
+     "a) UCS: løsningssti",
+     "text",
+     "S, …"
+    ],
+    [
+     "a) UCS: kostnad",
+     "text"
+    ],
+    [
+     "a) UCS: optimal? Diskuter",
+     "area",
+     "Ja/nei, fordi …"
+    ],
+    [
+     "b) BFS: ekspanderte noder i rekkefølge",
+     "text",
+     "S, …"
+    ],
+    [
+     "b) BFS: løsningssti",
+     "text",
+     "S, …"
+    ],
+    [
+     "b) BFS: kostnad",
+     "text"
+    ],
+    [
+     "b) BFS: optimal? Diskuter",
+     "area",
+     "Ja/nei, fordi …"
+    ],
+    [
+     "c) DFS: ekspanderte noder i rekkefølge",
+     "text",
+     "S, …"
+    ],
+    [
+     "c) DFS: løsningssti",
+     "text",
+     "S, …"
+    ],
+    [
+     "c) DFS: kostnad",
+     "text"
+    ],
+    [
+     "c) DFS: optimal? Diskuter",
+     "area",
+     "Ja/nei, fordi …"
+    ],
+    [
+     "d) A*: ekspanderte noder i rekkefølge",
+     "text",
+     "S, …"
+    ],
+    [
+     "d) A*: løsningssti",
+     "text",
+     "S, …"
+    ],
+    [
+     "d) A*: kostnad",
+     "text"
+    ],
+    [
+     "d) A*: optimal? Diskuter",
+     "area",
+     "Ja/nei, fordi …"
+    ]
+   ],
+   "tegn": "R20",
+   "sjekk": {
+    "f": {
+     "a) UCS: ekspanderte noder i rekkefølge": [
+      "S A D B C E (G2)",
+      "S A D B C E"
+     ],
+     "a) UCS: løsningssti": [
+      "S D C G2"
+     ],
+     "a) UCS: kostnad": [
+      "13"
+     ],
+     "a) UCS: optimal? Diskuter": [
+      "ja",
+      "yes"
+     ],
+     "b) BFS: ekspanderte noder i rekkefølge": [
+      "S A (G1)",
+      "S A"
+     ],
+     "b) BFS: løsningssti": [
+      "S A G1"
+     ],
+     "b) BFS: kostnad": [
+      "14"
+     ],
+     "b) BFS: optimal? Diskuter": [
+      "nei",
+      "no"
+     ],
+     "c) DFS: ekspanderte noder i rekkefølge": [
+      "S A B C F D E (G3)",
+      "S A B C F D E"
+     ],
+     "c) DFS: løsningssti": [
+      "S A B C F D E G3"
+     ],
+     "c) DFS: kostnad": [
+      "45"
+     ],
+     "c) DFS: optimal? Diskuter": [
+      "nei",
+      "no"
+     ],
+     "d) A*: ekspanderte noder i rekkefølge": [
+      "S A B D C E (G2)",
+      "S A B D C E"
+     ],
+     "d) A*: løsningssti": [
+      "S D C G2"
+     ],
+     "d) A*: kostnad": [
+      "13"
+     ],
+     "d) A*: optimal? Diskuter": [
+      "ja",
+      "yes"
+     ]
+    },
+    "merk": "Målet står i parentes fordi det ikke ekspanderes, og det kan sløyfes. BFS tester målet når det genereres.",
+    "kilde": "2020ResitA.docx, problem 2, og algoritmene i nettside-algo (tree search, utvid aldri to ganger, alfabetisk tie-break)."
+   },
+   "fasit": "Grafen er rettet. «Tree search versions … that avoid re-expanding the nodes that are already expanded» betyr at en node som allerede er utvidet, hoppes over når den tas ut igjen. Like verdier brytes alfabetisk. BFS tester målet når det genereres (Fig. 3.9), de andre når noden tas ut. Målet står i parentes fordi det ikke ekspanderes.\n\n**a) UCS: ekspandert S, A, D, B, C, E, (G2). Sti S–D–C–G2. Kostnad 6 + 2 + 5 = 13. Optimal: ja.**\n\n| Tas ut (g) | Nye i frontier | Frontier etterpå |\n|---|---|---|\n| S (0) | A 5, B 9, D 6 | A 5, D 6, B 9 |\n| A (5) | B 8, G1 14 | D 6, B 8, B 9, G1 14 |\n| D (6) | C 8, E 8 | B 8, C 8, E 8, B 9, G1 14 |\n| B (8) | C 9 | C 8, E 8, B 9, C 9, G1 14 |\n| C (8) | F 15, G2 13 (S er utvidet) | E 8, B 9, C 9, G2 13, G1 14, F 15 |\n| E (8) | G3 15 | B 9, C 9, G2 13, G1 14, F 15, G3 15 |\n| B (9), C (9) | allerede utvidet, hoppes over | G2 13, G1 14, F 15, G3 15 |\n| G2 (13): mål | | |\n\nUCS er optimal når alle kostnader er positive: noder tas ut etter g, så målet som tas ut først, har lavest kostnad.\n\n**b) BFS: ekspandert S, A, (G1). Sti S–A–G1. Kostnad 5 + 9 = 14. Optimal: nei.**\n\nS gir A, B og D. A gir B og G1, og G1 er mål ved generering. BFS finner stien med færrest steg og er bare cost-optimal når alle steg koster likt. Her er S–D–C–G2 (13) billigere.\n\n**c) DFS: ekspandert S, A, B, C, F, D, E, (G3). Sti S–A–B–C–F–D–E–G3. Kostnad 5 + 3 + 1 + 7 + 20 + 2 + 7 = 45. Optimal: nei.**\n\n| Ekspanderer | Frontier etterpå (øverst først) |\n|---|---|\n| S | A, B, D |\n| A | B, G1, B, D |\n| B | C, G1, B, D |\n| C | F, G2, G1, B, D (S er utvidet) |\n| F | D, G3, G2, G1, B, D |\n| D | E, G3, G2, G1, B, D (C er utvidet) |\n| E | G3, G3, G2, G1, B, D |\n| G3: mål | |\n\nDFS returnerer den første løsningen den finner og er ikke optimal. Her ligger G1 og G2 klare i frontier, men DFS går dypere først.\n\n**d) A\\*: ekspandert S, A, B, D, C, E, (G2). Sti S–D–C–G2. Kostnad 13. Optimal: ja.**\n\n| Tas ut (f = g + h) | Nye i frontier | Frontier etterpå |\n|---|---|---|\n| S (0 + 5 = 5) | A 5 + 7 = 12, B 9 + 3 = 12, D 6 + 6 = 12 | A 12, B 12, D 12 |\n| A (12) | B 8 + 3 = 11, G1 14 + 0 = 14 | B 11, B 12, D 12, G1 14 |\n| B (11) | C 9 + 4 = 13 | B 12, D 12, C 13, G1 14 |\n| B (12) | allerede utvidet, hoppes over | D 12, C 13, G1 14 |\n| D (12) | C 8 + 4 = 12, E 8 + 5 = 13 | C 12, C 13, E 13, G1 14 |\n| C (12) | F 15 + 6 = 21, G2 13 + 0 = 13 (S er utvidet) | C 13, E 13, G2 13, G1 14, F 21 |\n| C (13) | allerede utvidet, hoppes over | E 13, G2 13, G1 14, F 21 |\n| E (13, alfabetisk før G2) | G3 15 + 0 = 15 | G2 13, G1 14, G3 15, F 21 |\n| G2 (13): mål | | |\n\n13 er billigst (UCS gir det samme). h er admissible: h\\*(S) = 13, h\\*(A) = 9, h\\*(B) = 6, h\\*(C) = 5, h\\*(D) = 7, h\\*(E) = 7, h\\*(F) = 8, og alle h er mindre eller like. Men h er **ikke consistent**: h(A) = 7 > c(A, B) + h(B) = 3 + 3 = 6. A\\* som tree search er optimal med admissible h. Med regelen om aldri å utvide en node to ganger trengs consistent h for garantien. Her gikk det likevel bra, fordi B ble utvidet første gang via sin billigste vei (S–A–B = 8).\n\n*Kilde: løsningsforslaget til kontinuasjonseksamen august 2021 (2020ResitA), problem 2. Kontrollert med UCS, BFS, DFS og A\\* i algoritmefila (tree search, utvid aldri to ganger, alfabetisk tie-break).*"
+  },
+  {
+   "t": "Oppgave 3 (25 p): CSP Cross word puzzle",
+   "img": [
+    "nettside-figurer/e06-2021kont-p3.svg",
+    "nettside-figurer/e06-2021kont-p3-tabell.png"
+   ],
+   "d": "A crossword puzzle, is a popular type of puzzle that uses words.\n\nA crossword is made up of a black/blue and white squares, called a grid. Next to the grid is a list of clues. The answer to each clue is a word. The place in the grid where the answer to each clue should go is shown by a number and the direction in which the answer appears, for example \"1 Across\", or \"4 Down\".\n\nYou are given the 4x5 grid on the top of the page. Unlike traditional crossword puzzles, you are not given clues but a list of words to choose from to fill in the grid.\n\nHere is the list of words: astar, happy, hello, hoses, live, load, loom, peal, peel, save, talk, anon, nerd, tine, ant, oak, old, ten, run.\n\nThere are 4 areas in the grid/puzzle with consecutive white squares where the words will be placed: 1-accross (i.e., from left to write), 2-down (write from top to downward), 3-down and 4-across. Blue squares are blocked out meaning that characters cannot be placed on them.\n\n\"Instructions\" on the grid, e.g., 2-down, indicate the position where a word starts and the direction it will continue until it hits a blue square or the edge of the grid. Note that the number in an instruction does not indicate the length of the word. The length of the word is determined by the number of consecutive white squares in the given direction. For example, the word starting at 1-accross is five character long. A solution is a grid with correctly placed words -and no empty white squares. Each word will be used only once.\n\nConsider this as a constraint satisfaction problem and:\n\na) Write down the variables (V1, V2, ..) and describe what they correspond to in the grid shown in the figure. Draw the constraint graph.\n\nb) How many constraints are there in this problem and what are they?\n\nc) For each variable write down the domain satisfying the node consistency\n\nd) Apply arc consistency algorithm AC-3. Write down the domains of the variables after AC. Write down the domains of the variables after AC-3. When applying AC-3, assume a queue (FIFO) of edges of the constraint graph initially sorted in the ascending order, starting from V1, i.e. V1V2, V1V3,.... In order to show your work, fill in the table (similar to the one) in the figure on left.\n\ne) If AC-3 finds a solution, what is it? Provide the filled-out crossword puzzle. If it does not find any solution, explain why\n\nConsider this as a constraint satisfaction problem and:\n\na) Write down the variables (V1, V2,…), what each corresponds to on the grid shown in Figure xxxxxx, and draw the constraint graph.\n\nb) How many constraints are there in this problem and what are they?\n\nc) For each variable write down the domain satisfying the node consistency.\n\nd) Apply arc consistency algorithm AC-3. Write down the domains of the variables after AC-3. When applying AC-3, assume a queue (i.e.,FIFO) of edges of the constraint graph initially sorted in the ascending order, starting from V1, i.e., V1V2, V1V3,… In order to show your work, fill in the table (similar to the one) below.\n\n| Arc consisteny Queue | Current considered arc | Domains of arc variables before arc consistency check | Domains of arc variables after arc consistency check |\n|---|---|---|---|\n| V1V2, V1V3, … (but write out fully) | V1V2 | V1:{Write out domain}<br>V2:{…} | V1:{…}<br>V2:{…} |\n| V1V3, … | V1V3, | V1:{…}<br>V3:{…} | V1:{…}<br>V3:{…} |\n\ne) If AC-3 finds a solution, what is it (provide the filled-out crossword puzzle, if any)? If it does not find any solution, explain why.\n\n*Merknad:* Deloppgavene a)–e) står to ganger i originalen, med litt ulik ordlyd. Svar én gang. «Figure xxxxxx» og «the 4x5 grid on the top of the page» er rutenettet i figuren.",
+   "f": [
+    [
+     "a) Variablene og constraint-grafen",
+     "area",
+     "V1 = …\nKanter: …"
+    ],
+    [
+     "b) Constraints",
+     "area"
+    ],
+    [
+     "c) Domenene etter node consistency",
+     "area",
+     "V1: { … }\nV2: { … }\nV3: { … }\nV4: { … }"
+    ],
+    [
+     "d) AC-3-tabell og domenene etter AC-3",
+     "area",
+     "| Kø | Bue | Før | Etter |\n…"
+    ],
+    [
+     "d) D(V1) etter AC-3",
+     "text",
+     "{ … }"
+    ],
+    [
+     "d) D(V2) etter AC-3",
+     "text",
+     "{ … }"
+    ],
+    [
+     "d) D(V3) etter AC-3",
+     "text",
+     "{ … }"
+    ],
+    [
+     "d) D(V4) etter AC-3",
+     "text",
+     "{ … }"
+    ],
+    [
+     "e) Løsning eller forklaring",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "d) D(V1) etter AC-3": [
+      "{astar, hello}"
+     ],
+     "d) D(V2) etter AC-3": [
+      "{load, loom, tine}"
+     ],
+     "d) D(V3) etter AC-3": [
+      "{oak, old, run}"
+     ],
+     "d) D(V4) etter AC-3": [
+      "{load, talk, anon}"
+     ]
+    },
+    "merk": "Domenene etter AC-3. Rekkefølgen inni mengden er likegyldig.",
+    "kilde": "2020ResitA.docx, problem 3, og AC-3 i algoritmefila (kryssordeksempelet)."
+   },
+   "fasit": "**a)** Fire variabler, én per ordplass. Rutenettet er 4 × 5 (rad 1 øverst, kolonne 1 til venstre):\n- **V1** = 1-across: rad 1, kolonne 1–5, 5 bokstaver\n- **V2** = 2-down: kolonne 3, rad 1–4, 4 bokstaver\n- **V3** = 3-down: kolonne 5, rad 1–3, 3 bokstaver\n- **V4** = 4-across: rad 3, kolonne 2–5, 4 bokstaver\n\n**Constraint graph:** V1–V2, V1–V3, V2–V4 og V3–V4. Grafen er en sykel med fire noder, med en kant der to ord krysser hverandre.\n\n**b) 8 constraints** (fasiten):\n- C1–C4 (unary): V1 har 5 bokstaver, V2 har 4, V3 har 3 og V4 har 4.\n- C5: V1[3] = V2[1]\n- C6: V1[5] = V3[1]\n- C7: V4[2] = V2[3]\n- C8: V4[4] = V3[3]\n\n«Each word will be used only once» gir i tillegg V2 ≠ V4, det eneste paret med samme lengde. Fasiten teller den ikke, og den endrer ikke AC-3.\n\n**c) Node consistency:**\n- V1: {astar, happy, hello, hoses}\n- V2: {live, load, loom, peal, peel, save, talk, anon, nerd, tine}\n- V3: {ant, oak, old, ten, run}\n- V4: {live, load, loom, peal, peel, save, talk, anon, nerd, tine}\n\n**d) AC-3** med sortert FIFO-kø og bokas regel (legg til alle Xk→Xi unntatt Xj→Xi):\n\n| # | Kø før pop | Bue | Stryk | D etter | Legg til |\n|---|---|---|---|---|---|\n| 1 | V1V2 V1V3 V2V1 V2V4 V3V1 V3V4 V4V2 V4V3 | V1V2 | – | V1 = {astar, happy, hello, hoses} | – |\n| 2 | V1V3 V2V1 V2V4 V3V1 V3V4 V4V2 V4V3 | V1V3 | happy, hoses | V1 = {astar, hello} | – |\n| 3 | V2V1 V2V4 V3V1 V3V4 V4V2 V4V3 | V2V1 | peal, peel, save, anon, nerd | V2 = {live, load, loom, talk, tine} | – |\n| 4 | V2V4 V3V1 V3V4 V4V2 V4V3 | V2V4 | live, talk | V2 = {load, loom, tine} | V1V2 |\n| 5 | V3V1 V3V4 V4V2 V4V3 V1V2 | V3V1 | ant, ten | V3 = {oak, old, run} | – |\n| 6 | V3V4 V4V2 V4V3 V1V2 | V3V4 | – | V3 = {oak, old, run} | – |\n| 7 | V4V2 V4V3 V1V2 | V4V2 | live, peal, peel, nerd, tine | V4 = {load, loom, save, talk, anon} | V3V4 |\n| 8 | V4V3 V1V2 V3V4 | V4V3 | loom, save | V4 = {load, talk, anon} | V2V4 |\n| 9 | V1V2 V3V4 V2V4 | V1V2 | – | V1 = {astar, hello} | – |\n| 10 | V3V4 V2V4 | V3V4 | – | V3 = {oak, old, run} | – |\n| 11 | V2V4 | V2V4 | – | V2 = {load, loom, tine} | – |\n\n- Rad 2: Femte bokstav i V1 må begynne et ord på tre bokstaver (a, o, t eller r). Happy (y) og hoses (s) faller bort.\n- Rad 3: Tredje bokstav i V1 er nå t (astar) eller l (hello), så V2 må begynne på t eller l.\n- Rad 4: Tredje bokstav i V2 må være andre bokstav i et V4-ord. Live (v) og talk (l) har ingen partner. V1V2 legges tilbake, og V4V2 står alt i køen.\n- Rad 5: V3 må begynne på r eller o.\n- Rad 7: Andre bokstav i V4 må være a, o eller n (tredje bokstav i load, loom eller tine).\n- Rad 8: Fjerde bokstav i V4 må være k, d eller n (siste bokstav i oak, old eller run).\n\n**Etter AC-3: V1 = {astar, hello}, V2 = {load, loom, tine}, V3 = {oak, old, run}, V4 = {load, talk, anon}.**\n\nLøsningsforslaget har to skrivefeil i c): «loam» skal være loom, og den siste linjen heter V2, men er V4. Det legger også tilbake Xj→Xi når D(Xi) krymper. Den får 12 rader i stedet for 11, men de samme domenene.\n\n**e) AC-3 gir ingen entydig løsning.** Svaret er true, men hver variabel har fortsatt 2–3 verdier. AC-3 sjekker bare én bue om gangen, og tre kombinasjoner er fortsatt konsistente:\n- (astar, tine, run, anon)\n- (hello, load, oak, talk)\n- (hello, loom, old, load)\n\nEt søk (backtracking) må velge mellom dem. Den første gir dette rutenettet (■ = blå rute):\n\n```\na s t a r\n■ ■ i ■ u\n■ a n o n\n■ ■ e ■ ■\n```\n\n*Kilde: løsningsforslaget til kont-eksamen august 2021 (2020ResitA), problem 3, og notatet til E06, Håndsporing 3. Kontrollert med AC-3 i algoritmefila og ved å prøve alle ordkombinasjoner.*"
+  },
+  {
+   "t": "Oppgave 4 (10 p): Adversarial Search",
+   "img": [
+    "nettside-figurer/e08-2020kont-p4.svg"
+   ],
+   "d": "The following figure shows a game tree.\n\na) Apply Minimax algorithm and find the values of all the nodes above the leaf nodes. What is the value of the solution for the agent max?\n\nb) Apply alpha-beta pruning algorithm to find which nodes can e pruned. Write down the names of the nodes (the letters in the square and ellipses), either leaves or the nodes of which all children are pruned. For example if 11 and 12 are pruned then it is sufficient to write node j only.\n\n*Merknad:* Det nest siste bladet (under o) er merket «x5» i figuren, men er trolig x15. Eksempelet i b) mener trolig x11 og x12, og da er det node m.",
+   "f": [
+    [
+     "a) Minimax-verdiene til nodene over bladene",
+     "area",
+     "a: …\nb: … c: …\nd: … e: … f: … g: …\nh: … i: … j: … k: … l: … m: … n: … o: …"
+    ],
+    [
+     "a) Verdien av løsningen for MAX",
+     "text"
+    ],
+    [
+     "b) Noder som kan kuttes",
+     "text",
+     "…"
+    ]
+   ],
+   "tegn": {
+    "type": "tre",
+    "data": {
+     "id": "a",
+     "type": "max",
+     "tekst": "a",
+     "barn": [
+      {
+       "id": "b",
+       "type": "min",
+       "tekst": "b",
+       "barn": [
+        {
+         "id": "d",
+         "type": "max",
+         "tekst": "d",
+         "barn": [
+          {
+           "id": "h",
+           "type": "min",
+           "tekst": "h",
+           "barn": [
+            {
+             "id": "x1",
+             "type": "blad",
+             "verdi": 7,
+             "tekst": "x1"
+            },
+            {
+             "id": "x2",
+             "type": "blad",
+             "verdi": 9,
+             "tekst": "x2"
+            }
+           ]
+          },
+          {
+           "id": "i",
+           "type": "min",
+           "tekst": "i",
+           "barn": [
+            {
+             "id": "x3",
+             "type": "blad",
+             "verdi": 6,
+             "tekst": "x3"
+            },
+            {
+             "id": "x4",
+             "type": "blad",
+             "verdi": 9,
+             "tekst": "x4"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "id": "e",
+         "type": "max",
+         "tekst": "e",
+         "barn": [
+          {
+           "id": "j",
+           "type": "min",
+           "tekst": "j",
+           "barn": [
+            {
+             "id": "x5",
+             "type": "blad",
+             "verdi": 11,
+             "tekst": "x5"
+            },
+            {
+             "id": "x6",
+             "type": "blad",
+             "verdi": 12,
+             "tekst": "x6"
+            }
+           ]
+          },
+          {
+           "id": "k",
+           "type": "min",
+           "tekst": "k",
+           "barn": [
+            {
+             "id": "x7",
+             "type": "blad",
+             "verdi": 13,
+             "tekst": "x7"
+            },
+            {
+             "id": "x8",
+             "type": "blad",
+             "verdi": 10,
+             "tekst": "x8"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "c",
+       "type": "min",
+       "tekst": "c",
+       "barn": [
+        {
+         "id": "f",
+         "type": "max",
+         "tekst": "f",
+         "barn": [
+          {
+           "id": "l",
+           "type": "min",
+           "tekst": "l",
+           "barn": [
+            {
+             "id": "x9",
+             "type": "blad",
+             "verdi": 5,
+             "tekst": "x9"
+            },
+            {
+             "id": "x10",
+             "type": "blad",
+             "verdi": 4,
+             "tekst": "x10"
+            }
+           ]
+          },
+          {
+           "id": "m",
+           "type": "min",
+           "tekst": "m",
+           "barn": [
+            {
+             "id": "x11",
+             "type": "blad",
+             "verdi": 4,
+             "tekst": "x11"
+            },
+            {
+             "id": "x12",
+             "type": "blad",
+             "verdi": 3,
+             "tekst": "x12"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "id": "g",
+         "type": "max",
+         "tekst": "g",
+         "barn": [
+          {
+           "id": "n",
+           "type": "min",
+           "tekst": "n",
+           "barn": [
+            {
+             "id": "x13",
+             "type": "blad",
+             "verdi": 1,
+             "tekst": "x13"
+            },
+            {
+             "id": "x14",
+             "type": "blad",
+             "verdi": 2,
+             "tekst": "x14"
+            }
+           ]
+          },
+          {
+           "id": "o",
+           "type": "min",
+           "tekst": "o",
+           "barn": [
+            {
+             "id": "x15",
+             "type": "blad",
+             "verdi": 2,
+             "tekst": "x5"
+            },
+            {
+             "id": "x16",
+             "type": "blad",
+             "verdi": 3,
+             "tekst": "x16"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "sjekk": {
+    "f": {
+     "a) Verdien av løsningen for MAX": [
+      "7"
+     ],
+     "b) Noder som kan kuttes": [
+      "{x4, k, x10, x12, g}"
+     ]
+    },
+    "merk": "Et deltre som kuttes helt, skrives med toppnoden: k og g, ikke bladene under.",
+    "kilde": "2020ResitA.docx, problem 4 («solution=7», «x4, k, x10, x12, and g are pruned»), og alfa-beta i algoritmefila."
+   },
+   "fasit": "**a) h = 7, i = 6, j = 11, k = 10, l = 4, m = 3, n = 1, o = 2; d = 7, e = 11, f = 4, g = 2; b = 7, c = 2; a = 7.**\n\n**Verdien av løsningen for MAX: 7** (a → b → d → h).\n\n**b) Kuttes: x4, k, x10, x12 og g.**\n\n**a) Minimax nedenfra.** a er MAX, b og c MIN, d–g MAX og h–o MIN. Bladet under o som figuren kaller x5, er x15.\n\n| Nivå | Regning |\n|---|---|\n| h–o (MIN) | h = min(7, 9) = 7, i = min(6, 9) = 6, j = min(11, 12) = 11, k = min(13, 10) = 10, l = min(5, 4) = 4, m = min(4, 3) = 3, n = min(1, 2) = 1, o = min(2, 3) = 2 |\n| d–g (MAX) | d = max(7, 6) = 7, e = max(11, 10) = 11, f = max(4, 3) = 4, g = max(1, 2) = 2 |\n| b, c (MIN) | b = min(7, 11) = 7, c = min(4, 2) = 2 |\n| a (MAX) | a = max(7, 2) = **7** |\n\nFasiten skriver grensene fra alpha-beta for nodene som ikke blir ferdig regnet: i ≤ 6, e ≥ 11, c ≤ 5, f ≤ 5, l ≤ 5 og m ≤ 4. De stemmer med de eksakte verdiene over.\n\n**b) Alpha-beta**, barn fra venstre:\n\n| Steg | Node | α | β | v | Hva skjer |\n|---|---|---|---|---|---|\n| 1 | h ser x1 = 7, x2 = 9 | −∞ | 7 | 7 | h = 7 |\n| 2 | d | 7 | ∞ | 7 | d er MAX og løfter α til 7 |\n| 3 | i ser x3 = 6 | 7 | 6 | 6 | **kutt x4: v = 6 ≤ α = 7** (α fra d). i ≤ 6 |\n| 4 | d, b | −∞ | 7 | 7 | d = 7, og b får β = 7 |\n| 5 | j ser x5 = 11, x6 = 12 | −∞ | 7 | 11 | j er MIN og sammenligner med α = −∞, så ingen kutt. j = 11 |\n| 6 | e | 11 | 7 | 11 | **kutt k: v = 11 ≥ β = 7** (β fra b). e ≥ 11 |\n| 7 | b, a | 7 | ∞ | 7 | b = 7, og a får α = 7 |\n| 8 | l ser x9 = 5 | 7 | 5 | 5 | **kutt x10: v = 5 ≤ α = 7** (α fra a). l ≤ 5 |\n| 9 | m ser x11 = 4 | 7 | 4 | 4 | **kutt x12: v = 4 ≤ α = 7**. m ≤ 4 |\n| 10 | f, c | 7 | 5 | 5 | f ≤ 5, så c ≤ 5. **Kutt g: v = 5 ≤ α = 7** |\n| 11 | a | 7 | ∞ | 7 | **a = 7** via b. 7 av 16 blader er sett |\n\nSiden hele k og g kuttes, skriver du k og g, ikke x7, x8 og x13–x16.\n\n*Kilde: løsningsforslaget til eksamen 2020 kontinuasjon (aug. 2021), problem 4.*"
+  },
+  {
+   "t": "Oppgave 5 (15 p): Game theory",
+   "d": "In an auction two agents are competing to obtain a porcelain vase. This is a type of auction where all bidders simultaneously submit sealed bids to the auctioneer so that no bidder knows how much the other auction participants have bid.\n\nThe allowed bids are $0, $10, $20, $30, $40, $50.\n\nThe porcelain is worth $40 to the agent A1 and $30 to the agent A2. The highest bidder wins the porcelain. In case of a tie, A1 gets the vase.\n\nAccording to the rules of this auction, the winner pays a price p which is whatever the other agent bids. So, if the value of the porcelain for agent i is x and agent i wins the vase her payoff is x-p. If she does not win the vase her payoff is zero.\n\nAnswer the following questions:\n\na. Write down the payoffs of the agents as a matrix – illustrating agents, actions(bids), and the payoffs\n\nb. Is there a strictly dominant strategy equilibrium of this game? Explain.\n\nc. Is there a weakly dominant strategy equilibrium of this game? Explain.\n\nd. What are the action profiles that survive Iterated Elimination of Strictly Dominated Actions? Explain how do the eliminations take place.\n\ne. What are the action profiles that survive Iterated Elimination of Weakly Dominated Actions? Explain how do the eliminations take place.\n\nf. What is the solution if the game is solvable using the ‘dominance’ concept. (i.e., dominance solvable). Explain your answer.",
+   "f": [
+    [
+     "a. Payoff-matrisen",
+     "area",
+     "rad = A1s bud, kolonne = A2s bud, celle = (A1, A2)\n      0       10      20      30      40      50\n0   (…, …)  …\n10  …"
+    ],
+    [
+     "b. Strictly dominant strategy equilibrium?",
+     "area"
+    ],
+    [
+     "c. Weakly dominant strategy equilibrium?",
+     "area"
+    ],
+    [
+     "d. Iterated elimination of strictly dominated actions",
+     "area"
+    ],
+    [
+     "e. Iterated elimination of weakly dominated actions",
+     "area"
+    ],
+    [
+     "f. Dominance solvable? Løsning",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "b. Strictly dominant strategy equilibrium?": [
+      "nei",
+      "no"
+     ],
+     "c. Weakly dominant strategy equilibrium?": [
+      "nei",
+      "no"
+     ],
+     "f. Dominance solvable? Løsning": [
+      "nei",
+      "no"
+     ]
+    },
+    "merk": "Svar ja eller nei først, så forklaringen.",
+    "kilde": "2020ResitA.docx, problem 5, og dominans-nash i algoritmefila."
+   },
+   "fasit": "**a.** Rad = A1s bud, kolonne = A2s bud, celle = (A1, A2). Er b₁ ≥ b₂, vinner A1 og betaler b₂: (40 − b₂, 0). Er b₁ < b₂, vinner A2 og betaler b₁: (0, 30 − b₁).\n\n| A1 \\ A2 | 0 | 10 | 20 | 30 | 40 | 50 |\n|---|---|---|---|---|---|---|\n| **0** | 40, 0 | 0, 30 | 0, 30 | 0, 30 | 0, 30 | 0, 30 |\n| **10** | 40, 0 | 30, 0 | 0, 20 | 0, 20 | 0, 20 | 0, 20 |\n| **20** | 40, 0 | 30, 0 | 20, 0 | 0, 10 | 0, 10 | 0, 10 |\n| **30** | 40, 0 | 30, 0 | 20, 0 | 10, 0 | 0, 0 | 0, 0 |\n| **40** | 40, 0 | 30, 0 | 20, 0 | 10, 0 | 0, 0 | 0, −10 |\n| **50** | 40, 0 | 30, 0 | 20, 0 | 10, 0 | 0, 0 | −10, 0 |\n\n**b. Nei, ingen strictly dominant strategy equilibrium.** Beste bud avhenger av motstanderens bud. For A1 gir alle bud 40 i kolonne 0, så ingen rad er strengt bedre enn alle andre i hver kolonne. For A2 gir alle bud 0 i rad 30.\n\n**c. Nei, ingen weakly dominant strategy equilibrium.** For A1 gir 30 og 40 nøyaktig samme rad (40, 30, 20, 10, 0, 0). Begge dominerer 0, 10, 20 og 50 weakly (50 gir −10 i kolonne 50), men ikke hverandre, fordi de er like overalt. For A2 gir 30 og 40 samme kolonne (30, 20, 10, 0, 0, 0) og dominerer de andre weakly. Ingen handling dominerer alle andre, så ingen av spillerne har en weakly dominant strategi.\n\n**d. Alle 36 profilene overlever IESDA.** Ingen handling er strictly dominert: alle A1s rader er like (40) i kolonne 0, og alle A2s kolonner er like (0) i rad 30. Da kan ingen handling være strengt dårligere enn en annen overalt, og ingenting strykes.\n\n**e. {30, 40} × {20, 30, 40}** med fasitens rekkefølge:\n\n| Steg | Stryk | Dominert av | Sammenligning over det som er igjen |\n|---|---|---|---|\n| 1 | A1: 0 | 10 | (40, 30, 0, 0, 0, 0) mot (40, 0, 0, 0, 0, 0) |\n| 2 | A2: 0 | 20 | (20, 0, 0, 0, 0) mot (0, 0, 0, 0, 0) i rad 10–50 |\n| 3 | A1: 50 | 40 | (30, 20, 10, 0, 0) mot (30, 20, 10, 0, −10) i kolonne 10–50 |\n| 4 | A2: 50 | 40 | (20, 10, 0, 0) mot (20, 10, 0, −10) i rad 10–40 |\n| 5 | A1: 10 | 30 | (30, 20, 10, 0) mot (30, 0, 0, 0) i kolonne 10–40 |\n| 6 | A2: 10 | 30 | (10, 0, 0) mot (0, 0, 0) i rad 20–40 |\n| 7 | A1: 20 | 30 | (20, 10, 0) mot (20, 0, 0) i kolonne 20–40 |\n\nSå stopper det. A1s 30 og 40 er like, (20, 10, 0), og A2 får 0 overalt i rad 30 og 40. Seks profiler står igjen, med payoff (20, 0), (10, 0) og (0, 0).\n\nRekkefølgen betyr noe med weak. Stryker du A1: 0, A2: 0, A1: 10, A2: 10, A1: 20, A2: 50, står A1s 50 igjen, fordi 40 og 50 er like i kolonnene 20–40. Da blir svaret {30, 40, 50} × {20, 30, 40}. Fasiten sier det samme: andre rekkefølger gir andre utfall.\n\n**f. Nei, spillet er ikke dominance solvable.** Strict eliminasjon fjerner ingenting. Weak eliminasjon ender ikke i ett utfall, spillerne er ikke likegyldige mellom utfallene som står igjen (A1 får 20, 10 eller 0), og resultatet avhenger av rekkefølgen.\n\n*Kilde: løsningsforslaget til eksamen 2020 kontinuasjon (aug. 2021), problem 5.*"
+  }
+ ]
+}

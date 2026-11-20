@@ -1,0 +1,633 @@
+{
+ "id": "ek2023",
+ "ep": "2023",
+ "tittel": "Ordinær eksamen",
+ "kilde": "../materiale/Files/Previous%20exams/2023Q%26A.pdf",
+ "om": "## TDT4136 Exam 2023\n\n*Merknad:* Kilden er løsningsforslaget (`2023Q&A.pdf`) med spørsmålene og løsningene etter hverandre. Den har ingen forside: tid og hjelpemidler står ikke der. Oppgave 2–8 har poeng, til sammen 80 p. Kortspørsmålene i oppgave 1 og totalsummen er ikke oppgitt. Noen deloppgaver har poeng i prosent, for eksempel «(1%)», slik det står i kilden.",
+ "intro": "Etter «Lever» kan stiene og kostnadene i 2.1, intervallene for h(B) i 2.2, AC-3-domenene og rekkefølgen i 4, likevekten i 5, verdien i 6 og belief states i 7 sjekkes med Sjekk. Grafen i 2.1 kan åpnes i tegneverktøyet.",
+ "fasit": "**Fasit for eksamen 2023.** Poengene etter oppgaveteksten:\n\n| Oppgave | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | Sum |\n|---|---|---|---|---|---|---|---|---|---|\n| Poeng | ikke oppgitt | 20 | 20 | 15 | 10 | 5 | 5 | 5 | 80 + oppgave 1 |\n\nKortsvar:\n\n- **2.1:** BFS S–B–G (17). DFS og greedy går i løkke ved A (None). UCS og A\\* S–A–C–G (12).\n- **2.2:** 4 ≤ h(B) ≤ 6, 7 < h(B) < 11, h(B) > 11.\n- **3:** boka er under blomsterpotta. Fido er eldre enn Snowy.\n- **4:** X1 = B1, X2 ∈ {A2, B2, C2}, X3 = A1, X4 ∈ {C1, C2}, X5 ∈ {B2, C2} etter AC-3. Løsning X1 = B1, X3 = A1, X4 = C1, X5 = B2, X2 = A2.\n- **5:** ingen dominant strategy. IESDS og Nash gir (Accelerate, Accelerate). Social welfare er høyest i (Maintain, Maintain).\n- **6:** A = 6,5: krev 10 %.\n- **7:** S1 = {(r0, c0), (r3, c0), (r0, c7)}, S2 = {(r3, c1)}.\n- **8:** DriveCar(Home, ToyStore, Car), Buy(Toy, ToyStore), DriveCar(ToyStore, Home, Car).\n\nUtregningene er kontrollert med algoritmene i `nettside-algo/`. Der løsningsforslaget har slurvefeil, står det i fasiten til oppgaven.",
+ "tasks": [
+  {
+   "t": "Oppgave 1: Short questions",
+   "d": "1. Assume a Hill Climbing algorithm found a state from which none of the neighbour states produce an increase in the score value. What can this state be, if not a global maximum? What method/trick may be added to the algorithm in order to proceed from such states?\n2. An AI system is used at the Human Resources (HR) department in the recruitment process. The system is given a job advertisement together with the applications of the candidates and it makes a suggestion about who to hire. Assume that the system is taking “corrective decisions”, which means that it takes into consideration the social injustice issues that appear because of the bias in the past decisions and attempts to decrease injustice. Is this an episodic or a sequential environment? Justify your answer.\n3. This question is about the environment and agent matching. To behave intelligently in a partially observable environment, in which respects the agent should be different from a simple reflex agent?\n4. If h<sub>1</sub>(s) and h<sub>2</sub>(s) are two admissible A\\* heuristics, then would their average h<sub>3</sub>(s) = 1/2h<sub>1</sub>(s) + 1/2h<sub>2</sub>(s) be admissible? Explain your answer very briefly.\n5. A robot is going to help to move a person from one apartment to another one, by loading the ready boxes in different room to a truck parked outside of the building. There are 4 rooms in total, called R1,. . . .R4 where, in the beginning R1 has 3 boxes, R2 has 1 box, R3 has 5, and R4 has 2 boxes. On each turn, the robot can move a box into an adjacent room, in any direction: north, south, east, west. Some of the rooms are adjacent to another(s) while some others are not connected. In the beginning, the robot is in the truck. This can be represented as a search problem. How would you formulate a state in the search space in general, and how would the beginning state be represented?\n6. Aristotle argued that actions are justified by a logical connection between goal and knowledge of the action’s outcome. Over 2000 years later his ideas were implemented in AI by two pioneer AI researchers in AI. Who are/were they and what is the name of the program they designed and coded?\n7. What is the difference between stochastic and non-deterministic environments — according to the textbook?\n8. In some competitive multiagent environments, randomized behaviour is rational. Why, explain.\n9. Backward and forward chaining algorithms in logic works with sentences in a specific form, and a specific inference rule. What are the names of the representation and the rule?\n10. Describe what individual fairness means with respect to ethics in AI, and explain what kind of methods can be used to implement/realize it in an AI system.\n\n*Merknad:* Kortspørsmålene står uten nummer i kilden. Numrene er lagt til her, så svarfeltet havner under hvert spørsmål. Poeng er ikke oppgitt.",
+   "f": [
+    [
+     "1. What the state can be, and the trick",
+     "area"
+    ],
+    [
+     "2. Episodic or sequential?",
+     "text"
+    ],
+    [
+     "2. Justification",
+     "area"
+    ],
+    [
+     "3. How the agent must differ from a simple reflex agent",
+     "area"
+    ],
+    [
+     "4. Admissible? (yes/no)",
+     "text"
+    ],
+    [
+     "4. Explanation",
+     "area"
+    ],
+    [
+     "5. The state in general, and the beginning state",
+     "area"
+    ],
+    [
+     "6. The two researchers",
+     "text"
+    ],
+    [
+     "6. The program",
+     "text"
+    ],
+    [
+     "7. Stochastic vs. non-deterministic",
+     "area"
+    ],
+    [
+     "8. Why randomized behaviour can be rational",
+     "area"
+    ],
+    [
+     "9. Representation",
+     "text"
+    ],
+    [
+     "9. Inference rule",
+     "text"
+    ],
+    [
+     "10. Individual fairness, and methods",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "2. Episodic or sequential?": [
+      "sequential",
+      "sekvensiell",
+      "sekvensielt"
+     ],
+     "4. Admissible? (yes/no)": [
+      "yes",
+      "ja"
+     ],
+     "6. The two researchers": [
+      "Herbert Simon and Allen Newell",
+      "Allen Newell and Herbert Simon",
+      "Newell and Simon",
+      "Simon and Newell",
+      "Newell og Simon",
+      "Simon og Newell",
+      "Allen Newell og Herbert Simon",
+      "Herbert Simon og Allen Newell"
+     ],
+     "6. The program": [
+      "General Problem Solver",
+      "GPS",
+      "General Problem Solver (GPS)"
+     ],
+     "9. Representation": [
+      "Horn clauses",
+      "Horn clause",
+      "Horn",
+      "Horn-klausuler",
+      "Horn-klausul",
+      "definite clauses",
+      "definite clause"
+     ],
+     "9. Inference rule": [
+      "Modus Ponens",
+      "Generalized Modus Ponens",
+      "Generalised Modus Ponens",
+      "GMP",
+      "MP"
+     ]
+    },
+    "merk": "Løsningsforslaget: sequential, ja, Herbert Simon og Allen Newell med General Problem Solver, Horn clauses og modus ponens.",
+    "kilde": "2023Q&A.pdf, oppgave 1 (short questions)"
+   },
+   "fasit": "**1.** **Tilstanden kan være en local maximum, eller et platå: en flat local maximum, eller en shoulder der det går oppover lenger borte.** Løsningsforslaget nevner platå.\n\n**Triks: random restart** (løsningsforslaget). Andre gode svar er sideways moves (med en grense for antall sidesteg på rad; hjelper bare på et platå eller en shoulder) og simulated annealing. Stochastic hill climbing hjelper ikke her: den trekker bare blant uphill moves, og når ingen nabo er bedre, stopper den også (AIMA 4.1.1).\n\nModellsvar: Steepest-ascent hill climbing stopper når ingen nabo er strengt bedre. Det skjer på en local maximum, på et platå og på en shoulder, fordi algoritmen bare ser ett steg fram. Random-restart hill climbing starter på nytt fra en tilfeldig tilstand og er complete med sannsynlighet 1. Sideways moves lar søket gå over platåer og shoulders. Simulated annealing godtar av og til dårligere trekk og kan dermed komme seg ut av lokale maksima.\n\n**2.** **HR-systemet: sequential.** Med «corrective decisions» bygger systemet på tidligere beslutninger (skjevheten i dem) og prøver å redusere urettferdigheten over tid. Hvert forslag endrer sammensetningen av de ansatte og dermed hva som er rettferdig neste gang, så valget nå påvirker framtidige valg. Hadde hver ansettelse stått helt alene, ville miljøet vært episodic. Løsningsforslaget svarer «fully observable, and sequential»: systemet får hele utlysningen og alle søknadene.\n\n**3.** **Agenten trenger hukommelse (internal state) og en modell av verden, slik at den kan holde styr på en belief state i stedet for å reagere bare på nåværende percept.**\n\nEn simple reflex agent velger handling med condition-action rules ut fra nåværende percept alene. I et partially observable miljø bestemmer ikke percepten tilstanden: to ulike tilstander kan se like ut og kreve ulike handlinger. Agenten må derfor være model-based. Den lagrer det den har sett, har en transition model (hvordan verden endrer seg og hva handlingene gjør) og en sensor model, og oppdaterer en belief state (mengden mulige tilstander) med predict og update. Løsningsforslaget sier det slik: agenten trenger hukommelse, og overgangsfunksjonen virker på belief states, ikke på enkelttilstander.\n\n**4. Ja.** h₃(s) = ½h₁(s) + ½h₂(s) ≤ ½h\\*(s) + ½h\\*(s) = h\\*(s), fordi både h₁ og h₂ er ≤ h\\*. Gjennomsnittet ligger mellom de to og er aldri større enn den største, så det overvurderer aldri. Samme regning viser at gjennomsnittet av to consistent heuristikker er consistent. max(h₁, h₂) er også admissible og dominerer gjennomsnittet, så den er vanligvis bedre.\n\n**5. Tilstand: (robotens plass, antall esker i R1, R2, R3 og R4, antall esker i bilen). Start: (Truck, 3, 1, 5, 2, 0).**\n\nRobotens plass er en av R1–R4 eller Truck, og tallene er ≥ 0. Hvilke rom som henger sammen, endrer seg aldri og hører til handlingene (transition model), ikke til tilstanden. Antall esker i bilen er 11 minus summen av de andre og kan sløyfes, men gjør måltesten enkel: målet er (·, 0, 0, 0, 0, 11). Skal roboten kunne bære en eske mellom to trekk, trengs også et felt for det. Løsningsforslaget bruker tuppelen (agent, R1, R2, R3, R4, Truck).\n\n**6. Herbert Simon og Allen Newell. Programmet er General Problem Solver (GPS).**\n\nAristoteles beskrev hvordan man resonnerer fra et mål og kunnskap om hva handlingene fører til, fram til handlingen man bør gjøre. Newell og Simon bygde det inn i GPS med means–ends analysis. GPS er bokas eksempel på «thinking humanly» (cognitive modeling) i kapittel 1, og de to står også bak physical symbol system hypothesis.\n\n**7. I et stochastic miljø har utfallene eksplisitte sannsynligheter. I et nondeterministic miljø er de mulige utfallene listet, men uten sannsynligheter.**\n\nBegge er ikke deterministiske: neste tilstand følger ikke entydig av tilstand og handling. «50 % sjanse for regn» er stochastic, mens «det kan bli regn» er nondeterministic. Nondeterministic miljøer løses med AND-OR-søk og contingency plans (kapittel 4), stochastic med forventet nytte.\n\n**8. En forutsigbar agent kan utnyttes av motstanderen. Tilfeldig oppførsel gjør neste trekk umulig å forutsi.**\n\nI et competitive multiagent-miljø lærer motstanderen et fast mønster og velger beste svar mot det. I stein, saks, papir taper enhver deterministisk strategi mot en som kjenner den, mens å velge tilfeldig med 1/3 på hver er en mixed strategy Nash equilibrium. Boka (2.3.2) begrunner det med at randomisering unngår fallgruvene ved å være forutsigbar.\n\n**9.** **Representasjon: Horn clauses** (i FOL: definite clauses, med nøyaktig én positiv literal).\n\n**Slutningsregel: Modus Ponens** (i FOL: Generalized Modus Ponens).\n\nForward chaining bruker Modus Ponens fra faktaene mot målet, og backward chaining går fra målet bakover til faktaene. En Horn clause har høyst én positiv literal: ¬P ∨ Q (P ⇒ Q) er definite, og ¬P ∨ ¬Q er Horn med null positive literaler (en goal clause). Klausuler med to eller flere positive literaler, som P ∨ Q eller ¬A ∨ B ∨ C, er ikke Horn og krever resolution.\n\n**10.** **Individual fairness betyr at like individer behandles likt, uansett hvilken gruppe de tilhører.** To kandidater som er like i de relevante egenskapene, skal få samme avgjørelse, for eksempel samme svar på en jobbsøknad eller lånesøknad. Det skiller seg fra group fairness, som sammenligner en statistikk mellom grupper (demographic parity, equal opportunity).\n\n**Metoder: et mål for likhet mellom kandidater, og en sjekk av at like kandidater får samme avgjørelse.** Hvis like kandidater får ulike avgjørelser, er systemet skjevt eller inkonsistent. Gjennomsiktige, sporbare og forklarbare metoder egner seg godt, for eksempel case-based reasoning eller en nearest neighbour-klassifikator: avgjørelsen begrunnes med de mest like tidligere sakene, og det er lett å se om like saker fikk likt utfall. Det holder ikke å fjerne den sensitive variabelen (fairness through unawareness), fordi andre variabler, som postnummer, kan avsløre den.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 1 (short questions).*"
+  },
+  {
+   "t": "Oppgave 2 (20 p): Search",
+   "img": [
+    "nettside-figurer/e02-2023-q2.png"
+   ],
+   "tegn": "L23",
+   "d": "**2.1 Search algorithms (10 pts)**\n\n1. Execute tree-like search through the following graph (see Fig. 1) for the given algorithms below. Tie breaking: Left-to-right order of successors.\n\n   a- Breadth first search, b- Depth First search, c- Uniform cost search, d- Greedy best-first search, e- A\\* search\n\n   For each of the search algorithm,\n\n   - show the order in which the nodes are expanded.\n   - show the path from start to goal, or write “None” if no path to goal is found, and\n   - write the cost of the path found, in the following format\n\n   *Merknad:* Teksten slutter med «in the following format» også i kilden, uten noe format etter.\n\n**2.2 A\\* consistency (10 pts)**\n\n<img class=\"fig\" src=\"nettside-figurer/ek2023-q2-fig2.png\" alt=\"Figure 2: Graph for question 2.2: Consistency\">\n\n*Figure 2: Graph for question 2.2: Consistency*\n\nAssume:\n\n- h(A) = 5\n- h(C) = 4\n- h(D) = 3\n- h(E) = 3\n- h(F) = 1\n- h(G) = 0\n\n1. What values of h(B) make h monotonic/consistent?\n2. Without relying on tiebreaking, what values of h(B) will cause A\\* search to expand node A, C, B in this order?\n3. What values of h(B) will cause A\\* to return a sub-optimal path?",
+   "f": [
+    [
+     "1. BFS: order of expansion",
+     "text"
+    ],
+    [
+     "BFS: path",
+     "text"
+    ],
+    [
+     "BFS: cost",
+     "text"
+    ],
+    [
+     "DFS: order of expansion",
+     "text"
+    ],
+    [
+     "DFS: path",
+     "text"
+    ],
+    [
+     "DFS: cost",
+     "text"
+    ],
+    [
+     "UCS: order of expansion",
+     "text"
+    ],
+    [
+     "UCS: path",
+     "text"
+    ],
+    [
+     "UCS: cost",
+     "text"
+    ],
+    [
+     "Greedy best-first: order of expansion",
+     "text"
+    ],
+    [
+     "Greedy best-first: path",
+     "text"
+    ],
+    [
+     "Greedy best-first: cost",
+     "text"
+    ],
+    [
+     "A*: order of expansion",
+     "text"
+    ],
+    [
+     "A*: path",
+     "text"
+    ],
+    [
+     "A*: cost",
+     "text"
+    ],
+    [
+     "1. Values of h(B) that make h consistent",
+     "text"
+    ],
+    [
+     "2. Values of h(B) that give the order A, C, B",
+     "text"
+    ],
+    [
+     "3. Values of h(B) that give a sub-optimal path",
+     "text"
+    ],
+    [
+     "Calculations for 2.2",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "1. BFS: order of expansion": [
+      "S, A, B, (G)",
+      "S, A, B"
+     ],
+     "BFS: path": [
+      "S, B, G",
+      "SBG"
+     ],
+     "BFS: cost": [
+      "17"
+     ],
+     "DFS: path": [
+      "None",
+      "ingen",
+      "∅",
+      "no path",
+      "ingen sti",
+      "failure"
+     ],
+     "DFS: cost": [
+      "None",
+      "ingen",
+      "∅",
+      "no path",
+      "ingen sti",
+      "failure"
+     ],
+     "UCS: order of expansion": [
+      "S, A, B, C, (G)",
+      "S, A, B, C"
+     ],
+     "UCS: path": [
+      "S, A, C, G",
+      "SACG"
+     ],
+     "UCS: cost": [
+      "12"
+     ],
+     "Greedy best-first: path": [
+      "None",
+      "ingen",
+      "∅",
+      "no path",
+      "ingen sti",
+      "failure"
+     ],
+     "Greedy best-first: cost": [
+      "None",
+      "ingen",
+      "∅",
+      "no path",
+      "ingen sti",
+      "failure"
+     ],
+     "A*: order of expansion": [
+      "S, A, B, C, (G)",
+      "S, A, B, C"
+     ],
+     "A*: path": [
+      "S, A, C, G",
+      "SACG"
+     ],
+     "A*: cost": [
+      "12"
+     ],
+     "1. Values of h(B) that make h consistent": [
+      "4 ≤ h(B) ≤ 6",
+      "{4, 5, 6}",
+      "[4, 6]",
+      "4-6",
+      "4 ≤ h ≤ 6"
+     ],
+     "2. Values of h(B) that give the order A, C, B": [
+      "7 < h(B) < 11",
+      "{8, 9, 10}",
+      "8 ≤ h(B) ≤ 10",
+      "7 < h < 11"
+     ],
+     "3. Values of h(B) that give a sub-optimal path": [
+      "h(B) > 11",
+      "11 < h(B)",
+      "h(B) ≥ 12",
+      "> 11",
+      "h > 11"
+     ]
+    },
+    "merk": "DFS og greedy går i løkke ved A (S, A, A, A, …), så stien og kostnaden er None. Grensene i 2.2 kan skrives som ulikhet eller som mengde av heltall.",
+    "kilde": "2023Q&A.pdf, 2.1.1 og 2.2.1 Solution, kontrollert med A* i algoritmefila"
+   },
+   "fasit": "**2.1**\n\n- **a- BFS: Ekspandert S, A, B, (G) | sti S–B–G | kost 7 + 10 = 17.**\n- **b- DFS: Ekspandert S, A, A, A, … | sti: None (∅) | kost: ingen.**\n- **c- UCS: Ekspandert S, A, B, C, (G) | sti S–A–C–G | kost 4 + 4 + 4 = 12.**\n- **d- Greedy best-first: Ekspandert S, A, A, A, … | sti: None (∅) | kost: ingen.**\n- **e- A\\*: Ekspandert S, A, B, C, (G) | sti S–A–C–G | kost 4 + 4 + 4 = 12.**\n\n**BFS** (FIFO, målet testes når det genereres):\n\n| Ekspanderer | Genererer | Frontier etterpå |\n|---|---|---|\n| S | A, B | A, B |\n| A | A (løkka), C | B, A, C |\n| B | G, som er mål | stopper |\n\n**DFS** (tree-like, LIFO, venstre til høyre):\n\n| Ekspanderer | Frontier etterpå (øverst først) |\n|---|---|\n| S | A, B |\n| A | A, C, B |\n| A | A, C, C, B |\n| A | … |\n\nTree-like search har verken reached eller cycle check. Selvløkka A→A legger alltid en ny A øverst, så DFS kommer aldri videre.\n\n**UCS** (prioritetskø på g, målet testes når det tas ut):\n\n| Tas ut (g) | Frontier etterpå |\n|---|---|\n| S (0) | A 4, B 7 |\n| A (4) | B 7, C 8, A 17 |\n| B (7) | C 8, A 17, G 17 |\n| C (8) | G 12, A 17, G 17 |\n| G (12): mål | |\n\nTree-like UCS beholder både G 17 og G 12, og G 12 tas ut først. BFS finner færrest steg, ikke lavest kostnad. UCS gir den optimale stien.\n\n**Greedy best-first** (tree-like, f = h, venstre til høyre ved likhet):\n\n| Ekspanderer | Frontier etterpå (h) |\n|---|---|\n| S | A 3, B 3 |\n| A | A 3, B 3, C 3 |\n| A | A 3, B 3, C 3, C 3 |\n| … | løkka gir alltid en ny A med h = 3 først |\n\nA, B og C har alle h = 3, og selvløkka A→A legger hele tiden en ny A som vinner tie-break. Tree-like search husker ingenting, så greedy kommer aldri ut av løkka.\n\n**A\\*** (tree-like, f = g + h, målet testes når det tas ut):\n\n| Ekspanderer | Frontier etterpå (f = g + h) |\n|---|---|\n| S | A 4 + 3 = 7, B 7 + 3 = 10 |\n| A | B 10, C 8 + 3 = 11, A 17 + 3 = 20 |\n| B | C 11, G 17 + 0 = 17, A 20 |\n| C | G 12 + 0 = 12, G 17, A 20 |\n| G (12): mål | |\n\nSelv om G ligger i frontier med f = 17 etter B, er søket ikke ferdig: C har f = 11, og veien gjennom C koster 12. Tester du målet ved generering, svarer du S–B–G med kostnad 17. h(S) er ikke oppgitt og spiller ingen rolle, fordi S er roten.\n\n**2.2 1: 4 ≤ h(B) ≤ 6.**\n\nConsistency krever h(n) ≤ c(n, n′) + h(n′) for hver kant. Kantene som berører B:\n\n| Kant | Krav | Gir |\n|---|---|---|\n| A→B | h(A) ≤ 1 + h(B): 5 ≤ 1 + h(B) | h(B) ≥ 4 |\n| B→C | h(B) ≤ 2 + h(C) = 6 | h(B) ≤ 6 |\n| B→D | h(B) ≤ 3 + h(D) = 6 | h(B) ≤ 6 |\n\nDe andre kantene holder uansett: A→C 5 ≤ 8, C→E 4 ≤ 8, D→F 3 ≤ 3, D→G 3 ≤ 4, E→G 3 ≤ 3, F→G 1 ≤ 1.\n\n**2.2 2: 7 < h(B) < 11** (heltall: 8, 9 eller 10).\n\n- Etter A ligger B med f = 1 + h(B) og C med f = 4 + 4 = 8 i frontier. C først krever 1 + h(B) > 8, altså h(B) > 7.\n- Etter C ligger B og E med f = 9 + 3 = 12 i frontier. B før E krever 1 + h(B) < 12, altså h(B) < 11.\n\nBegge ulikhetene er strenge fordi oppgaven sier «without relying on tiebreaking». Løsningsforslaget skriver ≤ i den andre, men konkluderer med h(B) < 11.\n\n**2.2 3: h(B) > 11** (heltall: h(B) ≥ 12).\n\nDen optimale stien er A–B–D–F–G med kostnad 1 + 3 + 2 + 1 = 7. Med 1 + h(B) > 12 utvider A\\* A, C og E, og G kommer i frontier via A–C–E–G med f = g = 12. G tas ut før B, og A\\* returnerer kostnad 12. Med h(B) = 11 er f(B) = 12 = f(G), og svaret avhenger av tie-break.\n\nMerk: h\\*(B) = 6 (B–D–F–G), så h er admissible bare for h(B) ≤ 6. For 6 < h(B) < 11 er h ikke admissible, men A\\* finner likevel den optimale stien. Inadmissibility alene gir ikke en dårlig sti.\n\nKontrollert med A\\* i algoritmefila (graph search og tree-like) for h(B) fra 3 til 13: rekkefølgen begynner A, C, B for 7,5 ≤ h(B) ≤ 11, og stien blir A–C–E–G (12) for h(B) ≥ 11,5.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 2.*"
+  },
+  {
+   "t": "Oppgave 3 (20 p): Logic",
+   "d": "**3.1 Propositional logic (10 pts)**\n\nYou are given the task of finding a book hidden somewhere in the house or the garden. You are given the following set of hints:\n\n1. If the house is painted red, then the book is not in the kitchen.\n2. If there is an apple tree in the front yard, then the book is in the kitchen\n3. The house is painted red.\n4. The tree in the front yard is an apple tree or the book is under the flower pot.\n5. If the tree in the backyard is a plum tree, then the book is in the garage.\n\nQuestion: Where is the book?\n\n- a) Translate these hints into propositional logic sentences and show each proposition with a capital letter. e.g.,\n\n  ```\n  A: The house is painted red.\n  .\n  .\n  F:...\n  ```\n\n- b) Using the inference rules provided below find out where the book is hidden. You may use only the inference rules in the given list but it is not necessary to use all the rules in the list, and you can use a rule more than once if needed. **Constraint: Your solution must use Modus tollens.**\n\n  In your answer refer to the name of the rule you are using in each step. Give a number to each step, and write in each step: which of the propositional sentences (A, B…) are used, the name of the inference rule used, and the derived sentence (also give a new capital letter to the derived sentence which may in turn be used in one of the next steps).\n\n  *Merknad:* Lista med inferensregler («provided below») mangler i kilden. Tabellen viser de vanlige navngitte reglene for proposisjonslogikk. Den er satt opp her og står ikke i eksamen.\n\n  | Regel | Fra | Gir |\n  |---|---|---|\n  | Modus Ponens | α ⇒ β, α | β |\n  | Modus Tollens | α ⇒ β, ¬β | ¬α |\n  | And-Elimination | α ∧ β | α |\n  | And-Introduction | α, β | α ∧ β |\n  | Or-Introduction | α | α ∨ β |\n  | Disjunctive syllogism (unit resolution) | α ∨ β, ¬α | β |\n  | Double-Negation Elimination | ¬¬α | α |\n  | Biconditional Elimination | α ⇔ β | (α ⇒ β) ∧ (β ⇒ α) |\n  | Resolution | α ∨ β, ¬β ∨ γ | α ∨ γ |\n\n**3.2 First Order logic (10 pts)**\n\nYou are given the following information:\n\nFido is father of Snowy. Fido is alive. One’s father is ones parent and vice versa. Somebody’s alive parent is older than them.\n\nQuestion: Is there anybody older than Snowy?\n\n- a) Represent this information and the question in form of First Order Logic (FoL) sentences.\n\n- b) Using resolution refutation answer if there is anybody older than Snowy? If there is, who is this?\n\n  Number the CNF sentences starting from 1, and then employ resolution refutation. Show how you convert the FOL sentences to CNF sentences.",
+   "f": [
+    [
+     "3.1 a) The hints in propositional logic",
+     "area",
+     "R: …\n1. … ⇒ …"
+    ],
+    [
+     "3.1 b) Numbered steps: sentences used, rule and derived sentence",
+     "area",
+     "6. … and …, Modus …: …"
+    ],
+    [
+     "3.1 b) Where is the book?",
+     "text"
+    ],
+    [
+     "3.2 a) FOL sentences and the question",
+     "area"
+    ],
+    [
+     "3.2 b) CNF sentences numbered from 1, with the conversion",
+     "area"
+    ],
+    [
+     "3.2 b) Resolution refutation",
+     "area",
+     "Resolve i, j, θ = {…} → …"
+    ],
+    [
+     "3.2 b) Is there anybody older than Snowy? (yes/no)",
+     "text"
+    ],
+    [
+     "3.2 b) If so, who?",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "3.1 b) Where is the book?": [
+      "under blomsterpotta",
+      "under blomsterpotten",
+      "blomsterpotta",
+      "blomsterpotten",
+      "under the flower pot",
+      "under the flowerpot",
+      "the flower pot",
+      "flower pot",
+      "flowerpot"
+     ],
+     "3.2 b) Is there anybody older than Snowy? (yes/no)": [
+      "yes",
+      "ja"
+     ],
+     "3.2 b) If so, who?": [
+      "Fido"
+     ]
+    },
+    "kilde": "2023Q&A.pdf, 3.1.1 og 3.2.1 Solution"
+   },
+   "fasit": "**3.1 a)** Symboler:\n- R: The house is painted red.\n- K: The book is in the kitchen.\n- A: There is an apple tree in the front yard.\n- F: The book is under the flower pot.\n- P: The tree in the backyard is a plum tree.\n- G: The book is in the garage.\n\nHintene: **1. R ⇒ ¬K, 2. A ⇒ K, 3. R, 4. A ∨ F, 5. P ⇒ G.**\n\n**3.1 b)**\n- **6. Modus Ponens på 1 og 3:** R ⇒ ¬K og R gir **¬K**.\n- **7. Modus tollens på 2 og 6:** A ⇒ K og ¬K gir **¬A**.\n- **8. Disjunctive syllogism på 4 og 7:** A ∨ F og ¬A gir **F**.\n\n**Boka er under blomsterpotta (F).**\n\nModus tollens (fra α ⇒ β og ¬β får du ¬α) er brukt i steg 7, som oppgaven krever. Hint 5 brukes ikke, og verken G eller ¬G følger. Mangler disjunctive syllogism i regellista, gir resolution av A ∨ F og ¬A samme resultat. Bokstavene kan velges fritt, så A for «huset er rødt» som i oppgavens eksempel er også riktig.\n\n**3.2 a) FOL-setningene og spørsmålet:**\n1. Father(Fido, Snowy)\n2. Alive(Fido)\n3. ∀x,y Parent(x, y) ⇔ Father(x, y)\n4. ∀x,y Parent(x, y) ∧ Alive(x) ⇒ Older(x, y)\n- Spørsmål: ∃w Older(w, Snowy)\n\n**3.2 b) CNF-setningene:**\n- 3: eliminate ⇔ gir (Parent(x, y) ⇒ Father(x, y)) ∧ (Father(x, y) ⇒ Parent(x, y)). Eliminate ⇒ gir (¬Parent(x, y) ∨ Father(x, y)) ∧ (¬Father(x, y) ∨ Parent(x, y)). ∀ droppes, og det blir to klausuler.\n- 4: eliminate ⇒ gir ¬(Parent(x, y) ∧ Alive(x)) ∨ Older(x, y), og De Morgan gir ¬Parent(x, y) ∨ ¬Alive(x) ∨ Older(x, y).\n- Negert spørsmål: ¬∃w Older(w, Snowy) ≡ ∀w ¬Older(w, Snowy), altså ¬Older(w, Snowy).\n\n| Nr | Klausul | Begrunnelse |\n|---|---|---|\n| 1 | Father(Fido, Snowy) | Assumption |\n| 2 | Alive(Fido) | Assumption |\n| 3a | ¬Parent(x, y) ∨ Father(x, y) | CNF av 3 |\n| 3b | ¬Father(x, y) ∨ Parent(x, y) | CNF av 3 |\n| 4 | ¬Parent(x, y) ∨ ¬Alive(x) ∨ Older(x, y) | CNF av 4 |\n| 5 | ¬Older(w, Snowy) | Negert spørsmål |\n\n**3.2 b) Resolution refutation:**\n\n| Nr | Resolvent | Par og θ |\n|---|---|---|\n| 6 | ¬Parent(x, Snowy) ∨ ¬Alive(x) | Resolve 5, 4, θ = {w/x, y/Snowy} |\n| 7 | ¬Parent(Fido, Snowy) | Resolve 6, 2, θ = {x/Fido} |\n| 8 | ¬Father(Fido, Snowy) | Resolve 7, 3b, θ = {x/Fido, y/Snowy} |\n| 9 | □ | Resolve 8, 1, θ = {} |\n\n**Svar: Ja.** Antakelsen om at ingen er eldre enn Snowy, gir en motsigelse.\n\n**Hvem: Fido.** Bindingene w/x og x/Fido gir w = Fido.\n\nLøsningsforslaget skriver variabler med store bokstaver og konstanter med små (father(fido, snowy)), og kaller 3b «3.1». Beviset er det samme.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 3.*"
+  },
+  {
+   "t": "Oppgave 4 (15 p): CSP",
+   "d": "**4.1 CSP**\n\nGardeners Adrian, Brian and Celine have 2 hours to complete 5 tasks (1,2,3,4,5) in NTNU’s gardens. Each task takes 1 hour to finish and each of them can work on only one task at a time, and alone. Each gardener has different expertise areas and can perform only a subset of the tasks, as shown below:\n\n- Adrian: Tasks 1,2,3\n- Brian: 1,2,5\n- Celine: 2,4,5\n\nThey have the following restrictions:\n\n- Task 1 must be completed before Task 2\n- Task 3 must be completed before Task 5\n\nThis problem can be formulated as a constraint satisfaction problem using one variable for each task: X1, X2, . . ., X5 of which possible values are a subset of {A1, A2, B1, B2, C1, C2}, where X1= B2 means that Task 1 is performed by Brian using time slot 2. The domain of each variable is shown below:\n\n- X1: A1, A2, B1, B2\n- X2: A1, A2, B1, B2, C1, C2 – i.e, any of the gardeners can do this task\n- X3: A1, A2\n- X4: C1, C2 – i.e., only Celine can do this task\n- X5: B1, B2, C1, C2\n\n1. Write the constraints (2 points).\n2. Is the initial state arc consistent? If not, use AC3 in order to prune the values of the variables and write down the pruned domain values for each variable (6 points)\n3. Solve this problem (the reduced one) using backtracking – without forward checking. As heuristics use the minimum remaining values for variable ordering (tie breaking according to numerical order) and least constraining value for value ordering (tie breaking according to alpha-numerical ordering). Write down the solution, i.e., variables and their value, in the order the variables assigned a value.",
+   "f": [
+    [
+     "1. Constraints",
+     "area"
+    ],
+    [
+     "2. Is the initial state arc consistent? (yes/no)",
+     "text"
+    ],
+    [
+     "2. X1 after AC-3",
+     "text"
+    ],
+    [
+     "2. X2 after AC-3",
+     "text"
+    ],
+    [
+     "2. X3 after AC-3",
+     "text"
+    ],
+    [
+     "2. X4 after AC-3",
+     "text"
+    ],
+    [
+     "2. X5 after AC-3",
+     "text"
+    ],
+    [
+     "2. The arcs that prune values",
+     "area",
+     "X… → X…: remove … because …"
+    ],
+    [
+     "3. Variables and values in the order they are assigned",
+     "text",
+     "X… = …, X… = …, …"
+    ],
+    [
+     "3. MRV and LCV in each step",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "2. Is the initial state arc consistent? (yes/no)": [
+      "no",
+      "nei"
+     ],
+     "2. X1 after AC-3": [
+      "{B1}"
+     ],
+     "2. X2 after AC-3": [
+      "{A2, B2, C2}"
+     ],
+     "2. X3 after AC-3": [
+      "{A1}"
+     ],
+     "2. X4 after AC-3": [
+      "{C1, C2}"
+     ],
+     "2. X5 after AC-3": [
+      "{B2, C2}"
+     ],
+     "3. Variables and values in the order they are assigned": [
+      "X1 = B1, X3 = A1, X4 = C1, X5 = B2, X2 = A2",
+      "X1 ← B1, X3 ← A1, X4 ← C1, X5 ← B2, X2 ← A2",
+      "X1 B1, X3 A1, X4 C1, X5 B2, X2 A2"
+     ]
+    },
+    "merk": "Domenene skrives som mengder, for eksempel {A2, B2, C2}. Rekkefølgen i del 3 teller.",
+    "kilde": "2023Q&A.pdf, 4.1.1 Solution, kontrollert med AC-3 og backtracking i algoritmefila"
+   },
+   "fasit": "**1. Constraints:**\n- **Alldiff(X1, X2, X3, X4, X5).** To oppgaver kan ikke få samme verdi, for samme gartner kan ikke gjøre to oppgaver i samme time.\n- **slot(X1) < slot(X2):** oppgave 1 før oppgave 2.\n- **slot(X3) < slot(X5):** oppgave 3 før oppgave 5.\n\nHvem som kan gjøre hva (unary constraints), ligger alt i domenene. Alldiff kan skrives som Xi ≠ Xj for alle 10 par.\n\n**2. Ikke arc consistent.** Etter AC-3:\n- **X1: {B1}**\n- **X2: {A2, B2, C2}**\n- **X3: {A1}**\n- **X4: {C1, C2}**\n- **X5: {B2, C2}**\n\nBuene som stryker noe, i rekkefølgen de skjer med en sortert FIFO-kø:\n\n| Bue | Stryk | Hvorfor | D etter |\n|---|---|---|---|\n| X1→X2 | A2, B2 | ingen X2 i en senere time | X1 = {A1, B1} |\n| X2→X1 | A1, B1, C1 | ingen X1 i en tidligere time | X2 = {A2, B2, C2} |\n| X3→X5 | A2 | ingen X5 etter time 2 | X3 = {A1} |\n| X5→X3 | B1, C1 | X3 kan ikke ligge før time 1 | X5 = {B2, C2} |\n| X1→X3 | A1 | Alldiff: X3 = A1 er eneste verdi | X1 = {B1} |\n\nAlle andre buer har partner for hver verdi. X2, X4 og X5 har fortsatt flere verdier, så AC-3 løser ikke problemet alene.\n\n**3. Løsningen i rekkefølge:**\n1. **X1 = B1**\n2. **X3 = A1**\n3. **X4 = C1**\n4. **X5 = B2**\n5. **X2 = A2**\n\nUten forward checking krymper ikke domenene av seg selv. Før hvert valg sjekker du derfor hvilke verdier som fortsatt er lovlige mot det som alt er tilordnet.\n\n| Steg | MRV (lovlige verdier) | LCV (fjernede verdier hos naboene) | Valg |\n|---|---|---|---|\n| 1 | X1 {B1} og X3 {A1} har 1 → X1 (tallrekkefølge) | B1: 0 | X1 = B1 |\n| 2 | X3 {A1} har 1 | A1: 0 | X3 = A1 |\n| 3 | X4 {C1, C2} og X5 {B2, C2} har 2, X2 har 3 → X4 | C1: 0, C2: 2 (C2 hos X2 og X5) | X4 = C1 |\n| 4 | X5 {B2, C2} har 2, X2 har 3 → X5 | B2: 1, C2: 1 → alfanumerisk | X5 = B2 |\n| 5 | X2: lovlige {A2, C2} (B2 er tatt) | A2: 0, C2: 0 → alfanumerisk | X2 = A2 |\n\nKontroll: alle verdiene er ulike, X1 (time 1) er før X2 (time 2), og X3 (time 1) er før X5 (time 2). Brian tar oppgave 1 og 5, Adrian oppgave 3 og 2, og Celine oppgave 4.\n\nLøsningsforslaget skriver `min_conflicts` om verdivalget. Det er vanlig LCV. I boka er min-conflicts den lokale søkealgoritmen i 5.4.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 4. Samme problem som eksamen 2018, problem 1. AC-3 og backtracking er kontrollert med algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 5 (10 p): Game theory",
+   "d": "**5.1 Game Theory**\n\nRecent developments towards Artificial General Intelligence (AGI) and its potential benefits and risks made it an important issue on a national level. Countries are trying to decide whether to accelerate, maintain or hinder the development of AGI. Consider two countries, US and China, that need to decide whether to accelerate, maintain or hinder the development of AGI.\n\n*Table 1: The AI acceleration game*\n\n| US \\\\ China | Accelerate | Maintain | Hinder |\n|---|---|---|---|\n| **Accelerate** | 6 / 6 | 8 / 4 | 9 / 2 |\n| **Maintain** | 4 / 8 | 7 / 7 | 10 / 2 |\n| **Hinder** | 2 / 9 | 2 / 10 | 5 / 5 |\n\n1. Explain in 3-5 sentences why this decision requires strategical reasoning? (1%)\n2. Does this game have a weakly or strongly dominant strategy? If it exists, explain how you found it. If not, explain why not (2%)\n3. Apply iterated elimination of strictly dominated actions to find a game solution, showing each step of the process.\n4. Does this game have a Nash equilibrium? If it exists, explain how you found it. Otherwise, explain why it does not exist (3%)\n5. Which strategy maximizes social welfare? Explain how you found it.",
+   "f": [
+    [
+     "1. Why strategic reasoning",
+     "area"
+    ],
+    [
+     "2. Dominant strategy? (yes/no)",
+     "text"
+    ],
+    [
+     "2. Explanation",
+     "area"
+    ],
+    [
+     "3. Each step of the elimination",
+     "area"
+    ],
+    [
+     "3. Game solution",
+     "text"
+    ],
+    [
+     "4. Nash equilibrium",
+     "text"
+    ],
+    [
+     "4. How you found it",
+     "area"
+    ],
+    [
+     "5. Strategy that maximizes social welfare",
+     "text"
+    ],
+    [
+     "5. How you found it",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "2. Dominant strategy? (yes/no)": [
+      "no",
+      "nei"
+     ],
+     "3. Game solution": [
+      "Accelerate, Accelerate",
+      "(Accelerate, Accelerate)",
+      "Accelerate/Accelerate",
+      "Accelerate / Accelerate"
+     ],
+     "4. Nash equilibrium": [
+      "Accelerate, Accelerate",
+      "(Accelerate, Accelerate)",
+      "Accelerate/Accelerate",
+      "Accelerate / Accelerate"
+     ],
+     "5. Strategy that maximizes social welfare": [
+      "Maintain, Maintain",
+      "(Maintain, Maintain)",
+      "Maintain/Maintain",
+      "Maintain / Maintain"
+     ]
+    },
+    "merk": "Skriv profilen som (US, China), for eksempel Accelerate, Accelerate.",
+    "kilde": "2023Q&A.pdf, 5.1.1 Solution, kontrollert med dominans og Nash i algoritmefila"
+   },
+   "fasit": "**1.** Hvert lands gevinst avhenger ikke bare av eget valg, men også av hva det andre landet velger. Akselererer det ene landet mens det andre bremser, får det første et stort forsprang (9 mot 2). Hvert land må derfor tenke på hva det andre vil gjøre, og hva det andre tror om dem, før det velger. Det er et spill i spillteoretisk forstand og ikke et beslutningsproblem for én agent, så valget krever strategisk resonnering. Løsningsforslaget ser etter nettopp dette: at verdien av en handling avhenger av de andres handlinger.\n\n**2. Nei.** Ingen strategi er best mot alle valgene til motparten. For US er Accelerate best mot Accelerate (6 > 4 > 2) og mot Maintain (8 > 7 > 2), men Maintain er best mot Hinder (10 > 9 > 5). Spillet er symmetrisk, så det samme gjelder China. En weakly dominant strategy må være minst like god mot alle valg, og Accelerate taper 9 mot 10 når motparten velger Hinder. Altså finnes verken strongly eller weakly dominant strategy.\n\n**3. Spillets løsning er (Accelerate, Accelerate).**\n\n| Steg | Stryk | Fordi |\n|---|---|---|\n| 1 | Hinder for US | Accelerate (6, 8, 9) > Hinder (2, 2, 5) i hver kolonne. Maintain (4, 7, 10) dominerer også Hinder. |\n| 2 | Hinder for China | Samme tall, spillet er symmetrisk. |\n| 3 | Maintain for US | I 2 × 2-spillet som er igjen, gir Accelerate (6, 8) mot Maintain (4, 7). |\n| 4 | Maintain for China | Samme tall. |\n\nIgjen står (Accelerate, Accelerate) med 6 / 6. Maintain blir dominert først når Hinder er borte, fordi 10 > 9 i Hinder-kolonnen. Med strict dominance gir alle rekkefølger samme svar.\n\n**4. Ja: (Accelerate, Accelerate) er den eneste Nash-likevekten.**\n\nMarker hver spillers beste svar:\n\n- US: mot Accelerate → Accelerate (6), mot Maintain → Accelerate (8), mot Hinder → Maintain (10).\n- China: mot Accelerate → Accelerate (6), mot Maintain → Accelerate (8), mot Hinder → Maintain (10).\n\nBare i (Accelerate, Accelerate) er begge valgene beste svar. Ingen av landene tjener på å bytte alene. Når iterert eliminasjon av strictly dominerte strategier ender i ett utfall, er det spillets eneste Nash-likevekt.\n\n**5. (Maintain, Maintain), med sum 7 + 7 = 14.**\n\nSocial welfare er summen av nytten: (A, A) 12, (A, M) 12, (A, H) 11, (M, A) 12, (M, M) 14, (M, H) 12, (H, A) 11, (H, M) 12, (H, H) 10. (Maintain, Maintain) er best for fellesskapet og Pareto optimal, men den er ingen likevekt: hvert land tjener på å bytte til Accelerate (8 > 7). Spillet har samme struktur som fangens dilemma, og likevekten (Accelerate, Accelerate) er ikke Pareto optimal.\n\nKontrollert med dominans og Nash i algoritmefila: IESDS og ren Nash gir (Accelerate, Accelerate), og høyest social welfare er (Maintain, Maintain) med 14.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 5.*"
+  },
+  {
+   "t": "Oppgave 6 (5 p): Adversarial search",
+   "img": [
+    "nettside-figurer/e09-2023-q6.png"
+   ],
+   "d": "**6.1 Adversarial search**\n\nConsider a scenario where a trade union and a company are negotiating about the yearly salary increase. The union decided to use one of the two strategies:\n\n- Ask for what they are willing to accept - increase of 6%\n- Ask for a much higher increase of 10% with the hope that the company will agree on something close to it.\n\nFrom previous years, they know how the company behaves with low and high demands. When the demand is 6%, there is a 50% chance that the company will propose even lower pay increase: 3% or 4%. There is also 50% chance that the company will try to meet the demand, proposing 5% or 6% increase.\n\nWhen demand is 10%, the company with 25% chance will consider it unrealistic and come back with lower proposals of 2% or 4%. There is also 75% chance that the company will consider it realistic and come back with proposal of 8% or 10%.\n\nYour task is to use ExpectiMiniMax to come up with the best strategy for the trade union, either ask for 6% or ask for 10%.\n\n1. Consider the tree above where the trade union is MAX (A) and the company is MIN (D-G). Fill in (write down) the values for all nodes (A-G, and d1-g2) as provided in the text (1%)\n2. Compute ExpectMiniMax for all nodes except terminal nodes. Show your computations (3%)\n3. Make a decision: which strategy is the best for the trade union? Explain how you reached that conclusion (1%)",
+   "f": [
+    [
+     "1. Values for all nodes, as provided in the text",
+     "area",
+     "d1 = 3, d2 = …, e1 = …, …"
+    ],
+    [
+     "2. ExpectiMiniMax for all non-terminal nodes, with computations",
+     "area",
+     "D = …\nE = …\nF = …\nG = …\nB = …\nC = …\nA = …"
+    ],
+    [
+     "2. Value of A",
+     "text"
+    ],
+    [
+     "3. Best strategy for the trade union",
+     "text"
+    ],
+    [
+     "3. How you reached the conclusion",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "2. Value of A": [
+      "6.5"
+     ],
+     "3. Best strategy for the trade union": [
+      "10",
+      "10%",
+      "10 %",
+      "krev 10%",
+      "krev 10 %",
+      "be om 10%",
+      "be om 10 %",
+      "ask for 10%",
+      "ask for 10 %",
+      "strategi 2",
+      "strategy 2"
+     ]
+    },
+    "merk": "Krev 10 %: forventet verdi 6,5 mot 4 for 6 %.",
+    "kilde": "2023Q&A.pdf, 6.1.1 Solution, kontrollert med expectiminimax i algoritmefila"
+   },
+   "fasit": "**1. d1 = 3, d2 = 4, e1 = 5, e2 = 6, f1 = 2, f2 = 4, g1 = 8, g2 = 10.** Kantene fra B har sannsynlighet 0,5 og 0,5, og kantene fra C 0,25 og 0,75.\n\n**2. D = 3, E = 5, F = 2, G = 8, B = 4, C = 6,5, A = 6,5.**\n\n**3. Krev 10 % (strategi 2).**\n\n**Hvorfor: forventet verdi for 10 % er 6,5, mot 4 for 6 %, og MAX velger største.**\n\nRegn nedenfra: MIN før sjanse før MAX.\n\n| Node | Type | Regning | Verdi |\n|---|---|---|---|\n| D | MIN | min(3, 4) | 3 |\n| E | MIN | min(5, 6) | 5 |\n| F | MIN | min(2, 4) | 2 |\n| G | MIN | min(8, 10) | 8 |\n| B | chance | 0,5 · 3 + 0,5 · 5 | 4 |\n| C | chance | 0,25 · 2 + 0,75 · 8 | 6,5 |\n| A | MAX | max(4; 6,5) | **6,5** |\n\nBedriften (MIN) gir alltid det laveste budet i hvert scenario. Sjansenodene vekter scenarioene med sannsynlighetene. Fagforeningen (MAX) velger strategien med høyest forventet verdi, og det er C: krev 10 %.\n\nVanlig feil: å ta snittet av bladene direkte og hoppe over MIN-laget. Da blir B = 4,5 og C = 7,5. Valget blir likt, men verdiene er feil.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 6. Kontrollert med expectiminimax i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 7 (5 p): Partially observable environment",
+   "img": [
+    "nettside-figurer/e05-2023-q7.png"
+   ],
+   "d": "**7.1 Partially observable environment**\n\nAssume a robot in a maze with walls, as shown in the Fig. 4. The robot can only see the walls but not its own locations (i.e-, which of the “squares” it is in the maze). A percept includes data about the existence of walls on the north, south, west and east of the square in which the robot currently is. For example. P1={North, South, NoWest, NoEast} means that the robot senses a wall in its north and south, and but not on east and west. The location of a square that the robot beliefs it may be in is shown with the row and column number of the square. For example, the robot in the figure is in location S = (r2, c3). It has possible actions: Right, Left, Up, and Down.\n\n1. If the robot’s perception, at time step 1, is P1= { North, South, West, NoEast}, what will be the belief state of the robot for its location? Show a belief state in this format:\n\n   S = {(r − x, c − y), (), ...., ()} where r − x is the row number, e.g. r2, and c − y is the column number, c3 - according to the figure.\n\n2. If the robot takes action “Right”, and perceives P2={North, South, NoWest, NoEast}, what will its belief state S2 be for its location?\n\n3. Assume that action “Right” makes a move to left, and action “Left” does a move to right. What will be the agent’s belief state when it takes a “Right” action from its initial location?",
+   "f": [
+    [
+     "1. Belief state S1",
+     "text",
+     "S1 = {(r…, c…), …}"
+    ],
+    [
+     "2. Belief state S2",
+     "text",
+     "S2 = {(r…, c…), …}"
+    ],
+    [
+     "3. Belief state after “Right” from the initial location",
+     "area",
+     "S = {(r…, c…), …}"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "1. Belief state S1": [
+      "(r0, c0), (r3, c0), (r0, c7)",
+      "(r0, c0), (r0, c7), (r3, c0)",
+      "(r3, c0), (r0, c0), (r0, c7)",
+      "(r3, c0), (r0, c7), (r0, c0)",
+      "(r0, c7), (r0, c0), (r3, c0)",
+      "(r0, c7), (r3, c0), (r0, c0)",
+      "S1 = (r0, c0), (r3, c0), (r0, c7)",
+      "S1 = (r0, c0), (r0, c7), (r3, c0)",
+      "S1 = (r3, c0), (r0, c0), (r0, c7)",
+      "S1 = (r3, c0), (r0, c7), (r0, c0)",
+      "S1 = (r0, c7), (r0, c0), (r3, c0)",
+      "S1 = (r0, c7), (r3, c0), (r0, c0)"
+     ],
+     "2. Belief state S2": [
+      "(r3, c1)",
+      "S2 = (r3, c1)"
+     ]
+    },
+    "merk": "Skriv cellene som (r0, c0), med eller uten krøllparenteser rundt mengden. Rekkefølgen på cellene er fri.",
+    "kilde": "2023Q&A.pdf, 7.1.1 Solution"
+   },
+   "fasit": "**1. S1 = {(r0, c0), (r3, c0), (r0, c7)}.**\n\n**2. S2 = {(r3, c1)}.**\n\n**3. Antakelse 1a: «initial location» er S1, og et trekk inn i en vegg lar roboten stå. Da blir S = {(r0, c0), (r3, c0), (r0, c7)}.**\n\n**Antakelse 1b: roboten starter i ruta i figuren, (r2, c3). Da blir S = {(r1, c8), (r2, c2)}.** Løsningsforslaget godtok begge.\n\nFiguren leses med r0 nederst og c0 til venstre. Kanten rundt er vegg. Veggrutene (brune) er:\n- r3: c4, c10\n- r2: c0, c1, c4, c6, c7, c9, c11\n- r1: c0, c4, c6, c7\n- r0: c2, c6, c11\n\n**Del 1 (bare update).** Du trenger ruter med vegg i nord, sør og vest og åpent i øst. Bare tre passer:\n- (r0, c0): kanten i sør og vest, vegg (r1, c0) i nord\n- (r3, c0): kanten i nord og vest, vegg (r2, c0) i sør\n- (r0, c7): kanten i sør, vegg (r0, c6) i vest og (r1, c7) i nord\n\n**Del 2 (predict, så update).** Right flytter alle tre kandidatene ett steg øst: {(r0, c1), (r3, c1), (r0, c8)}. P2 = {North, South, NoWest, NoEast}. (r0, c1) og (r0, c8) har åpent mot nord, (r1, c1) og (r1, c8), og faller bort. Bare (r3, c1) passer: kant i nord, vegg (r2, c1) i sør, åpent i vest og øst.\n\n**Del 3.** «Right» flytter nå roboten mot vest.\n- 1a: Alle tre rutene i S1 har vegg i vest. Løsningsforslaget antar at roboten blir stående og får samme percept, så S = S1.\n- 1b: Roboten vet ikke selv at den står i (r2, c3). Den havner i (r2, c2) og sanser {NoNorth, NoSouth, West, NoEast}. Bare to ruter gir den percepten: (r2, c2) og (r1, c8). Begge har vegg i vest og åpent i nord, sør og øst.\n\nVanlige feil: å gjøre bare update på hele labyrinten i del 2 (gir for mange ruter), og å bytte rad og kolonne. Her er r0 nederst.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 7. Belief states kontrollert med et eget skript.*"
+  },
+  {
+   "t": "Oppgave 8 (5 p): Planning",
+   "d": "**8.1 Planning**\n\nYou are developing a system that helps people make a plan to buy last minute Christmas gifts.\n\nThe input of the system is a specific gift a user wants to buy, and the output is a plan of how to buy it. Since there is no time to wait for delivery from an online store, the user would actually need to go to a physical store.\n\nThe following actions are available and can be used in the plan:\n\n- *TakeBus* FROM somewhere TO somewhere else\n- *DriveCar* FROM somewhere TO somewhere else, given that a USER *Owns* a specific CAR\n- *Buy* a specific **gift** *At* a specific **store**\n\nThe system database contains two **stores**: BOOKSTORE and TOYSTORE, where a user can get either a BOOK or a TOY as **gifts**, respectively.\n\n1. Specify the problem using Planning Domain Definition Language (PDDL), considering the USER is initially At HOME, Owns a CAR and wants to get a TOY as a gift. The goal is that the USER is back *At* HOME and *Owns* the TOY (2%)\n2. Solve the problem using backwards search. Show the first 3 steps in one of the branches, including actions and states before/after each action (3%)",
+   "f": [
+    [
+     "1. PDDL: initial state, goal and actions",
+     "area",
+     "Init(…)\nGoal(…)\nAction(…,\n  PRECOND: …\n  EFFECT: …)"
+    ],
+    [
+     "2. Backward search: the first 3 steps, with actions and states",
+     "area",
+     "Goal: …\nstep 1: action … → state before: …\nstep 2: …"
+    ]
+   ],
+   "fasit": "**1. PDDL:**\n\n```\nInit(At(User, Home) ∧ Owns(User, Car) ∧ At(Car, Home)\n     ∧ At(Toy, ToyStore) ∧ At(Book, BookStore)\n     ∧ Place(Home) ∧ Place(ToyStore) ∧ Place(BookStore))\nGoal(At(User, Home) ∧ Owns(User, Toy))\n\nAction(TakeBus(from, to),\n  PRECOND: At(User, from) ∧ Place(to)\n  EFFECT:  ¬At(User, from) ∧ At(User, to))\nAction(DriveCar(from, to, car),\n  PRECOND: Owns(User, car) ∧ At(User, from) ∧ At(car, from) ∧ Place(to)\n  EFFECT:  ¬At(User, from) ∧ ¬At(car, from) ∧ At(User, to) ∧ At(car, to))\nAction(Buy(gift, store),\n  PRECOND: At(User, store) ∧ At(gift, store)\n  EFFECT:  Owns(User, gift))\n```\n\n- Init er en tilstand: bare ground, positive fluents (closed world). Goal er en konjunksjon av literaler.\n- Hver variabel i EFFECT står i PRECOND og i parameterlista. Derfor har TakeBus og DriveCar `Place(to)`.\n- DriveCar flytter både brukeren og bilen.\n\n**2. Backward search:** Start i målet og regresser over relevante handlinger. En handling er relevant når en effekt gir en del av målet og ingen effekt sletter en annen del. Målene her er positive, så g′ = (g − ADD(a)) ∪ PRECOND(a).\n\n| Steg | Handling (siste først) | Tilstand etter handlingen (målet) | Tilstand før handlingen (regressert mål) |\n|---|---|---|---|\n| 1 | DriveCar(ToyStore, Home, Car) | g₀ = At(User, Home) ∧ Owns(User, Toy) | g₁ = Owns(User, Toy) ∧ Owns(User, Car) ∧ At(User, ToyStore) ∧ At(Car, ToyStore) ∧ Place(Home) |\n| 2 | Buy(Toy, ToyStore) | g₁ | g₂ = Owns(User, Car) ∧ At(User, ToyStore) ∧ At(Car, ToyStore) ∧ Place(Home) ∧ At(Toy, ToyStore) |\n| 3 | DriveCar(Home, ToyStore, Car) | g₂ | g₃ = Owns(User, Car) ∧ Place(Home) ∧ At(Toy, ToyStore) ∧ At(User, Home) ∧ At(Car, Home) ∧ Place(ToyStore) |\n\n- Steg 1: DriveCar(ToyStore, Home, Car) gir At(User, Home) og sletter bare At(User, ToyStore) og At(Car, ToyStore), som ikke står i målet. TakeBus(ToyStore, Home) er også relevant og gir en annen gren.\n- Steg 2: Buy(Toy, ToyStore) gir Owns(User, Toy). Trekk den fra og legg til PRECOND.\n- Steg 3: g₃ ⊆ Init, så søket stopper.\n\n**Plan:** DriveCar(Home, ToyStore, Car), Buy(Toy, ToyStore), DriveCar(ToyStore, Home, Car).\n\nLøsningsforslaget har også At(Car, Home) i målet, og det gir de samme tre stegene. Skjemaene der bruker `user` uten at den er parameter, og `to` står bare i EFFECT i TakeBus. Bruk konstanten User og legg `Place(to)` i PRECOND.\n\n*Kilde: løsningsforslaget til eksamen 2023, oppgave 8.*"
+  }
+ ]
+}

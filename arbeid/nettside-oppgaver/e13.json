@@ -3,7 +3,7 @@
  "tasks": [
   {
    "t": "DPLL for hånd",
-   "d": "Klausulene er\n\n- C1: A ∨ B\n- C2: ¬A ∨ C\n- C3: ¬B ∨ ¬C\n- C4: ¬A ∨ ¬C ∨ D\n- C5: ¬D ∨ B\n\nKjør DPLL (fig. 7.17). DPLL går gjennom symbolene alfabetisk, både når den leter etter pure symbols og når den må gjette, og prøver true før false. Finnes flere unit clauses, tar den den første i lista (C1, C2, …). Navngi hvert steg: pure symbol, unit clause (med hvilken klausul), gjett eller konflikt. Oppgi modellen DPLL returnerer.",
+   "d": "Klausulene er\n\n- C1: A ∨ B\n- C2: ¬A ∨ C\n- C3: ¬B ∨ ¬C\n- C4: ¬A ∨ ¬C ∨ D\n- C5: ¬D ∨ B\n\nKjør DPLL (fig. 7.17). DPLL går gjennom symbolene alfabetisk, både når den leter etter pure symbols og når den må gjette, og prøver true før false. Finnes flere unit clauses, tar den den første i lista (C1, C2, …). Navngi hvert steg: pure symbol, unit clause (med hvilken klausul), gjett eller konflikt. Oppgi modellen DPLL returnerer.\n\n<details><summary>Fig. 7.17 i boka: DPLL-SATISFIABLE? (klikk for å vise)</summary>\n\n```\nfunction DPLL-SATISFIABLE?(s) returns true or false\n  inputs: s, a sentence in propositional logic\n  clauses ← the set of clauses in the CNF representation of s\n  symbols ← a list of the proposition symbols in s\n  return DPLL(clauses, symbols, { })\n\nfunction DPLL(clauses, symbols, model) returns true or false\n  if every clause in clauses is true in model then return true\n  if some clause in clauses is false in model then return false\n  P, value ← FIND-PURE-SYMBOL(symbols, clauses, model)\n  if P is non-null then return DPLL(clauses, symbols − P, model ∪ {P = value})\n  P, value ← FIND-UNIT-CLAUSE(clauses, model)\n  if P is non-null then return DPLL(clauses, symbols − P, model ∪ {P = value})\n  P ← FIRST(symbols); rest ← REST(symbols)\n  return DPLL(clauses, rest, model ∪ {P = true}) or\n         DPLL(clauses, rest, model ∪ {P = false})\n```\n\n</details>",
    "f": [
     [
      "Forløpet",
@@ -81,7 +81,7 @@
   },
   {
    "t": "WalkSAT: ett steg",
-   "d": "Klausulene er de samme som i «DPLL for hånd»:\n\n- C1: A ∨ B\n- C2: ¬A ∨ C\n- C3: ¬B ∨ ¬C\n- C4: ¬A ∨ ¬C ∨ D\n- C5: ¬D ∨ B\n\nWalkSAT (fig. 7.18) står i modellen A = false, B = true, C = true, D = true.",
+   "d": "Klausulene er de samme som i «DPLL for hånd»:\n\n- C1: A ∨ B\n- C2: ¬A ∨ C\n- C3: ¬B ∨ ¬C\n- C4: ¬A ∨ ¬C ∨ D\n- C5: ¬D ∨ B\n\nWalkSAT (fig. 7.18) står i modellen A = false, B = true, C = true, D = true.\n\n<details><summary>Fig. 7.18 i boka: WALKSAT (klikk for å vise)</summary>\n\n```\nfunction WALKSAT(clauses, p, max_flips) returns a satisfying model or failure\n  inputs: clauses, a set of clauses in propositional logic\n          p, the probability of choosing to do a \"random walk\" move, typically around 0.5\n          max_flips, number of value flips allowed before giving up\n  model ← a random assignment of true/false to the symbols in clauses\n  for each i = 1 to max_flips do\n    if model satisfies clauses then return model\n    clause ← a randomly selected clause from clauses that is false in model\n    if RANDOM(0, 1) ≤ p then\n      flip the value in model of a randomly selected symbol from clause\n    else flip whichever symbol in clause maximizes the number of satisfied clauses\n  return failure\n```\n\n</details>",
    "f": [
     [
      "a) Hvilken klausul må WalkSAT velge?",

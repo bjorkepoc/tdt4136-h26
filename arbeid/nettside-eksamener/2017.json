@@ -1,0 +1,788 @@
+{
+ "id": "ek2017",
+ "ep": "2017",
+ "tittel": "Ordinær eksamen",
+ "kilde": "../materiale/Files/Previous%20exams/2017Q.docx",
+ "om": "**Norwegian University of Science and Technology**<br>\nDepartment of Computer and Information Science\n\nNOTE: All the answers need to be written down into answer sheets, not into the question sheet.\n\n---\n\n*Originalfila har ikke mer forside enn dette: tid, hjelpemidler og totalpoeng står ikke. Poengene står i hver oppgave og blir til sammen 100. Fasiten bygger på løsningsforslaget (`2017Q&A.docx`).*",
+ "intro": "Etter «Lever» kan det som har ett objektivt svar, sjekkes med Sjekk: flervalg og True/False i oppgave 4–7, MRV, degree og min-conflicts i oppgave 1, beste trekk og kuttene i oppgave 3 og løsningsstiene i oppgave 4. Grafene i oppgave 1 og 4 og treet i oppgave 3 kan åpnes i tegneverktøyet.",
+ "fasit": "**Fasit og poeng for eksamen 2017.** Svarene og poengfordelingen er fra løsningsforslaget (`2017Q&A.docx`). Utregningene er kontrollert med algoritmene i `nettside-algo/`.\n\n| Oppgave | 1 | 2 | 3 | 4 | 5 | 6 | 7 | Sum |\n|---|---|---|---|---|---|---|---|---|\n| Tema | CSP | Resolution | Minimax og alpha-beta | A\\* | Logikk | Sant/usant | Planlegging og NLP | |\n| Poeng | 10 | 10 | 10 | 15 | 15 | 20 | 20 | 100 |\n\nOppgave 4–7 gir −1 for hvert galt svar, men summen per oppgave blir ikke negativ. Fasiten står under hver oppgave.",
+ "tasks": [
+  {
+   "t": "Oppgave 1 (10 p): CSP",
+   "img": [
+    "nettside-figurer/ek2017-q1-fig1.svg"
+   ],
+   "d": "**Problem 1 (10 points, 2.5 pts each question))**\n\nYou are a map-coloring robot assigned to the task of coloring the following map (see Figure 1 ). Each region must be colored one of Red (R), Green(G) or Blue(B). Adjacent regions must be a different color. The map (left) and the constraint graph (right) are shown below.\n\na) Consider the partial assignment in Figure 2 below where variable A and E have been assigned values as shown in the figure. Cross out all values that should be eliminated by Arc Consistency (using AC-3 in the textbook.)<br>\n<img class=\"fig\" src=\"nettside-figurer/ek2017-q1-fig2.svg\" alt=\"Figure 2: Partial assignment for Region A= Blue and E= Red. Regions in the map: A Blue, B R G B, E RED, C R G B, D R G B, F R G B\">\n\n*AC-3 (Figure 5.3 i læreboka), gjengitt kort:*\n\n```\nfunction AC-3(csp) returns false if an inconsistency is found, true otherwise\n  queue ← all arcs (Xi, Xj) in csp\n  while queue is not empty do\n    (Xi, Xj) ← POP(queue)\n    if REVISE(csp, Xi, Xj) then\n      if Di is empty then return false\n      for each Xk in NEIGHBORS(Xi) − {Xj} do\n        add (Xk, Xi) to queue\n  return true\n\nfunction REVISE(csp, Xi, Xj) returns true iff Di was changed\n  revised ← false\n  for each x in Di do\n    if no y in Dj lets (x, y) satisfy the constraint between Xi and Xj then\n      delete x from Di\n      revised ← true\n  return revised\n```\n\nb) Minimum Remaining Values Heuristics. Consider the partial assignment in Figure 4 where B is assigned value Green and constraint propagation has been done. Write down all unassigned variables (just the letters that correspond to these variables) that might be selected by Minimum Remaining Values Heuristic (MRV)<br>\n<img class=\"fig\" src=\"nettside-figurer/ek2017-q1-fig4.png\" alt=\"Figure 4: Partial assignment for Region B= Green. A R B, B Green, E R B, C R B, D R G B, F R G B\">\n\nc) Degree Heuristic. Consider the partial assignment in Figure 4 where B is assigned Green and constraint propagation has been done. Write down all unassigned variables that might be selected by the Degree Heuristics\n\nd) Consider the following complete but inconsistent assignment in Figure 6. E has been selected to be assigned a value during local search for a complete and consistent assignment. What new value would be chosen for E by the MINIMUM-CONFLICT heuristic?<br>\n<img class=\"fig\" src=\"nettside-figurer/ek2017-q1-fig6.png\" alt=\"Figure 5: Partial assignment for Region B= Green (som Figure 4). Figure 6: Complete assignment where the value of Region E needs to be changed, and to be found: A B, B G, E ?, C G, D G, F G\">",
+   "f": [
+    [
+     "a) Verdiene som strykes",
+     "area",
+     "A: …\nB: …\nE: …\nC: …\nD: …\nF: …"
+    ],
+    [
+     "b) Variablene MRV kan velge",
+     "text",
+     "Bokstavene, skilt med komma"
+    ],
+    [
+     "c) Variablene degree heuristic kan velge",
+     "text"
+    ],
+    [
+     "d) Ny verdi for E",
+     "text",
+     "R, G eller B"
+    ]
+   ],
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": false,
+     "noder": [
+      {
+       "id": "A",
+       "x": 0,
+       "y": 140,
+       "domene": [
+        "B"
+       ]
+      },
+      {
+       "id": "B",
+       "x": 120,
+       "y": 30,
+       "domene": [
+        "R",
+        "G",
+        "B"
+       ]
+      },
+      {
+       "id": "E",
+       "x": 120,
+       "y": 240,
+       "domene": [
+        "R"
+       ]
+      },
+      {
+       "id": "C",
+       "x": 230,
+       "y": 130,
+       "domene": [
+        "R",
+        "G",
+        "B"
+       ]
+      },
+      {
+       "id": "D",
+       "x": 340,
+       "y": 0,
+       "domene": [
+        "R",
+        "G",
+        "B"
+       ]
+      },
+      {
+       "id": "F",
+       "x": 340,
+       "y": 240,
+       "domene": [
+        "R",
+        "G",
+        "B"
+       ]
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "A",
+       "til": "B"
+      },
+      {
+       "fra": "A",
+       "til": "E"
+      },
+      {
+       "fra": "B",
+       "til": "E"
+      },
+      {
+       "fra": "B",
+       "til": "C"
+      },
+      {
+       "fra": "C",
+       "til": "E"
+      },
+      {
+       "fra": "C",
+       "til": "D"
+      },
+      {
+       "fra": "D",
+       "til": "F"
+      },
+      {
+       "fra": "E",
+       "til": "F"
+      }
+     ]
+    }
+   },
+   "sjekk": {
+    "f": {
+     "b) Variablene MRV kan velge": [
+      "{A, C, E}"
+     ],
+     "c) Variablene degree heuristic kan velge": [
+      "E"
+     ],
+     "d) Ny verdi for E": [
+      "R",
+      "Red"
+     ]
+    },
+    "merk": "a) B = {G}, C = {B}, D = {R, G}, F = {G, B}. b) A, E og C har to verdier igjen. c) E har flest constraints med andre utilordnede variabler. d) R gir 0 konflikter.",
+    "kilde": "2017Q&A.docx, Problem 1 (Figure 3 og svarene A, E, C / E / R); AC-3 i nettside-algo/csp.js"
+   },
+   "fasit": "**a) Stryk B og R hos B, R og G hos C, B hos D og R hos F.** Domenene etter AC-3: A = {Blue}, B = {G}, E = {Red}, C = {B}, D = {R, G}, F = {G, B}.\n\n| Bue | Stryker | Hvorfor | Domenet etterpå |\n|---|---|---|---|\n| (B, A) | B | A = Blue | B = {R, G} |\n| (B, E) | R | E = Red | B = {G} |\n| (C, E) | R | E = Red | C = {G, B} |\n| (C, B) | G | B = G | C = {B} |\n| (D, C) | B | C = B | D = {R, G} |\n| (F, E) | R | E = Red | F = {G, B} |\n\nAlle andre buer har en partner for hver verdi, også (D, F) og (F, D): D = R har F = G eller B, D = G har F = B, og omvendt. AC-3 gir de samme domenene uansett rekkefølgen i køen, så tabellen viser bare én mulig rekkefølge. Poenget er at propageringen fortsetter: når B blir {G}, mister C verdien G, og når C blir {B}, mister D verdien B.\n\n**b) A, E og C.** Etter B = Green og propagering har A, E og C to verdier igjen ({R, B}), mens D og F har tre. MRV velger en variabel med færrest lovlige verdier, og her står tre likt.\n\n**c) E.** Degree heuristic velger variabelen med flest constraints mot andre *utilordnede* variabler. Uten B: A har 1 (E), E har 3 (A, C, F), C har 2 (E, D), D har 2 (C, F) og F har 2 (D, E). Brukt som tie-breaker mellom MRV-kandidatene A, E og C blir svaret også E.\n\n**d) R (Red).** Konfliktene for hver verdi av E mot naboene A = B, B = G, C = G og F = G:\n\n| E = | Konflikter |\n|---|---|\n| R | 0 |\n| G | 3 (B, C og F) |\n| B | 1 (A) |\n\nMin-conflicts velger verdien med færrest konflikter, altså R. Konflikten C = D = G står igjen og rettes i et senere steg.\n\nVanlig feil i a): å stryke bare hos de direkte naboene til A og E og stoppe der. AC-3 legger buene inn igjen når et domene krymper, så C og D krymper også.\n\n*Kilde: løsningsforslaget til eksamen 2017, problem 1 (Figure 3 og svarene A, E, C / E / R). a) kontrollert med AC-3 i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 2 (10 p): Resolution",
+   "d": "**Problem 2 (10 points)**\n\nAssume the following knowledge base KB:<br>\n∀ x allergies(x) =⇒ sneeze(x)<br>\n∀ x ∀ y cat(y) ∧ allergicToCats(x) =⇒ allergies(x)<br>\ncat(Felix)<br>\nallergicToCats(Mary)\n\nThe Goal/Query: Does Mary sneeze?, I.e., sneeze(Mary)?\n\nPerform Resolution Refutation (RR) and find out if the query has a positive (True) or negative (False) answer for this KB? Answer the question with True (Yes) or False (No), and show how you derived this answer through RR. Show also unifications if any. T/F answers without the poof/refutation of the query will not be given any point. Partial points will be given to the proof.",
+   "f": [
+    [
+     "Svar (True/False)",
+     "text",
+     "True eller False"
+    ],
+    [
+     "Resolution refutation med unifikasjoner",
+     "area",
+     "Klausuler (CNF) og negert mål:\n1. …\nSteg: klausul + klausul, θ, resolvent\n…"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "Svar (True/False)": [
+      "True",
+      "Yes",
+      "T",
+      "sant",
+      "ja"
+     ]
+    },
+    "merk": "sneeze(Mary) følger: KB ∧ ¬sneeze(Mary) gir den tomme klausulen.",
+    "kilde": "2017Q&A.docx, Problem 2 (Figure 7); FOL-resolusjon i nettside-algo/logikk.js"
+   },
+   "fasit": "**Svar: True (Yes), Mary sneezes.** Resolution refutation ender i den tomme klausulen.\n\n**Klausulene** (CNF av KB og det negerte målet, variablene standardisert hver for seg):\n1. ¬allergies(w) ∨ sneeze(w)\n2. ¬cat(y) ∨ ¬allergicToCats(z) ∨ allergies(z)\n3. cat(Felix)\n4. allergicToCats(Mary)\n5. ¬sneeze(Mary) (negert mål)\n\nKlausul 2 kommer fra (cat(y) ∧ allergicToCats(x)) ⇒ allergies(x) ≡ ¬cat(y) ∨ ¬allergicToCats(x) ∨ allergies(x), med x omdøpt til z.\n\n| Steg | Klausuler | θ | Resolvent |\n|---|---|---|---|\n| 6 | 1 og 2 | {w/z} | ¬cat(y) ∨ ¬allergicToCats(z) ∨ sneeze(z) |\n| 7 | 6 og 3 | {y/Felix} | ¬allergicToCats(z) ∨ sneeze(z) |\n| 8 | 7 og 4 | {z/Mary} | sneeze(Mary) |\n| 9 | 8 og 5 | {} | □ (tom klausul) |\n\nKB ∧ ¬sneeze(Mary) er unsatisfiable, så KB ⊨ sneeze(Mary). Løsningsforslaget gir 1 poeng for unifikasjonene og trekker ikke for manglende standardisering av variablene.\n\nVanlig feil: å svare True uten selve beviset (0 poeng), eller å legge til sneeze(Mary) i stedet for det negerte målet ¬sneeze(Mary).\n\n*Kilde: løsningsforslaget til eksamen 2017, problem 2 (Figure 7). Kontrollert med FOL-resolusjon i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 3 (10 p): Adversarial search",
+   "img": [
+    "nettside-figurer/ek2017-q3.svg"
+   ],
+   "d": "**Problem 3 (10 points, division: 3-3-4 pts)**\n\nIn the following adversarial game (see Figure 8) it is MAX’s turn to play. The numbers at each leaf node is the estimated score of that position. Check nodes from left to right order.\n\na) Perform mini-max search and label each branch node with its value. Draw the figure on your answer sheet and fill the squares above the leaf nodes. You don’t need to draw the nodes at the leaf level.\n\nb) What is Max’s best move, i.e., which node it is and which utility does it give?\n\nc) Write down all leaf nodes that the alpha-beta algorithm would prune. Your answer will be a list of L<sub>i</sub> labels .",
+   "f": [
+    [
+     "a) Minimax-verdiene",
+     "area",
+     "Rot (Max): …\nA, B, C (Min): …\nMax-nodene fra venstre: …"
+    ],
+    [
+     "b) Node",
+     "text",
+     "A, B eller C"
+    ],
+    [
+     "b) Utility",
+     "text"
+    ],
+    [
+     "c) Bladene som kuttes",
+     "text",
+     "L…, L…, …"
+    ]
+   ],
+   "tegn": {
+    "type": "tre",
+    "data": {
+     "id": "Max",
+     "type": "max",
+     "tekst": "",
+     "barn": [
+      {
+       "id": "A",
+       "type": "min",
+       "tekst": "A",
+       "barn": [
+        {
+         "id": "A1",
+         "type": "max",
+         "tekst": "",
+         "barn": [
+          {
+           "id": "L1",
+           "type": "blad",
+           "verdi": 4,
+           "tekst": "L1"
+          }
+         ]
+        },
+        {
+         "id": "A2",
+         "type": "max",
+         "tekst": "",
+         "barn": [
+          {
+           "id": "L2",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "L2"
+          },
+          {
+           "id": "L3",
+           "type": "blad",
+           "verdi": 7,
+           "tekst": "L3"
+          },
+          {
+           "id": "L4",
+           "type": "blad",
+           "verdi": 1,
+           "tekst": "L4"
+          }
+         ]
+        },
+        {
+         "id": "A3",
+         "type": "max",
+         "tekst": "",
+         "barn": [
+          {
+           "id": "L5",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "L5"
+          },
+          {
+           "id": "L6",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "L6"
+          },
+          {
+           "id": "L7",
+           "type": "blad",
+           "verdi": 5,
+           "tekst": "L7"
+          },
+          {
+           "id": "L8",
+           "type": "blad",
+           "verdi": 1,
+           "tekst": "L8"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "B",
+       "type": "min",
+       "tekst": "B",
+       "barn": [
+        {
+         "id": "B1",
+         "type": "max",
+         "tekst": "",
+         "barn": [
+          {
+           "id": "L9",
+           "type": "blad",
+           "verdi": 7,
+           "tekst": "L9"
+          }
+         ]
+        },
+        {
+         "id": "B2",
+         "type": "max",
+         "tekst": "",
+         "barn": [
+          {
+           "id": "L10",
+           "type": "blad",
+           "verdi": 5,
+           "tekst": "L10"
+          },
+          {
+           "id": "L11",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "L11"
+          },
+          {
+           "id": "L12",
+           "type": "blad",
+           "verdi": 1,
+           "tekst": "L12"
+          }
+         ]
+        },
+        {
+         "id": "B3",
+         "type": "max",
+         "tekst": "",
+         "barn": [
+          {
+           "id": "L13",
+           "type": "blad",
+           "verdi": 3,
+           "tekst": "L13"
+          },
+          {
+           "id": "L14",
+           "type": "blad",
+           "verdi": 9,
+           "tekst": "L14"
+          },
+          {
+           "id": "L15",
+           "type": "blad",
+           "verdi": 5,
+           "tekst": "L15"
+          },
+          {
+           "id": "L16",
+           "type": "blad",
+           "verdi": 1,
+           "tekst": "L16"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "C",
+       "type": "min",
+       "tekst": "C",
+       "barn": [
+        {
+         "id": "C1",
+         "type": "max",
+         "tekst": "",
+         "barn": [
+          {
+           "id": "L17",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "L17"
+          }
+         ]
+        },
+        {
+         "id": "C2",
+         "type": "max",
+         "tekst": "",
+         "barn": [
+          {
+           "id": "L18",
+           "type": "blad",
+           "verdi": 8,
+           "tekst": "L18"
+          },
+          {
+           "id": "L19",
+           "type": "blad",
+           "verdi": 3,
+           "tekst": "L19"
+          },
+          {
+           "id": "L20",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "L20"
+          }
+         ]
+        },
+        {
+         "id": "C3",
+         "type": "max",
+         "tekst": "",
+         "barn": [
+          {
+           "id": "L21",
+           "type": "blad",
+           "verdi": 1,
+           "tekst": "L21"
+          },
+          {
+           "id": "L22",
+           "type": "blad",
+           "verdi": 4,
+           "tekst": "L22"
+          },
+          {
+           "id": "L23",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "L23"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "sjekk": {
+    "f": {
+     "b) Node": [
+      "B"
+     ],
+     "b) Utility": [
+      "5"
+     ],
+     "c) Bladene som kuttes": [
+      "{L4, L8, L15, L16, L18, L19, L20, L21, L22, L23}"
+     ]
+    },
+    "merk": "Rot 5 via B. Kuttes: L4, L8, L15, L16 og hele resten av C (L18–L23).",
+    "kilde": "2017Q&A.docx, Problem 3 (Figure 9 og listen over kuttede blader); minimax og alpha-beta i nettside-algo/spill.js"
+   },
+   "fasit": "**a) Roten = 5. Min-nodene: A = 4, B = 5, C = 2. Max-nodene fra venstre: 4, 7, 5 | 7, 5, 9 | 2, 8, 4.**\n\n**b) Node B, utility 5.**\n\n**c) L4, L8, L15, L16, L18, L19, L20, L21, L22, L23.**\n\n**a) Minimax nedenfra:**\n\n| Nivå | Regning | Verdier |\n|---|---|---|\n| Max under A | max(4), max(2, 7, 1), max(2, 2, 5, 1) | 4, 7, 5 |\n| Max under B | max(7), max(5, 2, 1), max(3, 9, 5, 1) | 7, 5, 9 |\n| Max under C | max(2), max(8, 3, 2), max(1, 4, 2) | 2, 8, 4 |\n| A, B, C (Min) | min(4, 7, 5), min(7, 5, 9), min(2, 8, 4) | 4, 5, 2 |\n| Roten (Max) | max(4, 5, 2) | **5** |\n\n**b)** MAX velger B fordi B har høyest minimax-verdi (5).\n\n**c) Alpha-beta**, barna fra venstre:\n\n| Steg | Hvor | α | β | v | Hva skjer |\n|---|---|---|---|---|---|\n| 1 | 1. Max under A ser L1 = 4 | −∞ | ∞ | 4 | verdi 4 |\n| 2 | A (Min) | −∞ | 4 | 4 | A får β = 4 |\n| 3 | 2. Max under A ser L2 = 2, L3 = 7 | −∞ | 4 | 7 | 7 ≥ β = 4: **kutt L4** |\n| 4 | 3. Max under A ser L5 = 2, L6 = 2, L7 = 5 | −∞ | 4 | 5 | 5 ≥ 4: **kutt L8** |\n| 5 | A = 4, roten | 4 | ∞ | 4 | roten får α = 4 |\n| 6 | 1. Max under B ser L9 = 7 | 4 | ∞ | 7 | B får β = 7 |\n| 7 | 2. Max under B ser L10 = 5, L11 = 2, L12 = 1 | 4 | 7 | 5 | B får β = 5 |\n| 8 | 3. Max under B ser L13 = 3, L14 = 9 | 4 | 5 | 9 | 9 ≥ β = 5: **kutt L15 og L16** |\n| 9 | B = 5, roten | 5 | ∞ | 5 | roten får α = 5 |\n| 10 | 1. Max under C ser L17 = 2 | 5 | ∞ | 2 | C får v = 2 ≤ α = 5: **kutt resten av C, L18–L23** |\n\nRoten blir 5 via B, og 13 av 23 blader blir sett. Ingen kutt avhenger av likhet, så svaret er det samme om du kutter ved v ≥ β eller v > β.\n\nVanlige feil: å kutte allerede etter L2 = 2 (det er L3 = 7 ≥ β som gir kuttet), og å glemme at α = 5 fra roten gjør at hele C-grenen kuttes etter første blad.\n\n*Kilde: løsningsforslaget til eksamen 2017, problem 3 (Figure 9). Kontrollert med minimax og alpha-beta i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 4 (15 p): Search",
+   "d": "**Problem 4 (15 points total, 4 points for each of the first questions. The sum will not be negative for this problem.)**\n\nThis is a mixture of multiple choice (b), Classical \"writing the answer\" (a and c), and True/False type of tasks.\n\na) Assume the following problem represented as a graph (see Figure 10) where the numbers on the edges represent the cost of traveling between the nodes connected by the edge. You will apply A\\* graph search algorithm and the nodes in the graph have the following h-values:<br>\nh(S)= 7<br>\nh(A)= 6<br>\nh(B)= 2<br>\nh(C)= 1<br>\nh(G)= 0<br>\n<br>\nWrite down the to-be expanded node and the content of the priority queue at each step. Ties break alphabetically. Assume an implementation where nodes are added permanently to the closed list. Write down the generated solution path - you will not get any points if you don’t show how the solution is generated (i.e., the queue and the currently expanding node). Is this an optimal solution? Why or why not, explain very briefly.<br>\n<img class=\"fig\" src=\"nettside-figurer/ek2017-q4.svg\" alt=\"Figure 10: A* Problem. Rettet graf: S→A 1, S→B 2, A→B 2, A→C 5, A→G 12, B→C 2, C→G 3\">\n\nb) Which of the following set of heuristic values provide a consistent heuristic for this problem (Figure 10)? Choose one of the options below.<br>\n1\\. {h(S) = 7,h(A) = 6,h(B) = 2,h(C) = 1,h(G) = 0}<br>\n2\\. {h(S) = 7,h(A) = 6,h(B) = 2,h(C) = 2,h(G) = 0}<br>\n3\\. {h(S) = 7,h(A) = 6,h(B) = 4,h(C) = 2,h(G) = 0}<br>\n4\\. {h(S) = 7,h(A) = 4,h(B) = 4,h(C) = 4,h(G) = 0}<br>\n5\\. None of the above. IMPORTANT: Note that for consistency, every pair of adjacent nodes (node that have direct connection) should be checked. Not only between S–>A or A–B but all pairs, and all nodes must be used in these pairs (including G, which is also \"a node\". Those answers which make part of the Figure consistent but not the entire one will not be accepted as correct.\n\nc) Write down a consistent heuristic set and apply A\\* graph search with it on the same graph (Figure 10). What is the solution path with this heuristic set? You don’t get any points by writing only the optimal solution if it is not accompanied with a consistent set of heuristics.\n\nd) Uniform cost Seach is a special case of A-star. True or False?\n\ne) Simulated annealing is a stochastic optimization method. True or False?",
+   "f": [
+    [
+     "a) Utvidet node og prioritetskø per steg",
+     "area",
+     "Expanding | Queue\n– | S(7)\nS | …\n…\nOptimal? …"
+    ],
+    [
+     "a) Løsningssti",
+     "text",
+     "S …"
+    ],
+    [
+     "b) Alternativ (nummer)",
+     "text",
+     "1, 2, 3, 4 eller 5"
+    ],
+    [
+     "c) Consistent heuristikk og A*-søket",
+     "area",
+     "h(S) = …, h(A) = …, h(B) = …, h(C) = …, h(G) = 0\nExpanding | Queue\n…"
+    ],
+    [
+     "c) Løsningssti",
+     "text",
+     "S …"
+    ],
+    [
+     "d) True or False",
+     "text"
+    ],
+    [
+     "e) True or False",
+     "text"
+    ]
+   ],
+   "tegn": {
+    "type": "graf",
+    "data": {
+     "retning": true,
+     "start": "S",
+     "mal": [
+      "G"
+     ],
+     "noder": [
+      {
+       "id": "S",
+       "x": 300,
+       "y": 0,
+       "h": 7
+      },
+      {
+       "id": "A",
+       "x": 80,
+       "y": 150,
+       "h": 6
+      },
+      {
+       "id": "B",
+       "x": 520,
+       "y": 150,
+       "h": 2
+      },
+      {
+       "id": "C",
+       "x": 300,
+       "y": 300,
+       "h": 1
+      },
+      {
+       "id": "G",
+       "x": 300,
+       "y": 450,
+       "h": 0
+      }
+     ],
+     "kanter": [
+      {
+       "fra": "S",
+       "til": "A",
+       "kost": 1
+      },
+      {
+       "fra": "S",
+       "til": "B",
+       "kost": 2
+      },
+      {
+       "fra": "A",
+       "til": "B",
+       "kost": 2
+      },
+      {
+       "fra": "A",
+       "til": "C",
+       "kost": 5
+      },
+      {
+       "fra": "A",
+       "til": "G",
+       "kost": 12
+      },
+      {
+       "fra": "B",
+       "til": "C",
+       "kost": 2
+      },
+      {
+       "fra": "C",
+       "til": "G",
+       "kost": 3
+      }
+     ]
+    }
+   },
+   "sjekk": {
+    "f": {
+     "a) Løsningssti": [
+      "S B C G",
+      "SBCG"
+     ],
+     "b) Alternativ (nummer)": [
+      "5"
+     ],
+     "c) Løsningssti": [
+      "S B C G",
+      "SBCG"
+     ],
+     "d) True or False": [
+      "True",
+      "T",
+      "sant"
+     ],
+     "e) True or False": [
+      "True",
+      "T",
+      "sant"
+     ]
+    },
+    "merk": "a) Utvidet S, B, C, A, (G), sti S–B–C–G med kostnad 7, optimal. b) Ingen av settene er consistent. d) h = 0 gir UCS.",
+    "kilde": "2017Q&A.docx, Problem 4; A* og UCS i nettside-algo/sok.js"
+   },
+   "fasit": "**a) Utvidet S, B, C, A, (G). Løsningssti S–B–C–G med kostnad 7. Optimal.**\n\n| Utvider (f) | Prioritetskø etterpå: node (f = g + h, sti) |\n|---|---|\n| – | S (0 + 7 = 7) |\n| S (7) | B (2 + 2 = 4, S–B), A (1 + 6 = 7, S–A) |\n| B (4) | C (4 + 1 = 5, S–B–C), A (7, S–A) |\n| C (5) | A (7, S–A), G (7 + 0 = 7, S–B–C–G). Likt brytes alfabetisk, så A kommer først |\n| A (7) | G (7). Barna B og C er alt lukket, og G via A koster 13 > 7 |\n| G (7) | mål |\n\nLøsningen er optimal: S–B–C–G koster 7, og de andre stiene koster mer (S–A–B–C–G 8, S–A–C–G 9, S–A–G 13). Her går det bra selv om h ikke er consistent (se b), fordi ingen node blir lukket med for høy g. h er admissible (h ≤ h\\*: h\\*(S) = 7, h\\*(A) = 7, h\\*(B) = 5, h\\*(C) = 3).\n\n**b) 5, None of the above.** Consistency krever h(n) − h(n′) ≤ c(n, n′) for hver kant:\n\n| Sett | Et brudd |\n|---|---|\n| 1 | h(A) − h(B) = 6 − 2 = 4 > c(A, B) = 2 |\n| 2 | h(A) − h(B) = 6 − 2 = 4 > 2 |\n| 3 | h(S) − h(B) = 7 − 4 = 3 > c(S, B) = 2 |\n| 4 | h(S) − h(A) = 7 − 4 = 3 > c(S, A) = 1 |\n\n**c) For eksempel h(S) = 7, h(A) = 6, h(B) = 5, h(C) = 3, h(G) = 0 (løsningsforslagets sett). Løsningssti S–B–C–G.**\n\nKontroll av alle kantene: S→A 1 ≤ 1, S→B 2 ≤ 2, A→B 1 ≤ 2, A→C 3 ≤ 5, A→G 6 ≤ 12, B→C 2 ≤ 2, C→G 3 ≤ 3. Settet holder også med kantene lest begge veier.\n\n| Utvider (f) | Prioritetskø etterpå |\n|---|---|\n| – | S (7) |\n| S (7) | A (1 + 6 = 7), B (2 + 5 = 7) |\n| A (7) | B (7), C (6 + 3 = 9), G (13 + 0 = 13). B via A gir g = 3, som er dårligere enn 2 |\n| B (7) | C (4 + 3 = 7, bedre enn 9), G (13) |\n| C (7) | G (7 + 0 = 7) |\n| G (7) | mål |\n\nUtvidet S, A, B, C, (G). Alle consistent sett gir den optimale stien S–B–C–G, også h = 0 overalt (da er A\\* lik UCS).\n\n**d) True.** Med h(n) = 0 for alle n sorterer A\\* på f = g, og det er UCS.\n\n**e) True.** Simulated annealing velger en tilfeldig etterfølger og godtar et dårligere trekk med sannsynlighet e^(ΔE/T), så metoden er stokastisk.\n\nVanlig feil i b): å sjekke bare noen av kantene, eller å blande consistency (en betingelse per kant) med admissibility (h ≤ h\\* per node).\n\n*Kilde: løsningsforslaget til eksamen 2017, problem 4 (figuren med Expanding/Queue og svarene SBCG, 5, SBCG, True, True). a) og c) kontrollert med A\\* og UCS i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 5 (15 p): Logic",
+   "d": "**Problem 5 (15 points. Division: 3-2-2-3-2-3, and -1 for each wrong answer. Sum of the points will not be negative for the whole problem.)**\n\nThis is a combination of multiple-choice and True/False types of task. Choose the correct answer for each question.\n\na) \"Men and women are welcome to apply.\" is equivalent to<br>\n∀(x) [(M(x) ∧ W(x)) =⇒ Apply(x)]\n\nb) Which of the following represents the sentence ”Some person plays every game”?<br>\n1\\. ∃x∀y[Person(x) ∧ Game(y) → Plays(x,y)]<br>\n2\\. ∃x∀y[Person(x) ∧ Game(y) ∧ Plays(x,y)]<br>\n3\\. ∀x∀y[Person(x) ∧ [Game(y) → Plays(x,y)]]<br>\n4\\. ∃x∀y[Person(x) ∧ [Game(y) → Plays(x,y)]]<br>\n5\\. None of the above.\n\nc) Which of the following is the Skolemized version of this sentence:<br>\n∀x[(¬P(x) ∧ Q(x)) ∨∃y(R(x,y) ∧ T(y)))]<br>\n1\\. ∀x[¬P(x) ∧ Q(x) ∨ (R(f(x),y) ∧ T(y)))]<br>\n2\\. ∀x[P(x) ∧¬Q(x) ∨ (R(x,f(x)) ∧ T(f(x)))]<br>\n3\\. ∀x[¬P(x) ∧ Q(x) ∨ (R(x,f(x)) ∧ T(f(x)))]<br>\n4\\. ∀x[¬P(x) ∧ Q(x) ∨ (R(x,x) ∧ T(x)))]<br>\n5\\. None of the above.\n\nd) For the sentence below, write V=valid if the sentence is valid, U=unsatisfiable if the sentence is unsatisfiable and S=satisfiable if the sentence is satisfiable but not valid.<br>\n1\\. ∀x[[Student(x) ∧¬Student(x)] → BornOn(x,Moon)]\n\ne) Apply one step resolution to the following clauses: p ∨ q and ¬p ∨¬q. Which of the below is the correct result of the resolution step.<br>\n1\\. {p ∨¬p} and {q ∨¬q}<br>\n2\\. {}\n\nf) You will convert the following sentence into Conjunctive Normal form.<br>\n(A ∧ B) ∨ (C ∧ D) ∨ (E ⇒ F)<br>\nWhich one is the resultant CNF?<br>\n1\\. (A ∨ C) ∧ (B ∨ C) ∧ (A ∨ D) ∧ (B ∨ D ∨¬E ∨ F)<br>\n2\\. (A ∨ C) ∨ (B ∨ C) ∨ (A ∨ D) ∧ (B ∨ D ∨¬E ∨ F)<br>\n3\\. (A ∨ C) ∧ (B ∨ C) ∧ (A ∨ D) ∧ (B ∨ D ∨ E ∨ F)<br>\n4\\. (A ∨ C ∨¬E ∨ F) ∧ (A ∨ D ∨¬E ∨ F) ∧ (B ∨ D ∨ E ∨ F) ∧ (B ∨ C ∨ E ∨ F)<br>\n5\\. none of the above",
+   "f": [
+    [
+     "a) True or False",
+     "text"
+    ],
+    [
+     "b) Alternativ (nummer)",
+     "text",
+     "1–5"
+    ],
+    [
+     "c) Alternativ (nummer)",
+     "text",
+     "1–5"
+    ],
+    [
+     "d) V, U eller S",
+     "text"
+    ],
+    [
+     "e) Alternativ (nummer)",
+     "text",
+     "1 eller 2"
+    ],
+    [
+     "f) Alternativ (nummer)",
+     "text",
+     "1–5"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) True or False": [
+      "False",
+      "F",
+      "usant"
+     ],
+     "b) Alternativ (nummer)": [
+      "4"
+     ],
+     "c) Alternativ (nummer)": [
+      "3"
+     ],
+     "d) V, U eller S": [
+      "V",
+      "valid"
+     ],
+     "e) Alternativ (nummer)": [
+      "1"
+     ],
+     "f) Alternativ (nummer)": [
+      "5"
+     ]
+    },
+    "merk": "a) Konjunksjonen i premisset gjelder bare det som er både mann og kvinne. f) Riktig CNF: (A ∨ C ∨ ¬E ∨ F) ∧ (A ∨ D ∨ ¬E ∨ F) ∧ (B ∨ C ∨ ¬E ∨ F) ∧ (B ∨ D ∨ ¬E ∨ F).",
+    "kilde": "2017Q&A.docx, Problem 5; f) CNF i nettside-algo/logikk.js"
+   },
+   "fasit": "**a) False.** `∀x [(M(x) ∧ W(x)) ⇒ Apply(x)]` sier bare noe om det som er *både* mann og kvinne. For alle andre er premisset usant og implikasjonen sann uansett. Løsningsforslaget: med disjunksjon blir det riktig, `∀x [(M(x) ∨ W(x)) ⇒ Apply(x)]`.\n\n**b) 4.** `∃x∀y[Person(x) ∧ [Game(y) → Plays(x,y)]]`: det finnes en x som er en person, og for alle y gjelder at er y et spill, så spiller x det.\n- 1: Person(x) står inne i premisset til →. Setningen blir sann bare ved at det finnes noe som ikke er en person.\n- 2: sier at alt er et spill og blir spilt av x.\n- 3: ∀x sier at alt er en person som spiller alle spill.\n\n**c) 3.** `∀x[¬P(x) ∧ Q(x) ∨ (R(x,f(x)) ∧ T(f(x)))]`. ∃y står inne i ∀x, så y erstattes med en Skolem-funksjon av x, f(x), overalt der y står. 1 setter f(x) på feil plass og lar y stå fri, 2 endrer negasjonene, og 4 erstatter y med x, som ikke er en Skolem-funksjon.\n\n**d) V (valid).** Student(x) ∧ ¬Student(x) er usann for alle x, så implikasjonen er sann i alle modeller.\n\n**e) 1.** Resolver på p og få q ∨ ¬q, eller resolver på q og få p ∨ ¬p. Begge er tautologier. Bare ett par komplementære literaler kan resolveres om gangen, så {} er feil. p ∨ q og ¬p ∨ ¬q er dessuten satisfiable (p sann, q usann), så de kan ikke gi den tomme klausulen.\n\n**f) 5, none of the above.** Riktig CNF:\n\n(A ∨ C ∨ ¬E ∨ F) ∧ (A ∨ D ∨ ¬E ∨ F) ∧ (B ∨ C ∨ ¬E ∨ F) ∧ (B ∨ D ∨ ¬E ∨ F)\n\nStegene: E ⇒ F blir ¬E ∨ F. (A ∧ B) ∨ (C ∧ D) distribueres til (A ∨ C) ∧ (A ∨ D) ∧ (B ∨ C) ∧ (B ∨ D), og ¬E ∨ F legges til i hver klausul. Alternativ 1 har ¬E ∨ F bare i den siste klausulen, 2 bruker ∨ mellom klausulene, 3 mangler negasjonen og ¬E ∨ F, og 4 mangler ¬ foran E i de to siste.\n\n*Kilde: løsningsforslaget til eksamen 2017, problem 5. f) kontrollert med CNF-algoritmen i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 6 (20 p): True/False",
+   "d": "**Problem 6 (20 points. Each question is 2 points. -1 for each wrong answer but the total points will not be negative.)**\n\nTrue/False type of questions. Answer with either True(T) or False(F)\n\nj) Two agents participate in a game which is defined as follows:<br>\nAgents. {Agent-i, Agent-j}<br>\nActions: {0,100,200,300} - these actions can be thought as giving bid in an auction for example.<br>\n<img class=\"fig\" src=\"nettside-figurer/ek2017-q6.png\" alt=\"Figure 12: Game theory question. Payoff matrix (Agent i, Agent j), rader Agent i 0/100/200/300, kolonner Agent j 0/100/200/300\"><br>\nThe Payoff matrix is shown in Figure 12 .<br>\nWhich of the options below is the strongly dominant equilibrium in this game? Each option shows the pair of actions, (action of agent-i, action of agent-j):<br>\n1\\. (0, 100)<br>\n2\\. (200, 200)<br>\n3\\. (300,0)<br>\n4\\. (300,100)<br>\n5\\. None of the above",
+   "tf": [
+    "a) Randomized behaviour may be rational in competitive multi-agent environments.",
+    "b) There exists a task environment in which every agent is rational.",
+    "c) Philosopher John Searle suggests that any physical symbol system has necessary and sufficient means for general intelligent action. True or False?",
+    "d) If h is a consistent heuristic, then h is also an admissible heuristic. True or False?",
+    "e) Purely reactive agents use semantic networks for planning. True or False?",
+    "f) Backgammon is a fully observable, sequential, deterministic, static, discrete and multiagent environment. True or False?",
+    "g) Circumscription allows the entailed sentences to be removed after new sentences added to the knowledge base.",
+    "h) \"Multiple inheritance\" is one of the reasons that leads to undecidability problem in first order logic. True or False?",
+    "i) \"Closed world assumption\" is the assumption that atomic sentences not known to be true are in fact false."
+   ],
+   "f": [
+    [
+     "j) Alternativ (nummer)",
+     "text",
+     "1–5"
+    ]
+   ],
+   "sjekk": {
+    "tf": [
+     "sant",
+     "sant",
+     "usant",
+     "sant",
+     "usant",
+     "usant",
+     "sant",
+     "usant",
+     "sant"
+    ],
+    "f": {
+     "j) Alternativ (nummer)": [
+      "5"
+     ]
+    },
+    "merk": "j) Ingen av agentene har en strengt dominant strategi, så det finnes ingen strongly dominant equilibrium.",
+    "kilde": "2017Q&A.docx, Problem 6; j) dominans og Nash i nettside-algo/spill.js"
+   },
+   "fasit": "Påstandene a)–i) står under j) i visningen.\n\n- **a) Sant.** I competitive multiagent miljøer hindrer randomisering at motstanderen utnytter at du er forutsigbar (stein-saks-papir).\n- **b) Sant.** Gir alle handlinger, også å gjøre ingenting, samme belønning, er hvert valg optimalt, og da er alle agenter rasjonelle.\n- **c) Usant.** Physical symbol system hypothesis er Newell og Simons. Searle mente det motsatte: å manipulere symboler gir ikke forståelse (Chinese room).\n- **d) Sant.** h(n) ≤ c(n, n′) + h(n′) langs en optimal sti til målet, med h(mål) = 0, gir h(n) ≤ h\\*(n) ved induksjon.\n- **e) Usant.** En rent reaktiv agent (simple reflex) går rett fra persepsjon til handling med condition-action-regler. Den planlegger ikke og bruker ikke semantiske nett.\n- **f) Usant.** Backgammon er stochastic på grunn av terningene. Resten stemmer: fully observable, sequential, static, discrete og multiagent.\n- **g) Sant.** Circumscription er en nonmonotonic logikk: konklusjoner, for eksempel defaults, kan trekkes tilbake når nye setninger kommer inn. Avsnitt 10.6 er utenfor årets pensum (notatet til E17).\n- **h) Usant.** Multiple inheritance er et problem i semantiske nett, der to foreldre kan gi motstridende verdier. At inferens i FOL bare er semidecidable, skyldes uttrykkskraften, ikke arv.\n- **i) Sant.** Det er definisjonen av closed-world assumption.\n\n**j) 5, None of the above.** Det finnes ingen strongly dominant (strategy) equilibrium, fordi ingen av agentene har en strengt dominant strategi:\n- **Agent-i:** mot j = 0 er 0 best (300), mot j = 200 er 100 best (200). Beste svar avhenger av hva j gjør.\n- **Agent-j:** mot i = 0 er 200 best (100), mot i = 100 er 300 best (300).\n\nEn dominant strategy equilibrium krever at begge har en dominant strategi, så ingen av alternativene 1–4 er det. Den eneste rene Nash-likevekten er (100, 300), og den står heller ikke blant alternativene. 300 er strengt dominert for Agent-i (−100 mot alt), men det gjør ikke en annen strategi dominant.\n\nVanlig feil: å blande Nash-likevekt med dominant strategy equilibrium.\n\n*Kilde: løsningsforslaget til eksamen 2017, problem 6. j) kontrollert med dominans og Nash i algoritmefila.*"
+  },
+  {
+   "t": "Oppgave 7 (20 p): Planning and NLP",
+   "d": "**Problem 7 (20pts- division of points: 3-3-3-3-2-2-2-2. Minus point: -1 for each wrong answer)**\n\nMultiple Choice or True/False type of tasks.\n\na) In situation calculus, something true in one situation may not be true in another situation. True or False?\n\nb) The following plan describes the process of withdrawing money from an ATM. Which of the representations is written in STRIPS?<br>\n1\\. Action (withdraw(cash),<br>\n&emsp;PRECOND: At(ATM) ∧ Sells(ATM, cash, person) ∧ hasMoneyOnAccount(person)<br>\n&emsp;DELETE-LIST: hasMoneyOnAccount(person)<br>\n&emsp;ADD-LIST: have(cash))<br>\n2\\. Action (withdraw(cash),<br>\n&emsp;PRECOND: At(ATM) ∧ Sells(ATM, cash, person) ∧ hasMoneyOnAccount(person)<br>\n&emsp;EFFECT: ¬ hasMoneyOnAccount(person) ∧ have(cash))\n\nc) Which statements about partial order planning are true?<br>\n1\\. Search in plan space and use least commitment when possible.<br>\n2\\. Make only choices that are relevant to solving the current part of the problem.<br>\n3\\. Both of the above.<br>\n4\\. None of the above.\n\nd) Progression planners reason from the goal state, trying to find the actions that will lead to the start state. True or False?\n\ne) In Medieval Europe, Latin worked as the Lingua Franca. Today English has taken over that role, obviously giving an advantage to persons who have it as mother tongue. There have been attempts to create artificial human languages (e.g., Esperanto and Interlingua) that would not give anybody such an advantage, but those languages have not been very successful. Suppose you were given the task of creating such as language. Which of the following would say say would be most important to try to restrict:<br>\n1\\. The lexicon.<br>\n2\\. The grammar.<br>\n3\\. Ambiguity.<br>\n4\\. Redundancy\n\nf) Two search engines were evaluated on a web search query. Engine A returned 27 web pages, 18 of which were deemed relevant to the query. Engine B returned 9 pages, all of which were relevant to the query. Which of the following statements is definitely correct?<br>\n1\\. System A had a higher recall than system B.<br>\n2\\. System B had a higher precision than system A.<br>\n3\\. System B had a higher F1-score than system A.<br>\n4\\. System A had a better performance than system B.\n\ng) When performing sentiment analysis, it is normally important to find out:<br>\n1\\. Who the opinion holder is.<br>\n2\\. What object the opinion is expressed on.<br>\n3\\. If the opinion is positive, negative or neutral.<br>\n4\\. All of the above.\n\nh) Which of the following statements is not correct?<br>\n1\\. The distributional hypothesis assumes that words with similar usage have similar meanings.<br>\n2\\. The bag of words model ignores the grammatical structure of the language.<br>\n3\\. An n-gram model is an example of a language model.<br>\n4\\. Grounding means that a speaker defines the basis for a dialogue.\n\nLYKKE TIL!",
+   "f": [
+    [
+     "a) True or False",
+     "text"
+    ],
+    [
+     "b) Alternativ (nummer)",
+     "text",
+     "1 eller 2"
+    ],
+    [
+     "c) Alternativ (nummer)",
+     "text",
+     "1–4"
+    ],
+    [
+     "d) True or False",
+     "text"
+    ],
+    [
+     "e) Alternativ (nummer)",
+     "text",
+     "1–4"
+    ],
+    [
+     "f) Alternativ (nummer)",
+     "text",
+     "1–4"
+    ],
+    [
+     "g) Alternativ (nummer)",
+     "text",
+     "1–4"
+    ],
+    [
+     "h) Alternativ (nummer)",
+     "text",
+     "1–4"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "a) True or False": [
+      "True",
+      "T",
+      "sant"
+     ],
+     "b) Alternativ (nummer)": [
+      "1"
+     ],
+     "c) Alternativ (nummer)": [
+      "3"
+     ],
+     "d) True or False": [
+      "False",
+      "F",
+      "usant"
+     ],
+     "e) Alternativ (nummer)": [
+      "2",
+      "3"
+     ],
+     "g) Alternativ (nummer)": [
+      "3"
+     ],
+     "h) Alternativ (nummer)": [
+      "4"
+     ]
+    },
+    "merk": "e) Løsningsforslaget godtar 2 eller 3. f) sjekkes ikke: løsningsforslaget sier 2, men 1 er også sant (se fasiten). g) er løsningsforslagets svar.",
+    "kilde": "2017Q&A.docx, Problem 7"
+   },
+   "fasit": "**a) True.** I situation calculus er fluents knyttet til en situasjon. Et fluent som er sant i s, kan være usant i Result(a, s).\n\n**b) 1.** STRIPS beskriver en handling med preconditions, en delete-list og en add-list. Alternativ 2, med EFFECT der negative literaler står i effekten, er action schema-formen fra PDDL og boka.\n\n**c) 3, Both of the above.** Partial-order planning søker i plan space og bruker least commitment: rekkefølge og variabelbindinger bestemmes først når de må. Planleggeren jobber med én åpen precondition om gangen og gjør bare valg som er relevante for den. Partial-order planning er utenfor årets pensum (notatet til E18).\n\n**d) False.** Progression (forward search) starter i starttilstanden og går mot målet. Det er regression (backward search) som starter i målet.\n\n**e) 2 eller 3** (løsningsforslaget godtar begge). Grammatikken (regelmessig, uten unntak) og flertydighet (ambiguity) er det viktigste å begrense i et kunstig hjelpespråk. Ordforrådet må uansett være stort, og redundans hjelper forståelsen.\n\n**f) 2** (løsningsforslaget). Precision for A er 18/27 ≈ 0,67 og for B 9/9 = 1, så B har høyere precision.\n- Alternativ 1 er strengt tatt også sant: begge svarer på samme spørring, så de har samme antall relevante sider N. Recall er 18/N for A og 9/N for B, så A har høyere recall.\n- Alternativ 3 er usant: F1 = 36/(N + 27) for A og 18/(N + 9) for B. A har høyere F1 når N > 9, og N ≥ 18 fordi A fant 18 relevante.\n- Alternativ 4 er for vagt til å være «definitely correct».\n\n**g) 3** (løsningsforslaget). Kjernen i sentiment analysis er å avgjøre om meningen er positiv, negativ eller nøytral. I videre definisjoner hører også hvem som mener noe (opinion holder) og hva meningen gjelder (target) med, så 4 kan forsvares. På eksamen ga løsningsforslaget 3.\n\n**h) 4** er ikke riktig. Grounding er ikke noe én taler bestemmer alene. Det er en felles prosess i dialogen der deltakerne etablerer felles forståelse (common ground), for eksempel ved at lytteren bekrefter at ytringen er forstått. 1–3 er riktige: the distributional hypothesis sier at ord som brukes likt, betyr omtrent det samme, bag-of-words ser bort fra rekkefølge og grammatikk, og en n-gram-modell er en språkmodell.\n\nVanlig feil i d): å bytte om progression og regression.\n\n*Kilde: løsningsforslaget til eksamen 2017, problem 7 (svarene True, 1, 3, False, 2 or 3, 2, 3, 4).*"
+  }
+ ]
+}

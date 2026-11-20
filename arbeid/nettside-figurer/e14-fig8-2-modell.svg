@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360" font-family="Helvetica, Arial, sans-serif">
+<rect width="600" height="360" fill="#fff"/>
+<defs><marker id="pil" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#222"/></marker></defs>
+<path d="M205 160 Q300 120 395 160" fill="none" stroke="#222" stroke-width="1.8" marker-end="url(#pil)"/>
+<text x="300" y="128" font-size="14" text-anchor="middle" fill="#b0281e">Brother</text>
+<path d="M395 190 Q300 230 205 190" fill="none" stroke="#222" stroke-width="1.8" marker-end="url(#pil)"/>
+<text x="300" y="232" font-size="14" text-anchor="middle" fill="#b0281e">Brother</text>
+<path d="M450 80 L450 140" fill="none" stroke="#222" stroke-width="1.8" marker-end="url(#pil)"/>
+<text x="505" y="115" font-size="14" text-anchor="middle" fill="#b0281e">OnHead</text>
+<path d="M150 210 L150 280" fill="none" stroke="#222" stroke-width="1.8" marker-end="url(#pil)"/>
+<text x="200" y="250" font-size="14" text-anchor="middle" fill="#b0281e">LeftLeg</text>
+<path d="M450 210 L450 280" fill="none" stroke="#222" stroke-width="1.8" marker-end="url(#pil)"/>
+<text x="500" y="250" font-size="14" text-anchor="middle" fill="#b0281e">LeftLeg</text>
+<ellipse cx="450" cy="55" rx="45" ry="24" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="450" y="60.0" font-size="15" text-anchor="middle" fill="#111">krone</text>
+<text x="390" y="60" font-size="14" font-style="italic" text-anchor="end" fill="#1f4e9c">Crown</text>
+<ellipse cx="150" cy="175" rx="58" ry="34" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="150" y="171.5" font-size="15" text-anchor="middle" fill="#111">R</text>
+<text x="150" y="188.5" font-size="15" text-anchor="middle" fill="#111">Richard</text>
+<text x="150" y="133" font-size="14" font-style="italic" text-anchor="middle" fill="#1f4e9c">Person</text>
+<ellipse cx="450" cy="175" rx="58" ry="34" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="450" y="171.5" font-size="15" text-anchor="middle" fill="#111">J</text>
+<text x="450" y="188.5" font-size="15" text-anchor="middle" fill="#111">John</text>
+<text x="518" y="180" font-size="14" font-style="italic" text-anchor="start" fill="#1f4e9c">Person, King</text>
+<ellipse cx="150" cy="305" rx="85" ry="24" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="150" y="310.0" font-size="15" text-anchor="middle" fill="#111">Richards venstre bein</text>
+<ellipse cx="450" cy="305" rx="80" ry="24" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="450" y="310.0" font-size="15" text-anchor="middle" fill="#111">Johns venstre bein</text>
+</svg>

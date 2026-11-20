@@ -147,7 +147,10 @@
   },
   {
    "t": "Wumpus: entailment med de åtte modellene (egen oppgave)",
-   "d": "Wumpus world (AIMA 7.2): En rute har *breeze* hvis og bare hvis minst én naborute (opp, ned, venstre eller høyre) har en grop (pit).\n\nAgenten har besøkt [1,1] og [2,1], så ingen av dem har grop. Den kjente ingen breeze i [1,1], men breeze i [2,1]. KB består av breeze-regelen og disse to persepsjonene. Rutene som kan ha grop og som påvirker persepsjonene, er [1,2], [2,2] og [3,1]. Det gir 2³ = 8 mulige modeller for (P₁,₂, P₂,₂, P₃,₁), som i fig. 7.5.\n\nAvgjør med de åtte modellene om\n\n1. KB ⊨ P₂,₂ ∨ P₃,₁\n2. KB ⊨ P₃,₁\n3. KB ⊨ ¬P₃,₁",
+   "d": "Wumpus world (AIMA 7.2): En rute har *breeze* hvis og bare hvis minst én naborute (opp, ned, venstre eller høyre) har en grop (pit).\n\nAgenten har besøkt [1,1] og [2,1], så ingen av dem har grop. Den kjente ingen breeze i [1,1], men breeze i [2,1]. KB består av breeze-regelen og disse to persepsjonene. Rutene som kan ha grop og som påvirker persepsjonene, er [1,2], [2,2] og [3,1]. Det gir 2³ = 8 mulige modeller for (P₁,₂, P₂,₂, P₃,₁), som i fig. 7.5.\n\n<!--fig-->\n\n*De åtte modellene som i fig. 7.5: P = grop, B = breeze, OK = besøkt og trygg. Figuren markerer ikke hvilke modeller som gjør KB sann.*\n\nAvgjør med de åtte modellene om\n\n1. KB ⊨ P₂,₂ ∨ P₃,₁\n2. KB ⊨ P₃,₁\n3. KB ⊨ ¬P₃,₁",
+   "img": [
+    "nettside-figurer/e11-fig7-5-modeller.svg"
+   ],
    "f": [
     [
      "Modellene der KB er sann",

@@ -3,11 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<script>try{document.querySelector('meta[name="color-scheme"]').content=localStorage.getItem("tema")||"light dark"}catch(e){}</script>
 <title>TDT4136 eksamensløp</title>
 <!-- Mal for nettside.html. Rediger her og kjør: uv run arbeid/lag-nettside.py -->
 <style>
-:root{--bg:#f7f6f2;--surface:#fff;--fg:#1f2328;--muted:#5f666e;--border:#dcd9d2;--accent:#1f5fbf;--accent-bg:#e6eefb;--ok:#1b7a3d;--ok-bg:#e1f3e6;--bad:#b42318;--today:#fdf0d5;--code:#efede8}
-@media (prefers-color-scheme:dark){:root{--bg:#15171a;--surface:#1d2024;--fg:#e7e6e3;--muted:#9aa1a8;--border:#33373d;--accent:#86b3ff;--accent-bg:#1c2b43;--ok:#71d394;--ok-bg:#16301f;--bad:#ff8a80;--today:#3a2d14;--code:#262a2f}}
+:root{color-scheme:light dark;--bg:light-dark(#f7f6f2,#15171a);--surface:light-dark(#fff,#1d2024);--fg:light-dark(#1f2328,#e7e6e3);--muted:light-dark(#5f666e,#9aa1a8);--border:light-dark(#dcd9d2,#33373d);--accent:light-dark(#1f5fbf,#86b3ff);--accent-bg:light-dark(#e6eefb,#1c2b43);--ok:light-dark(#1b7a3d,#71d394);--ok-bg:light-dark(#e1f3e6,#16301f);--bad:light-dark(#b42318,#ff8a80);--today:light-dark(#fdf0d5,#3a2d14);--code:light-dark(#efede8,#262a2f)}
+/* Knappen ☾/☀ overstyrer systemet gjennom <meta name="color-scheme">, og light-dark() følger color-scheme. */
+:root:has(meta[name="color-scheme"][content="light"]){color-scheme:light}:root:has(meta[name="color-scheme"][content="dark"]){color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
 a{color:var(--accent)}
@@ -56,13 +59,13 @@ details.fasit summary{cursor:pointer;font-weight:600}
 .tfasit{margin-top:10px;border-top:1px dashed var(--border);padding-top:8px}.tfasit summary{cursor:pointer;font-weight:600;color:var(--accent)}
 .eks-top,.eks-nav{position:sticky;z-index:3;display:flex;align-items:center;gap:6px 12px;flex-wrap:wrap;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:10px}
 .eks-top{top:0;margin-bottom:12px}.eks-top b{flex:1}.eks-nav{bottom:0;margin-top:12px;gap:4px}
-#tid{font-weight:600;font-variant-numeric:tabular-nums}#tid.ute{background:var(--today);padding:2px 8px;border-radius:6px}
+#tid{font-weight:600;font-variant-numeric:tabular-nums}#tid.ute{color:var(--bad)}
 .eks-s{display:none;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px 26px;min-height:55vh}.eks-s.cur{display:block}
 .eks .task{background:none;border:0;padding:0;margin:0}.eks .task h3{font-size:1.3em;margin-bottom:14px}
 .maks{color:var(--muted);font-size:14px;margin:18px 0 8px}
 .alt label{display:flex;gap:10px;align-items:flex-start;padding:8px 12px;border:1px solid var(--border);border-radius:8px;margin:6px 0;cursor:pointer}
 .alt label:has(:checked){border-color:var(--accent);background:var(--accent-bg)}.alt input{margin-top:4px}
-.eks:not(.levert) :is(.sj,.rb,.sjm,.fb,.tfasit,.etter),.eks.levert #lever{display:none}
+.eks:not(.levert) .etter,.eks:not(.levert,.ov) :is(.sj,.rb,.spor,.sjm,.fb,.tfasit),.eks.levert :is(#lever,#ovE){display:none}
 .eks-nav button{min-width:36px;padding:5px 8px}.eks-nav button.ok{background:var(--accent-bg);border-color:var(--accent)}
 .eks-nav button[aria-current]{outline:2px solid var(--accent);outline-offset:1px;font-weight:700}
 .task h3{margin:0 0 6px}
@@ -71,8 +74,12 @@ details.fasit summary{cursor:pointer;font-weight:600}
 .in{width:100%;font:inherit;font-size:14px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--fg)}
 /* Svarfeltene vokser med teksten (field-sizing) og kan dras større; eldre nettlesere får vanlig rullefelt. */
 #leksknapp{position:fixed;top:12px;right:12px;z-index:5}
-#leksdlg{width:min(760px,calc(100vw - 32px));max-height:85vh;padding:0 20px 20px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--fg)}#leksdlg::backdrop{background:rgb(0 0 0/.45)}
-#leksdlg .lukk{position:sticky;top:12px;float:right;margin-top:12px;z-index:1}
+.dlg{width:min(760px,calc(100vw - 32px));max-height:85vh;padding:0 20px 20px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--fg)}.dlg::backdrop{background:rgb(0 0 0/.45)}#algodlg{width:min(1100px,calc(100vw - 32px))}
+.dlg-k{position:sticky;top:12px;float:right;display:flex;gap:6px;margin-top:12px;z-index:1}
+/* Leksikonet eller algoritmene festet til høyre: ingen bakteppe, og på brede skjermer gir siden plass til det. */
+.dlg.hoyre{--b:clamp(320px,32vw,440px);position:fixed;inset:0 0 0 auto;margin:0;width:min(var(--b),100vw);height:100vh;max-height:none;overflow:auto;border-width:0 0 0 1px;border-radius:0;z-index:6}
+#algodlg.hoyre{--b:clamp(360px,42vw,720px);width:min(var(--b),100vw)}
+@media (min-width:1000px){:root:has(#leksdlg.hoyre[open]) .wrap{margin-right:clamp(320px,32vw,440px)}:root:has(#algodlg.hoyre[open]) .wrap{margin-right:clamp(360px,42vw,720px)}}
 .lsok{position:sticky;top:0;z-index:1;width:100%;font:inherit;padding:9px 12px;margin:4px 0 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--fg)}
 .lbody li{margin:3px 0}.lbody h2{margin:22px 0 6px}
 textarea.in{min-height:90px;resize:vertical;field-sizing:content}textarea.in.en{min-height:0}
@@ -92,7 +99,7 @@ textarea.in{min-height:90px;resize:vertical;field-sizing:content}textarea.in.en{
 .mic.rec{background:#c62828;border-color:#c62828;color:#fff}
 .fb{margin-top:10px;padding:10px 14px;border-radius:8px;background:var(--accent-bg);font-size:14px}
 .fb .fbt{white-space:pre-wrap;margin-top:4px}
-.lbody .spor{padding:1px 8px;font-size:12px}
+.lbody :is(.spor,.pin){padding:1px 8px;font-size:12px}
 .sjr{font-size:13px;font-weight:600;margin-left:6px}.sjr.ja{color:var(--ok)}.sjr.nei{color:var(--bad)}
 .sjm{font-size:14px;margin-top:6px}.sjm:empty{display:none}
 main.ep{max-width:none;padding:0}
@@ -116,7 +123,7 @@ main.ep.uv,main.ep.uh{grid-template-columns:minmax(0,1fr)}main.ep.uv .rgt,main.e
 <link rel="stylesheet" href="nettside-algo/motor.css">
 </head>
 <body>
-<button id="leksknapp" type="button" aria-haspopup="dialog" title="Slå opp et begrep (marker et ord først for å søke på det)">Leksikon</button><dialog id="leksdlg" closedby="any" aria-label="Leksikon"><button type="button" class="lukk">Lukk</button><div></div></dialog><div class="wrap"><div id="deler"><button id="meny" type="button" aria-controls="nav">Meny</button><button id="vis-v" type="button" hidden></button><button id="vis-h" type="button" hidden>Øv selv</button></div><nav id="nav"></nav><main id="main"></main></div>
+<button id="leksknapp" type="button" aria-haspopup="dialog" title="Slå opp et begrep (marker et ord først for å søke på det)">Leksikon</button><dialog id="leksdlg" class="dlg" data-s="ldock" closedby="any" aria-label="Leksikon"><div class="dlg-k"><button type="button" class="tg feste" aria-pressed="false" title="Ha leksikonet åpent til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><dialog id="algodlg" class="dlg" data-s="adock" closedby="any" aria-label="Algoritmer"><div class="dlg-k"><button type="button" class="tg feste" aria-pressed="false" title="Ha algoritmene åpne til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><div class="wrap"><div id="deler"><button id="meny" type="button" aria-controls="nav">Meny</button><button id="vis-v" type="button" hidden></button><button id="vis-h" type="button" hidden>Øv selv</button><button id="tema" type="button"></button></div><nav id="nav"></nav><main id="main"></main></div>
 <script>const D = __DATA__;</script>
 <!-- Algoritmeanimasjoner og tegneverktøy, se nettside-algo/KONTRAKT.md -->
 <script src="nettside-algo/motor.js"></script><script src="nettside-algo/sok.js"></script><script src="nettside-algo/lokalt.js"></script><script src="nettside-algo/spill.js"></script><script src="nettside-algo/csp.js"></script><script src="nettside-algo/logikk.js"></script><script src="nettside-algo/plan.js"></script><script src="nettside-algo/sprak.js"></script>
@@ -216,7 +223,7 @@ let h=`<div class="task${filled(a)?" done":""}" id="t${j}"><h3>${j+1}. ${esc(t.t
 h+=slutt.map(n=>fh[n]).join("");
 // Papirsvar (logikkoppgavene, som på eksamen): bildene lagres i arbeid/svar/bilder/ og følger svaret som «Papir» til retting.
 if(t.papir&&API)h+=`<div class="papir"><button type="button" class="pb">Svar på papir: last opp bilde</button><input type="file" accept="image/*" multiple hidden data-j="${j}"><span class="mut pst"></span><div class="pbilder">${bilder(a.Papir)}</div></div>`;
-h+=`<div class="row">${t.sjekk?`<button type="button" class="sj" data-j="${j}">Sjekk</button>`:""}${tn>=0?"":vbh}${API?`<button type="button" class="rb" data-j="${j}">Rett denne</button>`:""}<span class="mut rs"></span></div><div class="sjm" role="status"></div>${tn>=0&&vbh?"":'<div class="vk"></div>'}`+(t.fasit?`<details class="tfasit"><summary>Vis fasit</summary>${t.fasit}</details>`:"")+(API?`<div class="fb" hidden></div>`:"");
+h+=`<div class="row">${t.sjekk?`<button type="button" class="sj" data-j="${j}">Sjekk</button>`:""}${tn>=0?"":vbh}${API?`<button type="button" class="rb" data-j="${j}">Rett denne</button><button type="button" class="spor" data-j="${j}" title="Send et spørsmål om denne oppgaven">Spør</button>`:""}<span class="mut rs"></span></div><div class="sjm" role="status"></div>${tn>=0&&vbh?"":'<div class="vk"></div>'}`+(t.fasit?`<details class="tfasit"><summary>Vis fasit</summary>${t.fasit}</details>`:"")+(API?`<div class="fb" hidden></div>`:"");
 return h+"</div>"}
 
 // Øyeblikkelig sjekk mot t.sjekk (fasit fra løsningsforslag/notat): tf-lista og korte felt. Se nettside-oppgaver for formatet.
@@ -245,8 +252,8 @@ function fbBoks(box,st,f,r,ord){const ny=r&&!(f&&f.tid>=r),k=f?f.tid+f.tekst+ny:
 st.textContent=ny?`Sendt ${r.slice(11,16)}. ${ord==="Svar"?"Svaret":"Tilbakemeldingen"} kommer her.`:""}
 const hentFB=()=>API&&fetch("svar/tilbakemelding.json",{cache:"no-store"}).then(r=>r.ok?r.json():{}).then(f=>{FB=f;visFB()}).catch(()=>{});
 
-function rett(e,js){if(!js.length)return feil("Ingen besvarte oppgaver å sende.");clearTimeout(pt);push();const r=S.rett[e.id]||(S.rett[e.id]={}),t=now();
-Promise.allSettled(js.map(j=>fetch("/api/rett",{method:"POST",body:JSON.stringify({eid:e.id,ep:e.ep,j,oppgave:e.tasks[j].t,svar:svar(e)[j]||{}})}).then(x=>{if(!x.ok)throw 0;r[j]=t}))).then(u=>{save();visFB();const n=u.filter(x=>x.status==="rejected").length;
+function rett(e,js,q){if(!js.length)return feil("Ingen besvarte oppgaver å sende.");clearTimeout(pt);push();const r=S.rett[e.id]||(S.rett[e.id]={}),t=now();
+Promise.allSettled(js.map(j=>fetch("/api/rett",{method:"POST",body:JSON.stringify({eid:e.id,ep:e.ep,j,oppgave:e.tasks[j].t,svar:svar(e)[j]||{},...(q&&{sporsmal:q})})}).then(x=>{if(!x.ok)throw 0;r[j]=t}))).then(u=>{save();visFB();const n=u.filter(x=>x.status==="rejected").length;
 if(n)feil(n===js.length?"Fikk ikke sendt til retting. Kjører serveren?":`${n} av ${js.length} ble ikke sendt. Oppgavene uten «Sendt» kan sendes på nytt.`)})}
 
 function dikter(b){
@@ -261,7 +268,7 @@ b.classList.add("rec");b.textContent="Stopp";r.start()}
 function episode(e){
 // Øvingene (D.ov) bruker samme visning, bare uten video: oppgaveteksten står til venstre, oppgavene til høyre.
 const L=e.video?D.eps:D.ov.filter(x=>x.grp===e.grp),i=L.indexOf(e),pr=L[i-1],nx=L[i+1];
-const pv=e.art==="prøveeksamen";$("#main").className=pv?"":"ep";
+const pv=/eksamen$/.test(e.art);$("#main").className=pv?"":"ep";
 $("#main").innerHTML=pv?prove(e):`<div class="lft"><p class="mut">${e.ep}${e.pensum?" · "+e.pensum:" · "+e.art}</p><h1>${e.title}</h1>
 ${e.video?`<video id="v" controls preload="metadata" src="${e.video}"></video>
 <div class="row"><label><input type="checkbox" id="seen"${S.seen[e.id]?" checked":""}> Sett</label><button id="cc"></button><span class="mut">${e.len}<span class="goov"> · <a href="javascript:void 0" onclick="document.getElementById('ov').scrollIntoView()">Gå til Øv selv</a></span></span></div>
@@ -291,7 +298,7 @@ dg.onkeydown=x=>{const d={ArrowLeft:3,ArrowRight:-3}[x.key];if(d){x.preventDefau
 dg.ondblclick=()=>{delete S.rw;m.style.removeProperty("--rw");save()};
 if(v)$(".chap").onclick=x=>{const b=x.target.closest("button");if(!b)return;v.currentTime=+b.dataset.t;v.play();v.scrollIntoView({behavior:"smooth"})};
 const T=$("#tasks"),set=(j,k,val)=>{const a=svar(e);(a[j]||(a[j]={}))[k]=val;save();lagre();$("#t"+j).classList.toggle("done",filled(a[j]));nav()};
-T.addEventListener("click",x=>{const m=x.target.closest(".mic"),r=x.target.closest(".rb"),vb=x.target.closest(".vb"),sj=x.target.closest(".sj,.vis");if(m)dikter(m);if(r)rett(e,[+r.dataset.j]);if(sj)sjekk(e,+sj.dataset.j,sj.classList.contains("vis"));
+T.addEventListener("click",x=>{const m=x.target.closest(".mic"),r=x.target.closest(".rb"),sp=x.target.closest(".spor"),vb=x.target.closest(".vb"),sj=x.target.closest(".sj,.vis");if(m)dikter(m);if(r)rett(e,[+r.dataset.j]);if(sp){const q=prompt("Hva lurer du på i denne oppgaven? Svaret kommer under oppgaven.");if(q&&q.trim())rett(e,[+sp.dataset.j],q.trim())}if(sj)sjekk(e,+sj.dataset.j,sj.classList.contains("vis"));
 // Tegneverktøyet åpnes i oppgaven; tegningen lagres som en del av svaret («Tegning»), og grafen fra oppgaven brukes som start.
 if(vb){const j=+vb.dataset.j,el=$("#t"+j+" .vk"),t=e.tasks[j],lagret=(svar(e)[j]||{}).Tegning;if(el.firstChild){el.innerHTML="";vb.textContent=vb.dataset.l;return}vb.textContent="Lukk tegneverktøyet";
 // t.tegn: navnet på en GR-graf (eksamensgrafen tegnet ferdig) eller {type, data}.
@@ -320,55 +327,74 @@ navigator.clipboard?navigator.clipboard.writeText(s).then(ok,fb):fb()};if(pv)eks
 // Sjekk, fasit og retting skjules til settet er levert.
 const PT=4*3600e3;let tt;
 function prove(e){const n=e.tasks.length,b=(k,l)=>`<button type="button" data-k="${k}">${l}</button>`;
-return `<div class="eks"><div class="eks-top"><b>TDT4136 · ${e.ep} ${esc(e.title)}</b><span id="tid"></span><button type="button" id="leksE">Leksikon</button><button type="button" id="lever">Lever</button></div>
+return `<div class="eks"><div class="eks-top"><b>TDT4136 · ${e.ep} ${esc(e.title)}</b><span id="tid"></span><button type="button" class="tg" id="ovE" aria-pressed="false" title="Vis Sjekk, fasit, Spør og Rett denne før du leverer">Fasit underveis</button><button type="button" id="algoE">Algoritmer</button><button type="button" id="leksE">Leksikon</button><button type="button" id="lever">Lever</button></div>
 <section class="eks-s" id="s0">${e.note}${e.intro}<p><button type="button" class="pri" id="startp"></button></p></section>
 <div id="tasks">${e.tasks.map((t,j)=>`<section class="eks-s" id="s${j+1}">${task(e,t,j)}</section>`).join("")}</div>
-<section class="eks-s" id="s${n+1}"><h3>Formula sheet</h3><img class="fig" src="nettside-figurer/e14-2025-formelark.svg" alt="Formelarket fra eksamen 2025"></section>
+<section class="eks-s" id="s${n+1}">${e.art==="eksamen"?e.vedlegg||'<p class="mut">Eksamenen har ingen vedlegg.</p>':'<h3>Formula sheet</h3><img class="fig" src="nettside-figurer/e14-2025-formelark.svg" alt="Formelarket fra eksamen 2025">'}</section>
 <div class="etter"><div class="row">${API?'<button class="pri" id="rettalle">Send alle besvarte til retting</button>':""}<button id="copy">Kopier svarene</button><span class="mut" id="cmsg"></span></div><div id="cbox"></div>
 <details class="fasit"><summary>Fasit og sensorveiledning</summary>${e.fasit}</details></div>
 <div class="eks-nav" role="navigation" aria-label="Oppgavene">${b("-","←")+b(0,"Forside")+e.tasks.map((t,j)=>b(j+1,j+1)).join("")+b(n+1,"Vedlegg")+b("+","→")}</div></div>`}
 function eksamen(e){const n=e.tasks.length,X=$(".eks"),p=(S.pv||(S.pv={}))[e.id]||(S.pv[e.id]={k:0});
-X.querySelectorAll("#tasks .task").forEach(el=>{const j=+el.id.slice(1),m=/^Oppgave\s+(\d+)\s*\((\d+)\s*p[^)]*\)\s*[:.–-]?\s*(.*)$/i.exec(e.tasks[j].t);
-if(m){el.querySelector("h3").textContent=m[1]+" "+m[3];el.querySelector(".sjm").previousElementSibling.insertAdjacentHTML("beforebegin",`<p class="maks">Maximum marks: ${m[2]}</p>`)}
+X.querySelectorAll("#tasks .task").forEach(el=>{const j=+el.id.slice(1),m=/^Oppgave\s+(\d+)\s*(?:\((?:(\d+)\s*p[^)]*|poeng ikke oppgitt)\))?\s*[:.–-]?\s*(.*)$/i.exec(e.tasks[j].t);
+if(m){el.querySelector("h3").textContent=m[1]+" "+m[3];el.querySelector(".sjm").previousElementSibling.insertAdjacentHTML("beforebegin",`<p class="maks">Maximum marks: ${m[2]||"ikke oppgitt"}</p>`)}
 // Flervalg: alternativene «A. …» i teksten blir radioknapper, og tekstfeltet skjules.
 const inp=el.querySelector('.in[data-k="Alternativ"]'),ls=[...el.querySelectorAll(".d li")].filter(li=>/^[A-E][.)]\s/.test(li.textContent.trim()));
 if(inp&&ls.length){const v=(svar(e)[j]||{}).Alternativ;inp.style.display=inp.previousElementSibling.style.display="none";
 ls[0].parentNode.outerHTML=`<div class="alt">${ls.map(li=>{const l=li.textContent.trim()[0];return `<label><input type="radio" name="a${j}" data-j="${j}" data-k="Alternativ" value="${l}"${v===l?" checked":""}><span>${li.innerHTML}</span></label>`}).join("")}</div>`}});
 const merk=()=>X.querySelectorAll(".eks-nav [data-k]").forEach(b=>{const k=+b.dataset.k;b.classList.toggle("ok",k>0&&k<=n&&filled(svar(e)[k-1]));k===p.k?b.setAttribute("aria-current","step"):b.removeAttribute("aria-current")});
 const vis=k=>{p.k=Math.max(0,Math.min(n+1,k));save();X.querySelectorAll(".eks-s").forEach(s=>s.classList.toggle("cur",s.id==="s"+p.k));merk();scrollTo(0,0)};
-const tick=()=>{const t=$("#tid");if(!t)return clearInterval(tt);const r=PT-(p.start?Date.now()-p.start:0),z=x=>String(Math.floor(x)%60).padStart(2,"0");
-t.textContent=p.levert?"Levert":r>0?`${p.start?"Tid igjen ":""}${Math.floor(r/36e5)}:${z(r/6e4)}:${z(r/1e3)}`:"Tiden er ute";t.classList.toggle("ute",!p.levert&&r<=0)};
+const tick=()=>{const t=$("#tid");if(!t)return clearInterval(tt);const r=PT-(p.start?Date.now()-p.start:0),z=x=>String(Math.floor(x)%60).padStart(2,"0"),k=x=>`${Math.floor(x/36e5)}:${z(x/6e4)}:${z(x/1e3)}`;
+// Når tiden er ute, teller klokka videre i rødt. Ingenting låses, så du kan bruke den tiden du trenger.
+t.textContent=p.levert?"Levert":r>0?`${p.start?"Tid igjen ":""}${k(r)}`:`+${k(-r)} over`;t.classList.toggle("ute",!p.levert&&r<=0)};
 const lev=()=>{X.classList.toggle("levert",!!p.levert);if(p.levert)e.tasks.forEach((t,j)=>t.sjekk&&sjekk(e,j,false));$("#startp").textContent=p.levert?"Se gjennom svarene":p.start?"Fortsett":"Start (4 timer)";tick()};
 X.querySelector(".eks-nav").onclick=x=>{const b=x.target.closest("button");if(b){const d=b.dataset.k;vis(d==="-"?p.k-1:d==="+"?p.k+1:+d)}};
 X.addEventListener("input",merk);X.addEventListener("click",merk);
 $("#startp").onclick=()=>{if(!p.start)p.start=Date.now();lev();vis(1)};
 $("#leksE").onclick=()=>$("#leksknapp").click();
+// Algoritmene i en dialog: lenkene der åpnes i dialogen (se route), og siste side står der neste gang.
+$("#algoE").onclick=()=>{const d=$("#algodlg");d.dataset.h=location.hash.slice(1);if(!d.open)apne(d);if(!d.lastElementChild.childElementCount)ALGO.side(d.lastElementChild,"")};
+const ov=()=>{X.classList.toggle("ov",!!p.ov);$("#ovE").setAttribute("aria-pressed",!!p.ov)};$("#ovE").onclick=()=>{p.ov=!p.ov;save();ov()};ov();
 $("#lever").onclick=()=>{if(confirm("Levere nå? Da kan du sjekke svarene, se fasit og sende alt til retting.")){p.levert=Date.now();save();lev()}};
 clearInterval(tt);tt=setInterval(tick,1000);lev();vis(p.k)}
 
 // Leksikon: siden #leksikon og dialogen bak knappen oppe til høyre bruker samme innhold og søk.
 function leks(el){el.innerHTML=`<h1>Leksikon</h1>${D.leks.intro}<input type="search" class="lsok" placeholder="Søk, for eksempel admissible eller b" aria-label="Søk i leksikonet"><p class="lingen" role="status"></p><div class="lbody">${D.leks.body}</div>`;
-const q=el.querySelector(".lsok"),B=el.querySelector(".lbody"),st=el.querySelector(".lingen");
-if(API){B.querySelectorAll("li").forEach(li=>{const s=li.querySelector("strong");if(s){li.dataset.b=s.textContent;li.insertAdjacentHTML("beforeend",` <button type="button" class="spor" title="Send et spørsmål om akkurat dette begrepet">Spør</button> <span class="mut rs"></span><div class="fb" hidden></div>`)}});
-B.onclick=x=>{const k=x.target.closest(".spor");if(k)spor(k.closest("li"))};visFB()}
-q.oninput=()=>{const s=q.value.trim().toLowerCase(),ord=new RegExp("(^|[^\\p{L}])"+s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"u");let n=0;
-B.querySelectorAll("li").forEach(li=>{const t=(li.querySelector("strong")||li).textContent.toLowerCase(),v=!s||(s.length<3?ord.test(t):t.includes(s)||li.textContent.toLowerCase().includes(s));li.hidden=!v;n+=v});
+const q=el.querySelector(".lsok"),B=el.querySelector(".lbody"),st=el.querySelector(".lingen"),pins=S.pins||(S.pins=[]);
+B.querySelectorAll("li").forEach(li=>{const s=li.querySelector("strong");if(s){li.dataset.b=s.textContent;li.insertAdjacentHTML("beforeend",` <button type="button" class="tg pin" title="Fest forklaringen øverst i leksikonet">Fest</button>`+(API?` <button type="button" class="spor" title="Send et spørsmål om akkurat dette begrepet">Spør</button> <span class="mut rs"></span><div class="fb" hidden></div>`:""))}});
+// Festede forklaringer ligger som kopier øverst og vises uansett søk.
+const fest=()=>{const f=B.querySelector(".lfest");if(f)f.remove();const l=pins.map(b=>B.querySelector(`li[data-b="${CSS.escape(b)}"]`)).filter(Boolean);
+if(l.length)B.insertAdjacentHTML("afterbegin",`<div class="lfest"><h2>Festet</h2><ul>${l.map(li=>li.outerHTML).join("")}</ul></div>`);B.querySelectorAll(".lfest li").forEach(li=>li.hidden=false);B.querySelectorAll(".pin").forEach(k=>k.setAttribute("aria-pressed",pins.includes(k.closest("li").dataset.b)))};
+B.onclick=x=>{const k=x.target.closest(".spor"),p=x.target.closest(".pin");if(k)spor(k.closest("li"));if(p){const b=p.closest("li").dataset.b,i=pins.indexOf(b);i<0?pins.push(b):pins.splice(i,1);save();fest()}};
+fest();if(API)visFB();
+q.oninput=()=>{S.lq=q.value;save();const s=q.value.trim().toLowerCase(),ord=new RegExp("(^|[^\\p{L}])"+s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"u");let n=0;
+B.querySelectorAll("li:not(.lfest li)").forEach(li=>{const t=(li.querySelector("strong")||li).textContent.toLowerCase(),v=!s||(s.length<3?ord.test(t):t.includes(s)||li.textContent.toLowerCase().includes(s));li.hidden=!v;n+=v});
 B.querySelectorAll("h2").forEach(h=>{const ul=h.nextElementSibling;h.hidden=!!ul&&![...ul.children].some(li=>!li.hidden)});st.textContent=s?(n?`${n} treff`:"Ingen treff."):""};
-return q}
+q.value=S.lq||"";q.oninput();return q}
 // Spørsmålet går i samme kø som «Rett denne» (arbeid/svar/ko.jsonl), og svaret skrives til tilbakemelding.json under "leks".
 function spor(li){const b=li.dataset.b,q=prompt(`Hva lurer du på om ${b}? La feltet stå tomt for en grundigere forklaring.`);if(q===null)return;const t=now();
 fetch("/api/rett",{method:"POST",body:JSON.stringify({leks:b,sporsmal:q.trim()||"Forklar dette grundigere, med et lite eksempel."})}).then(x=>{if(!x.ok)throw 0;(S.rett.leks||(S.rett.leks={}))[b]=t;save();visFB()}).catch(()=>{li.querySelector(".rs").textContent="Fikk ikke sendt. Kjører serveren?"})}
+// Mørk/lys modus: siden følger systemet til du trykker. Velger du det systemet allerede har, fjernes overstyringen igjen.
+{const m=document.querySelector('meta[name="color-scheme"]'),sys=matchMedia("(prefers-color-scheme: dark)"),k=$("#tema"),fra=()=>sys.matches?"dark":"light",naa=()=>m.content==="light dark"?fra():m.content;
+const vis=()=>{const d=naa()==="dark";k.textContent=d?"☀":"☾";k.title=k.ariaLabel=d?"Bytt til lys modus":"Bytt til mørk modus"};
+k.onclick=()=>{const t=naa()==="dark"?"light":"dark";try{t===fra()?localStorage.removeItem("tema"):localStorage.setItem("tema",t)}catch(e){}m.content=t===fra()?"light dark":t;vis()};
+sys.addEventListener("change",vis);addEventListener("storage",e=>{if(e.key==="tema"){m.content=e.newValue||"light dark";vis()}});vis()}
+// Leksikonet og algoritmene kan festes til høyre (S.ldock, S.adock): da er dialogen ikke modal, så siden ved siden av kan brukes,
+// og den blir stående når du bytter side. Bare én er festet om gangen.
+function apne(d){const h=!!S[d.dataset.s];d.classList.toggle("hoyre",h);d.setAttribute("closedby",h?"closerequest":"any");d.querySelector(".feste").setAttribute("aria-pressed",h);
+if(h)document.querySelectorAll(".dlg.hoyre[open]").forEach(x=>x!==d&&x.close());h?d.show():d.showModal()}
 {const d=$("#leksdlg"),b=$("#leksknapp");
-b.onclick=()=>{const sel=String(getSelection()).trim(),q=leks(d.lastElementChild);d.showModal();if(sel&&sel.length<40){q.value=sel;q.oninput()}q.focus()};
-d.querySelector(".lukk").onclick=()=>d.close();d.addEventListener("close",()=>b.focus());addEventListener("hashchange",()=>d.open&&d.close());
+b.onclick=()=>{const sel=String(getSelection()).trim();if(!d.open){leks(d.lastElementChild);apne(d)}const q=d.querySelector(".lsok");if(sel&&sel.length<40){q.value=sel;q.oninput()}q.focus();q.select()};
+d.addEventListener("close",()=>{if(!d.open)b.focus()});addEventListener("hashchange",()=>d.open&&!S.ldock&&d.close())}
+document.querySelectorAll(".dlg").forEach(d=>{d.querySelector(".lukk").onclick=()=>d.close();d.querySelector(".feste").onclick=()=>{S[d.dataset.s]=!S[d.dataset.s];save();d.close();apne(d)};
 // closedby="any" mangler i Safari: lukk ved klikk utenfor dialogen.
-if(!("closedBy" in HTMLDialogElement.prototype))d.addEventListener("click",e=>{if(e.target!==d)return;const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()})}
+if(!("closedBy" in HTMLDialogElement.prototype))d.addEventListener("click",e=>{if(e.target!==d||!d.matches(":modal"))return;const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()})})
 function page(h){$("#main").className="";$("#main").innerHTML=h}
 function route(){
-const h=location.hash.slice(1)||"hjem",e=D.eps.find(x=>x.id===h)||D.ov.find(x=>x.id===h);
+const h=location.hash.slice(1)||"hjem",e=D.eps.find(x=>x.id===h)||D.ov.find(x=>x.id===h),A=window.ALGO,[h0,h1]=h.split("/"),AD=$("#algodlg");
+// Algoritmene åpnet fra eksamen: en lenke til en annen algoritme vises i dialogen, og eksamen blir stående bak.
+if(AD.open){if(h0==="algoritmer"){history.replaceState(null,"","#"+AD.dataset.h);A.side(AD.lastElementChild,h1);AD.scrollTop=0;return}if(AD.classList.contains("hoyre"))AD.dataset.h=h;else AD.close()}
 if(rec)rec.stop();
-const A=window.ALGO,[h0,h1]=h.split("/");
-$("#leksknapp").hidden=!!e&&e.grp==="Prøveeksamener"; // der ligger knappen i toppfeltet, så den ikke dekker «Lever»
+$("#leksknapp").hidden=!!e&&/eksamen$/.test(e.art); // der ligger knappen i toppfeltet, så den ikke dekker «Lever»
 if(e){S.last=e.id;save();episode(e)}else if(h0==="algoritmer"&&A&&A.side){$("#main").className="wide";A.side($("#main"),h1)}else if(h==="verksted"&&A&&A.verksted){$("#main").className="wide";A.verksted($("#main"))}else if(h==="leksikon"){page("");leks($("#main")).focus()}else if(h==="feller")page(D.feller);else if(h==="feillogg")page(D.feil);else if(h==="eksamener")page(D.exams);else home();
 nav();visDeler();scrollTo(0,0)}
 addEventListener("hashchange",route);

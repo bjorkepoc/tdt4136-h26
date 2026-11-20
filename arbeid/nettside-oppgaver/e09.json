@@ -131,7 +131,10 @@
   },
   {
    "t": "UCB1 i Fig. 6.10",
-   "d": "I lærebokas MCTS-eksempel (Fig. 6.10) står hver node som U/N: antall seire U av N playouts. Noden 60/79 har to barn: 16/53 og 3/26.\n\nUCB1(n) = U(n)/N(n) + C · √(ln N(parent(n)) / N(n))\n\nMed C = √2 velger boka 16/53 under 60/79. Regn UCB1 for begge barna under 60/79 med C = 1. Velges fortsatt 16/53?",
+   "d": "I lærebokas MCTS-eksempel (Fig. 6.10) står hver node som U/N: antall seire U av N playouts. Noden 60/79 har to barn: 16/53 og 3/26.\n\n<!--fig-->\n\n*Fig. 6.10(a) gjengitt: hver node viser U/N. Den tykke stien er den SELECT følger med C = √2.*\n\nUCB1(n) = U(n)/N(n) + C · √(ln N(parent(n)) / N(n))\n\nMed C = √2 velger boka 16/53 under 60/79. Regn UCB1 for begge barna under 60/79 med C = 1. Velges fortsatt 16/53?",
+   "img": [
+    "nettside-figurer/e09-fig6-10-mcts.svg"
+   ],
    "f": [
     [
      "UCB1 for 16/53",

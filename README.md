@@ -5,9 +5,11 @@ En lokal nettside med alt du trenger for å lese og øve til eksamen i TDT4136 (
 - **21 forklaringsvideoer** på norsk, med undertekster og notater. Det er én video per pensumtema, fra agenter og søk til logikk, planlegging, NLP og etikk.
 - **Øv selv:** rundt 170 oppgaver, mange av dem ordrett fra tidligere eksamener med figurer. Korte svar som rekkefølger, stier og verdier sjekkes med en gang.
 - **Øvingene** (Assignment 1–4 og oppgaveforelesningene) med løsninger.
-- **Prøveeksamener i 2025-formatet**, vist som på eksamen: forside, én oppgave om gangen, nedtelling og «Lever». Etter levering får du sjekk og fasit.
+- **Prøveeksamener i 2025-formatet**, vist som på eksamen: forside, én oppgave om gangen, nedtelling og «Lever». Etter levering får du sjekk og fasit, eller underveis hvis du slår på «Fasit underveis».
+- **Tidligere eksamener** fra 2017 til 2025 ordrett med figurer (alle unntatt 2019 og ordinær 2020), i samme eksamensvisning. Algoritmene og leksikonet kan åpnes underveis, over oppgaven eller festet til høyre.
 - **40 algoritmer animert steg for steg:** søk, lokalt søk, CSP, spill, logikk, planlegging og NLP, med valg for fart og gjentakelse.
-- **Leksikon** med rundt 300 begreper fra hele pensum, med søk. Knappen oppe til høyre åpner det over oppgaven du står i.
+- **Leksikon** med rundt 300 begreper fra hele pensum, med søk. Knappen oppe til høyre åpner det over oppgaven du står i, eller festet til høyre. Siste søk huskes, og forklaringer du bruker ofte, kan festes øverst.
+- **Mørk og lys modus:** knappen ☾/☀ øverst til venstre. Siden følger systemet til du trykker.
 - **«Tegn og sjekk»:** tegn din egen graf eller ditt eget spilltre, og sjekk svaret ditt mot algoritmen.
 - **Kursmaterialet** fra Canvas ligger i `materiale/` (slides, øvingstekster og tidligere eksamener).
 
@@ -33,7 +35,7 @@ Du kan også åpne `arbeid/nettside.html` direkte fra disken. Da lagres svarene 
 
 ## Retting med din egen AI
 
-«Rett denne» under en oppgave, og «Send alle besvarte til retting» nederst, legger oppgaven og svarene dine i `arbeid/svar/ko.jsonl`. En AI-assistent som kan lese og skrive filer og kjøre kommandoer i denne mappa kan rette svarene. Det kan være en assistent i terminalen eller editoren, eller en lokal modell. Tilbakemeldingen dukker opp under oppgaven etter noen sekunder. «Spør» ved et begrep i leksikonet sender et spørsmål om akkurat det begrepet samme vei, og svaret vises under begrepet.
+«Rett denne» under en oppgave, og «Send alle besvarte til retting» nederst, legger oppgaven og svarene dine i `arbeid/svar/ko.jsonl`. En AI-assistent som kan lese og skrive filer og kjøre kommandoer i denne mappa kan rette svarene. Det kan være en assistent i terminalen eller editoren, eller en lokal modell. Tilbakemeldingen dukker opp under oppgaven etter noen sekunder. «Spør» under en oppgave eller ved et begrep i leksikonet sender et spørsmål samme vei, og svaret vises der du spurte.
 
 Åpne mappa i assistenten og skriv:
 
@@ -50,6 +52,7 @@ Har du bare en vanlig chat uten tilgang til filene, trykker du «Kopier svarene�
 | Oppgaver per tema | `arbeid/nettside-oppgaver/eNN.json` |
 | Øvinger | `arbeid/nettside-ovinger/*.json` |
 | Prøveeksamener (format og regler i `LES-MEG.md`) | `arbeid/nettside-prover/*.json` |
+| Tidligere eksamener (format i `LES-MEG.md`) | `arbeid/nettside-eksamener/*.json` |
 | Notater til videoene | `arbeid/videoer/notater/*.md` |
 | Leksikonet | `arbeid/LEKSIKON.md` |
 | Algoritmene og tegneverktøyet (regler i `KONTRAKT.md`) | `arbeid/nettside-algo/` |

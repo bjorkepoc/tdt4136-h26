@@ -3,7 +3,7 @@
  "tasks": [
   {
    "t": "Fitness i GA-eksempelet (bokas figur 4.6)",
-   "d": "8-dronninger som genetisk algoritme. Hvert individ er åtte sifre: siffer c er raden til dronningen i kolonne c, og rad 1 er nederst. h er antall par dronninger som angriper hverandre (også når en annen dronning står imellom), og fitness = 28 − h.\n\nBarna etter crossover i figur 4.6(d): **32748552, 24752411, 32752124 og 24415411**.\n\nDe samme barna etter mutation i figur 4.6(e): **32748152, 24752411, 32252124 og 24415417**.\n\nRegn ut fitness for barna før og etter mutation. Ble alle bedre?",
+   "d": "8-dronninger som genetisk algoritme. Hvert individ er åtte sifre: siffer c er raden til dronningen i kolonne c, og rad 1 er nederst. h er antall par dronninger som angriper hverandre (også når en annen dronning står imellom), og fitness = 28 − h.\n\nFigur 4.6 i boka som tabell. Loddstreken i (c) er crossover-punktet for paret.\n\n| | (a) Startpopulasjon | (b) Fitness | (c) Seleksjon | (d) Crossover | (e) Mutation |\n|---|---|---|---|---|---|\n| 1 | 24748552 | 24 (31 %) | 327\\|52411 | 32748552 | 32748152 |\n| 2 | 32752411 | 23 (29 %) | 247\\|48552 | 24752411 | 24752411 |\n| 3 | 24415124 | 20 (26 %) | 32752\\|411 | 32752124 | 32252124 |\n| 4 | 32543213 | 11 (14 %) | 24415\\|124 | 24415411 | 24415417 |\n\nBarna etter crossover i figur 4.6(d): **32748552, 24752411, 32752124 og 24415411**.\n\nDe samme barna etter mutation i figur 4.6(e): **32748152, 24752411, 32252124 og 24415417**.\n\nRegn ut fitness for barna før og etter mutation. Ble alle bedre?",
    "f": [
     [
      "Fitness før mutation, figur 4.6(d)",

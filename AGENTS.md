@@ -25,7 +25,7 @@ Studieside for eksamen i TDT4136 ved NTNU. Les [README.md](README.md) for hva so
 
    På Windows uten bash lager du en tilsvarende løkke i PowerShell.
 3. Hver linje er JSON: `{"eid": "e02", "ep": "E02", "j": 0, "oppgave": "…", "svar": {"feltnavn": "svaret"}, "sendt": "…"}`. `j` er oppgavens nummer i lista, talt fra 0. Feltet `Papir` er et svar på papir: én sti per linje til et bilde under `arbeid/` (for eksempel `svar/bilder/e16-3-….jpg` er `arbeid/svar/bilder/e16-3-….jpg`). Se på bildet og rett det som de andre svarene.
-4. Finn oppgaven i `tasks[j]` i `arbeid/nettside-oppgaver/<eid>.json`, `arbeid/nettside-ovinger/<eid>.json` eller `arbeid/nettside-prover/<eid>.json`. Rett mot feltet `sjekk`, fasiten i fila (`fasit`) og notatet `arbeid/videoer/notater/<eid>-*.md` for episodene. Regn selv når oppgaven er en utregning.
+4. Finn oppgaven i `tasks[j]` i `arbeid/nettside-oppgaver/<eid>.json`, `arbeid/nettside-ovinger/<eid>.json`, `arbeid/nettside-prover/<eid>.json` eller `arbeid/nettside-eksamener/` (der `id` er `<eid>`, for eksempel `ek2018` i `2018.json`). Rett mot feltet `sjekk`, fasiten i fila (`fasit`) og notatet `arbeid/videoer/notater/<eid>-*.md` for episodene. Regn selv når oppgaven er en utregning.
 5. Skriv tilbakemeldingen inn i `arbeid/svar/tilbakemelding.json` uten å fjerne det som står der fra før:
 
    ```json
@@ -35,6 +35,8 @@ Studieside for eksamen i TDT4136 ved NTNU. Les [README.md](README.md) for hva so
    Teksten vises som ren tekst under oppgaven. Si hva som er riktig, hva som mangler eller er feil, og vis den riktige løsningen kort. Gi den samme tilbakemeldingen i chatten.
 
    «Spør» ved et begrep i leksikonet gir linjen `{"leks": "begrep", "sporsmal": "…", "sendt": "…"}`. Svar på spørsmålet med `arbeid/LEKSIKON.md` og notatet til episoden i parentes, og skriv svaret til `{"leks": {"begrep": {"tekst": "…", "tid": "…"}}}` i samme fil. Det vises under begrepet.
+
+   Har en oppgavelinje feltet `sporsmal`, kom den fra «Spør» under oppgaven: svar på spørsmålet (rett svaret bare hvis det spørres om det), og skriv svaret som tilbakemeldingen på oppgaven.
 6. Start ventingen på nytt.
 
 ## Når du endrer innholdet

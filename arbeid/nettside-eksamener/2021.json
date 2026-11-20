@@ -1,0 +1,547 @@
+{
+ "id": "ek2021",
+ "ep": "2021",
+ "tittel": "Ordinær eksamen",
+ "kilde": "../materiale/Files/Previous%20exams/2021Q.docx",
+ "om": "**QUESTIONS**\n\n---\n\n*Originalfila har ingen forside: tid og hjelpemidler står ikke. Poengene står ved hver oppgave og er til sammen 100. Fasiten bygger på løsningsforslaget (`2021A.docx`).*",
+ "intro": "Etter «Lever» kan ja/nei-spørsmålene i logikken, rekkefølgene og løsningene i søket (oppgave 2), løsningen av CSP-en (oppgave 3), rotverdien og kuttene i oppgave 5 og svaret i oppgave 6.1 sjekkes med Sjekk. Grafen i oppgave 2 og treet i oppgave 5 kan åpnes i tegneverktøyet.",
+ "tasks": [
+  {
+   "t": "Oppgave 1 (25 p): Logic",
+   "d": "1. Show, using a truth table, that ¬a → (b → c) and b → (a ∨ c) are logically equivalent. Is ¬a → (b → c) valid or satisfiable?\n\n2. Prove that A⇔B is logically equivalent to A∨B⇒ A∧B. Use Standard logical equivalence rules here, not the truth table method.\n\n3. Translate the following English sentences into logical representations\n\n   i. A niece is a sibling’s daughter\\\n   ii. Anette has at least two umbrellas.\\\n   iii. At least one professor teaches both “Experts in Team” course and an AI course.\n\n4. Convert the following sentence into Conjunctive normal form (CNF). Show every step of the process and write the name of the operation used in the step, e.g., “Eliminate existential quantification”. The sentence:\n\n   i. ∀x (R(x) → (∀y(R(y) → R(f(x,y))) ∧ ¬∀y(S(x,y) → P(y))))\n\n5. Given the following sentences:\n\n   1\\) ∀x,y ( Father (x,y) → ¬Woman(x))\\\n   2\\) ∀x,y ( Mother (x,y) → Woman(x))\\\n   3\\) Mother(Sophie, April)\n\n   Find out if Sophie is not the father of Edgar, using proof by contradiction (resolution refutation). That is, the question is: Is ¬Father(Sophie, Edgar) true?\n\n   The first resolution shall be done on the first and second sentences above. Any other solution that does not start with resolving 1 and 2 will not be given any points. Show every operation you have done on/with the sentences, skolemization, standardizing apart, substitution/unification, and the like you may need to do.",
+   "f": [
+    [
+     "1. Sannhetstabell",
+     "area",
+     "a b c | ¬a → (b → c) | b → (a ∨ c)\nT T T | … | …\n…"
+    ],
+    [
+     "1. Er setningene logisk ekvivalente? (ja/nei)",
+     "text"
+    ],
+    [
+     "1. Er ¬a → (b → c) valid eller satisfiable? Begrunn",
+     "text"
+    ],
+    [
+     "2. Beviset, ett steg per linje med regelnavn",
+     "area",
+     "1. … (regel)\n2. … (regel)\n…"
+    ],
+    [
+     "3. Oversettelse i (niece)",
+     "text"
+    ],
+    [
+     "3. Oversettelse ii (umbrellas)",
+     "text"
+    ],
+    [
+     "3. Oversettelse iii (professor)",
+     "text"
+    ],
+    [
+     "4. Konverteringen, ett steg per linje med navnet på operasjonen",
+     "area",
+     "Navn på steget: setningen etter steget"
+    ],
+    [
+     "5. Klausulene (CNF, standardisert) og det negerte målet",
+     "area"
+    ],
+    [
+     "5. Resolusjonsstegene: par, θ, resultat",
+     "area",
+     "Resolve 1, 2, θ = {…} → …"
+    ],
+    [
+     "5. Er ¬Father(Sophie, Edgar) sann? (ja/nei)",
+     "text"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "1. Er setningene logisk ekvivalente? (ja/nei)": [
+      "ja",
+      "yes"
+     ],
+     "1. Er ¬a → (b → c) valid eller satisfiable? Begrunn": [
+      "satisfiable"
+     ],
+     "5. Er ¬Father(Sophie, Edgar) sann? (ja/nei)": [
+      "ja",
+      "yes"
+     ]
+    },
+    "merk": "Satisfiable, men ikke valid: usann når a = F, b = T, c = F. Resolusjonen ender i den tomme klausulen.",
+    "kilde": "2021A.docx, Logic 1 og 5, og sannhetstabeller i et eget skript."
+   },
+   "fasit": "**1. Sannhetstabell:**\n\n| a | b | c | b → c | ¬a → (b → c) | a ∨ c | b → (a ∨ c) |\n|---|---|---|---|---|---|---|\n| T | T | T | T | T | T | T |\n| T | T | F | F | T | T | T |\n| T | F | T | T | T | T | T |\n| T | F | F | T | T | T | T |\n| F | T | T | T | T | T | T |\n| F | T | F | F | **F** | F | **F** |\n| F | F | T | T | T | T | T |\n| F | F | F | T | T | F | T |\n\n**Ja, setningene er logisk ekvivalente.**\n\n**Ekvivalente fordi kolonnene for ¬a → (b → c) og b → (a ∨ c) er like i alle 8 radene.** Begge er usanne bare når a = F, b = T og c = F. Begge er ekvivalente med klausulen a ∨ ¬b ∨ c.\n\n**¬a → (b → c) er satisfiable, men ikke valid:** den er sann i 7 av 8 modeller, så den er satisfiable. Den er usann i modellen a = F, b = T, c = F, så den er ikke valid.\n\nValid betyr sann i alle modeller, satisfiable sann i minst én. Ekvivalens krever like kolonner i alle rader, ikke bare i radene der én side er sann.\n\n**2. Beviset, ett steg per linje:**\n1. A ⇔ B\n2. (A ⇒ B) ∧ (B ⇒ A) (biconditional elimination)\n3. (¬A ∨ B) ∧ (¬B ∨ A) (implication elimination, to ganger)\n4. (¬A ∧ (¬B ∨ A)) ∨ (B ∧ (¬B ∨ A)) (distributivitet)\n5. (¬A ∧ ¬B) ∨ (¬A ∧ A) ∨ (B ∧ ¬B) ∨ (B ∧ A) (distributivitet)\n6. (¬A ∧ ¬B) ∨ (A ∧ B) (¬A ∧ A og B ∧ ¬B er alltid usanne, α ∨ False ≡ α; kommutativitet)\n7. ¬(A ∨ B) ∨ (A ∧ B) (De Morgan)\n8. (A ∨ B) ⇒ (A ∧ B) (implication elimination, baklengs)\n\nHver linje er ekvivalent med linja over, så A ⇔ B ≡ (A ∨ B) ⇒ (A ∧ B). Ekvivalensreglene kan brukes begge veier, så steg 8 er implication elimination lest fra høyre mot venstre.\n\nKontroll med sannhetstabell (ikke lov som svar her): begge sider er sanne bare når A = B.\n\nFasiten skriver «(¬A ∨ A)» i det andre leddet i steg 5. Det skal være (¬A ∧ A), ellers kunne leddet ikke strykes.\n\n**3. Oversettelsene** (løsningsforslaget sier at flere svar kan være riktige):\n\n- **i.** ∀x,y [Niece(x, y) ⇔ ∃z (Sibling(y, z) ∧ Daughter(x, z))]: x er niese av y når x er datter av et søsken z av y.\n- **ii.** ∃x ∃y (Has(Anette, x) ∧ Umbrella(x) ∧ Has(Anette, y) ∧ Umbrella(y) ∧ ¬(x = y))\n- **iii.** ∃x,y Professor(x) ∧ AICourse(y) ∧ Teaches(x, EiT) ∧ Teaches(x, y). Løsningsforslaget skriver det kortere: ∃x Professor(x) ∧ Teaches(x, EiT) ∧ Teaches(x, AI).\n\nDefinisjonen i i. er en ⇔, slik boka skriver definisjoner (Sibling, Parent). I ii. er ¬(x = y) nødvendig: uten den kan x og y være samme paraply. I iii. står ∃ med ∧. Med ⇒ under ∃ blir setningen sann bare fordi noe ikke er en professor.\n\n**4. Konverteringen**, med L7s sju steg:\n\n- **Start:** ∀x (R(x) ⇒ (∀y (R(y) ⇒ R(f(x, y))) ∧ ¬∀y (S(x, y) ⇒ P(y))))\n- **Steg 1 (eliminate ⇔):** ingen ⇔, setningen er uendret.\n- **Steg 2 (eliminate ⇒):** ∀x (¬R(x) ∨ (∀y (¬R(y) ∨ R(f(x, y))) ∧ ¬∀y (¬S(x, y) ∨ P(y))))\n- **Steg 3 (move ¬ inwards):** ¬∀y (¬S(x, y) ∨ P(y)) ≡ ∃y ¬(¬S(x, y) ∨ P(y)) ≡ ∃y (S(x, y) ∧ ¬P(y)), som gir\n  ∀x (¬R(x) ∨ (∀y (¬R(y) ∨ R(f(x, y))) ∧ ∃y (S(x, y) ∧ ¬P(y))))\n- **Steg 4 (standardize variables):** den andre y-en får navnet z:\n  ∀x (¬R(x) ∨ (∀y (¬R(y) ∨ R(f(x, y))) ∧ ∃z (S(x, z) ∧ ¬P(z))))\n- **Steg 5 (Skolemize):** ∃z står inne i ∀x, men ikke inne i ∀y, som bare omslutter første konjunkt. z blir derfor g(x), med en ny funksjon g fordi f er brukt:\n  ∀x (¬R(x) ∨ (∀y (¬R(y) ∨ R(f(x, y))) ∧ S(x, g(x)) ∧ ¬P(g(x))))\n- **Steg 6 (drop universal quantifiers):** ¬R(x) ∨ ((¬R(y) ∨ R(f(x, y))) ∧ S(x, g(x)) ∧ ¬P(g(x)))\n- **Steg 7 (distribute ∨ over ∧):** (¬R(x) ∨ ¬R(y) ∨ R(f(x, y))) ∧ (¬R(x) ∨ S(x, g(x))) ∧ (¬R(x) ∨ ¬P(g(x)))\n\n**4. Ferdige klausuler (CNF):**\n1. ¬R(x) ∨ ¬R(y) ∨ R(f(x, y))\n2. ¬R(x) ∨ S(x, g(x))\n3. ¬R(x) ∨ ¬P(g(x))\n\nLøsningsforslaget stopper etter steg 6. Oppgaven ber om CNF, så ta med distribusjonen. Vanligste feil: en Skolem-konstant for z (z avhenger av x), eller å skolemisere før ¬ er flyttet inn, slik at ∃ som skjuler seg i ¬∀, blir oversett.\n\n**5. Klausulene og det negerte målet.** Ingen setning har ∃, så ingen Skolemisering trengs.\n1. ∀x,y Father(x, y) ⇒ ¬Woman(x) gir ¬Father(x, y) ∨ ¬Woman(x).\n2. ∀x,y Mother(x, y) ⇒ Woman(x) gir ¬Mother(x, y) ∨ Woman(x). Standardisert fra 1 (x → a, y → b): ¬Mother(a, b) ∨ Woman(a).\n3. Mother(Sophie, April)\n4. Negert mål: ¬¬Father(Sophie, Edgar) ≡ Father(Sophie, Edgar)\n\n**5. Resolusjonsstegene:**\n\n| Nr | Resolvent | Par og θ |\n|---|---|---|\n| 5 | ¬Father(a, y) ∨ ¬Mother(a, b) | Resolve 1, 2 (¬Woman(x) mot Woman(a)), θ = {x/a} |\n| 6 | ¬Father(Sophie, y) | Resolve 5, 3, θ = {a/Sophie, b/April} |\n| 7 | □ | Resolve 6, 4, θ = {y/Edgar} |\n\n**5. Ja, ¬Father(Sophie, Edgar) er sann.** KB ∧ Father(Sophie, Edgar) er unsatisfiable, så KB ⊨ ¬Father(Sophie, Edgar). Med ord: Sophie er mor, altså kvinne, og ingen kvinne er far.\n\n*Kilde: løsningsforslaget til eksamen 2021, oppgave 1 (Logic). Del 3 som notatet til E14, del 4 med distribusjonssteget fra notatet til E16. Kontrollert med sannhetstabeller i et eget skript.*"
+  },
+  {
+   "t": "Oppgave 2 (25 p): Search",
+   "img": [
+    "nettside-figurer/e02-2021-q2.svg"
+   ],
+   "d": "A search problem is represented in the following figure where A is the start and B is the goal node. Costs are shown on the edges while heuristic values for the nodes are shown in the box to the right. In this question solve ties by using left to right ordering, e.g., if there is a tie between R and F in the graph in the figure, then choose R.\n\n1\\) Write down the expanded nodes in the order they are expanded when Breadth First search algorithm for graph search is applied. Write down the nodes in the frontier at each step. What is the returned solution? Is the solution optimal? Is that expected? Very briefly explain your answer.\n\n2\\) Write down the expanded nodes in the order they are expanded when Depth First search algorithm for graph search is applied. Write down the nodes in the frontier at each step. What is the returned solution? Is it optimal? Is this expected? Very briefly explain your answer.\n\n3\\) Write down the expanded nodes in the order they are expanded when uniform cost search algorithm for graph search is applied. Write down the nodes in the frontier at each step. What is the returned solution? Is it optimal? Is this expected? Explain very briefly your answer.\n\n4\\) A\\* graph search algorithm:\n\na) What is the condition to guarantee that A\\* search algorithm returns a cost-optimal solution for graph search.\n\nb) Is h(n) for all nodes n in the graph admissible? If not, write which are not.\n\nc) What would the A\\* algorithm for graph search return as solution? Write down the nodes in the frontier at each step. Write down the expanded nodes in the order they are expanded. Is the soluton cost-optimal? Briefly explain your answer.\n\nd) What would the same A\\* algorithm return for h(R)= 227 instead of 193? Is h(R) admissible now? What is the returned solution? Is it cost-optimal?\n\ne) Is your answer in 4 d) inconsistent/contradicts with your answer in 4 a)? Elaborate on your answer and provide a description of the relationship between admissibility and cost-optimality for A\\* search algorithm that covers and explains the situation above.",
+   "f": [
+    [
+     "1) BFS: ekspanderte noder i rekkefølge",
+     "text",
+     "A, …"
+    ],
+    [
+     "1) BFS: frontier i hvert steg",
+     "area"
+    ],
+    [
+     "1) BFS: løsningen som returneres",
+     "text",
+     "A, …, B"
+    ],
+    [
+     "1) BFS: optimal? Forventet? Forklar kort",
+     "area",
+     "Ja/nei, fordi …"
+    ],
+    [
+     "2) DFS: ekspanderte noder i rekkefølge",
+     "text",
+     "A, …"
+    ],
+    [
+     "2) DFS: frontier i hvert steg",
+     "area"
+    ],
+    [
+     "2) DFS: løsningen som returneres",
+     "text",
+     "A, …, B"
+    ],
+    [
+     "2) DFS: optimal? Forventet? Forklar kort",
+     "area",
+     "Ja/nei, fordi …"
+    ],
+    [
+     "3) UCS: ekspanderte noder i rekkefølge",
+     "text",
+     "A, …"
+    ],
+    [
+     "3) UCS: frontier i hvert steg",
+     "area"
+    ],
+    [
+     "3) UCS: løsningen som returneres",
+     "text",
+     "A, …, B"
+    ],
+    [
+     "3) UCS: optimal? Forventet? Forklar kort",
+     "area",
+     "Ja/nei, fordi …"
+    ],
+    [
+     "4 a) Betingelsen for at A* graph search gir cost-optimal løsning",
+     "area"
+    ],
+    [
+     "4 b) Er h admissible for alle noder? Hvis ikke, hvilke?",
+     "text"
+    ],
+    [
+     "4 c) Ekspanderte noder i rekkefølge",
+     "text",
+     "A, …"
+    ],
+    [
+     "4 c) Frontier i hvert steg",
+     "area"
+    ],
+    [
+     "4 c) Løsningen som returneres",
+     "text",
+     "A, …, B"
+    ],
+    [
+     "4 c) Cost-optimal? Forklar kort",
+     "area",
+     "Ja/nei, fordi …"
+    ],
+    [
+     "4 d) Løsningen med h(R) = 227",
+     "text",
+     "A, …, B"
+    ],
+    [
+     "4 d) Er h(R) admissible nå? (ja/nei)",
+     "text"
+    ],
+    [
+     "4 d) Er løsningen cost-optimal? (ja/nei)",
+     "text"
+    ],
+    [
+     "4 e) Motsier 4 d) svaret i 4 a)? Sammenhengen mellom admissibility og cost-optimality",
+     "area"
+    ]
+   ],
+   "tegn": "R21",
+   "sjekk": {
+    "f": {
+     "1) BFS: ekspanderte noder i rekkefølge": [
+      "A S Z R F (B)",
+      "A S Z R F"
+     ],
+     "1) BFS: løsningen som returneres": [
+      "A S F B"
+     ],
+     "1) BFS: optimal? Forventet? Forklar kort": [
+      "nei",
+      "no"
+     ],
+     "2) DFS: ekspanderte noder i rekkefølge": [
+      "A S R P (B)",
+      "A S R P"
+     ],
+     "2) DFS: løsningen som returneres": [
+      "A S R P B"
+     ],
+     "2) DFS: optimal? Forventet? Forklar kort": [
+      "ja",
+      "yes"
+     ],
+     "3) UCS: ekspanderte noder i rekkefølge": [
+      "A Z S O R F P (B)",
+      "A Z S O R F P"
+     ],
+     "3) UCS: løsningen som returneres": [
+      "A S R P B"
+     ],
+     "3) UCS: optimal? Forventet? Forklar kort": [
+      "ja",
+      "yes"
+     ],
+     "4 b) Er h admissible for alle noder? Hvis ikke, hvilke?": [
+      "ja",
+      "yes"
+     ],
+     "4 c) Ekspanderte noder i rekkefølge": [
+      "A S R F P (B)",
+      "A S R F P"
+     ],
+     "4 c) Løsningen som returneres": [
+      "A S R P B"
+     ],
+     "4 c) Cost-optimal? Forklar kort": [
+      "ja",
+      "yes"
+     ],
+     "4 d) Løsningen med h(R) = 227": [
+      "A S R P B"
+     ],
+     "4 d) Er h(R) admissible nå? (ja/nei)": [
+      "nei",
+      "no"
+     ],
+     "4 d) Er løsningen cost-optimal? (ja/nei)": [
+      "ja",
+      "yes"
+     ]
+    },
+    "merk": "Målet står i parentes fordi det ikke ekspanderes, og det kan sløyfes. Likhet brytes fra venstre mot høyre.",
+    "kilde": "2021A.docx, Search, og BFS, DFS, UCS og A* i algoritmefila (graph search, venstre til høyre)."
+   },
+   "fasit": "**1) BFS (graph search, venstre til høyre, målet testes når det genereres):**\n\n| Steg | Ekspanderer | Frontier etterpå (FIFO) |\n|---|---|---|\n| 0 | – | A |\n| 1 | A | S, Z |\n| 2 | S | Z, R, F |\n| 3 | Z | R, F, O |\n| 4 | R | F, O, P |\n| 5 | F | B genereres og er mål |\n\n**Ekspandert A, S, Z, R, F, (B). Løsning A–S–F–B, kostnad 140 + 99 + 211 = 450. Ikke optimal**, fordi A–S–R–P–B koster 418. **Det er forventet:** BFS finner stien med færrest steg (tre) og er bare cost-optimal når alle steg koster likt.\n\n**2) DFS (graph search, venstre til høyre):**\n\n| Steg | Ekspanderer | Frontier etterpå (øverst først) |\n|---|---|---|\n| 0 | – | A |\n| 1 | A | S, Z |\n| 2 | S | R, F, Z |\n| 3 | R | P, F, Z |\n| 4 | P | B, F, Z |\n| 5 | B: mål | F, Z |\n\n**Ekspandert A, S, R, P, (B). Løsning A–S–R–P–B, kostnad 418. Optimal, men bare ved flaks.** DFS returnerer den første løsningen den finner og er ikke optimal generelt. Venstre-til-høyre-rekkefølgen sendte den tilfeldigvis ned den billigste grenen.\n\n**3) UCS (graph search):**\n\n| Steg | Tas ut (g) | Frontier etterpå |\n|---|---|---|\n| 0 | – | A 0 |\n| 1 | A (0) | Z 75, S 140 |\n| 2 | Z (75) | S 140, O 146 |\n| 3 | S (140) | O 146, R 220, F 239 |\n| 4 | O (146) | R 220, F 239 (S via O = 297 forkastes) |\n| 5 | R (220) | F 239, P 317 |\n| 6 | F (239) | P 317, B 450 |\n| 7 | P (317) | B 418 (erstatter B 450) |\n| 8 | B (418): mål | – |\n\n**Ekspandert A, Z, S, O, R, F, P, (B). Løsning A–S–R–P–B, kostnad 140 + 80 + 97 + 101 = 418. Optimal, og det er forventet:** UCS tar ut noder i rekkefølge etter g, så første gang målet tas ut, finnes ingen billigere sti (alle kostnader er positive). Med måltest ved generering ville UCS stoppet med 450.\n\n**4 a)** h må være **admissible**, h(n) ≤ h\\*(n) for alle n, og h(mål) = 0, når A\\* som graph search kan oppdatere og åpne igjen lukkede noder hvis den finner en billigere vei (Fig. 3.7). Lukker implementasjonen noder for godt, må h også være **consistent**: h(n) ≤ c(n, a, n′) + h(n′) for hver kant. Er h ikke-negativ, følger h(mål) = 0 av h(mål) ≤ h\\*(mål) = 0. Tillates negative verdier, må det kreves for seg: i L3 får h(mål) = −999 A\\* til å ta ut et dyrt mål først.\n\n**4 b) Ja, alle h-verdiene er admissible.** h\\*: A 418, Z 500, O 429, S 278, R 198, F 211, P 101, B 0. Alle h er mindre eller like (366, 374, 380, 253, 193, 176, 100, 0). h er også consistent på hver kant, for eksempel R→P 193 ≤ 97 + 100.\n\n**4 c) A\\* (graph search, venstre til høyre).**\n\n| Steg | Tas ut (f = g + h) | Frontier etterpå |\n|---|---|---|\n| 0 | – | A 366 |\n| 1 | A (0 + 366 = 366) | S 140 + 253 = 393, Z 75 + 374 = 449 |\n| 2 | S (393) | R 220 + 193 = 413, F 239 + 176 = 415, Z 449 |\n| 3 | R (413) | F 415, P 317 + 100 = 417, Z 449 |\n| 4 | F (415) | P 417, Z 449, B 450 + 0 = 450 |\n| 5 | P (417) | B 418 + 0 = 418 (erstatter B 450), Z 449 |\n| 6 | B (418): mål | Z 449 |\n\n**Ekspandert A, S, R, F, P, (B). Løsning A–S–R–P–B, kostnad 418. Cost-optimal**, som forventet når h er admissible (og consistent).\n\n**4 d) Med h(R) = 227:**\n\n| Steg | Tas ut (f) | Frontier etterpå |\n|---|---|---|\n| 1 | A (366) | S 393, Z 449 |\n| 2 | S (393) | F 415, R 220 + 227 = 447, Z 449 |\n| 3 | F (415) | R 447, Z 449, B 450 |\n| 4 | R (447) | P 417, Z 449, B 450 |\n| 5 | P (417) | B 418 (erstatter B 450), Z 449 |\n| 6 | B (418): mål | Z 449 |\n\n**h(R) er ikke admissible lenger**, fordi 227 > h\\*(R) = 97 + 101 = 198. **Løsningen er fortsatt A–S–R–P–B med kostnad 418, altså cost-optimal.** Ekspandert A, S, F, R, P, (B). R kommer seinere enn før, men f(R) = 447 er fortsatt mindre enn f = 450 for den dårlige B, så R og P tas ut før B 450.\n\n**4 e) Nei, ingen motsigelse.** Admissibility er en *tilstrekkelig* betingelse som *garanterer* en optimal løsning. Den er ikke *nødvendig* for at A\\* skal treffe den optimale i et bestemt tilfelle. En inadmissible h gir bare ingen garanti. Her går det bra fordi overestimatet er lite: så lenge f(R) = 220 + h(R) < 450, altså h(R) < 230 (inntil 31 over h\\*(R) = 198), tas R ut før den suboptimale B 450, og den optimale stien blir funnet. Ved h(R) = 230 får R og B (via F) begge f = 450, og tie-break avgjør: oppgavens venstre-til-høyre-regel tar R først (R står til venstre for B) og gir fortsatt 418, mens B først ville gitt 450. Med h(R) > 230 returnerer A\\* A–S–F–B med kostnad 450. Løsningsforslaget kaller admissibility «necessary», men mener nødvendig for garantien. Boka (3.5.2) gir regelen: overestimerer h aldri med mer enn C₂ − C\\* (nest beste løsning minus den optimale), her 450 − 418 = 32, finner A\\* likevel den optimale løsningen. Er overestimatet nøyaktig C₂ − C\\*, som ved h(R) = 230, holder garantien bare når tie-break går riktig vei. Et overestimat strengt mindre enn C₂ − C\\* gir den uansett.\n\n*Kilde: løsningsforslaget til eksamen 2021, oppgave 2 (Search). Kontrollert med BFS, DFS, UCS og A\\* i algoritmefila (graph search, venstre til høyre).*"
+  },
+  {
+   "t": "Oppgave 3 (10 p): CSP",
+   "img": [
+    "nettside-figurer/e07-2021-q3.svg"
+   ],
+   "d": "Your task is to compare two given graphs and decide whether one contains a copy of the other. Two graphs G1(where nodes are named using integer numbers) and G2 (where nodes are referred to in terms of the letters of the alphabet), shown in the figure, are given. You will solve this as a constraint satisfaction problem (CSP) and find out if there is a copy of graph G1 in graph G2. «Copy» here means that the same number of nodes with the same connections between them. In other words, you will match these two graphs.\n\nYou can use the node-names of G1 (shown in the figure as 1,2,3,4) in the variable names, i.e., x1,….x4. Regarding the constraints, there is one global “all different”, i.e., AllDiff, constraint expressing that all the variables will have a different value, and four local constraints, each representing the constraints on an edge(arc) in G1, e.g., between node 1 and node 2.\n\n1\\) Write down the variables (i.e., X={x1,x2,x3,x4}and the domain of each variable (e.g., D(x1)={….})\n\n2\\) Write down the constraints required for the mapping between the two graphs. Represent the constraints as explicit lists of allowed values for edges in the form of {(xi-v, xj-v’),………} where the entry (xi-v, xj-v’) means that (xi,xj) is an edge in G1, and there is an edge (v,v’) in G2. That is, it is legal that variable xi in G1 has value v (from G2) when variable xj in G1 has label v’ (From G2) whenever (xi,xj) is an edge in G1 and (v,v’) is an edge in G2.\n\n3\\) Use backtracking search with forward checking to solve this CSP problem. Draw the search tree. The order of variable assignment is in numerical order, i.e., 1,2,3,4 while the assignment of values is in opposite/reverse alphabetical order. That is, you start with the assignment x1=the last letter in alphabetical order in the domain of x1.",
+   "f": [
+    [
+     "1) Variabler og domener",
+     "area",
+     "X = { … }\nD(x1) = { … }\n…"
+    ],
+    [
+     "2) Constraints som eksplisitte lister",
+     "area",
+     "AllDiff( … )\n(xi, xj): {(xi-…, xj-…), …}\n…"
+    ],
+    [
+     "3) Søketreet med forward checking",
+     "area",
+     "x1 = … → domener etter FC: …\n  x2 = … → …"
+    ],
+    [
+     "3) Løsningen: x1, x2, x3, x4",
+     "text",
+     "x1 = …, x2 = …, x3 = …, x4 = …"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "3) Løsningen: x1, x2, x3, x4": [
+      "x1 = a, x2 = c, x3 = b, x4 = d",
+      "a, c, b, d"
+     ]
+    },
+    "merk": "Den eneste kopien av G1 i G2.",
+    "kilde": "2021A.docx, CSP, og et skript som prøvde alle injektive tilordninger."
+   },
+   "fasit": "**1) Variabler og domener:** X = {x1, x2, x3, x4}, én per node i G1. D(x1) = D(x2) = D(x3) = D(x4) = {a, b, c, d, e}, nodene i G2.\n\n**2) Constraints:**\n- **AllDiff(x1, x2, x3, x4):** hver node i G1 får sin egen node i G2.\n- Kantene i G1 er 1→2, 2→3, 3→4 og 4→2. Kantene i G2 er e→a, a→c, c→b, b→d og d→c. Hver kant i G1 får lista over kanter i G2:\n  - (x1, x2): {(x1-e, x2-a), (x1-a, x2-c), (x1-c, x2-b), (x1-b, x2-d), (x1-d, x2-c)}\n  - (x2, x3): {(x2-e, x3-a), (x2-a, x3-c), (x2-c, x3-b), (x2-b, x3-d), (x2-d, x3-c)}\n  - (x3, x4): {(x3-e, x4-a), (x3-a, x4-c), (x3-c, x4-b), (x3-b, x4-d), (x3-d, x4-c)}\n  - (x4, x2): {(x4-e, x2-a), (x4-a, x2-c), (x4-c, x2-b), (x4-b, x2-d), (x4-d, x2-c)}\n\n**3) Søketreet med forward checking.** Variablene tas i rekkefølgen x1, x2, x3, x4, og verdiene i omvendt alfabetisk rekkefølge (e, d, c, b, a). Forward checking fjerner, hos hver utilordnet nabo, alle verdier som bryter en constraint med tilordningen. Her er det samme bokstav (AllDiff) og bokstaver som ikke danner en G2-kant i riktig retning.\n\n```\nx1 = e → D(x2) = {a}, D(x3) = {a,b,c,d}, D(x4) = {a,b,c,d}\n  x2 = a → D(x3) = {c}, D(x4) = { }   ✗ tilbake\nx1 = d → D(x2) = {c}, D(x3) = {a,b,c,e}, D(x4) = {a,b,c,e}\n  x2 = c → D(x3) = {b}, D(x4) = {a}\n    x3 = b → D(x4) = { }   ✗ tilbake\nx1 = c → D(x2) = {b}, D(x3) = {a,b,d,e}, D(x4) = {a,b,d,e}\n  x2 = b → D(x3) = {d}, D(x4) = { }   ✗ tilbake\nx1 = b → D(x2) = {d}, D(x3) = {a,c,d,e}, D(x4) = {a,c,d,e}\n  x2 = d → D(x3) = {c}, D(x4) = { }   ✗ tilbake\nx1 = a → D(x2) = {c}, D(x3) = {b,c,d,e}, D(x4) = {b,c,d,e}\n  x2 = c → D(x3) = {b}, D(x4) = {d}\n    x3 = b → D(x4) = {d}\n      x4 = d   ✓\n```\n\n**Løsning: x1 = a, x2 = c, x3 = b, x4 = d.** G2 inneholder en kopi av G1. Halen e→a i G2 blir ikke brukt.\n\nEksempel på en blindvei: med x1 = e og x2 = a trenger x4 en kant inn mot a (4→2). Den eneste er e→a, og e er alt brukt av x1.\n\n*Kilde: løsningsforslaget til eksamen 2021 (2021A), oppgave 3. Søket kontrollert med et eget skript som også prøvde alle injektive tilordninger.*"
+  },
+  {
+   "t": "Oppgave 4 (10 p): Planning",
+   "d": "1\\) In what way are Partial Order Planning (PoP) process and the resulting plans different from the ones in the progressive and regressive planning? In what situations is it suitable and attractive to use PoP?\n\n2\\) Assume you are going to a Christmas party tonight and you want to put on some jewellery, more specifically a gold ring on each of your pointing fingers. It is cold outside and you need to put on gloves as well, but the gloves are bulky and it would be hard to handle rings wearing them. Naturally, you need to put on both rings before the gloves. You will use a partial order planner to make a plan. You have these action: RightGlove (means put on a glove on your right hand), LeftGlove, RightRing (put on a ring on your right hand), and LeftRing. You will use partial order planning to generate a plan.\n\na. Write the required action schemas in the PDDL language.\n\nb. Draw the partial plan with the dependencies between the actions.\n\nc. Write down the plan. Use this notation: Action-1; (Action2, Action 3)… which means that Action-1 is followed by either Action2 or Action3 in the plan.",
+   "f": [
+    [
+     "1) PoP mot progression og regression, og når PoP passer",
+     "area"
+    ],
+    [
+     "2) a. Action schemas i PDDL",
+     "area",
+     "Action(…,\n  PRECOND: …\n  EFFECT: …)"
+    ],
+    [
+     "2) b. Den partielle planen med avhengighetene",
+     "area",
+     "Start → … → Finish"
+    ],
+    [
+     "2) c. Planen",
+     "text",
+     "Start; (…, …); …"
+    ]
+   ],
+   "fasit": "**1) Plan-space mot state-space.** Progression (forward) og regression (backward) søker i *state space*: hver node er en tilstand (eller et delmål), og planen er en totalt ordnet sekvens av handlinger fra start til mål eller baklengs fra målet. Partial-order planning søker i *plan space*: hver node er en ufullstendig plan. Den starter med en tom plan med bare handlingene Start (effekt = starttilstanden) og Finish (precondition = målet), og forbedrer planen ved å legge til handlinger, ordningsbegrensninger (A ≺ B) og causal links (A →p B) til hver åpen precondition er oppfylt og ingen handling truer en causal link. Den bruker *least commitment*: to handlinger ordnes bare når det må til. Resultatet er en partielt ordnet plan, og enhver linearisering som respekterer ordningene, er en gyldig plan.\n\n**Når PoP passer:** når problemet er nesten dekomponerbart, slik at delmålene er (nesten) uavhengige og kan løses hver for seg og flettes. Da slipper søket å prøve alle rekkefølger av uavhengige handlinger. Den fleksible planen er også nyttig når handlinger kan utføres parallelt eller av flere agenter, når rekkefølgen bestemmes under utførelsen, og når mennesker skal forstå og kontrollere planen. Løsningsforslaget: PoP er plan-space-søk, starter med en plan med bare start og finish, gir ikke en totalt ordnet plan, og forutsetter at verden er «nearly decomposable» med ofte uavhengige delmål.\n\n**2) a. Action schemas:**\n\n```\nAction(RightRing,\n  PRECOND: (ingen)\n  EFFECT:  RightRingOn)\nAction(LeftRing,\n  PRECOND: (ingen)\n  EFFECT:  LeftRingOn)\nAction(RightGlove,\n  PRECOND: RightRingOn ∧ LeftRingOn\n  EFFECT:  RightGloveOn)\nAction(LeftGlove,\n  PRECOND: RightRingOn ∧ LeftRingOn\n  EFFECT:  LeftGloveOn)\n\nInit()\nGoal(RightRingOn ∧ LeftRingOn ∧ RightGloveOn ∧ LeftGloveOn)\n```\n\n- Kravet «begge ringer før hanskene» står som precondition på begge hanskene. Ringene kan alltid tas på.\n- Init er tom: ingen ring eller hanske er på (closed world).\n- Løsningsforslaget sier bare at handlingene skal ha precondition og effect.\n\n**2) b. Den partielle planen:**\n\n```\n            Start\n           /     \\\n          v       v\n     LeftRing   RightRing\n       |   \\     /   |\n       |     \\ /     |\n       |     / \\     |\n       v   v     v   v\n     LeftGlove  RightGlove\n           \\     /\n            v   v\n            Finish\n```\n\nCausal links (pil med betingelsen den oppfyller): LeftRing → LeftGlove og LeftRing → RightGlove med LeftRingOn, RightRing → LeftGlove og RightRing → RightGlove med RightRingOn, LeftGlove → Finish med LeftGloveOn og RightGlove → Finish med RightGloveOn. Pilene fra Start er bare ordninger, fordi Init er tom. Det er ingen ordning mellom de to ringene eller mellom de to hanskene.\n\n**2) c. Planen: Start; (LeftRing, RightRing); (LeftGlove, RightGlove); Finish.**\n\nRingene kan tas på i hvilken som helst rekkefølge, og så hanskene i hvilken som helst rekkefølge. Den partielle planen har altså 2 · 2 = 4 lineariseringer, for eksempel LeftRing, RightRing, LeftGlove, RightGlove.\n\nPartial-order planning (11.2.4) er ute av pensum i 2026. Delspørsmål 2 a) er vanlig PDDL og er pensum.\n\n*Kilde: løsningsforslaget til eksamen 2021, oppgave 4 (Planning). 2 a) også fra notatet til E18, Fasit 4.*"
+  },
+  {
+   "t": "Oppgave 5 (10 p): Adversarial Search",
+   "img": [
+    "nettside-figurer/e08-2021-q5.svg"
+   ],
+   "d": "1\\) Apply minimax algorithm on the tree in the given figure and find the values of all the nodes above the leaf nodes. Write down the values of nodes A-J. What is the value of the solution for the agent max?\n\n2\\) Apply alpha-beta pruning algorithm to find nodes can be pruned. Write down the names of the nodes (i.e., the letters in the squares and ellipses), either leaves or the nodes of which all children are pruned. For example if L3 and L4 are both pruned then it is sufficient to write node F only. Give the reason why each pruned node is pruned, by referring to alpha and beta values",
+   "f": [
+    [
+     "1) Minimax-verdiene til A–J",
+     "area",
+     "A: … B: … C: … D: … E: … F: … G: … H: … I: … J: …"
+    ],
+    [
+     "1) Verdien av løsningen for MAX",
+     "text"
+    ],
+    [
+     "2) Noder som kuttes",
+     "text",
+     "…"
+    ],
+    [
+     "2) Begrunnelse med alpha og beta for hver",
+     "area",
+     "node: v = … og α/β = …"
+    ]
+   ],
+   "tegn": {
+    "type": "tre",
+    "data": {
+     "id": "A",
+     "type": "max",
+     "tekst": "A",
+     "barn": [
+      {
+       "id": "B",
+       "type": "min",
+       "tekst": "B",
+       "barn": [
+        {
+         "id": "E",
+         "type": "max",
+         "tekst": "E",
+         "barn": [
+          {
+           "id": "L1",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "L1"
+          },
+          {
+           "id": "L2",
+           "type": "blad",
+           "verdi": 3,
+           "tekst": "L2"
+          }
+         ]
+        },
+        {
+         "id": "F",
+         "type": "max",
+         "tekst": "F",
+         "barn": [
+          {
+           "id": "L3",
+           "type": "blad",
+           "verdi": 5,
+           "tekst": "L3"
+          },
+          {
+           "id": "L4",
+           "type": "blad",
+           "verdi": 10,
+           "tekst": "L4"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "C",
+       "type": "min",
+       "tekst": "C",
+       "barn": [
+        {
+         "id": "G",
+         "type": "max",
+         "tekst": "G",
+         "barn": [
+          {
+           "id": "L5",
+           "type": "blad",
+           "verdi": 0,
+           "tekst": "L5"
+          }
+         ]
+        },
+        {
+         "id": "H",
+         "type": "max",
+         "tekst": "H",
+         "barn": [
+          {
+           "id": "L6",
+           "type": "blad",
+           "verdi": 3,
+           "tekst": "L6"
+          },
+          {
+           "id": "L7",
+           "type": "blad",
+           "verdi": 6,
+           "tekst": "L7"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "D",
+       "type": "min",
+       "tekst": "D",
+       "barn": [
+        {
+         "id": "I",
+         "type": "max",
+         "tekst": "I",
+         "barn": [
+          {
+           "id": "L8",
+           "type": "blad",
+           "verdi": 2,
+           "tekst": "L8"
+          },
+          {
+           "id": "L9",
+           "type": "blad",
+           "verdi": 1,
+           "tekst": "L9"
+          }
+         ]
+        },
+        {
+         "id": "J",
+         "type": "max",
+         "tekst": "J",
+         "barn": [
+          {
+           "id": "L10",
+           "type": "blad",
+           "verdi": 7,
+           "tekst": "L10"
+          },
+          {
+           "id": "L11",
+           "type": "blad",
+           "verdi": 3,
+           "tekst": "L11"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "sjekk": {
+    "f": {
+     "1) Verdien av løsningen for MAX": [
+      "3"
+     ],
+     "2) Noder som kuttes": [
+      "{L4, H, J}"
+     ]
+    },
+    "merk": "Hele deltrær skrives med toppnoden: H og J, ikke bladene under.",
+    "kilde": "2021A.docx, Adversarial search, og alfa-beta i algoritmefila."
+   },
+   "fasit": "**1) A = 3, B = 3, C = 0, D = 2, E = 3, F = 10, G = 0, H = 6, I = 2, J = 7.**\n\n**Verdien av løsningen for MAX: 3** (trekket mot B).\n\n**2) Kuttes: L4, H og J.** L4 fordi v = 5 ≥ β = 3, H fordi v = 0 ≤ α = 3, og J fordi v = 2 ≤ α = 3.\n\n**Minimax nedenfra** (A er MAX, B–D er MIN, E–J er MAX):\n\n| Node | Type | Regning | Verdi |\n|---|---|---|---|\n| E | MAX | max(2, 3) | 3 |\n| F | MAX | max(5, 10) | 10 |\n| G | MAX | max(0) | 0 |\n| H | MAX | max(3, 6) | 6 |\n| I | MAX | max(2, 1) | 2 |\n| J | MAX | max(7, 3) | 7 |\n| B | MIN | min(3, 10) | 3 |\n| C | MIN | min(0, 6) | 0 |\n| D | MIN | min(2, 7) | 2 |\n| A | MAX | max(3, 0, 2) | **3** |\n\n**Alpha-beta**, barn fra venstre, α = −∞ og β = ∞ i roten:\n\n| Steg | Node | α | β | v | Hva skjer |\n|---|---|---|---|---|---|\n| 1 | E ser L1 = 2, L2 = 3 | 3 | ∞ | 3 | E = 3 |\n| 2 | B | −∞ | 3 | 3 | B er MIN og får β = 3 |\n| 3 | F ser L3 = 5 | 5 | 3 | 5 | **kutt L4: v = 5 ≥ β = 3** (β fra B). F ≥ 5 |\n| 4 | B, A | 3 | ∞ | 3 | B = 3, og A får α = 3 |\n| 5 | G ser L5 = 0 | 3 | ∞ | 0 | G = 0 |\n| 6 | C | 3 | 0 | 0 | **kutt H: v = 0 ≤ α = 3** (α fra A). C ≤ 0 |\n| 7 | I ser L8 = 2, L9 = 1 | 3 | ∞ | 2 | I er MAX og sammenligner med β = ∞, så ingen kutt. I = 2 |\n| 8 | D | 3 | 2 | 2 | **kutt J: v = 2 ≤ α = 3** (α fra A). D ≤ 2 |\n| 9 | A | 3 | ∞ | 3 | **A = 3** via B. 6 av 11 blader er sett |\n\nBegrunnelsene på fasitens form: L4 (5 > 3), H (0 < 3), J (2 < 3). Hele H og J kuttes, så det holder å skrive H og J, ikke L6, L7, L10 og L11.\n\nVanlig feil: å kutte L9 under I. I er MAX og sammenligner v med β, som er ∞ der.\n\n*Kilde: løsningsforslaget til eksamen 2021, oppgave 5 (Adversarial search).*"
+  },
+  {
+   "t": "Oppgave 6 (20 p): Short Questions",
+   "img": [
+    "nettside-figurer/ek2021-q6.svg"
+   ],
+   "d": "1\\) Game theory: Does the payoff matrix in the given figure represent an instance of the Prisoner Dilemma game? Explain your answer - why is it, or why is it not.\n\n2\\) Knowledge Representation\n\na. What are the three ways to represent states and transitions between them? Describe each of them very briefly and describe what kinds of tasks (e.g., planning, or classical search task) we used each of them in this course.\n\nb. What are semantic networks capable of representing? What kind of reasoning mechanism/methods do they rely on?\n\n3\\) AI-Ethics: What kind of connection can you make between P of PEAS (in Chapter 2) and ethical issues in AI? This is an open question which needs you to support your answer with arguments. In other words, explain your answer – concisely.\n\n4\\) Environment type: Assume a human agent is collecting beautiful, rare orchids in the rain forest. They suddenly notice that some birds are following them and pick the orchids just when the agent reaches to the orchids. Is this a deterministic, stochastic or strategic environment? Explain your answer.",
+   "f": [
+    [
+     "1) Prisoner's dilemma? Forklar",
+     "area",
+     "Ja/nei, fordi …"
+    ],
+    [
+     "2) a. De tre representasjonene, og hvor de ble brukt",
+     "area",
+     "1. …: … (brukt i …)\n2. …\n3. …"
+    ],
+    [
+     "2) b. Semantiske nett: hva de kan representere, og resonneringen",
+     "area"
+    ],
+    [
+     "3) P i PEAS og etikk",
+     "area"
+    ],
+    [
+     "4) Orkidémiljøet: deterministic, stochastic eller strategic?",
+     "area"
+    ]
+   ],
+   "sjekk": {
+    "f": {
+     "1) Prisoner's dilemma? Forklar": [
+      "ja",
+      "yes"
+     ]
+    },
+    "merk": "T = 8 > R = 4 > P = 2 > S = −1, og Defect dominerer for begge.",
+    "kilde": "2021A.docx, Short questions 1, og dominans-nash i algoritmefila."
+   },
+   "fasit": "**1) Ja, matrisen er et prisoner's dilemma.**\n\nRad er spiller 1, kolonne spiller 2, og cellen er (spiller 1, spiller 2). Med C = Coop og D = Defect er payoffene for den som velger: T = 8 (defect mot coop, temptation), R = 4 (begge coop, reward), P = 2 (begge defect, punishment) og S = −1 (coop mot defect, sucker). Et prisoner's dilemma krever T > R > P > S, og her er 8 > 4 > 2 > −1. Spillet er symmetrisk.\n\n- **Defect strictly dominates Coop** for begge: mot Coop gir Defect 8 > 4, mot Defect gir Defect 2 > −1.\n- **(Defect, Defect) er dominant strategy equilibrium** og eneste Nash-likevekt, med (2, 2).\n- **(Coop, Coop) gir (4, 4)**, bedre for begge. Likevekten er altså Pareto-dominert, og det er dilemmaet: rasjonelle spillere ender i et utfall begge liker dårligere enn et annet.\n\nI tillegg gjelder 2R > T + S (8 > 7), så gjensidig samarbeid er også bedre enn å bytte på å utnytte hverandre i et gjentatt spill.\n\n**2) a. De tre representasjonene** (boka 2.4.7):\n\n1. **Atomic:** tilstanden er en udelelig svart boks, bare et navn som In(Arad). En overgang er en kant fra én boks til en annen. Brukt i klassisk søk (BFS, UCS, A\\*) og i spill (adversarial search).\n2. **Factored:** tilstanden er et fast sett variabler med verdier, som bensin, GPS-posisjon og bompenger. En handling endrer noen av verdiene. Brukt i CSP, proposisjonslogikk og planlegging (fluents med preconditions og effects).\n3. **Structured:** tilstanden har objekter og relasjoner mellom dem, som Ku(k), Lastebil(l) og Sperrer(k, l). Brukt i førsteordens logikk og inferens, kunnskapsrepresentasjon og NLP.\n\nUttrykkskraften øker fra atomic til structured, og prisen er tyngre resonnering og læring.\n\n**2) b. Hva de kan representere:** Semantiske nett representerer objekter og kategorier som noder og binære relasjoner som lenker: MemberOf, SubsetOf og andre relasjoner som SisterOf. Innrammede lenker sier noe om alle medlemmene av en kategori (Legs = 2 for Persons), og verdiene er defaults som kan overstyres lenger ned (Legs(John, 1)). Med reifikasjon (Fly17 ∈ FlyEvents med lenkene Agent, Origin, Destination og During) kan de uttrykke alle grunne, funksjonsfrie atomære fakta. De kan ikke uttrykke negasjon, disjunksjon, eksistenskvantifisering eller nøstede funksjonssymboler.\n\n**Resonnering:** De bygger på **arv (inheritance)**: følg MemberOf og deretter SubsetOf oppover til første kategori som har verdien. Den mest spesifikke verdien vinner, så det er default reasoning. Oppslaget er raskt og forutsigbart. I tillegg brukes **procedural attachment**: et spørsmål om en relasjon kan kalle en egen prosedyre i stedet for vanlig inferens.\n\n**3) P i PEAS er performance measure, og det er der etikken kommer inn: agenten optimerer bare det som står i P.**\n\n- En rasjonell agent velger handlingen som maksimerer forventet performance measure. Står bare accuracy eller profitt i P, vil agenten ofre det vi ikke målte, for eksempel fairness, personvern eller sikkerhet. Det er value alignment-problemet: agenten får det vi ba om, ikke det vi mente (King Midas).\n- Etiske hensyn bør derfor bygges inn i P, for eksempel fairness som en del av målfunksjonen. Et lånesystem som bare maksimerer tilbakebetalte lån, kan diskriminere en gruppe. Med et krav om lik TPR mellom gruppene (equal opportunity) i P blir det synlig og straffet.\n- Det gir avveininger: fairness og accuracy kan trekke mot hverandre, og noen må bestemme vektene.\n- Ingen kan liste alle bivirkninger på forhånd. Derfor kan P også straffe endringer i verden (low impact) og ta med externalities, eller agenten kan være usikker på hva vi egentlig vil, og derfor være forsiktig og spørre (beneficial machines).\n\nLøsningsforslaget sier at oppgaven var åpen, og at de fleste fikk full score med gode argumenter.\n\n**4) Orkidémiljøet: stochastic, eller strategic hvis fuglene regnes som agenter.** Fuglene gjør at samme handling (plukk orkidéen) i samme tilstand kan gi orkidé eller ikke, så miljøet er ikke deterministic. Er fuglene en del av naturen, er det stochastic. Er de agenter som maksimerer sitt eget mål (de vil også ha orkideene), er miljøet multiagent og competitive. Løsningsforslaget kaller det da strategic: tilfeldigheten kommer fra andre agenter. Fasiten godtok deterministic, stochastic og strategic med god begrunnelse. Begrepet «strategic» står ikke i kap. 2 i 4. utgave, så med boka sier du helst multiagent (competitive) og stochastic.\n\n*Kilde: løsningsforslaget til eksamen 2021, oppgave 6 (Short questions). 2 b) har ikke svar i løsningsforslaget; svaret er bokas (10.5.1). Matrisen i 1) kontrollert med dominans-nash i algoritmefila.*"
+  }
+ ]
+}

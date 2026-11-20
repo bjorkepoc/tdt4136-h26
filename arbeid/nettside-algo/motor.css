@@ -1,6 +1,5 @@
 /* Algoritmeanimasjonene og tegneverktøyet (motor.js). Fargene bygger på sidens variabler, se KONTRAKT.md. */
-.algo{--a-ak-f:#ffe5ad;--a-ak-s:#b86a00;--a-fe-f:#fde0de;--a-fe-s:#c62828}
-@media (prefers-color-scheme:dark){.algo{--a-ak-f:#4a3610;--a-ak-s:#ffb547;--a-fe-f:#3f1d1d;--a-fe-s:#ff8a80}}
+.algo{--a-ak-f:light-dark(#ffe5ad,#4a3610);--a-ak-s:light-dark(#b86a00,#ffb547);--a-fe-f:light-dark(#fde0de,#3f1d1d);--a-fe-s:light-dark(#c62828,#ff8a80)}
 
 /* Én fargeregel per tilstand: --f fyll, --s strek, --tx tekst. Brukes av noder, kanter og forklaringen. */
 .algo .t-ny{--f:var(--surface);--s:var(--muted);--tx:var(--fg)}
