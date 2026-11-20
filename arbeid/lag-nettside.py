@@ -69,14 +69,16 @@ PAPIR = {"e11", "e12", "e13", "e14", "e15", "e16", "a4"}  # logikken: kan besvar
 
 
 def klargjor(tasks, papir=False):
-    """Oppgaver fra JSON: markdown til HTML (tekst og fasit), figurene etter teksten, svarfelt hvis ingen er gitt."""
+    """Oppgaver fra JSON: markdown til HTML (tekst og fasit), figurene for seg, svarfelt hvis ingen er gitt."""
     for x in tasks:
         if papir or "handwritten sheets" in x.get("d", ""):
             x["papir"] = 1
         for s in x.get("img", []):
             assert (A / s).exists(), s
         alt = html.escape(f'Figur til oppgaven «{x.get("t", "")}»', quote=True)
-        x["d"] = md(x.get("d", "")) + "".join(f'<img class="fig" src="{quote(s)}" alt="{alt}">' for s in x.pop("img", []))
+        x["d"] = md(x.get("d", ""))
+        if x.get("img"):  # plasseres av siden: før første delspørsmål, eller øverst når teksten sier «above»
+            x["fig"] = "".join(f'<img class="fig" src="{quote(s)}" alt="{alt}">' for s in x.pop("img"))
         x.setdefault("f", [] if x.get("tf") or x.get("grid") else [["Svar", "area"]])
         if x.get("fasit"):
             x["fasit"] = md(x["fasit"])
