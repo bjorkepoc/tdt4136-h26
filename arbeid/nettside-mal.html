@@ -236,8 +236,10 @@ const fh=(t.f||[]).map(([l,ty,ph],n)=>{const v=esc(a[l]||""),p=esc(ph||""),id=`f
 // Ber et delspørsmål deg tegne («Draw …», «tegn …»), ligger tegneverktøyet rett under svarfeltet til det delspørsmålet.
 if(tn>=0&&vbh)fh[tn]+=`<div class="row">${vbh}</div><div class="vk"></div>`;
 const fig=(t.fig||"")+(t.g?graf(typeof t.g==="string"?GR[t.g]:t.g):"")+(t.tre&&window.ALGO&&ALGO.figur?ALGO.figur("tre",t.tre):""),df=d.includes("<!--fig-->")?d.replace("<!--fig-->",()=>fig):d+fig;
-let h=`<div class="task${filled(a)?" done":""}" id="t${j}"><h3>${j+1}. ${esc(t.t)}</h3>`+(df?`<div class="d">${df.replace(/<!--f([\d,]+)-->/g,(m,ns)=>ns.split(",").map(n=>fh[n]).join(""))}</div>`:"");
-(t.grid||[]).forEach(g=>["admissible","consistent"].forEach(p=>{h+=`<div class="row"><span style="min-width:160px">${g} ${p}?</span>${tg(g+" "+p,"ja")}${tg(g+" "+p,"nei")}<span class="sjr" data-g="${esc(g+" "+p)}"></span></div>`}));
+// Står tabellen (H1 … H4 × admissible/consistent) i oppgaveteksten, kommer ja/nei-knappene i de tomme cellene. Ellers kommer de under teksten.
+let dg=df,gi=false;if(t.grid){const T=document.createElement("template");T.innerHTML=df;T.content.querySelectorAll("tr").forEach(r=>{const c=r.cells,g=c[0]&&c[0].textContent.trim();if(t.grid.includes(g))["admissible","consistent"].forEach((q,i)=>{const x=c[i+1];if(x&&!x.textContent.trim()){x.innerHTML=tg(g+" "+q,"ja")+tg(g+" "+q,"nei")+`<span class="sjr" data-g="${esc(g+" "+q)}"></span>`;gi=true}})});dg=T.innerHTML}
+let h=`<div class="task${filled(a)?" done":""}" id="t${j}"><h3>${j+1}. ${esc(t.t)}</h3>`+(dg?`<div class="d">${dg.replace(/<!--f([\d,]+)-->/g,(m,ns)=>ns.split(",").map(n=>fh[n]).join(""))}</div>`:"");
+(gi?[]:t.grid||[]).forEach(g=>["admissible","consistent"].forEach(p=>{h+=`<div class="row"><span style="min-width:160px">${g} ${p}?</span>${tg(g+" "+p,"ja")}${tg(g+" "+p,"nei")}<span class="sjr" data-g="${esc(g+" "+p)}"></span></div>`}));
 (t.tf||[]).forEach((s,i)=>{const k=s.slice(0,2);h+=`<p style="margin:12px 0 6px">${esc(s)}</p><div class="row" style="margin:0">${tg(k,"sant","Sant")}${tg(k,"usant","Usant")}<span class="sjr" data-tf="${i}"></span></div>`});
 h+=slutt.map(n=>fh[n]).join("");
 // Papirsvar (logikkoppgavene, som på eksamen): bildene lagres i arbeid/svar/bilder/ og følger svaret som «Papir» til retting.
