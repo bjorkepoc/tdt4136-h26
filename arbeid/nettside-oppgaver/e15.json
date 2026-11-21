@@ -77,6 +77,7 @@
   },
   {
    "t": "Eksamen 2025, Q9 (5 p): Generalized Modus Ponens",
+   "resten": "e16/7",
    "d": "**9 Generalized Modus Ponens**\n\nGiven the knowledge base KB = {\\\n&emsp;∀x, y, z Loves(x, z) ∧ Loves(y, z) ⇒ Jealous(x, y),\\\n&emsp;Loves(Alice, Bob),\\\n&emsp;Loves(Carrie, Bob)\\\n}\n\nShow that KB ⊨ Jealous(Alice, Carrie) using Generalized Modus Ponens. The answer must show all the steps, including unification(s) and substitution(s).\n\nMaximum marks: 5\n\n*Merknad:* Formelarket (Formula Sheet) fra slutten av eksamen står under. Q10 (resolution) står i E16.",
    "img": [
     "nettside-figurer/e14-2025-formelark.svg"
@@ -92,6 +93,7 @@
   },
   {
    "t": "Eksamen 2023, oppgave 3.2 (10 p) med forward og backward chaining",
+   "resten": "e16/4",
    "d": "**3 Logic (20 pts total)**\n\n**3.2 First Order logic (10 pts)**\n\nYou are given the following information:\n\nFido is father of Snowy. Fido is alive. One’s father is ones parent and vice versa. Somebody’s alive parent is older than them.\n\nQuestion: Is there anybody older than Snowy?\n\n- a) Represent this information and the question in form of First Order Logic (FoL) sentences.\n- b) Using resolution refutation answer if there is anybody older than Snowy? If there is, who is this?\n\nNumber the CNF sentences starting from 1, and then employ resolution refutation. Show how you convert the FOL sentences to CNF sentences.\n\n*Merknad:* Variant: resolution-delen står i E16. Her skriver du KB-en som definite clauses og svarer med forward chaining og backward chaining, med θ for hvert delmål.",
    "f": [
     [

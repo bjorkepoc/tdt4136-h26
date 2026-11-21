@@ -102,6 +102,14 @@ for p in sorted((V / "notater").glob("e[0-9][0-9]-*.md")):
                 "note": md(body), "intro": md(data.get("intro", "")), "tasks": klargjor(data["tasks"], eid in PAPIR), "fasit": md(quizfasit(section(t, "Fasit")))})
     feller.append(f'<h2><a href="#{eid}">{ep}</a> {html.escape(title)}</h2>' + md(section(t, "Eksamensfeller")))
 assert len(eps) == 21, len(eps)
+# «resten»: "e02/8" peker på de andre deloppgavene i samme eksamensoppgave. Siden viser feltene og fasiten deres bak en knapp.
+ved = {e["id"]: e for e in eps}
+for e in eps:
+    for x in e["tasks"]:
+        if r := x.pop("resten", None):
+            o, k = r.split("/")
+            y, har = ved[o]["tasks"][int(k)], {f[0] for f in x["f"]}
+            x["rest"] = {"ep": ved[o]["ep"], "tittel": ved[o]["title"], "f": [f for f in y["f"] if f[0] not in har], "fasit": y.get("fasit", "")}
 
 rader = []
 for f in sorted(EX.iterdir()):

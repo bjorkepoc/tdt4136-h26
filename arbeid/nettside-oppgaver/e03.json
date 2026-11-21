@@ -3,10 +3,11 @@
  "tasks": [
   {
    "t": "Løkkegrafen: greedy best-first og A*",
+   "resten": "e02/3",
    "img": [
     "nettside-figurer/e02-2023-q2.png"
    ],
-   "d": "*Merknad:* Her svarer du bare på d og e. Hele oppgaven, med felt for a–c (BFS, DFS og UCS) også, er oppgave 4 i E02.\n\n**2 Search (20 pts total)**\n\n**2.1 Search algorithms (10 pts)**\n\n1\\. Execute tree-like search through the following graph (see Fig. 1) for the given algorithms below. Tie breaking: Left-to-right order of successors.\n\na- Breadth first search, b- Depth First search, c- Uniform cost search, d- Greedy best-first search, e- A\\* search\n\nFor each of the search algorithm,\n\n- show the order in which the nodes are expanded.\n- show the path from start to goal, or write “None” if no path to goal is found, and\n- write the cost of the path found, in the following format",
+   "d": "*Merknad:* Her svarer du på d og e. Feltene for a–c (BFS, DFS og UCS) ligger bak knappen nederst, og hele oppgaven er oppgave 4 i E02.\n\n**2 Search (20 pts total)**\n\n**2.1 Search algorithms (10 pts)**\n\n1\\. Execute tree-like search through the following graph (see Fig. 1) for the given algorithms below. Tie breaking: Left-to-right order of successors.\n\na- Breadth first search, b- Depth First search, c- Uniform cost search, d- Greedy best-first search, e- A\\* search\n\nFor each of the search algorithm,\n\n- show the order in which the nodes are expanded.\n- show the path from start to goal, or write “None” if no path to goal is found, and\n- write the cost of the path found, in the following format",
    "f": [
     [
      "d- Greedy best-first",
@@ -128,6 +129,7 @@
   },
   {
    "t": "Eksamen 2021, oppgave 2, 4): A*-delen",
+   "resten": "e02/7",
    "img": [
     "nettside-figurer/e02-2021-q2.svg"
    ],
@@ -224,6 +226,7 @@
   },
   {
    "t": "Eksamen 2020 kont, problem 2: A*",
+   "resten": "e02/8",
    "img": [
     "nettside-figurer/e02-2020kont-p2.png"
    ],
@@ -240,6 +243,7 @@
   },
   {
    "t": "Eksamen 2018, problem 4: greedy og A*",
+   "resten": "e02/9",
    "img": [
     "nettside-figurer/e02-2018-p4.svg"
    ],
