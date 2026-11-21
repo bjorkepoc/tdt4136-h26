@@ -6,7 +6,7 @@
    "img": [
     "nettside-figurer/e02-2023-q2.png"
    ],
-   "d": "**2 Search (20 pts total)**\n\n**2.1 Search algorithms (10 pts)**\n\n1\\. Execute tree-like search through the following graph (see Fig. 1) for the given algorithms below. Tie breaking: Left-to-right order of successors.\n\na- Breadth first search, b- Depth First search, c- Uniform cost search, d- Greedy best-first search, e- A\\* search\n\nFor each of the search algorithm,\n\n- show the order in which the nodes are expanded.\n- show the path from start to goal, or write “None” if no path to goal is found, and\n- write the cost of the path found, in the following format\n\n*Merknad:* BFS, DFS og UCS (a–c) på samme graf står i E02.",
+   "d": "*Merknad:* Her svarer du bare på d og e. Hele oppgaven, med felt for a–c (BFS, DFS og UCS) også, er oppgave 4 i E02.\n\n**2 Search (20 pts total)**\n\n**2.1 Search algorithms (10 pts)**\n\n1\\. Execute tree-like search through the following graph (see Fig. 1) for the given algorithms below. Tie breaking: Left-to-right order of successors.\n\na- Breadth first search, b- Depth First search, c- Uniform cost search, d- Greedy best-first search, e- A\\* search\n\nFor each of the search algorithm,\n\n- show the order in which the nodes are expanded.\n- show the path from start to goal, or write “None” if no path to goal is found, and\n- write the cost of the path found, in the following format",
    "f": [
     [
      "d- Greedy best-first",
