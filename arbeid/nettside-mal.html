@@ -254,7 +254,8 @@ const tok=(s,k)=>(t=>k?kall(t):t.replace(/[()]/g," "))(String(s||"").toUpperCase
 const elem=t=>{const u=[];let d=0;for(const x of t){if(d)u[u.length-1]+=" "+x;else u.push(x);d+=x.endsWith("(")-(x===")")}return u};
 const jn=x=>/^(JA|YES|SANT|TRUE)$/.test(x)?1:/^(NEI|NO|USANT|FALSE)$/.test(x)?-1:0;
 // Er fasit ett tall, leses «2,5» som desimaltall (ellers skiller komma ledd i lister og mengder).
-function likt(svar,fasit){const k=KALL.test(fasit),b=tok(fasit,k),a=tok(b.length===1&&/^-?\d+(\.\d+)?$/.test(b[0])?String(svar||"").replace(/(\d),(\d)/g,"$1.$2"):svar,k);if(String(fasit).trim().startsWith("{")){const A=new Set(elem(a)),B=new Set(elem(b));return A.size===B.size&&[...B].every(x=>A.has(x))}if(b.length>1)return a.join(" ")===b.join(" ");const n=/^-?\d+(\.\d+)?$/.test(b[0]);
+function likt(svar,fasit){const k=KALL.test(fasit),b=tok(fasit,k),a=tok(b.length===1&&/^-?\d+(\.\d+)?$/.test(b[0])?String(svar||"").replace(/(\d),(\d)/g,"$1.$2"):svar,k);if(String(fasit).trim().startsWith("{")){const A=new Set(elem(a)),B=new Set(elem(b));return A.size===B.size&&[...B].every(x=>A.has(x))}// Er hvert ledd i fasit én bokstav (S, B, C, (G)), godtas også bokstavene skrevet sammen («SBCG»).
+if(b.length>1)return (b.every(x=>x.length===1)?a.flatMap(x=>[...x]):a).join(" ")===b.join(" ");const n=/^-?\d+(\.\d+)?$/.test(b[0]);
 // Ett ord eller tall i fasit: forklaring etter svaret er lov, men ikke et alternativ («8 eller 99»), et annet tall eller et motsatt ja/nei først («no, yes»).
 return (n?+a[0]===+b[0]:a[0]===b[0])&&!a.some(x=>/^(ELLER|OR|\/)$/.test(x)||n&&/^-?\d+(\.\d+)?$/.test(x)&&+x!==+b[0])&&!(jn(b[0])&&a.slice(0,a.concat("").findIndex(x=>!jn(x))).some(x=>jn(x)!==jn(b[0])))}
 function sjekk(e,j,vis){const t=e.tasks[j],k=t.sjekk,a=svar(e)[j]||{},el=$("#t"+j);let ok=0,n=0;
