@@ -106,7 +106,7 @@ textarea.in{min-height:90px;resize:vertical;field-sizing:content}textarea.in.en{
 .mic{font-size:12px;padding:2px 10px;margin-top:8px}
 .mic.rec{background:#c62828;border-color:#c62828;color:#fff}
 .fb{margin-top:10px;padding:10px 14px;border-radius:8px;background:var(--accent-bg);font-size:14px}
-.fb .fbt{white-space:pre-wrap;margin-top:4px}
+.fb .fbt{white-space:pre-wrap;margin-top:4px} .fb .kop{float:right;padding:0 8px;margin:-4px -8px 0 6px;font-size:13px}
 .notat{display:block;width:100%;min-height:50vh;resize:vertical}.notliste{list-style:none;padding:0;margin:0}.notliste li{margin:0 0 6px}.notliste button{display:block;width:100%;text-align:left;padding:8px 10px}.notliste b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.notliste .mut{font-size:12px}
 /* Notatsiden: tilbakeknappen står til venstre for Fest/Lukk, resten under dem. */
 .nottopp{margin:12px 0 0;min-height:36px}.notmeta{clear:both;margin:12px 0 8px;font-size:13px}
@@ -302,7 +302,10 @@ document.querySelectorAll(".lbody li[data-b]").forEach(li=>fbBoks(li.querySelect
 const ns=document.querySelector("#notdlg .notsvar");if(ns){const id=ns.dataset.id,n=(S.svar.notater||{})[id],f=(FB.notat||{})[id]||{},
 h=Object.entries(n&&n.sp||{}).sort((a,b)=>a[1].sendt<b[1].sendt?1:-1).map(([k,q])=>`<div class="fb"><button type="button" class="fjern" data-fjern="${esc(k)}" title="Fjern spørsmålet og svaret">×</button><blockquote>${esc(q.utdrag)}</blockquote>${f[k]?`<div class="fbt">${esc(f[k].tekst)}</div>`:`<span class="mut">Venter på svar (sendt ${esc(q.sendt.slice(11,16))}).</span>`}</div>`).join("");
 if(ns._k!==h){ns._k=h;ns.innerHTML=h}}}
-function fbBoks(box,st,f,r,ord){const ny=r&&!(f&&f.tid>=r),k=f?f.tid+f.tekst+ny:"";if(box.dataset.k!==k){box.dataset.k=k;box.hidden=!f;box.innerHTML=f?`<b>${ny?"Forrige "+ord.toLowerCase():ord}</b> <span class="mut">${esc(f.tid||"")}</span><div class="fbt">${esc(f.tekst)}</div>`:""}
+// «Kopier» i en tilbakemelding legger teksten i utklippstavlen. Nekter nettleseren det, kopieres det markerte på den gamle måten, og ellers står teksten markert for ⌘C.
+document.addEventListener("click",e=>{const b=e.target.closest(".fb .kop");if(!b)return;const t=b.parentNode.querySelector(".fbt");
+navigator.clipboard.writeText(t.textContent).then(()=>{b.textContent="Kopiert"},()=>{getSelection().selectAllChildren(t);b.textContent=document.execCommand("copy")?"Kopiert":"Trykk ⌘C"}).finally(()=>setTimeout(()=>b.textContent="Kopier",2500))});
+function fbBoks(box,st,f,r,ord){const ny=r&&!(f&&f.tid>=r),k=f?f.tid+f.tekst+ny:"";if(box.dataset.k!==k){box.dataset.k=k;box.hidden=!f;box.innerHTML=f?`<button type="button" class="kop">Kopier</button><b>${ny?"Forrige "+ord.toLowerCase():ord}</b> <span class="mut">${esc(f.tid||"")}</span><div class="fbt">${esc(f.tekst)}</div>`:""}
 st.textContent=ny?`Sendt ${r.slice(11,16)}. ${ord==="Svar"?"Svaret":"Tilbakemeldingen"} kommer her.`:""}
 const hentFB=()=>API&&fetch("svar/tilbakemelding.json",{cache:"no-store"}).then(r=>r.ok?r.json():{}).then(f=>{FB=f;visFB()}).catch(()=>{});
 
