@@ -115,6 +115,7 @@ textarea.in{min-height:90px;resize:vertical;field-sizing:content}textarea.in.en{
 .notslett{background:none;border-color:transparent;color:var(--bad)}.notslett:hover{border-color:var(--bad)}#notdlg.hoyre .notat{min-height:calc(100vh/var(--hn,1) - 190px)}
 .lbody :is(.spor,.pin){padding:1px 8px;font-size:12px}
 .sjr{font-size:13px;font-weight:600;margin-left:6px}.sjr.ja{color:var(--ok)}.sjr.nei{color:var(--bad)}
+#varsel{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:60;max-width:calc(100vw - 32px);padding:8px 14px;border-radius:8px;background:var(--bad);color:var(--surface);font-size:14px}#varsel:empty{display:none}
 .sjm{font-size:14px;margin-top:6px}.sjm:empty{display:none}
 main.ep{max-width:none;padding:0}
 main.ep .lft{padding:28px 36px 40px;min-width:0}
@@ -169,13 +170,23 @@ T18:{w:460,h:270,mw:500,dir:1,sq:1,al:"Treet fra eksamen 2018",n:{S:[225,28,"h=2
 TRI:{w:340,h:120,mw:380,dir:1,al:"Trekantgrafen",n:{S:[40,90],A:[170,28],G:[300,90,"",0,0,1]},e:[["S","A",2,-1],["A","G",3,-1],["S","G",6]]}
 };
 
-const KEY="tdt4136-side",$=s=>document.querySelector(s);
+// Nøkkelen byttes når lagringen endres, så faner med eldre kode (som skriver til den gamle) ikke når nye faner.
+const KEY="tdt4136-side2",$=s=>document.querySelector(s);
 // GR-grafene (node: [x, y, "h=…", dx, dy, mål]) som data til tegneverktøyet.
 const grafData=g=>g&&{type:"graf",data:{retning:!!g.dir,noder:Object.entries(g.n).map(([id,v])=>{const m=/h\s*=\s*(-?[\d.]+)/.exec(v[2]||"");return m?{id,x:v[0],y:v[1],h:+m[1]}:{id,x:v[0],y:v[1]}}),
 kanter:g.e.map(([fra,til,kost])=>({fra,til,kost})),start:g.start||g.st||(g.n.S?"S":Object.keys(g.n)[0]),mal:Object.keys(g.n).filter(id=>g.n[id][5])}};
 let S={seen:{},pos:{},svar:{},rett:{},sub:false,last:null};
-try{Object.assign(S,JSON.parse(localStorage.getItem(KEY))||{})}catch(e){}
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||localStorage.getItem("tdt4136-side"))||{})}catch(e){}
+// Hvert felt i en oppgave (S.svar[id][j]) og i et notat (S.svar.notater[id]) får tidsstempel _tf[felt] når det endres (stemple, fra save); _t er det nyeste, _f fanen som skrev.
+// Ved sammenslåing (flett) vinner det sist endrede feltet, både mellom faner og på serveren, og ingenting slettes. Da kan ikke en fane med eldre innhold skrive over nyere.
+const FANE=Math.random().toString(36).slice(2,8),J=JSON.stringify,ts=a=>a&&+a._t||0,felt=a=>Object.keys(a).filter(k=>k[0]!=="_"),
+tf=(a,k)=>!a?0:a._tf?+a._tf[k]||0:ts(a),tfi=a=>a._tf||(a._tf=Object.fromEntries(felt(a).map(k=>[k,ts(a)])));
+let sist={};const kjent=()=>{sist={};for(const id in S.svar){sist[id]={};for(const j in S.svar[id]){const a=S.svar[id][j];if(a&&typeof a==="object")sist[id][j]=Object.fromEntries(felt(a).map(k=>[k,J(a[k])]))}}};kjent();
+const stemple=()=>{const t=Date.now();for(const id in S.svar)for(const j in S.svar[id]){const a=S.svar[id][j];if(!a||typeof a!=="object")continue;const g=(sist[id]||{})[j]||{},ny=felt(a).filter(k=>J(a[k])!==g[k]);
+if(ny.length){const T=tfi(a),u=Math.max(t,ts(a)+1);ny.forEach(k=>T[k]=u);a._t=u;a._f=FANE}}kjent()};
+// Feil ved lagring vises nederst på siden til lagringen lykkes igjen.
+const varsel=s=>{let v=$("#varsel");if(!v&&s){v=document.createElement("div");v.id="varsel";v.setAttribute("role","alert");document.body.append(v)}if(v)v.textContent=s};
+const save=()=>{stemple();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){varsel("Nettleseren fikk ikke lagret svarene. De lagres bare i fila så lenge serveren kjører.")}};
 // Menyen, video og notater (venstre) og Øv selv (høyre) skjules hver for seg; valget huskes. Begge kolonnene kan ikke være skjult samtidig.
 const visDeler=()=>{const m=$("#main"),ep=m.classList.contains("ep"),v=!!$("#v");$(".wrap").classList.toggle("lukket",!!S.lukket);m.classList.toggle("uv",!!S.uv);m.classList.toggle("uh",!!S.uh);
 $("#vis-v").textContent=v?"Video":"Tekst";$("#vis-v").hidden=$("#vis-h").hidden=!ep;
@@ -185,16 +196,32 @@ $("#deler").onclick=x=>{const k={meny:"lukket","vis-v":"uv","vis-h":"uh"}[x.targ
 const API=location.protocol.startsWith("http"),SR=API&&(window.SpeechRecognition||window.webkitSpeechRecognition),now=()=>new Date().toLocaleString("sv-SE");
 let pt,FB={},rec=null;
 const feil=s=>{const m=$("#cmsg");if(m)m.textContent=s};
-const push=()=>fetch("/api/svar",{method:"POST",body:JSON.stringify(S.svar)}).then(r=>{if(!r.ok)throw 0;if(!pt){S.ulagret=false;save()}}).catch(()=>feil("Fikk ikke lagret svarene i fila. Kjører serveren?"));
-// S.ulagret: lokale endringer som ikke har nådd fila ennå (lastet om før 500 ms). Da vinner de lokale svarene ved neste lasting.
-const lagre=()=>{if(API){S.ulagret=true;save();clearTimeout(pt);pt=setTimeout(()=>{pt=0;push()},500)}};
-// En annen fane eller et annet vindu har lagret: ta over svarene, notatene og det som er sett derfra, ellers skriver denne fanen over med sine gamle (slik forsvant notater).
-// Objektene endres på stedet, så åpne felt (notatet som skrives i) fortsatt peker inn i S. Feltene på skjermen tegnes ikke på nytt. Visningen (åpent notat, paneler) er egen per fane.
-const synk=(m,k)=>{for(const x in m)if(!(x in k))delete m[x];for(const x in k){const a=m[x],b=k[x];if(a&&b&&typeof a==="object"&&typeof b==="object"&&!Array.isArray(a)&&!Array.isArray(b))synk(a,b);else m[x]=b}};
-addEventListener("storage",e=>{if(e.key===KEY&&e.newValue)try{const k=JSON.parse(e.newValue);for(const x of["svar","seen","rett","pos"])synk(S[x]||(S[x]={}),k[x]||{});S.ulagret=k.ulagret}catch(x){}});
+// Svarene slås sammen med f (fra serveren, en annen fane eller file://) felt for felt. Det sist endrede vinner; ved likt tidsstempel avgjør lik(a, b, felt).
+// Objektene endres på stedet, så åpne felt fortsatt peker inn i S. Gir antallet oppgaver og notater som fikk noe nytt.
+const flett=(f,lik)=>{stemple();let n=0;for(const id in f){const d=f[id];if(!d||typeof d!=="object")continue;const m=svar({id});for(const j in d){const b=d[j];if(!b||typeof b!=="object")continue;
+let a=m[j],e=0;if(!a||typeof a!=="object")a=m[j]={};for(const k of felt(b)){const x=tf(a,k),y=tf(b,k);if(!(k in a)||y>x||y===x&&J(a[k])!==J(b[k])&&lik(a,b,k)){tfi(a)[k]=y;a[k]=b[k];e=1}}
+if(e){a._t=Math.max(ts(a),ts(b));a._f=b._f;n++}}}kjent();return n};
+// Har denne fanen et felt som er nyere enn i f, eller som f mangler?
+const mer=f=>Object.keys(S.svar).some(id=>Object.keys(S.svar[id]).some(j=>{const a=S.svar[id][j],b=(f[id]||{})[j];return a&&typeof a==="object"&&felt(a).some(k=>!b||!(k in b)||tf(a,k)>tf(b,k))}));
+// Etter sammenslåing viser feltene og knappene det som nå er lagret, så neste tastetrykk ikke skriver gammel tekst tilbake.
+// Markøren og markeringen blir der de var i et felt som har fokus.
+// Markeringen følger teksten: er noe satt inn eller fjernet foran den, flyttes den like langt.
+const sett=(el,v)=>{const o=el.value;if(o===v)return;const f=el===document.activeElement,a=el.selectionStart,b=el.selectionEnd,d=v.startsWith(o.slice(0,a))||!v.endsWith(o.slice(b))?0:v.length-o.length,c=x=>Math.min(Math.max(x+d,0),v.length);el.value=v;if(f)el.setSelectionRange(c(a),c(b))};
+let friskNotat=()=>{},friskTegning=()=>{},friskProve=()=>{};
+const oppfrisk=()=>{const a=S.svar[location.hash.slice(1)]||{};document.querySelectorAll("#tasks [data-j][data-k]").forEach(el=>{const v=(a[el.dataset.j]||{})[el.dataset.k];
+if(el.type==="radio")el.checked=v===el.value;else if(el.classList.contains("tg"))el.setAttribute("aria-pressed",v===el.dataset.v);else sett(el,v||"")});friskNotat();friskTegning()};
+// Serveren slår sammen på samme måte og svarer med hele fila; det som er nyere der, tas inn.
+const push=k=>fetch("/api/lagre",{method:"POST",keepalive:!!k,body:JSON.stringify(S.svar)}).then(r=>{if(!r.ok)throw 0;return r.json()}).then(f=>{varsel("");if(flett(f,()=>true)){save();oppfrisk()}}).catch(()=>varsel("Fikk ikke lagret svarene i fila. Kjører serveren? Til da ligger de i nettleseren."));
+const lagre=()=>{if(API){clearTimeout(pt);pt=setTimeout(()=>{pt=0;push()},500)}};
+// Lukkes eller lastes siden om før de 500 ms har gått, sendes det som venter med en gang.
+addEventListener("pagehide",()=>{if(pt){clearTimeout(pt);pt=0;push(1)}});
+// En annen fane har lagret: ta inn det som er nyere derfra, og lagre selv hvis denne fanen har noe den andre mangler.
+// Sett, sendt til retting, videoposisjon og eksamensforsøk (seen, rett, pos, pv) slås sammen uten å slette noe. Visningen (åpent notat, paneler) er egen per fane.
+const synk=(m,k)=>{let mer=false;for(const x in m)if(!(x in k))mer=true;for(const x in k){const a=m[x],b=k[x];if(a&&b&&typeof a==="object"&&typeof b==="object"&&!Array.isArray(a)&&!Array.isArray(b))mer=synk(a,b)||mer;else m[x]=b}return mer};
+addEventListener("storage",e=>{if(e.key!==KEY||!e.newValue)return;try{const k=JSON.parse(e.newValue),f=k.svar||{},n=flett(f,()=>false);let m=mer(f);for(const x of["seen","rett","pos","pv"])m=synk(S[x]||(S[x]={}),k[x]||{})||m;if(m)save();if(n)oppfrisk();friskProve()}catch(x){}});
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 const fmt=t=>Math.floor(t/60)+":"+String(Math.floor(t%60)).padStart(2,"0");
-const filled=o=>Object.entries(o||{}).some(([k,v])=>k!=="Tegning"&&String(v).trim()); // en tegning alene er ikke et svar
+const filled=o=>Object.entries(o||{}).some(([k,v])=>k!=="Tegning"&&k[0]!=="_"&&String(v).trim()); // en tegning alene er ikke et svar; _t og _f er tidsstempel og fane
 const svar=e=>S.svar[e.id]||(S.svar[e.id]={});
 const nDone=e=>e.tasks.filter((t,j)=>filled(svar(e)[j])).length;
 
@@ -233,7 +260,7 @@ return[T.innerHTML,slutt,tn]}
 const bilder=p=>(p||"").split("\n").filter(Boolean).map(f=>`<span class="pbilde"><a href="${esc(f)}" target="_blank"><img src="${esc(f)}" alt="Papirsvar"></a><button type="button" class="pfjern" data-f="${esc(f)}" title="Fjern bildet fra svaret" aria-label="Fjern bildet">×</button></span>`).join("");
 function task(e,t,j){
 const a=svar(e)[j]||{},tg=(k,v,lab)=>`<button type="button" class="tg" data-j="${j}" data-k="${esc(k)}" data-v="${v}" aria-pressed="${a[k]===v}">${lab||v}</button>`;
-const fh=(t.f||[]).map(([l,ty,ph],n)=>{const v=esc(a[l]||""),p=esc(ph||""),id=`f${j}_${n}`;return `<div class="felt"><div class="felt-i"><div class="labrow"><span><label class="lab" for="${id}" style="display:inline">${esc(l)}</label><span class="sjr" data-n="${n}"></span></span>${SR?`<button type="button" class="mic" data-for="${id}">Diktér</button>`:""}</div>`+(ty==="area"?`<textarea class="in" id="${id}" data-j="${j}" data-k="${esc(l)}" placeholder="${p}">${v}</textarea>`:`<textarea class="in en" rows="1" id="${id}" data-j="${j}" data-k="${esc(l)}" placeholder="${p}">${v}</textarea>`)+"</div></div>"}),[d,slutt,tn]=flett_felt(t),vbh=window.ALGO&&ALGO.verksted?`<button type="button" class="vb" data-j="${j}" data-l="${vbl(t)}" title="Tegn en graf eller et spilltre, kjør en algoritme steg for steg og sjekk svaret ditt">${vbl(t)}</button>`:"";
+const fh=(t.f||[]).map(([l,ty,ph],n)=>{const v=esc(a[l]||""),p=esc(ph||""),id=`f${j}_${n}`;return `<div class="felt"><div class="felt-i"><div class="labrow"><span><label class="lab" for="${id}" style="display:inline">${esc(l)}</label><span class="sjr" data-n="${n}"></span></span>${SR?`<button type="button" class="mic" data-for="${id}">Diktér</button>`:""}</div>`+(ty==="area"?`<textarea class="in" id="${id}" data-j="${j}" data-k="${esc(l)}" placeholder="${p}">\n${v}</textarea>`:`<textarea class="in en" rows="1" id="${id}" data-j="${j}" data-k="${esc(l)}" placeholder="${p}">\n${v}</textarea>`)+"</div></div>"}),[d,slutt,tn]=flett_felt(t),vbh=window.ALGO&&ALGO.verksted?`<button type="button" class="vb" data-j="${j}" data-l="${vbl(t)}" title="Tegn en graf eller et spilltre, kjør en algoritme steg for steg og sjekk svaret ditt">${vbl(t)}</button>`:"";
 // Ber et delspørsmål deg tegne («Draw …», «tegn …»), ligger tegneverktøyet rett under svarfeltet til det delspørsmålet.
 if(tn>=0&&vbh)fh[tn]+=`<div class="row">${vbh}</div><div class="vk"></div>`;
 const fig=(t.fig||"")+(t.g?graf(typeof t.g==="string"?GR[t.g]:t.g):"")+(t.tre&&window.ALGO&&ALGO.figur?ALGO.figur("tre",t.tre):""),df=d.includes("<!--fig-->")?d.replace("<!--fig-->",()=>fig):d+fig;
@@ -279,17 +306,19 @@ function fbBoks(box,st,f,r,ord){const ny=r&&!(f&&f.tid>=r),k=f?f.tid+f.tekst+ny:
 st.textContent=ny?`Sendt ${r.slice(11,16)}. ${ord==="Svar"?"Svaret":"Tilbakemeldingen"} kommer her.`:""}
 const hentFB=()=>API&&fetch("svar/tilbakemelding.json",{cache:"no-store"}).then(r=>r.ok?r.json():{}).then(f=>{FB=f;visFB()}).catch(()=>{});
 
-function rett(e,js,q){if(!js.length)return feil("Ingen besvarte oppgaver å sende.");clearTimeout(pt);push();const r=S.rett[e.id]||(S.rett[e.id]={}),t=now();
-Promise.allSettled(js.map(j=>fetch("/api/rett",{method:"POST",body:JSON.stringify({eid:e.id,ep:e.ep,j,oppgave:e.tasks[j].t,svar:svar(e)[j]||{},...(q&&{sporsmal:q})})}).then(x=>{if(!x.ok)throw 0;r[j]=t}))).then(u=>{save();visFB();const n=u.filter(x=>x.status==="rejected").length;
+function rett(e,js,q){if(!js.length)return feil("Ingen besvarte oppgaver å sende.");clearTimeout(pt);pt=0;push();const r=S.rett[e.id]||(S.rett[e.id]={}),t=now();
+Promise.allSettled(js.map(j=>fetch("/api/rett",{method:"POST",body:JSON.stringify({eid:e.id,ep:e.ep,j,oppgave:e.tasks[j].t,svar:Object.fromEntries(Object.entries(svar(e)[j]||{}).filter(([k])=>k[0]!=="_")),...(q&&{sporsmal:q})})}).then(x=>{if(!x.ok)throw 0;r[j]=t}))).then(u=>{save();visFB();const n=u.filter(x=>x.status==="rejected").length;
 if(n)feil(n===js.length?"Fikk ikke sendt til retting. Kjører serveren?":`${n} av ${js.length} ble ikke sendt. Oppgavene uten «Sendt» kan sendes på nytt.`)})}
 
 function dikter(b){
 if(rec){const forrige=rec.b;rec.stop();if(forrige===b)return}
-const el=document.getElementById(b.dataset.for),r=new SR(),start=el.value&&!/\s$/.test(el.value)?el.value+" ":el.value;let fin="";
+const el=document.getElementById(b.dataset.for),r=new SR(),start=el.value&&!/\s$/.test(el.value)?el.value+" ":el.value;let fin="",ut=null;
 r.lang="nb-NO";r.continuous=true;r.interimResults=true;r.b=b;rec=r;
-r.onresult=ev=>{if(!el.isConnected||!el.checkVisibility()){r.stop();return}let mid="";for(let i=ev.resultIndex;i<ev.results.length;i++){const s=ev.results[i][0].transcript;if(ev.results[i].isFinal)fin+=s;else mid+=s}el.value=start+fin+mid;el.dispatchEvent(new Event("input",{bubbles:true}))};
-r.onerror=ev=>feil(ev.error==="not-allowed"?"Nettleseren fikk ikke bruke mikrofonen.":"Dikteringen stoppet: "+ev.error);
-r.onend=()=>{b.classList.remove("rec");b.textContent="Diktér";if(rec===r)rec=null};
+// Endres teksten et annet sted mens du dikterer (en annen fane), stopper diktatet i stedet for å skrive over endringen.
+r.onresult=ev=>{if(!el.isConnected||!el.checkVisibility()){r.stop();return}if(ut!==null&&el.value!==ut){galt="teksten ble endret et annet sted";r.stop();return}let mid="";for(let i=ev.resultIndex;i<ev.results.length;i++){const s=ev.results[i][0].transcript;if(ev.results[i].isFinal)fin+=s;else mid+=s}el.value=ut=start+fin+mid;el.dispatchEvent(new Event("input",{bubbles:true}))};
+// Feilen står på knappen til neste trykk. «Hørte ingenting» betyr oftest at Chrome bruker en mikrofon som er av (den innebygde med lokket lukket).
+let galt="";r.onerror=ev=>{galt={"not-allowed":"mikrofonen er ikke tillatt","service-not-allowed":"mikrofonen er ikke tillatt","no-speech":"hørte ingenting, velg mikrofon i adressefeltet","audio-capture":"fant ingen mikrofon","network":"fikk ikke kontakt med talegjenkjenningen"}[ev.error]||(ev.error==="aborted"?"":"stoppet: "+ev.error)};
+r.onend=()=>{b.classList.remove("rec");b.textContent=galt?`Diktér (${galt})`:"Diktér";if(rec===r)rec=null};
 b.classList.add("rec");b.textContent="Stopp";r.start()}
 
 function episode(e){
@@ -327,10 +356,13 @@ if(v)$(".chap").onclick=x=>{const b=x.target.closest("button");if(!b)return;v.cu
 const T=$("#tasks"),set=(j,k,val)=>{const a=svar(e);(a[j]||(a[j]={}))[k]=val;save();lagre();$("#t"+j).classList.toggle("done",filled(a[j]));nav()};
 T.addEventListener("click",x=>{const m=x.target.closest(".mic"),r=x.target.closest(".rb"),sp=x.target.closest(".spor"),vb=x.target.closest(".vb"),sj=x.target.closest(".sj,.vis");if(m)dikter(m);if(r)rett(e,[+r.dataset.j]);if(sp){const q=prompt("Hva lurer du på i denne oppgaven? Svaret kommer under oppgaven.");if(q&&q.trim())rett(e,[+sp.dataset.j],q.trim())}if(sj)sjekk(e,+sj.dataset.j,sj.classList.contains("vis"));
 // Tegneverktøyet åpnes i oppgaven; tegningen lagres som en del av svaret («Tegning»), og grafen fra oppgaven brukes som start.
-if(vb){const j=+vb.dataset.j,el=$("#t"+j+" .vk"),t=e.tasks[j],lagret=(svar(e)[j]||{}).Tegning;if(el.firstChild){el.innerHTML="";vb.textContent=vb.dataset.l;return}vb.textContent="Lukk tegneverktøyet";
-// t.tegn: navnet på en GR-graf (eksamensgrafen tegnet ferdig) eller {type, data}.
+if(vb){const j=+vb.dataset.j,el=$("#t"+j+" .vk");if(el.firstChild){el.innerHTML="";vb.textContent=vb.dataset.l;return}vb.textContent="Lukk tegneverktøyet";tegn(j)}});
+// t.tegn: navnet på en GR-graf (eksamensgrafen tegnet ferdig) eller {type, data}. el.dataset.v er tegningen verktøyet viser;
+// endres den i en annen fane, åpnes verktøyet på nytt med den (friskTegning), så neste strek ikke skriver den gamle tilbake.
+const tegn=j=>{const el=$("#t"+j+" .vk"),t=e.tasks[j],lagret=(svar(e)[j]||{}).Tegning;
 let start=typeof t.tegn==="string"?grafData(GR[t.tegn]):t.tegn||(t.tre&&{type:"tre",data:t.tre})||(t.g&&grafData(typeof t.g==="string"?GR[t.g]:t.g));try{if(lagret)start=JSON.parse(lagret)}catch(z){}
-ALGO.verksted(el,{type:start&&start.type,data:start&&start.data,endret:v=>set(j,"Tegning",JSON.stringify(v))})}});
+el.dataset.v=lagret||"";ALGO.verksted(el,{type:start&&start.type,data:start&&start.data,endret:v=>{el.dataset.v=JSON.stringify(v);set(j,"Tegning",el.dataset.v)}})};
+friskTegning=()=>T.querySelectorAll(".vk").forEach(el=>{const j=+el.closest(".task").id.slice(1),v=(svar(e)[j]||{}).Tegning||"";if(el.firstChild&&v!==el.dataset.v)tegn(j)});
 if(API)$("#rettalle").onclick=()=>rett(e,e.tasks.map((t,j)=>j).filter(j=>filled(svar(e)[j])));
 visFB();
 T.addEventListener("input",x=>{const d=x.target.dataset;if(d.k)set(d.j,d.k,x.target.value)});
@@ -339,13 +371,14 @@ const papir=(j,l)=>{set(j,"Papir",l.join("\n"));$("#t"+j+" .pbilder").innerHTML=
 T.addEventListener("click",x=>{const pb=x.target.closest(".pb"),pf=x.target.closest(".pfjern");if(pb)pb.nextElementSibling.click();if(pf){const j=+pf.closest(".task").id.slice(1);papir(j,plist(j).filter(f=>f!==pf.dataset.f))}});
 T.addEventListener("change",async x=>{const inp=x.target;if(inp.type!=="file")return;const j=+inp.dataset.j,st=inp.nextElementSibling;
 for(const f of inp.files){st.textContent="Laster opp …";let c;try{const b=await createImageBitmap(f),k=Math.min(1,2000/Math.max(b.width,b.height));c=document.createElement("canvas");c.width=Math.round(b.width*k);c.height=Math.round(b.height*k);c.getContext("2d").drawImage(b,0,0,c.width,c.height)}catch{st.textContent=`Fikk ikke lest «${f.name}». Bruk JPEG eller PNG.`;continue}
-try{const r=await fetch("/api/bilde",{method:"POST",body:JSON.stringify({id:e.id,j,data:c.toDataURL("image/jpeg",.85)})});if(!r.ok)throw 0;papir(j,[...plist(j),(await r.json()).fil]);st.textContent=""}catch{st.textContent="Fikk ikke lagret bildet. Kjører serveren?"}}
+try{const r=await fetch("/api/bilde",{method:"POST",body:JSON.stringify({id:e.id,j,data:c.toDataURL("image/jpeg",.85)})});if(!r.ok)throw 0;const fil=(await r.json()).fil;papir(j,plist(j).includes(fil)?plist(j):[...plist(j),fil]);st.textContent=""}catch{st.textContent="Fikk ikke lagret bildet. Kjører serveren?"}}
 inp.value=""});
-T.addEventListener("click",x=>{const b=x.target.closest(".tg");if(!b)return;const a=svar(e)[b.dataset.j]||{},v2=a[b.dataset.k]===b.dataset.v?"":b.dataset.v;set(b.dataset.j,b.dataset.k,v2);
+T.addEventListener("click",x=>{const b=x.target.closest(".tg[data-k]");if(!b)return; // tegneverktøyets knapper har også .tg, men lagres ikke her
+const a=svar(e)[b.dataset.j]||{},v2=a[b.dataset.k]===b.dataset.v?"":b.dataset.v;set(b.dataset.j,b.dataset.k,v2);
 b.parentNode.querySelectorAll(".tg").forEach(y=>y.setAttribute("aria-pressed",y.dataset.v===v2))});
 $("#copy").onclick=()=>{
 let s=`Svar på Øv selv i ${e.ep} (${e.title}). Rett dem mot løsningsforslagene og gi fasit nå:\n`;
-e.tasks.forEach((t,j)=>{const a=svar(e)[j]||{},ks=Object.keys(a).filter(k=>String(a[k]).trim());s+=`\n${j+1}. ${t.s||t.t}`+(ks.length?"":" (tomt)");ks.forEach(k=>{s+=`\n- ${k}: ${String(a[k]).replace(/\n+/g," / ")}`})});
+e.tasks.forEach((t,j)=>{const a=svar(e)[j]||{},ks=Object.keys(a).filter(k=>k[0]!=="_"&&String(a[k]).trim());s+=`\n${j+1}. ${t.s||t.t}`+(ks.length?"":" (tomt)");ks.forEach(k=>{s+=`\n- ${k}: ${String(a[k]).replace(/\n+/g," / ")}`})});
 const ok=()=>{$("#cmsg").textContent="Kopiert. Lim inn i chatten.";$("#cbox").innerHTML=""};
 const fb=()=>{$("#cmsg").textContent="Kopier teksten under og lim den inn i chatten.";$("#cbox").innerHTML=`<textarea id="copybox" class="in" readonly>${esc(s)}</textarea>`;$("#copybox").select()};
 navigator.clipboard?navigator.clipboard.writeText(s).then(ok,fb):fb()};if(pv)eksamen(e)}
@@ -374,7 +407,9 @@ const tick=()=>{const t=$("#tid");if(!t)return clearInterval(tt);const r=PT-(p.s
 // Når tiden er ute, teller klokka videre i rødt. Ingenting låses, så du kan bruke den tiden du trenger.
 t.textContent=p.levert?"Levert":r>0?`${p.start?"Tid igjen ":""}${k(r)}`:`+${k(-r)} over`;t.classList.toggle("ute",!p.levert&&r<=0)};
 const lev=()=>{X.classList.toggle("levert",!!p.levert);if(p.levert)e.tasks.forEach((t,j)=>t.sjekk&&sjekk(e,j,false));$("#startp").textContent=p.levert?"Se gjennom svarene":p.start?"Fortsett":"Start (4 timer)";tick()};
-X.querySelector(".eks-nav").onclick=x=>{const b=x.target.closest("button");if(b){const d=b.dataset.k;vis(d==="-"?p.k-1:d==="+"?p.k+1:+d)}};
+// Leverer du i en annen fane, vises leveringen her også. Pilene går fra oppgaven som vises i denne fanen.
+friskProve=()=>{if(X.isConnected&&X.classList.contains("levert")!==!!p.levert)lev()};
+X.querySelector(".eks-nav").onclick=x=>{const b=x.target.closest("button");if(b){const d=b.dataset.k,c=+X.querySelector(".eks-s.cur").id.slice(1);vis(d==="-"?c-1:d==="+"?c+1:+d)}};
 X.addEventListener("input",merk);X.addEventListener("click",merk);
 $("#startp").onclick=()=>{if(!p.start)p.start=Date.now();lev();vis(1)};
 $("#leksE").onclick=()=>$("#leksknapp").click();$("#notE").onclick=()=>$("#notknapp").click();
@@ -418,26 +453,29 @@ fetch("/api/rett",{method:"POST",body:JSON.stringify({leks:b,sporsmal:q.trim()||
 navn=id=>{const x=side(id);return x?`${x.ep} ${x.title}`:"Generelt"},tittel=n=>esc(n.tekst.trim().split("\n")[0].slice(0,60)||"Tomt notat"),
 naar=s=>s.slice(0,10)===now().slice(0,10)?"i dag "+s.slice(11,16):`${s.slice(8,10)}.${s.slice(5,7)} ${s.slice(11,16)}`;
 // Notatene fra før lista fantes (ett per side, S.svar[id].notat) flyttes inn i lista første gang panelet åpnes.
-const flytt=()=>{let m=0;for(const id in S.svar){const o=S.svar[id]&&S.svar[id].notat;if(o){if((o.Notat||"").trim()&&!N()["n"+id])N()["n"+id]={tekst:o.Notat,fra:id,laget:now(),endret:now()};delete S.svar[id].notat;m++}}if(m){save();lagre()}};
-const liste=()=>{S.notid=null;save();const L=Object.entries(N()).sort((x,y)=>x[1].endret<y[1].endret?1:-1);
+const flytt=()=>{let m=0;for(const id in S.svar){const o=S.svar[id]&&S.svar[id].notat;if(o&&(o.Notat||"").trim()&&!N()["n"+id]){N()["n"+id]={tekst:o.Notat,fra:id,laget:now(),endret:now()};m++}}if(m){save();lagre()}};
+const liste=()=>{S.notid=null;save();const L=Object.entries(N()).filter(([k,n])=>!n.slettet).sort((x,y)=>x[1].endret<y[1].endret?1:-1);
 C.innerHTML=`<h2>Notater</h2><p class="mut">Hvert notat lagres for seg${API?" i arbeid/svar/svar.json":" i denne nettleseren"} mens du skriver.</p><p><button type="button" class="pri" data-ny>+ Nytt notat</button></p>`+
 (L.length?`<ul class="notliste">${L.map(([k,n])=>`<li><button type="button" data-k="${esc(k)}"><b>${tittel(n)}</b><span class="mut">${esc(navn(n.fra))} · ${esc(naar(n.endret))}</span></button></li>`).join("")}</ul>`:'<p class="mut">Ingen notater ennå.</p>')};
-const vis=k=>{const n=N()[k];if(!n)return liste();S.notid=k;save();
+const vis=k=>{const n=N()[k];if(!n||n.slettet)return liste();S.notid=k;save();
 C.innerHTML=`<p class="nottopp"><button type="button" data-liste>← Alle notater</button></p><p class="notmeta mut">Fra ${side(n.fra)?`<a href="#${esc(n.fra)}">${esc(navn(n.fra))}</a>`:"Generelt"} · endret <span>${naar(n.endret)}</span></p>`+
-`<div class="notsvar" data-id="${esc(k)}"></div><textarea class="in notat" id="notat" placeholder="Skriv det du vil huske. Første linje blir tittelen i lista.">${esc(n.tekst)}</textarea>`+
+`<div class="notsvar" data-id="${esc(k)}"></div><textarea class="in notat" id="notat" placeholder="Skriv det du vil huske. Første linje blir tittelen i lista.">\n${esc(n.tekst)}</textarea>`+
 `<div class="notfot"><span>${SR?'<button type="button" class="mic" data-for="notat">Diktér</button> ':""}${API?'<button type="button" data-stemmer title="Marker tekst i notatet først">Stemmer dette?</button> <span class="mut notst"></span>':""}</span><button type="button" class="notslett" data-slett>Slett notatet</button></div>`;
-const t=$("#notat"),e=C.querySelector(".notmeta span"),sj=C.querySelector("[data-stemmer]");t.oninput=()=>{n.tekst=t.value;n.endret=now();e.textContent=naar(n.endret);save();lagre()};
+const t=$("#notat"),e=C.querySelector(".notmeta span"),sj=C.querySelector("[data-stemmer]");t.oninput=()=>{const n=N()[k];n.tekst=t.value;n.endret=now();e.textContent=naar(n.endret);save();lagre()};
 // «Stemmer dette?» kan bare trykkes når noe er markert i notatet.
 if(sj){const o=()=>{sj.disabled=t.selectionStart===t.selectionEnd};["select","keyup","mouseup","input","focus"].forEach(v=>t.addEventListener(v,o));o()}visFB()};
 C.onclick=e=>{const x=e.target.closest("button");if(!x)return;
 if(x.matches("[data-ny]")){const k="n"+Date.now().toString(36),h=location.hash.slice(1).split("/")[0];N()[k]={tekst:"",fra:side(h)?h:"",laget:now(),endret:now()};save();lagre();vis(k);$("#notat").focus()}
 else if(x.dataset.k){vis(x.dataset.k);$("#notat").focus()}else if(x.matches("[data-liste]")){liste();C.querySelector("[data-ny]").focus()}
-else if(x.matches("[data-slett]")&&confirm("Slette dette notatet? Det kan ikke angres.")){delete N()[S.notid];save();lagre();liste();C.querySelector("[data-ny]").focus()}
+else if(x.matches("[data-slett]")&&confirm("Slette dette notatet? Det kan ikke angres.")){N()[S.notid].slettet=1;save();lagre();liste(); // ligger igjen i svar.json med slettet, så det kan hentes tilbake
+C.querySelector("[data-ny]").focus()}
 else if(x.matches(".mic"))dikter(x);
 // Det markerte går i samme kø som «Spør» ({notat, k, utdrag}); svaret kommer i FB.notat[id][k] og vises over notatet (visFB).
-else if(x.matches("[data-stemmer]")){const t=$("#notat"),u=t.value.slice(t.selectionStart,t.selectionEnd).trim(),id=S.notid,n=N()[id],k=Date.now().toString(36),q=now(),st=C.querySelector(".notst");if(!u||!n)return;
-fetch("/api/rett",{method:"POST",body:JSON.stringify({notat:id,k,utdrag:u,sporsmal:"Stemmer dette?"})}).then(r=>{if(!r.ok)throw 0;(n.sp||(n.sp={}))[k]={utdrag:u,sendt:q};st.textContent="";save();lagre();visFB()}).catch(()=>{st.textContent="Fikk ikke sendt. Kjører serveren?"})}
+else if(x.matches("[data-stemmer]")){const t=$("#notat"),u=t.value.slice(t.selectionStart,t.selectionEnd).trim(),id=S.notid,n=N()[id],k=Date.now().toString(36),q=now(),st=C.querySelector(".notst");if(!u||!n)return;(n.sp||(n.sp={}))[k]={utdrag:u,sendt:q};save();lagre();visFB();
+fetch("/api/rett",{method:"POST",body:JSON.stringify({notat:id,k,utdrag:u,sporsmal:"Stemmer dette?"})}).then(r=>{if(!r.ok)throw 0;st.textContent=""}).catch(()=>{delete n.sp[k];save();lagre();visFB();st.textContent="Fikk ikke sendt. Kjører serveren?"})}
 else if(x.dataset.fjern){const n=N()[S.notid];if(n&&n.sp){delete n.sp[x.dataset.fjern];save();lagre();visFB()}}};
+// En annen fane har endret notatene: det åpne notatet eller lista viser det som nå er lagret.
+friskNotat=()=>{if(!d.open)return;const t=$("#notat");if(!t)return liste();const n=N()[S.notid];if(!n||n.slettet)return liste();sett(t,n.tekst)};
 b.onclick=()=>{if(!d.open){flytt();S.notid&&N()[S.notid]?vis(S.notid):liste();apne(d)}const t=$("#notat");if(t)t.focus()};
 d.addEventListener("close",()=>{if(rec&&d.contains(rec.b))rec.stop();if(!d.open)b.focus()});addEventListener("hashchange",()=>d.open&&!S.ndock&&d.close())}
 // Svarfeltet du sist gikk inn i (F), flyter nederst, over oppgavelista på eksamen, når du blar opp for å lese oppgaven.
@@ -474,13 +512,13 @@ $("#leksknapp").hidden=$("#notknapp").hidden=!!e&&/eksamen$/.test(e.art); // der
 if(e){S.last=e.id;save();episode(e)}else if(h0==="algoritmer"&&A&&A.side){$("#main").className="wide";A.side($("#main"),h1)}else if(h==="verksted"&&A&&A.verksted){$("#main").className="wide";A.verksted($("#main"))}else if(h==="leksikon"){page("");leks($("#main")).focus()}else if(h==="feller")page(D.feller);else if(h==="feillogg")page(D.feil);else if(h==="eksamener")page(D.exams);else home();
 nav();visDeler();scrollTo(0,0)}
 addEventListener("hashchange",route);
-// Fila på serveren er fasit for svarene (den lagres ved hver endring), felt for felt. Svar fra file:// fyller bare tomme oppgaver.
-const flett=(f,over)=>{for(const id in f)for(const j in f[id]){const a=svar({id});if(over)a[j]={...a[j],...f[id][j]};else if(!filled(a[j]))a[j]=f[id][j]}save()};
 // Åpnet som fil mens serveren kjører: hopp dit og ta med svarene i #-delen, som aldri sendes over nettet.
 const [h0,ut]=location.hash.split("&svar=");
-if(ut){history.replaceState(null,"",h0.length>1?h0:location.pathname);try{flett(JSON.parse(decodeURIComponent(ut)))}catch{}}
-if(API){setInterval(hentFB,8000);hentFB();
-fetch("/api/svar").then(r=>r.json()).then(f=>{if(!S.ulagret)flett(f,true);push()}).catch(()=>{}).finally(route)}else{route();
+if(ut){history.replaceState(null,"",h0.length>1?h0:location.pathname);try{flett(JSON.parse(decodeURIComponent(ut)),(a,b,k)=>!String(a[k]??"").trim());save()}catch{}  // felt uten tidsstempel fra file:// fyller bare tomme felt
+}
+// Hvert 8. sekund: tilbakemeldinger, og en lagring som også henter det andre faner og nettlesere har lagret (og prøver igjen etter en feil).
+if(API){setInterval(()=>{hentFB();if(!document.hidden&&!pt)push()},8000);hentFB();
+push().finally(route)}else{route();
 const i=new Image();i.onload=()=>location.replace("http://localhost:8765/arbeid/nettside.html"+(location.hash||"#")+"&svar="+encodeURIComponent(JSON.stringify(S.svar)));i.src="http://localhost:8765/arbeid/nettside-figurer/a3-4-1-brett.png?"+Date.now()}
 </script>
 </body>

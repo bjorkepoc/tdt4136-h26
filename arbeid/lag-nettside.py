@@ -8,7 +8,9 @@ Kjør på nytt etter endringer i notatene, SEEPLAN.md eller FEILLOGG.md:  uv run
 Siden åpnes rett fra disken. Videoene hentes fra videoer/eNN-*/out/, så den må ligge i arbeid/."""
 import html
 import json
+import os
 import re
+import sys
 from datetime import date
 from pathlib import Path
 from urllib.parse import quote
@@ -143,6 +145,25 @@ if (A / "PSEUDOKODE.md").exists():
 D = {"pseudo": pseudo, "eps": eps, "ov": ovinger, "leks": {"intro": md(re.sub(r"^# .*\n", "", intro)), "body": md("## " + rest)}, "plan": valgfri(V / "SEEPLAN.md"), "feil": valgfri(A / "FEILLOGG.md"),
      "feller": "<h1>Alle eksamensfeller</h1><p>Sjekklista for den siste uka, samlet fra alle episodene.</p>" + "".join(feller), "exams": eksamener}
 page = (A / "nettside-mal.html").read_text().replace("__DATA__", json.dumps(D, ensure_ascii=False).replace("</", "<\\/"))
-(A / "nettside.html").write_text(page)
+# Svarene lagres under oppgavens nummer i settet. Skyves en oppgave inn foran en besvart oppgave, havner svaret under feil oppgave,
+# så byggingen stopper. Titlene fra forrige bygg ligger i svar/oppgavetitler.json (bare der svarene finnes).
+SV = A / "svar"
+titler = {e["id"]: [t["t"] for t in e["tasks"]] for e in eps + ovinger}
+if (SV / "svar.json").exists():
+    gml = json.loads((SV / "oppgavetitler.json").read_text()) if (SV / "oppgavetitler.json").exists() else {}
+    flyttet = [f"{i} oppgave {int(j) + 1}: «{gml[i][int(j)]}» er nå «{titler[i][int(j)] if int(j) < len(titler[i]) else 'borte'}»"
+               for i, d in json.loads((SV / "svar.json").read_text()).items() if i in titler and i in gml and isinstance(d, dict)
+               for j, a in d.items() if j.isdigit() and int(j) < len(gml[i]) and isinstance(a, dict)
+               and any(not k.startswith("_") and str(v).strip() for k, v in a.items())
+               and (int(j) >= len(titler[i]) or titler[i][int(j)] != gml[i][int(j)])]
+    if flyttet and "--godta" not in sys.argv:
+        sys.exit("Lagrede svar ville havnet under en annen oppgave:\n  " + "\n  ".join(flyttet) +
+                 "\nLegg nye oppgaver til slutt i settet. Er det bare tittelen som er rettet, kjør med --godta.")
+    gml.update(titler)  # sett som er skjult nå (vis_fra), beholder titlene sine
+    (SV / "oppgavetitler.json").write_text(json.dumps(gml, ensure_ascii=False, indent=1))
+# Skrives ferdig til en midlertidig fil først, så en side som lastes under byggingen aldri blir halv.
+tmp = A / f"nettside.html.{os.getpid()}.tmp"
+tmp.write_text(page)
+tmp.replace(A / "nettside.html")
 print(f"nettside.html: {len(page) // 1024} kB, {len(eps)} episoder, {sum(len(e['tasks']) for e in eps)} oppgaver, "
       f"{len(ovinger)} øvinger med {sum(len(o['tasks']) for o in ovinger)} oppgaver")

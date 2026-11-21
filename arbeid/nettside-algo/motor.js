@@ -549,7 +549,7 @@ window.ALGO = {
       navn.set(String(n.id), id);
       const o = { id, x: fin(+n.x) && n.x !== "" ? +n.x : 60 + (i % 6) * 90, y: fin(+n.y) && n.y !== "" ? +n.y : 60 + Math.floor(i / 6) * 90 };
       if (fin(n.h)) o.h = n.h;
-      if (Array.isArray(n.domene)) o.domene = n.domene.slice(0, 40).map(v => (fin(v) ? v : String(v)));
+      if (Array.isArray(n.domene)) o.domene = n.domene.slice(0, 200).map(v => (fin(v) ? v : String(v)));
       noder.push(o);
     });
     const kanter = (Array.isArray(d.kanter) ? d.kanter : []).filter(k => k && navn.has(String(k.fra)) && navn.has(String(k.til)))
@@ -562,7 +562,7 @@ window.ALGO = {
     const sett = new Set();
     let antall = 0;
     const ga = (n, dybde) => {
-      if (!n || typeof n !== "object" || dybde > 14 || antall >= 400) return null;
+      if (!n || typeof n !== "object" || dybde > 60 || antall >= 400) return null;
       antall++;
       let id = String(n.id ?? "").trim().replace(/\s+/g, " ").slice(0, 30) || "N";
       while (sett.has(id)) id += "′";
