@@ -34,7 +34,9 @@ Studieside for eksamen i TDT4136 ved NTNU. Les [README.md](README.md) for hva so
 
    Teksten vises som ren tekst under oppgaven. Si hva som er riktig, hva som mangler eller er feil, og vis den riktige løsningen kort. Gi den samme tilbakemeldingen i chatten.
 
-   «Spør» ved et begrep i leksikonet gir linjen `{"leks": "begrep", "sporsmal": "…", "sendt": "…"}`. Svar på spørsmålet med `arbeid/LEKSIKON.md` og notatet til episoden i parentes, og skriv svaret til `{"leks": {"begrep": {"tekst": "…", "tid": "…"}}}` i samme fil. Det vises under begrepet.
+   «Spør» ved et begrep i leksikonet gir linjen `{"leks": "begrep", "sporsmal": "…", "sendt": "…"}`. Svar på spørsmålet med `arbeid/LEKSIKON.md` og notatet til episoden i parentes, og skriv svaret til `{"leks": {"begrep": {"tekst": "…", "tid": "…"}}}` i samme fil. Det vises under begrepet. Har linjen også `"mangler": true`, fant søket ikke begrepet: legg det inn i `arbeid/LEKSIKON.md` med riktig stavemåte, bygg siden på nytt, og skriv forklaringen under det fete begrepet slik det står i fila.
+
+   «Stemmer dette?» i et notat gir linjen `{"notat": "<id>", "k": "…", "utdrag": "…", "sporsmal": "Stemmer dette?", "sendt": "…"}`. Vurder utdraget mot pensum (hele notatet står i `arbeid/svar/svar.json` under `notater`), og skriv svaret til `{"notat": {"<id>": {"<k>": {"tekst": "…", "tid": "…"}}}}` i `tilbakemelding.json`. Det vises over notatet.
 
    Har en oppgavelinje feltet `sporsmal`, kom den fra «Spør» under oppgaven: svar på spørsmålet (rett svaret bare hvis det spørres om det), og skriv svaret som tilbakemeldingen på oppgaven.
 6. Start ventingen på nytt.

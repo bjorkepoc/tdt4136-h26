@@ -76,11 +76,18 @@ details.fasit summary{cursor:pointer;font-weight:600}
 /* Svarfeltene vokser med teksten (field-sizing) og kan dras større; eldre nettlesere får vanlig rullefelt. */
 #leksknapp{position:fixed;top:12px;right:12px;z-index:5}
 .dlg{width:min(760px,calc(100vw - 32px));max-height:85vh;padding:0 20px 20px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--fg)}.dlg::backdrop{background:rgb(0 0 0/.45)}#algodlg{width:min(1100px,calc(100vw - 32px))}
-.dlg-k{position:sticky;top:12px;float:right;display:flex;gap:6px;margin-top:12px;z-index:1}
-/* Leksikonet eller algoritmene festet til høyre: ingen bakteppe, og på brede skjermer gir siden plass til det. */
-.dlg.hoyre{--b:clamp(320px,32vw,440px);position:fixed;inset:0 0 0 auto;margin:0;width:min(var(--b),100vw);height:100vh;max-height:none;overflow:auto;border-width:0 0 0 1px;border-radius:0;z-index:6}
-#algodlg.hoyre{--b:clamp(360px,42vw,720px);width:min(var(--b),100vw)}
-@media (min-width:1000px){:root:has(#leksdlg.hoyre[open]) .wrap{margin-right:clamp(320px,32vw,440px)}:root:has(#algodlg.hoyre[open]) .wrap{margin-right:clamp(360px,42vw,720px)}}
+.dlg-k{position:sticky;top:12px;float:right;display:flex;gap:6px;margin-top:12px;z-index:1}.dlg:focus{outline:none}
+/* «↑ Øverst» bare på et festet panel som har et annet festet panel over seg. */
+.dlg .opp{display:none}.dlg.hoyre[open]~.dlg.hoyre[open] .opp{display:block}
+/* Panelene festet til høyre (leksikon, notater, algoritmer): ingen bakteppe, og på brede skjermer gir siden plass til dem.
+   Flere festede deler høyden likt, i rekkefølgen i HTML-en. --hb er bredden på kolonnen, bredere når algoritmene er med. */
+:root:has(.dlg.hoyre[open]){--hb:min(clamp(320px,32vw,440px),100vw)}:root:has(#algodlg.hoyre[open]){--hb:min(clamp(360px,42vw,720px),100vw)}
+:root:has(.dlg.hoyre[open]~.dlg.hoyre[open]){--hn:2}:root:has(.dlg.hoyre[open]~.dlg.hoyre[open]~.dlg.hoyre[open]){--hn:3}
+.dlg.hoyre{--hi:0;position:fixed;inset:calc(var(--hi)*100vh/var(--hn,1)) 0 auto auto;margin:0;width:var(--hb);height:calc(100vh/var(--hn,1));max-height:none;overflow:auto;border-width:0 0 0 1px;border-radius:0;z-index:6}
+#algodlg.hoyre{width:var(--hb)}.dlg.hoyre[open]~.dlg.hoyre[open]{--hi:1;border-top-width:2px}.dlg.hoyre[open]~.dlg.hoyre[open]~.dlg.hoyre[open]{--hi:2}
+/* Leksikon-knappen flyttes til venstre for de festede panelene, så den ikke blir dekket. */
+@media (min-width:700px){:root:has(.dlg.hoyre[open]) #leksknapp{right:calc(var(--hb) + 12px)}}
+@media (min-width:1000px){:root:has(.dlg.hoyre[open]) .wrap{margin-right:var(--hb)}}
 .lsok{position:sticky;top:0;z-index:1;width:100%;font:inherit;padding:9px 12px;margin:4px 0 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--fg)}
 .lbody li{margin:3px 0}.lbody h2{margin:22px 0 6px}
 textarea.in{min-height:90px;resize:vertical;field-sizing:content}textarea.in.en{min-height:0}
@@ -100,6 +107,12 @@ textarea.in{min-height:90px;resize:vertical;field-sizing:content}textarea.in.en{
 .mic.rec{background:#c62828;border-color:#c62828;color:#fff}
 .fb{margin-top:10px;padding:10px 14px;border-radius:8px;background:var(--accent-bg);font-size:14px}
 .fb .fbt{white-space:pre-wrap;margin-top:4px}
+.notat{display:block;width:100%;min-height:50vh;resize:vertical}.notliste{list-style:none;padding:0;margin:0}.notliste li{margin:0 0 6px}.notliste button{display:block;width:100%;text-align:left;padding:8px 10px}.notliste b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.notliste .mut{font-size:12px}
+/* Notatsiden: tilbakeknappen står til venstre for Fest/Lukk, resten under dem. */
+.nottopp{margin:12px 0 0;min-height:36px}.notmeta{clear:both;margin:12px 0 8px;font-size:13px}
+.notfot{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.notsvar .fb{margin:0 0 8px}.notsvar blockquote{margin:0 0 6px;padding-left:10px;border-left:3px solid var(--border);color:var(--muted);white-space:pre-wrap}.notsvar .fjern{float:right;padding:0 7px;margin:-4px -8px 0 6px}
+.notslett{background:none;border-color:transparent;color:var(--bad)}.notslett:hover{border-color:var(--bad)}#notdlg.hoyre .notat{min-height:calc(100vh/var(--hn,1) - 190px)}
 .lbody :is(.spor,.pin){padding:1px 8px;font-size:12px}
 .sjr{font-size:13px;font-weight:600;margin-left:6px}.sjr.ja{color:var(--ok)}.sjr.nei{color:var(--bad)}
 .sjm{font-size:14px;margin-top:6px}.sjm:empty{display:none}
@@ -124,7 +137,7 @@ main.ep.uv,main.ep.uh{grid-template-columns:minmax(0,1fr)}main.ep.uv .rgt,main.e
 <link rel="stylesheet" href="nettside-algo/motor.css">
 </head>
 <body>
-<button id="leksknapp" type="button" aria-haspopup="dialog" title="Slå opp et begrep (marker et ord først for å søke på det)">Leksikon</button><dialog id="leksdlg" class="dlg" data-s="ldock" closedby="any" aria-label="Leksikon"><div class="dlg-k"><button type="button" class="tg feste" aria-pressed="false" title="Ha leksikonet åpent til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><dialog id="algodlg" class="dlg" data-s="adock" closedby="any" aria-label="Algoritmer"><div class="dlg-k"><button type="button" class="tg feste" aria-pressed="false" title="Ha algoritmene åpne til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><div class="wrap"><div id="deler"><button id="meny" type="button" aria-controls="nav">Meny</button><button id="vis-v" type="button" hidden></button><button id="vis-h" type="button" hidden>Øv selv</button><button id="tema" type="button"></button></div><nav id="nav"></nav><main id="main"></main></div>
+<button id="leksknapp" type="button" aria-haspopup="dialog" title="Slå opp et begrep (marker et ord først for å søke på det)">Leksikon</button><dialog id="leksdlg" class="dlg" data-s="ldock" closedby="any" aria-label="Leksikon"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha leksikonet åpent til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><dialog id="notdlg" class="dlg" data-s="ndock" closedby="any" aria-label="Notater"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha notatene åpne til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><dialog id="algodlg" class="dlg" data-s="adock" closedby="any" aria-label="Algoritmer"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha algoritmene åpne til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><div class="wrap"><div id="deler"><button id="meny" type="button" aria-controls="nav">Meny</button><button id="vis-v" type="button" hidden></button><button id="vis-h" type="button" hidden>Øv selv</button><button id="tema" type="button"></button><button id="notknapp" type="button" aria-haspopup="dialog" title="Notatene dine, med en egen side for hvert notat">Notater</button></div><nav id="nav"></nav><main id="main"></main></div>
 <script>const D = __DATA__;</script>
 <!-- Algoritmeanimasjoner og tegneverktøy, se nettside-algo/KONTRAKT.md -->
 <script src="nettside-algo/motor.js"></script><script src="nettside-algo/sok.js"></script><script src="nettside-algo/lokalt.js"></script><script src="nettside-algo/spill.js"></script><script src="nettside-algo/csp.js"></script><script src="nettside-algo/logikk.js"></script><script src="nettside-algo/plan.js"></script><script src="nettside-algo/sprak.js"></script>
@@ -162,7 +175,7 @@ const grafData=g=>g&&{type:"graf",data:{retning:!!g.dir,noder:Object.entries(g.n
 kanter:g.e.map(([fra,til,kost])=>({fra,til,kost})),start:g.start||g.st||(g.n.S?"S":Object.keys(g.n)[0]),mal:Object.keys(g.n).filter(id=>g.n[id][5])}};
 let S={seen:{},pos:{},svar:{},rett:{},sub:false,last:null};
 try{Object.assign(S,JSON.parse(localStorage.getItem(KEY))||{})}catch(e){}
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+let stale=false;const save=()=>{if(!stale)try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 // Menyen, video og notater (venstre) og Øv selv (høyre) skjules hver for seg; valget huskes. Begge kolonnene kan ikke være skjult samtidig.
 const visDeler=()=>{const m=$("#main"),ep=m.classList.contains("ep"),v=!!$("#v");$(".wrap").classList.toggle("lukket",!!S.lukket);m.classList.toggle("uv",!!S.uv);m.classList.toggle("uh",!!S.uh);
 $("#vis-v").textContent=v?"Video":"Tekst";$("#vis-v").hidden=$("#vis-h").hidden=!ep;
@@ -172,8 +185,12 @@ $("#deler").onclick=x=>{const k={meny:"lukket","vis-v":"uv","vis-h":"uh"}[x.targ
 const API=location.protocol.startsWith("http"),SR=API&&(window.SpeechRecognition||window.webkitSpeechRecognition),now=()=>new Date().toLocaleString("sv-SE");
 let pt,FB={},rec=null;
 const feil=s=>{const m=$("#cmsg");if(m)m.textContent=s};
-const push=()=>fetch("/api/svar",{method:"POST",body:JSON.stringify(S.svar)}).then(r=>{if(!r.ok)throw 0}).catch(()=>feil("Fikk ikke lagret svarene i fila. Kjører serveren?"));
-const lagre=()=>{if(API){clearTimeout(pt);pt=setTimeout(push,500)}};
+const push=()=>stale||fetch("/api/svar",{method:"POST",body:JSON.stringify(S.svar)}).then(r=>{if(!r.ok)throw 0;if(!pt){S.ulagret=false;save()}}).catch(()=>feil("Fikk ikke lagret svarene i fila. Kjører serveren?"));
+// S.ulagret: lokale endringer som ikke har nådd fila ennå (lastet om før 500 ms). Da vinner de lokale svarene ved neste lasting.
+const lagre=()=>{if(API){S.ulagret=true;save();clearTimeout(pt);pt=setTimeout(()=>{pt=0;push()},500)}};
+// En annen fane har lagret mens denne var skjult: denne skriver ikke mer, og lastes på nytt når den vises igjen.
+// ponytail: to fanene synlige samtidig (to vinduer) dekkes ikke; da vinner den som lagrer sist.
+addEventListener("storage",e=>{if(e.key===KEY&&document.hidden){stale=true;clearTimeout(pt);pt=0}});document.addEventListener("visibilitychange",()=>{if(stale&&!document.hidden)location.reload()});
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 const fmt=t=>Math.floor(t/60)+":"+String(Math.floor(t%60)).padStart(2,"0");
 const filled=o=>Object.entries(o||{}).some(([k,v])=>k!=="Tegning"&&String(v).trim()); // en tegning alene er ikke et svar
@@ -249,7 +266,11 @@ el.querySelector(".sjm").innerHTML=`<b>${ok} av ${n} riktig.</b>`+(ok<n&&!vis?` 
 function visFB(){const id=location.hash.slice(1);document.querySelectorAll("#tasks .task").forEach(el=>{
 const j=el.id.slice(1),f=(FB[id]||{})[j],r=(S.rett[id]||{})[j],box=el.querySelector(".fb"),st=el.querySelector(".rs");if(!box)return;fbBoks(box,st,f,r,"Tilbakemelding")});
 // «Spør» i leksikonet: svaret står i FB.leks[begrep] og vises under begrepet.
-document.querySelectorAll(".lbody li[data-b]").forEach(li=>fbBoks(li.querySelector(".fb"),li.querySelector(".rs"),(FB.leks||{})[li.dataset.b],(S.rett.leks||{})[li.dataset.b],"Svar"))}
+document.querySelectorAll(".lbody li[data-b]").forEach(li=>fbBoks(li.querySelector(".fb"),li.querySelector(".rs"),(FB.leks||{})[li.dataset.b],(S.rett.leks||{})[li.dataset.b],"Svar"));
+// «Stemmer dette?» i notatene: spørsmålene står i notatet (n.sp), svarene i FB.notat[id][k]. Nyeste øverst.
+const ns=document.querySelector("#notdlg .notsvar");if(ns){const id=ns.dataset.id,n=(S.svar.notater||{})[id],f=(FB.notat||{})[id]||{},
+h=Object.entries(n&&n.sp||{}).sort((a,b)=>a[1].sendt<b[1].sendt?1:-1).map(([k,q])=>`<div class="fb"><button type="button" class="fjern" data-fjern="${esc(k)}" title="Fjern spørsmålet og svaret">×</button><blockquote>${esc(q.utdrag)}</blockquote>${f[k]?`<div class="fbt">${esc(f[k].tekst)}</div>`:`<span class="mut">Venter på svar (sendt ${esc(q.sendt.slice(11,16))}).</span>`}</div>`).join("");
+if(ns._k!==h){ns._k=h;ns.innerHTML=h}}}
 function fbBoks(box,st,f,r,ord){const ny=r&&!(f&&f.tid>=r),k=f?f.tid+f.tekst+ny:"";if(box.dataset.k!==k){box.dataset.k=k;box.hidden=!f;box.innerHTML=f?`<b>${ny?"Forrige "+ord.toLowerCase():ord}</b> <span class="mut">${esc(f.tid||"")}</span><div class="fbt">${esc(f.tekst)}</div>`:""}
 st.textContent=ny?`Sendt ${r.slice(11,16)}. ${ord==="Svar"?"Svaret":"Tilbakemeldingen"} kommer her.`:""}
 const hentFB=()=>API&&fetch("svar/tilbakemelding.json",{cache:"no-store"}).then(r=>r.ok?r.json():{}).then(f=>{FB=f;visFB()}).catch(()=>{});
@@ -262,7 +283,7 @@ function dikter(b){
 if(rec){const forrige=rec.b;rec.stop();if(forrige===b)return}
 const el=document.getElementById(b.dataset.for),r=new SR(),start=el.value&&!/\s$/.test(el.value)?el.value+" ":el.value;let fin="";
 r.lang="nb-NO";r.continuous=true;r.interimResults=true;r.b=b;rec=r;
-r.onresult=ev=>{let mid="";for(let i=ev.resultIndex;i<ev.results.length;i++){const s=ev.results[i][0].transcript;if(ev.results[i].isFinal)fin+=s;else mid+=s}el.value=start+fin+mid;el.dispatchEvent(new Event("input",{bubbles:true}))};
+r.onresult=ev=>{if(!el.isConnected||!el.checkVisibility()){r.stop();return}let mid="";for(let i=ev.resultIndex;i<ev.results.length;i++){const s=ev.results[i][0].transcript;if(ev.results[i].isFinal)fin+=s;else mid+=s}el.value=start+fin+mid;el.dispatchEvent(new Event("input",{bubbles:true}))};
 r.onerror=ev=>feil(ev.error==="not-allowed"?"Nettleseren fikk ikke bruke mikrofonen.":"Dikteringen stoppet: "+ev.error);
 r.onend=()=>{b.classList.remove("rec");b.textContent="Diktér";if(rec===r)rec=null};
 b.classList.add("rec");b.textContent="Stopp";r.start()}
@@ -329,7 +350,7 @@ navigator.clipboard?navigator.clipboard.writeText(s).then(ok,fb):fb()};if(pv)eks
 // Sjekk, fasit og retting skjules til settet er levert.
 const PT=4*3600e3;let tt;
 function prove(e){const n=e.tasks.length,b=(k,l)=>`<button type="button" data-k="${k}">${l}</button>`;
-return `<div class="eks"><div class="eks-top"><b>TDT4136 · ${e.ep} ${esc(e.title)}</b><span id="tid"></span><button type="button" class="tg" id="ovE" aria-pressed="false" title="Vis Sjekk, fasit, Spør og Rett denne før du leverer">Fasit underveis</button><button type="button" id="algoE">Algoritmer</button><button type="button" id="leksE">Leksikon</button><button type="button" id="lever">Lever</button></div>
+return `<div class="eks"><div class="eks-top"><b>TDT4136 · ${e.ep} ${esc(e.title)}</b><span id="tid"></span><button type="button" class="tg" id="ovE" aria-pressed="false" title="Vis Sjekk, fasit, Spør og Rett denne før du leverer">Fasit underveis</button><button type="button" id="algoE">Algoritmer</button><button type="button" id="leksE">Leksikon</button><button type="button" id="notE">Notater</button><button type="button" id="lever">Lever</button></div>
 <section class="eks-s" id="s0">${e.note}${e.intro}<p><button type="button" class="pri" id="startp"></button></p></section>
 <div id="tasks">${e.tasks.map((t,j)=>`<section class="eks-s" id="s${j+1}">${task(e,t,j)}</section>`).join("")}</div>
 <section class="eks-s" id="s${n+1}">${e.art==="eksamen"?e.vedlegg||'<p class="mut">Eksamenen har ingen vedlegg.</p>':'<h3>Formula sheet</h3><img class="fig" src="nettside-figurer/e14-2025-formelark.svg" alt="Formelarket fra eksamen 2025">'}</section>
@@ -352,7 +373,7 @@ const lev=()=>{X.classList.toggle("levert",!!p.levert);if(p.levert)e.tasks.forEa
 X.querySelector(".eks-nav").onclick=x=>{const b=x.target.closest("button");if(b){const d=b.dataset.k;vis(d==="-"?p.k-1:d==="+"?p.k+1:+d)}};
 X.addEventListener("input",merk);X.addEventListener("click",merk);
 $("#startp").onclick=()=>{if(!p.start)p.start=Date.now();lev();vis(1)};
-$("#leksE").onclick=()=>$("#leksknapp").click();
+$("#leksE").onclick=()=>$("#leksknapp").click();$("#notE").onclick=()=>$("#notknapp").click();
 // Algoritmene i en dialog: lenkene der åpnes i dialogen (se route), og siste side står der neste gang.
 $("#algoE").onclick=()=>{const d=$("#algodlg");d.dataset.h=location.hash.slice(1);if(!d.open)apne(d);if(!d.lastElementChild.childElementCount)ALGO.side(d.lastElementChild,"")};
 const ov=()=>{X.classList.toggle("ov",!!p.ov);$("#ovE").setAttribute("aria-pressed",!!p.ov)};$("#ovE").onclick=()=>{p.ov=!p.ov;save();ov()};ov();
@@ -360,26 +381,65 @@ $("#lever").onclick=()=>{if(confirm("Levere nå? Da kan du sjekke svarene, se fa
 clearInterval(tt);tt=setInterval(tick,1000);lev();vis(p.k)}
 
 // Leksikon: siden #leksikon og dialogen bak knappen oppe til høyre bruker samme innhold og søk.
-function leks(el){el.innerHTML=`<h1>Leksikon</h1>${D.leks.intro}<input type="search" class="lsok" placeholder="Søk, for eksempel admissible eller b" aria-label="Søk i leksikonet"><p class="lingen" role="status"></p><div class="lbody">${D.leks.body}</div>`;
+const nrm=x=>x.toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim();
+// Avstand mellom to ord: Levenshtein, der to nabobokstaver som har byttet plass, teller som én feil.
+const avst=(a,b)=>{let p2=[],p=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){const c=[i];for(let j=1;j<=b.length;j++){c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]!==b[j-1]));if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])c[j]=Math.min(c[j],p2[j-2]+1)}p2=p;p=c}return p[b.length]};
+const ligner=(s,t)=>{const k=s.length>=8?2:1,tn=nrm(t);return [tn,tn.slice(0,s.length),...tn.split(" ")].some(x=>Math.abs(x.length-s.length)<=k&&avst(s,x)<=k)};
+function leks(el){el.innerHTML=`<h1>Leksikon</h1>${D.leks.intro}<input type="search" class="lsok" placeholder="Søk, for eksempel admissible eller b" aria-label="Søk i leksikonet"><p class="lingen" role="status"></p>${API?'<p class="lmangler" hidden>Mangler begrepet? <button type="button"></button> <span class="mut"></span></p>':""}<div class="lbody">${D.leks.body}</div>`;
 const q=el.querySelector(".lsok"),B=el.querySelector(".lbody"),st=el.querySelector(".lingen"),pins=S.pins||(S.pins=[]);
-B.querySelectorAll("li").forEach(li=>{const s=li.querySelector("strong");if(s){li.dataset.b=s.textContent;li.insertAdjacentHTML("beforeend",` <button type="button" class="tg pin" title="Fest forklaringen øverst i leksikonet">Fest</button>`+(API?` <button type="button" class="spor" title="Send et spørsmål om akkurat dette begrepet">Spør</button> <span class="mut rs"></span><div class="fb" hidden></div>`:""))}});
+B.querySelectorAll("li").forEach(li=>{li.dataset.t=li.textContent.toLowerCase();const s=li.querySelector("strong");if(s){li.dataset.b=s.textContent;li.insertAdjacentHTML("beforeend",` <button type="button" class="tg pin" title="Fest forklaringen øverst i leksikonet">Fest</button>`+(API?` <button type="button" class="spor" title="Send et spørsmål om akkurat dette begrepet">Spør</button> <span class="mut rs"></span><div class="fb" hidden></div>`:""))}});
 // Festede forklaringer ligger som kopier øverst og vises uansett søk.
 const fest=()=>{const f=B.querySelector(".lfest");if(f)f.remove();const l=pins.map(b=>B.querySelector(`li[data-b="${CSS.escape(b)}"]`)).filter(Boolean);
 if(l.length)B.insertAdjacentHTML("afterbegin",`<div class="lfest"><h2>Festet</h2><ul>${l.map(li=>li.outerHTML).join("")}</ul></div>`);B.querySelectorAll(".lfest li").forEach(li=>li.hidden=false);B.querySelectorAll(".pin").forEach(k=>k.setAttribute("aria-pressed",pins.includes(k.closest("li").dataset.b)))};
 B.onclick=x=>{const k=x.target.closest(".spor"),p=x.target.closest(".pin");if(k)spor(k.closest("li"));if(p){const b=p.closest("li").dataset.b,i=pins.indexOf(b);i<0?pins.push(b):pins.splice(i,1);save();fest()}};
 fest();if(API)visFB();
-q.oninput=()=>{S.lq=q.value;save();const s=q.value.trim().toLowerCase(),ord=new RegExp("(^|[^\\p{L}])"+s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"u");let n=0;
-B.querySelectorAll("li:not(.lfest li)").forEach(li=>{const t=(li.querySelector("strong")||li).textContent.toLowerCase(),v=!s||(s.length<3?ord.test(t):t.includes(s)||li.textContent.toLowerCase().includes(s));li.hidden=!v;n+=v});
-B.querySelectorAll("h2").forEach(h=>{const ul=h.nextElementSibling;h.hidden=!!ul&&![...ul.children].some(li=>!li.hidden)});st.textContent=s?(n?`${n} treff`:"Ingen treff."):""};
+// Uten eksakte treff vises begrepene som ligner (skrivefeil som «admissable»): avstand høyst 1, eller 2 fra åtte tegn.
+const L=[...B.querySelectorAll("li:not(.lfest li)")],term=li=>(li.dataset.b||li.dataset.t).toLowerCase(),mb=el.querySelector(".lmangler");
+q.oninput=()=>{S.lq=q.value;save();const s=q.value.trim().toLowerCase(),sn=nrm(s),ord=new RegExp("(^|[^\\p{L}])"+s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"u");let n=0,naer=false;
+L.forEach(li=>{const t=term(li),v=!s||(s.length<3?ord.test(t):t.includes(s)||li.dataset.t.includes(s));li.hidden=!v;n+=v});
+if(!n&&sn.length>=4){naer=true;L.forEach(li=>{const v=ligner(sn,term(li));li.hidden=!v;n+=v})}
+B.querySelectorAll("h2").forEach(h=>{const ul=h.nextElementSibling;h.hidden=!!ul&&![...ul.children].some(li=>!li.hidden)});
+st.textContent=s?(n?(naer?`Ingen treff på «${q.value.trim()}». Disse ligner:`:`${n} treff`):"Ingen treff."):"";
+if(mb){mb.hidden=!s||L.some(li=>!li.hidden&&term(li).includes(s));mb.firstElementChild.textContent=`Be om «${q.value.trim()}» i leksikonet`;mb.lastElementChild.textContent=""}};
+// Et begrep som mangler, går i samme kø som «Spør» med "mangler": true; det legges inn i LEKSIKON.md og forklares der.
+if(mb)mb.firstElementChild.onclick=()=>{const b=q.value.trim(),t=now();fetch("/api/rett",{method:"POST",body:JSON.stringify({leks:b,mangler:true,sporsmal:"Begrepet mangler i leksikonet. Legg det inn og forklar det."})}).then(x=>{if(!x.ok)throw 0;mb.lastElementChild.textContent=`«${b}» sendt ${t.slice(11,16)}. Det kommer inn i leksikonet.`}).catch(()=>{mb.lastElementChild.textContent="Fikk ikke sendt. Kjører serveren?"})};
 q.value=S.lq||"";q.oninput();return q}
 // Spørsmålet går i samme kø som «Rett denne» (arbeid/svar/ko.jsonl), og svaret skrives til tilbakemelding.json under "leks".
 function spor(li){const b=li.dataset.b,q=prompt(`Hva lurer du på om ${b}? La feltet stå tomt for en grundigere forklaring.`);if(q===null)return;const t=now();
 fetch("/api/rett",{method:"POST",body:JSON.stringify({leks:b,sporsmal:q.trim()||"Forklar dette grundigere, med et lite eksempel."})}).then(x=>{if(!x.ok)throw 0;(S.rett.leks||(S.rett.leks={}))[b]=t;save();visFB()}).catch(()=>{li.querySelector(".rs").textContent="Fikk ikke sendt. Kjører serveren?"})}
 // Mørk/lys modus: siden følger systemet til du trykker. Velger du det systemet allerede har, fjernes overstyringen igjen.
+// Notater: en liste med egne notater, som chatter. De lagres med svarene i S.svar.notater = {id: {tekst, fra, laget, endret}}
+// (arbeid/svar/svar.json når serveren kjører). fra er siden notatet ble laget på. S.notid er notatet som sist var åpent.
+{const d=$("#notdlg"),b=$("#notknapp"),C=d.lastElementChild,N=()=>svar({id:"notater"}),side=id=>[...D.eps,...D.ov].find(x=>x.id===id),
+navn=id=>{const x=side(id);return x?`${x.ep} ${x.title}`:"Generelt"},tittel=n=>esc(n.tekst.trim().split("\n")[0].slice(0,60)||"Tomt notat"),
+naar=s=>s.slice(0,10)===now().slice(0,10)?"i dag "+s.slice(11,16):`${s.slice(8,10)}.${s.slice(5,7)} ${s.slice(11,16)}`;
+// Notatene fra før lista fantes (ett per side, S.svar[id].notat) flyttes inn i lista første gang panelet åpnes.
+const flytt=()=>{let m=0;for(const id in S.svar){const o=S.svar[id]&&S.svar[id].notat;if(o){if((o.Notat||"").trim()&&!N()["n"+id])N()["n"+id]={tekst:o.Notat,fra:id,laget:now(),endret:now()};delete S.svar[id].notat;m++}}if(m){save();lagre()}};
+const liste=()=>{S.notid=null;save();const L=Object.entries(N()).sort((x,y)=>x[1].endret<y[1].endret?1:-1);
+C.innerHTML=`<h2>Notater</h2><p class="mut">Hvert notat lagres for seg${API?" i arbeid/svar/svar.json":" i denne nettleseren"} mens du skriver.</p><p><button type="button" class="pri" data-ny>+ Nytt notat</button></p>`+
+(L.length?`<ul class="notliste">${L.map(([k,n])=>`<li><button type="button" data-k="${esc(k)}"><b>${tittel(n)}</b><span class="mut">${esc(navn(n.fra))} · ${esc(naar(n.endret))}</span></button></li>`).join("")}</ul>`:'<p class="mut">Ingen notater ennå.</p>')};
+const vis=k=>{const n=N()[k];if(!n)return liste();S.notid=k;save();
+C.innerHTML=`<p class="nottopp"><button type="button" data-liste>← Alle notater</button></p><p class="notmeta mut">Fra ${side(n.fra)?`<a href="#${esc(n.fra)}">${esc(navn(n.fra))}</a>`:"Generelt"} · endret <span>${naar(n.endret)}</span></p>`+
+`<div class="notsvar" data-id="${esc(k)}"></div><textarea class="in notat" id="notat" placeholder="Skriv det du vil huske. Første linje blir tittelen i lista.">${esc(n.tekst)}</textarea>`+
+`<div class="notfot"><span>${SR?'<button type="button" class="mic" data-for="notat">Diktér</button> ':""}${API?'<button type="button" data-stemmer title="Marker tekst i notatet først">Stemmer dette?</button> <span class="mut notst"></span>':""}</span><button type="button" class="notslett" data-slett>Slett notatet</button></div>`;
+const t=$("#notat"),e=C.querySelector(".notmeta span"),sj=C.querySelector("[data-stemmer]");t.oninput=()=>{n.tekst=t.value;n.endret=now();e.textContent=naar(n.endret);save();lagre()};
+// «Stemmer dette?» kan bare trykkes når noe er markert i notatet.
+if(sj){const o=()=>{sj.disabled=t.selectionStart===t.selectionEnd};["select","keyup","mouseup","input","focus"].forEach(v=>t.addEventListener(v,o));o()}visFB()};
+C.onclick=e=>{const x=e.target.closest("button");if(!x)return;
+if(x.matches("[data-ny]")){const k="n"+Date.now().toString(36),h=location.hash.slice(1).split("/")[0];N()[k]={tekst:"",fra:side(h)?h:"",laget:now(),endret:now()};save();lagre();vis(k);$("#notat").focus()}
+else if(x.dataset.k){vis(x.dataset.k);$("#notat").focus()}else if(x.matches("[data-liste]")){liste();C.querySelector("[data-ny]").focus()}
+else if(x.matches("[data-slett]")&&confirm("Slette dette notatet? Det kan ikke angres.")){delete N()[S.notid];save();lagre();liste();C.querySelector("[data-ny]").focus()}
+else if(x.matches(".mic"))dikter(x);
+// Det markerte går i samme kø som «Spør» ({notat, k, utdrag}); svaret kommer i FB.notat[id][k] og vises over notatet (visFB).
+else if(x.matches("[data-stemmer]")){const t=$("#notat"),u=t.value.slice(t.selectionStart,t.selectionEnd).trim(),id=S.notid,n=N()[id],k=Date.now().toString(36),q=now(),st=C.querySelector(".notst");if(!u||!n)return;
+fetch("/api/rett",{method:"POST",body:JSON.stringify({notat:id,k,utdrag:u,sporsmal:"Stemmer dette?"})}).then(r=>{if(!r.ok)throw 0;(n.sp||(n.sp={}))[k]={utdrag:u,sendt:q};st.textContent="";save();lagre();visFB()}).catch(()=>{st.textContent="Fikk ikke sendt. Kjører serveren?"})}
+else if(x.dataset.fjern){const n=N()[S.notid];if(n&&n.sp){delete n.sp[x.dataset.fjern];save();lagre();visFB()}}};
+b.onclick=()=>{if(!d.open){flytt();S.notid&&N()[S.notid]?vis(S.notid):liste();apne(d)}const t=$("#notat");if(t)t.focus()};
+d.addEventListener("close",()=>{if(rec&&d.contains(rec.b))rec.stop();if(!d.open)b.focus()});addEventListener("hashchange",()=>d.open&&!S.ndock&&d.close())}
 // Svarfeltet du sist gikk inn i (F), flyter nederst, over oppgavelista på eksamen, når du blar opp for å lese oppgaven.
 // Fixed med plassholder, ikke sticky: mange felt står inne i et listepunkt, og sticky kan ikke forlate det.
 {let F=null;const ro=new ResizeObserver(()=>flyt()),flyt=()=>{if(!F)return;const i=F.firstElementChild,t=F.closest(".task"),nv=F.closest(".eks")&&F.closest(".eks").querySelector(".eks-nav"),
-bunn=nv?Math.min(innerHeight,nv.getBoundingClientRect().top):innerHeight,r=F.getBoundingClientRect(),h=i.offsetHeight,ja=r.height>0&&r.bottom>bunn&&(t?t.getBoundingClientRect().top:r.top)<bunn-h;
+bunn=nv?Math.min(innerHeight,nv.getBoundingClientRect().top):innerHeight,r=F.getBoundingClientRect(),h=i.offsetHeight,ja=r.height>0&&h<bunn/2&&r.bottom>bunn&&(t?t.getBoundingClientRect().top:r.top)<bunn-h;
 F.classList.toggle("flyt",ja);F.style.height=ja?h+"px":"";i.style.cssText=ja?`left:${r.left}px;width:${r.width}px;bottom:${innerHeight-bunn}px`:""};
 document.addEventListener("focusin",e=>{const f=e.target.closest&&e.target.closest(".felt");if(f&&f!==F){const g=F;F=null;if(g){g.classList.remove("flyt");g.style.height=g.firstElementChild.style.cssText=""}F=f;ro.disconnect();ro.observe(f);ro.observe(f.firstElementChild);flyt()}});
 addEventListener("scroll",flyt,{passive:true,capture:true});addEventListener("resize",flyt)}
@@ -387,14 +447,17 @@ addEventListener("scroll",flyt,{passive:true,capture:true});addEventListener("re
 const vis=()=>{const d=naa()==="dark";k.textContent=d?"☀":"☾";k.title=k.ariaLabel=d?"Bytt til lys modus":"Bytt til mørk modus"};
 k.onclick=()=>{const t=naa()==="dark"?"light":"dark";try{t===fra()?localStorage.removeItem("tema"):localStorage.setItem("tema",t)}catch(e){}m.content=t===fra()?"light dark":t;vis()};
 sys.addEventListener("change",vis);addEventListener("storage",e=>{if(e.key==="tema"){m.content=e.newValue||"light dark";vis()}});vis()}
-// Leksikonet og algoritmene kan festes til høyre (S.ldock, S.adock): da er dialogen ikke modal, så siden ved siden av kan brukes,
-// og den blir stående når du bytter side. Bare én er festet om gangen.
+// Leksikonet, notatene og algoritmene kan festes til høyre (S.ldock, S.ndock, S.adock): da er dialogen ikke modal, så siden ved siden av
+// kan brukes, og den blir stående når du bytter side. Flere kan være festet samtidig; de deler høyden (se .dlg.hoyre i CSS).
 function apne(d){const h=!!S[d.dataset.s];d.classList.toggle("hoyre",h);d.setAttribute("closedby",h?"closerequest":"any");d.querySelector(".feste").setAttribute("aria-pressed",h);
-if(h)document.querySelectorAll(".dlg.hoyre[open]").forEach(x=>x!==d&&x.close());h?d.show():d.showModal()}
+h?d.show():d.showModal()}
 {const d=$("#leksdlg"),b=$("#leksknapp");
 b.onclick=()=>{const sel=String(getSelection()).trim();if(!d.open){leks(d.lastElementChild);apne(d)}const q=d.querySelector(".lsok");if(sel&&sel.length<40){q.value=sel;q.oninput()}q.focus();q.select()};
 d.addEventListener("close",()=>{if(!d.open)b.focus()});addEventListener("hashchange",()=>d.open&&!S.ldock&&d.close())}
-document.querySelectorAll(".dlg").forEach(d=>{d.querySelector(".lukk").onclick=()=>d.close();d.querySelector(".feste").onclick=()=>{S[d.dataset.s]=!S[d.dataset.s];save();d.close();apne(d)};
+// Rekkefølgen på de festede panelene er rekkefølgen i HTML-en (se .dlg.hoyre i CSS). «↑ Øverst» flytter panelet først, og S.dorden husker det.
+const forst=d=>{const f=document.querySelector("body>.dlg");if(f&&f!==d)document.body.moveBefore?document.body.moveBefore(d,f):f.before(d)};
+(S.dorden||[]).slice().reverse().forEach(id=>{const x=document.getElementById(id);if(x)forst(x)});
+document.querySelectorAll(".dlg").forEach(d=>{d.querySelector(".lukk").onclick=()=>d.close();d.querySelector(".opp").onclick=()=>{forst(d);S.dorden=[...document.querySelectorAll("body>.dlg")].map(x=>x.id);save()};d.querySelector(".feste").onclick=()=>{S[d.dataset.s]=!S[d.dataset.s];save();d.close();apne(d)};
 // closedby="any" mangler i Safari: lukk ved klikk utenfor dialogen.
 if(!("closedBy" in HTMLDialogElement.prototype))d.addEventListener("click",e=>{if(e.target!==d||!d.matches(":modal"))return;const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()})})
 function page(h){$("#main").className="";$("#main").innerHTML=h}
@@ -403,7 +466,7 @@ const h=location.hash.slice(1)||"hjem",e=D.eps.find(x=>x.id===h)||D.ov.find(x=>x
 // Algoritmene åpnet fra eksamen: en lenke til en annen algoritme vises i dialogen, og eksamen blir stående bak.
 if(AD.open){if(h0==="algoritmer"){history.replaceState(null,"","#"+AD.dataset.h);A.side(AD.lastElementChild,h1);AD.scrollTop=0;return}if(AD.classList.contains("hoyre"))AD.dataset.h=h;else AD.close()}
 if(rec)rec.stop();
-$("#leksknapp").hidden=!!e&&/eksamen$/.test(e.art); // der ligger knappen i toppfeltet, så den ikke dekker «Lever»
+$("#leksknapp").hidden=$("#notknapp").hidden=!!e&&/eksamen$/.test(e.art); // der ligger knappen i toppfeltet, så den ikke dekker «Lever»
 if(e){S.last=e.id;save();episode(e)}else if(h0==="algoritmer"&&A&&A.side){$("#main").className="wide";A.side($("#main"),h1)}else if(h==="verksted"&&A&&A.verksted){$("#main").className="wide";A.verksted($("#main"))}else if(h==="leksikon"){page("");leks($("#main")).focus()}else if(h==="feller")page(D.feller);else if(h==="feillogg")page(D.feil);else if(h==="eksamener")page(D.exams);else home();
 nav();visDeler();scrollTo(0,0)}
 addEventListener("hashchange",route);
@@ -413,7 +476,7 @@ const flett=(f,over)=>{for(const id in f)for(const j in f[id]){const a=svar({id}
 const [h0,ut]=location.hash.split("&svar=");
 if(ut){history.replaceState(null,"",h0.length>1?h0:location.pathname);try{flett(JSON.parse(decodeURIComponent(ut)))}catch{}}
 if(API){setInterval(hentFB,8000);hentFB();
-fetch("/api/svar").then(r=>r.json()).then(f=>{flett(f,true);push()}).catch(()=>{}).finally(route)}else{route();
+fetch("/api/svar").then(r=>r.json()).then(f=>{if(!S.ulagret)flett(f,true);push()}).catch(()=>{}).finally(route)}else{route();
 const i=new Image();i.onload=()=>location.replace("http://localhost:8765/arbeid/nettside.html"+(location.hash||"#")+"&svar="+encodeURIComponent(JSON.stringify(S.svar)));i.src="http://localhost:8765/arbeid/nettside-figurer/a3-4-1-brett.png?"+Date.now()}
 </script>
 </body>

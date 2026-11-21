@@ -99,6 +99,8 @@ function EXPAND(problem, node) yields nodes
 //   weighted A* search                f(n) = g(n) + w · h(n),  w > 1
 ```
 
+Kursnotatene (E02, E03) og animasjonene lar en billigere vei *erstatte* noden i frontier. I figuren blir den dyrere oppføringen liggende; når den poppes senere, er barna allerede nådd billigere, så den gir ingenting nytt.
+
 Målet testes når noden tas ut av frontier (late goal test). Tabellen over f står i Forelesning 2, s. 202 og Forelesning 3, s. 7 (weighted A* på s. 46), og Forelesning 2, s. 71–77 beskriver den samme løkken i fem steg.
 
 ### BREADTH-FIRST-SEARCH
@@ -850,6 +852,8 @@ function FOL-FC-ASK(KB, α) returns a substitution or false
 
 Forelesning 7, s. 38 gir bare resultatet: med bare definite clauses er gjentatt Generalized Modus Ponens sound og complete.
 
+Teksten i 9.3.2 og kursnotatet (E15) sier at en fakta ikke er ny bare når den er en navneendring (renaming) av en kjent fakta. «does not unify» i figuren er strengere: P(x) unifiserer med P(A), men er ikke en navneendring av den. Figuren sjekker heller ikke om α står i KB fra før; animasjonen gjør det før første runde.
+
 ### FOL-BC-ASK
 *Figur 9.6 (ikke i forelesningene)*
 
@@ -906,6 +910,8 @@ First-order conjunctive normal form algorithm (step 1):
 ```
 
 Når to literaler resolveres, må de unifiseres, og θ brukes på resten av begge klausulene. Steg 3 trenger også ¬∀x P(x) ≡ ∃x ¬P(x) og ¬∃x P(x) ≡ ∀x ¬P(x) (Forelesning 6, s. 14).
+
+«otherwise return satisfiable» gjelder først når ingen nye klausuler kan lages. Med funksjoner kan det fortsette for alltid uten at □ dukker opp, så entailment i FOL er semidecidable (E15, E16). En avbrutt håndsporing viser derfor ikke at KB ⊭ α.
 
 ## Planlegging (kap. 11)
 

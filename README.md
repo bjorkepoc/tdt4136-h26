@@ -8,8 +8,9 @@ En lokal nettside med alt du trenger for å lese og øve til eksamen i TDT4136 (
 - **Prøveeksamener i 2025-formatet**, vist som på eksamen: forside, én oppgave om gangen, nedtelling og «Lever». Etter levering får du sjekk og fasit, eller underveis hvis du slår på «Fasit underveis». Blar du opp for å lese oppgaven, blir svarfeltet du skriver i liggende nederst på skjermen.
 - **Tidligere eksamener** fra 2015 til 2025 ordrett med figurer (alle unntatt 2019 og ordinær 2020), i samme eksamensvisning. Algoritmene og leksikonet kan åpnes underveis, over oppgaven eller festet til høyre.
 - **40 algoritmer animert steg for steg:** søk, lokalt søk, CSP, spill, logikk, planlegging og NLP, med valg for fart og gjentakelse.
-- **Pseudokode** for alle algoritmene i forelesningene og pensumkapitlene, med figurnummer i boka og lysbilde i forelesningen. Den står samlet på én side og under hver animerte algoritme.
-- **Leksikon** med rundt 300 begreper fra hele pensum, med søk. Knappen oppe til høyre åpner det over oppgaven du står i, eller festet til høyre. Siste søk huskes, og forklaringer du bruker ofte, kan festes øverst.
+- **Pseudokode** for alle algoritmene i forelesningene og pensumkapitlene, med figurnummer i boka og lysbilde i forelesningen. Den står samlet på én side og under de animerte algoritmene som har en slik figur eller et slikt lysbilde.
+- **Leksikon** med over 500 begreper fra hele pensum, med søk. Knappen oppe til høyre åpner det over oppgaven du står i, eller festet til høyre. Søket tåler skrivefeil, siste søk huskes, og forklaringer du bruker ofte, kan festes øverst. Mangler et begrep, kan du be om det rett fra søket.
+- **Notater** som en liste, som chatter: hvert notat har sin egen side og husker hvilken eksamen eller episode det ble laget på. De lagres mens du skriver, sammen med svarene, og panelet kan festes til høyre ved siden av leksikonet og algoritmene. Marker en setning og trykk «Stemmer dette?», så får du svar over notatet.
 - **Mørk og lys modus:** knappen ☾/☀ øverst til venstre. Siden følger systemet til du trykker.
 - **«Tegn og sjekk»:** tegn din egen graf eller ditt eget spilltre, og sjekk svaret ditt mot algoritmen.
 - **Kursmaterialet** fra Canvas ligger i `materiale/` (slides, øvingstekster og tidligere eksamener).
