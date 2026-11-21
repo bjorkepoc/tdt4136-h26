@@ -175,7 +175,7 @@ const grafData=g=>g&&{type:"graf",data:{retning:!!g.dir,noder:Object.entries(g.n
 kanter:g.e.map(([fra,til,kost])=>({fra,til,kost})),start:g.start||g.st||(g.n.S?"S":Object.keys(g.n)[0]),mal:Object.keys(g.n).filter(id=>g.n[id][5])}};
 let S={seen:{},pos:{},svar:{},rett:{},sub:false,last:null};
 try{Object.assign(S,JSON.parse(localStorage.getItem(KEY))||{})}catch(e){}
-let stale=false;const save=()=>{if(!stale)try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 // Menyen, video og notater (venstre) og Øv selv (høyre) skjules hver for seg; valget huskes. Begge kolonnene kan ikke være skjult samtidig.
 const visDeler=()=>{const m=$("#main"),ep=m.classList.contains("ep"),v=!!$("#v");$(".wrap").classList.toggle("lukket",!!S.lukket);m.classList.toggle("uv",!!S.uv);m.classList.toggle("uh",!!S.uh);
 $("#vis-v").textContent=v?"Video":"Tekst";$("#vis-v").hidden=$("#vis-h").hidden=!ep;
@@ -185,12 +185,13 @@ $("#deler").onclick=x=>{const k={meny:"lukket","vis-v":"uv","vis-h":"uh"}[x.targ
 const API=location.protocol.startsWith("http"),SR=API&&(window.SpeechRecognition||window.webkitSpeechRecognition),now=()=>new Date().toLocaleString("sv-SE");
 let pt,FB={},rec=null;
 const feil=s=>{const m=$("#cmsg");if(m)m.textContent=s};
-const push=()=>stale||fetch("/api/svar",{method:"POST",body:JSON.stringify(S.svar)}).then(r=>{if(!r.ok)throw 0;if(!pt){S.ulagret=false;save()}}).catch(()=>feil("Fikk ikke lagret svarene i fila. Kjører serveren?"));
+const push=()=>fetch("/api/svar",{method:"POST",body:JSON.stringify(S.svar)}).then(r=>{if(!r.ok)throw 0;if(!pt){S.ulagret=false;save()}}).catch(()=>feil("Fikk ikke lagret svarene i fila. Kjører serveren?"));
 // S.ulagret: lokale endringer som ikke har nådd fila ennå (lastet om før 500 ms). Da vinner de lokale svarene ved neste lasting.
 const lagre=()=>{if(API){S.ulagret=true;save();clearTimeout(pt);pt=setTimeout(()=>{pt=0;push()},500)}};
-// En annen fane har lagret mens denne var skjult: denne skriver ikke mer, og lastes på nytt når den vises igjen.
-// ponytail: to fanene synlige samtidig (to vinduer) dekkes ikke; da vinner den som lagrer sist.
-addEventListener("storage",e=>{if(e.key===KEY&&document.hidden){stale=true;clearTimeout(pt);pt=0}});document.addEventListener("visibilitychange",()=>{if(stale&&!document.hidden)location.reload()});
+// En annen fane eller et annet vindu har lagret: ta over svarene, notatene og det som er sett derfra, ellers skriver denne fanen over med sine gamle (slik forsvant notater).
+// Objektene endres på stedet, så åpne felt (notatet som skrives i) fortsatt peker inn i S. Feltene på skjermen tegnes ikke på nytt. Visningen (åpent notat, paneler) er egen per fane.
+const synk=(m,k)=>{for(const x in m)if(!(x in k))delete m[x];for(const x in k){const a=m[x],b=k[x];if(a&&b&&typeof a==="object"&&typeof b==="object"&&!Array.isArray(a)&&!Array.isArray(b))synk(a,b);else m[x]=b}};
+addEventListener("storage",e=>{if(e.key===KEY&&e.newValue)try{const k=JSON.parse(e.newValue);for(const x of["svar","seen","rett","pos"])synk(S[x]||(S[x]={}),k[x]||{});S.ulagret=k.ulagret}catch(x){}});
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 const fmt=t=>Math.floor(t/60)+":"+String(Math.floor(t%60)).padStart(2,"0");
 const filled=o=>Object.entries(o||{}).some(([k,v])=>k!=="Tegning"&&String(v).trim()); // en tegning alene er ikke et svar

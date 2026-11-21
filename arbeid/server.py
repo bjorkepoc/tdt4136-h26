@@ -2,7 +2,7 @@
 """Lokal server for nettsiden: python3 arbeid/server.py, og åpne http://localhost:8765/
 
 - Videoene kan spoles (Range-forespørsler, som python3 -m http.server mangler).
-- Svarene lagres i arbeid/svar/svar.json mens du skriver.
+- Svarene lagres i arbeid/svar/svar.json mens du skriver, med en kopi i timen i arbeid/svar/historikk/.
 - «Svar på papir» lagrer bildet i arbeid/svar/bilder/ (JPEG, skalert av siden) og gir filnavnet tilbake.
 - «Rett denne» legger oppgaven i arbeid/svar/ko.jsonl. Tilbakemeldingen skrives til
   arbeid/svar/tilbakemelding.json ({"e05": {"0": {"tekst": …, "tid": …}}}) og vises under oppgaven.
@@ -112,6 +112,17 @@ class H(SimpleHTTPRequestHandler):
         with LAAS:
             SV.mkdir(exist_ok=True)
             if self.path == "/api/svar":
+                f = SV / "svar.json"
+                gml = f.read_text() if f.exists() else "{}"
+                # Én kopi i timen i svar/historikk/, til å hente tilbake fra.
+                # ponytail: kopiene slettes aldri; rydd mappa for hånd om den blir stor.
+                kopi = SV / "historikk" / time.strftime("svar-%Y-%m-%d-%H.json")
+                if f.exists() and not kopi.exists():
+                    kopi.parent.mkdir(exist_ok=True)
+                    kopi.write_text(gml)
+                # Siden sletter aldri en hel del (en oppgave eller «notater»). Mangler en del, kommer
+                # lagringen fra et vindu med gammel tilstand, og delen fra fila beholdes.
+                body = {**json.loads(gml), **body}
                 tmp = SV / "svar.json.tmp"
                 tmp.write_text(json.dumps(body, ensure_ascii=False, indent=1))
                 tmp.replace(SV / "svar.json")
