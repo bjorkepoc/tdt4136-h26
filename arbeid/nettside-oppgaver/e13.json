@@ -174,7 +174,7 @@
     "merk": "Løsningsforslaget 2018 svarer «A ∧ ¬B» (nummerert 4 der). Boka 7.5: A ⊨ B hvis og bare hvis A ∧ ¬B er unsatisfiable.",
     "kilde": "videoer/notater/e13-dpll-walksat.md, Fasit Øv selv 5"
    },
-   "fasit": "**5: A ∧ ¬B.** A ⊨ B betyr at B er sann i alle modeller der A er sann. Da finnes ingen modell der A er sann og B usann, så A ∧ ¬B er unsatisfiable (refutation, AIMA 7.5).\n\n**Ekstra, DPLL: må returnere false** på CNF(A ∧ ¬B). DPLL er complete, så false betyr at ingen modell finnes, og da gjelder A ⊨ B. Returnerer DPLL true, er modellen den finner, et moteksempel.\n\n**Ekstra, WalkSAT: kan bare finne modeller.** For å vise A ⊨ B må vi vise at ingen modell finnes. WalkSAT er incomplete: failure etter max_flips kan også bety at søket trengte mer tid. Uten grense stopper WalkSAT aldri på en setning som er unsatisfiable.\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 8. Svaret står der som punkt 4: «A ∧ ¬B».*"
+   "fasit": "**5: A ∧ ¬B.** A ⊨ B betyr at B er sann i alle modeller der A er sann. Da finnes ingen modell der A er sann og B usann, så A ∧ ¬B er unsatisfiable (refutation, AIMA 7.5).\n\n**Ekstra, DPLL: må returnere false** på CNF(A ∧ ¬B). DPLL er complete, så false betyr at ingen modell finnes, og da gjelder A ⊨ B. Returnerer DPLL true, er modellen den finner, et moteksempel.\n\n**Ekstra, WalkSAT: kan bare finne modeller.** For å vise A ⊨ B må vi vise at ingen modell finnes. WalkSAT er incomplete: failure etter max_flips kan også bety at søket trengte mer tid. Uten grense stopper WalkSAT aldri på en setning som er unsatisfiable.\n\n**Løsningsforslaget ordrett** (eksamen 2018, problem 8, punkt 5):\n\n> 4\\) A ∧￢B\n\n*Kilde: løsningsforslaget til eksamen 2018, problem 8. Svaret står der som punkt 4.*"
   }
  ]
 }

@@ -26,7 +26,7 @@ EP = re.compile(r"(?<![\w#/-])E(0[1-9]|1\d|2[01])(?!\w)")
 
 def md(text):
     """Markdown til HTML, med E01–E21 i tekst lenket til episodene."""
-    out = _md.render(text)
+    out = _md.render(text).replace("<br />\n", "<br />")  # hardt linjeskift gir ellers dobbelt linjeskift i sitatene (pre-line)
     return re.sub(r">([^<]+)", lambda m: ">" + EP.sub(r'<a href="#e\1">E\1</a>', m.group(1)), out)
 
 

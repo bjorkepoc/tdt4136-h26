@@ -10,6 +10,7 @@ Hver oppgave i `arbeid/nettside-oppgaver/*.json`, `arbeid/nettside-ovinger/*.jso
 - Sant/usant-lister (`tf`): hver påstand med **Sant** eller **Usant** og én setning om hvorfor.
 - Én linje med den vanligste feilen er lov når den finnes i notatet (avsnittet «Eksamensfeller») eller er åpenbar.
 - Skriv på norsk med de engelske fagbegrepene. Kort og konkret. Ingen innledning som «Her er fasiten».
+- Løsningsforslaget siteres ordrett. Oppgaver fra en eksamen har rett før kildelinja blokken `**Løsningsforslaget ordrett** (eksamen 2023, oppgave 1):` med svaret fra løsningsforslaget som sitat (linjer som starter med `> `), ord for ord som i kildeteksten: samme stavemåte, store og små bokstaver, tegnsetting og skrivefeil. Bare linjeskift og orddeling fra PDF-en kan rettes. Ta med bare det som svarer på denne oppgaven. Mangler et svar, skriv det under blokken («Løsningsforslaget har ikke noe svar på 3.1.»). Står det noe annet sted i fasiten hva løsningsforslaget sier, er det et ordrett sitat i «…» eller en henvisning til blokken, aldri en omskriving. `python3 arbeid/verktoy/sjekk-sitater.py [filer]` sjekker at sitatene står ordrett.
 - Oppgaver som er hentet fra en eksamen, slutter med en kildelinje i kursiv, for eksempel `*Kilde: løsningsforslaget til eksamen 2023, oppgave 4.*` Andre oppgaver kan ha `*Kilde: notatet til E05, Fasit Øv selv 3.*`
 
 ## Kilder og kontroll
