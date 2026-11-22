@@ -41,7 +41,8 @@
    "fasit": "**A.** Løsningsforslaget godtok også B.\n\n**Hva er galt:** AND-OR search i ikke-deterministiske miljøer gir *contingency plans* (betingede planer med if–then-grener), ikke «adversive plans». Rettet: «In nondeterministic environments the agent can apply AND-OR search to generate contingency plans.»\n\n- B ble godtatt fordi noen leste «our» vacuum cleaner som agenten fra Q1 (dirt sensor, men ingen location sensor). Da er miljøet partially observable, ikke fully observable. Med vanlig lesning (full sensing, og Suck som ikke alltid virker) er B sann.\n- C, D, E og F er sanne: proof by refutation er proof by contradiction, satisfiable betyr sann i minst én modell, GMP er komplett for definite clauses, og belief state er mengden mulige tilstander.\n- G er ment som sann, men presist mapper agentfunksjonen *percept sequences* til handlinger.\n\n*Kilde: løsningsforslaget til eksamen 2024, Q2.*"
   },
   {
-   "t": "Egenlaget: hvor mye sparer hierarkiet?",
+   "t": "Hvor mye sparer hierarkiet?",
+   "egen": true,
    "d": "Anta en helt regelmessig struktur: hver HLA har r = 5 refinements, hver med k = 3 handlinger på nivået under, og løsningen har d = 27 primitive handlinger.",
    "f": [
     [
@@ -66,7 +67,8 @@
    "fasit": "**a) 13** indre noder. **b) HTN: 5¹³ ≈ 1,2 · 10⁹ nedbrytingstrær · flatt søk: 5²⁷ ≈ 7,5 · 10¹⁸**\n\n- Hver HLA har k = 3 handlinger under seg, så treet har log₃ 27 = 3 nivåer under roten.\n- Indre noder: 1 + 3 + 9 = 13 = (d − 1)/(k − 1) = 26/2. De 27 bladene er de primitive handlingene.\n- Hver indre node har r = 5 refinements å velge mellom, så det finnes r^((d − 1)/(k − 1)) = 5¹³ = 1 220 703 125 mulige nedbrytingstrær.\n- Et flatt søk med b = 5 over d = 27 steg koster O(bᵈ) = 5²⁷ ≈ 7,45 · 10¹⁸.\n- Hierarkiet sparer en faktor 5¹⁴ ≈ 6 · 10⁹. Gevinsten er størst med få refinements (liten r) og lange refinements (stor k). Boka advarer selv om at så regelmessige, gjenbrukbare strukturer er sjeldne i praksis.\n\n*Kilde: notatet til E19, Fasit Øv selv 3.*"
   },
   {
-   "t": "Egenlaget: HIERARCHICAL-SEARCH med byttet rekkefølge",
+   "t": "HIERARCHICAL-SEARCH med byttet rekkefølge",
+   "egen": true,
    "d": "Hierarkiet fra videoen (etter bokas Hawaii-eksempel):\n\n- Act har én refinement: [Go(Home, SFO), Fly(SFO, HNL)].\n- Go(Home, SFO) har to refinements, nå i denne rekkefølgen: først [Taxi(Home, SFO)], så [Drive(Home, SFOLongTermParking), Shuttle(SFOLongTermParking, SFO)].\n- Drive krever at agenten har bil. Taxi, Shuttle og Fly kan alltid utføres.\n- Start: At(Home), og agenten har bil. Mål: At(HNL).\n\nSøket er HIERARCHICAL-SEARCH (fig. 11.8) med FIFO-kø. Hvilken plan returneres, og hvorfor?\n\n<details><summary>Fig. 11.8 i boka: HIERARCHICAL-SEARCH (klikk for å vise)</summary>\n\n```\nfunction HIERARCHICAL-SEARCH(problem, hierarchy) returns a solution or failure\n  frontier ← a FIFO queue with [Act] as the only element\n  while true do\n    if IS-EMPTY(frontier) then return failure\n    plan ← POP(frontier)                         // chooses the shallowest plan in frontier\n    hla ← the first HLA in plan, or null if none\n    prefix, suffix ← the action subsequences before and after hla in plan\n    outcome ← RESULT(problem.INITIAL, prefix)\n    if hla is null then                          // so plan is primitive and outcome is its result\n      if problem.IS-GOAL(outcome) then return plan\n    else for each sequence in REFINEMENTS(hla, outcome, hierarchy) do\n      add APPEND(prefix, sequence, suffix) to frontier\n```\n\n</details>",
    "f": [
     [
@@ -91,7 +93,8 @@
    "fasit": "**Plan: [Taxi(Home, SFO), Fly(SFO, HNL)]**\n\n| Steg | POP | Første HLA | Hva skjer | Frontier etterpå |\n|---|---|---|---|---|\n| 0 | – | – | start | [Act] |\n| 1 | [Act] | Act | én refinement | [Go, Fly] |\n| 2 | [Go, Fly] | Go | to refinements, prefix [ ], suffix [Fly] | [Taxi, Fly], [Drive, Shuttle, Fly] |\n| 3 | [Taxi, Fly] | ingen | primitiv; outcome At(HNL), IS-GOAL sann: **return** | [Drive, Shuttle, Fly] (tas aldri ut) |\n\n**Begrunnelse:** HIERARCHICAL-SEARCH (fig. 11.8) er bredde-først søk over refinements med FIFO-kø. Når Go brytes ned, legges én plan per refinement bakerst i køen, i den rekkefølgen biblioteket gir dem, og nå kommer [Taxi] først. Begge planene ligger to nedbrytninger ned, så [Taxi, Fly] tas ut først. Den har ingen HLA igjen og er derfor en implementation. Taxi og Fly kan utføres fra At(Home), og outcome At(HNL) består måltesten, så planen returneres. At agenten har bil, spiller ingen rolle, for [Drive, Shuttle, Fly] blir aldri tatt ut. Med den opprinnelige rekkefølgen ville [Drive, Shuttle, Fly] vunnet.\n\nVanlig feil: å tro at søket finner den korteste planen. Det finner den første primitive planen som når målet, blant planene med færrest nedbrytninger.\n\n*Kilde: notatet til E19, Fasit Øv selv 4.*"
   },
   {
-   "t": "Egenlaget: sensorless støvsuger med conditional effects",
+   "t": "Sensorless støvsuger med conditional effects",
+   "egen": true,
    "d": "Støvsugerverdenen har to ruter, L og R, og fluents AtL, AtR, CleanL og CleanR. Left flytter roboten til L, og Right flytter den til R. Suck har conditional effects:\n\n```\nAction(Suck, EFFECT: when AtL: CleanL ∧ when AtR: CleanR)\n```\n\nRoboten har ingen sensorer og starter i belief staten True. Den utfører [Left, Suck, Right, Suck]. Skriv belief staten som formel etter hvert steg. Det holder å skrive literalene som er kjent sanne.",
    "f": [
     [
@@ -139,7 +142,8 @@
    "fasit": "**1. AtL · 2. AtL ∧ CleanL · 3. AtR ∧ CleanL · 4. AtR ∧ CleanL ∧ CleanR**\n\n| Steg | Handling | Belief state (1-CNF) | Mengden (fig. 4.9) |\n|---|---|---|---|\n| b₀ | – | True | {1, 2, 3, 4, 5, 6, 7, 8} |\n| b₁ | Left | AtL | {1, 3, 5, 7} |\n| b₂ | Suck | AtL ∧ CleanL | {5, 7} |\n| b₃ | Right | AtR ∧ CleanL | {6, 8} |\n| b₄ | Suck | AtR ∧ CleanL ∧ CleanR | {8} |\n\n- Left har ADD AtL og DEL AtR. Add-effekten gjør AtL kjent sann og delete-effekten AtR kjent usann, så b₁ = AtL ∧ ¬AtR. Oppgaven ber bare om de sanne literalene, så svaret er AtL.\n- I b₁ er AtL kjent sann. Betingelsen «when AtL» slår til i alle verdenene i b₁, og «when AtR» i ingen, så Suck legger bare til CleanL.\n- Right gjør AtR sann og AtL usann. CleanL er ikke rørt og står.\n- Suck i b₃ legger til CleanR på samme måte. Til slutt er begge rutene rene i alle mulige verdener, så planen virker uten sensorer.\n\n**Hvorfor 1-CNF:** Plasseringen er kjent hver gang Suck utføres. Da slår nøyaktig den samme betingelsen til i alle tilstandene i belief staten, conditional effect gir samme resultat overalt, og b′ blir igjen en konjunksjon av literaler. Bare når betingelsen er ukjent, gir en conditional effect en disjunksjon: Suck rett på True gir (AtL ∧ CleanL) ∨ (AtR ∧ CleanR), som ikke er 1-CNF.\n\n*Kilde: notatet til E19, Fasit Øv selv 5.*"
   },
   {
-   "t": "Egenlaget: action monitoring mot plan monitoring",
+   "t": "Action monitoring mot plan monitoring",
+   "egen": true,
    "d": "Malingsproblemet fra boka (11.5):\n\n```\nInit(Object(Table) ∧ Object(Chair) ∧ Can(Can1) ∧ Can(Can2) ∧ InView(Table))\nGoal(Color(Chair, c) ∧ Color(Table, c))\nAction(RemoveLid(can), PRECOND: Can(can), EFFECT: Open(can))\nAction(Paint(x, can), PRECOND: Object(x) ∧ Can(can) ∧ Color(can, c) ∧ Open(can), EFFECT: Color(x, c))\n```\n\nPlanen er [RemoveLid(Can1), Paint(Chair, Can1), Paint(Table, Can1)]. Mens agenten maler stolen, maler noen andre bordet i samme farge.",
    "f": [
     [

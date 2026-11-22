@@ -3,6 +3,7 @@
  "tasks": [
   {
    "t": "Forward checking, MRV og degree på Australia",
+   "egen": true,
    "d": "Australia skal fargelegges med tre farger (rød, grønn, blå), og naboer kan ikke ha samme farge. Naboer: WA–NT, WA–SA, NT–SA, NT–Q, SA–Q, SA–NSW, SA–V, Q–NSW og NSW–V. T (Tasmania) har ingen naboer.\n\nDu bruker forward checking og har satt WA = rød og Q = grønn. Skriv domenene etter FC. Hvilken variabel velger MRV med degree som tie-breaker, og hva skjer når den får sin første verdi?",
    "f": [
     [
@@ -36,6 +37,7 @@
   },
   {
    "t": "Antall blader i søketreet",
+   "egen": true,
    "d": "En CSP har n = 4 variabler med d = 3 verdier hver. Hvor mange blader har det vanlige søketreet, og hvor mange har backtracking-treet?",
    "f": [
     [
@@ -64,6 +66,7 @@
   },
   {
    "t": "Min-conflicts på bokas 8-dronningbrett",
+   "egen": true,
    "d": "Bokas 8-dronningbrett (figur 5.8) er (2, 5, 7, 4, 1, 3, 6, 8): tall nummer c er raden til dronningen Qc i kolonne c, og rad 1 er øverst. Min-conflicts velger i hver runde tilfeldig en variabel som er i konflikt, og gir den raden med færrest konflikter. I boka trekkes Q8 i første runde.\n\nBrettet (2, 5, 7, 4, 1, 3, 6, 8), rad 1 øverst:\n\n<table><thead><tr><th>Rad</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th><th>Q8</th></tr></thead><tbody><tr><th>1</th><td>·</td><td>·</td><td>·</td><td>·</td><td><span style=\"font-size:1.6em\">♛</span></td><td>·</td><td>·</td><td>·</td></tr><tr><th>2</th><td><span style=\"font-size:1.6em\">♛</span></td><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td></tr><tr><th>3</th><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td><td><span style=\"font-size:1.6em\">♛</span></td><td>·</td><td>·</td></tr><tr><th>4</th><td>·</td><td>·</td><td>·</td><td><span style=\"font-size:1.6em\">♛</span></td><td>·</td><td>·</td><td>·</td><td>·</td></tr><tr><th>5</th><td>·</td><td><span style=\"font-size:1.6em\">♛</span></td><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td></tr><tr><th>6</th><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td><td><span style=\"font-size:1.6em\">♛</span></td><td>·</td></tr><tr><th>7</th><td>·</td><td>·</td><td><span style=\"font-size:1.6em\">♛</span></td><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td></tr><tr><th>8</th><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td><td>·</td><td><span style=\"font-size:1.6em\">♛</span></td></tr></tbody></table>\n\nAnta at min-conflicts trekker Q4 i første runde i stedet. Hvor mange konflikter gir hver rad for Q4, og hva skjer?",
    "f": [
     [
@@ -89,6 +92,7 @@
   {
    "t": "Eksamen 2018, problem 1 del 5 (3 p), nå med forward checking",
    "resten": "e06/7",
+   "egen": "Egen variant av eksamen 2018",
    "d": "**Problem 1: CSP (10 POINTS)**\n\nIn a 2-days seminar, there are 5 lectures to be allocated to 3 professors. Each professor can teach at most 1 lecture on a day. Each professor has knowledge to teach only a subset of the lectures. The following table shows which professor has the knowledge to teach which lectures where “L” means “lecture”:\n\n<table><tr><td>Prof. Arne</td><td>L1, L2, L3</td></tr><tr><td>Prof. Berit</td><td>L1, L2, L5</td></tr><tr><td>Prof. Carl</td><td>L2, L4, L5</td></tr></table>\n\nThere are some constraints about the sequence that the lectures can be given: Day(L1) < Day(L2), i.e., Lecture 1 must be taught the day before the day of Lecture 2, and Day(L3) < Day(L5). Each lecture will be assigned to a professor and to a day.\n\n1\\) Complete the following drawing to a constraint graph that represents this problem. Nodes represent the lectures that are the Variables in this Constraint Satisfaction Problem. You will draw the links between the nodes in the graph.\n\n2\\. Write down the domains of the variables. Each value in the domain of a variable shows the combination of a professor that can teach the course and the time it can be taught. Instead of the whole name of a professor use only the first letter of his/her name, i.e., A, B, C shows the three professors. A domain value, hence looks like this: A2 (i.e., Arne on Day=2), B1 (i.e., Berit on Day=1. You can write the domain values by filling in the curly brackets for each variable ( L1,…., L5).\n\nL1: { ……… }<br>L2: { }<br>L3: { }<br>L4: { }<br>L5: { }\n\n3\\) Write down all the constraints, as implicit constraints, for this problem. Hint: You can use n-ary Alldiff to represent one type of the constraints you need.\n\n4\\) Is this initial constraint graph arc-consistent? If not, apply AC-3 arc consistency algorithm and find the reduced domains. Write these domains for each variable in the form:\n\nL1: { ……… }<br>L2: { }<br>L3: { }<br>L4: { }<br>L5: { }\n\n5\\) Apply Backtracking on this arc-consistent graph without forward checking. Use Minimum Remaining Value for variable ordering (tie breaking in numerical order), and Least Constraining Value for value ordering (tie breaking alphanumerically). What order are the variables are assigned and what are their values? Your answer will look like this:\n\nThe 1. assigned variable is ………………., and its value is …………………<br>The 2. assigned variable is ………………., and its value is …………………<br>The 3. assigned variable is ………………., and its value is …………………<br>The 4. assigned variable is ………………., and its value is …………………<br>The 5. assigned variable is ………………., and its value is …………........\n\nIn this question you should calculate the Least Constraining Value by counting how many values in the domains of the neighboring variables in the constraint graph no longer satisfy the constraint between themselves and the variable being assigned to. You should also count no longer valid answers in the domains of already assigned variables.\n\n*Merknad:* Her løser du del 5 på nytt, men *med* forward checking, og ser om svaret endrer seg. Del 1–4 står i E06. Samme problem er eksamen 2023, oppgave 4, lenger ned.",
    "f": [
     [

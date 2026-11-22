@@ -81,6 +81,7 @@
   },
   {
    "t": "Regning: bigram med og uten add-one",
+   "egen": true,
    "d": "En bigram-modell er trent på korpuset fra videoen:\n\n```\n<S> the wumpus smells\n<S> the wumpus is dead\n<S> the pit is breezy\n```\n\n- Vokabularet har V = 7 ord: the, wumpus, smells, is, dead, pit, breezy.\n- `<S>` står bare først i setningen og telles ikke som neste ord.\n- Det er ikke noe sluttsymbol.\n\nBruk add-one (Laplace) smoothing der oppgaven ber om det. Svar med brøk.",
    "f": [
     [
@@ -124,6 +125,7 @@
   },
   {
    "t": "Regning: Viterbi på «he saw her duck»",
+   "egen": true,
    "d": "HMM-modellen fra videoen, med én endring. «he/PRP saw/VBD» er entydig, og δ(saw/VBD) = 1. «her» kan være PRP$ eller PRP, og «duck» kan være NN eller VB. P(duck | VB) er nå 0,1 (i videoen var den 0,01). Resten er likt.\n\n```\nTransition               Emission\nP(PRP$ | VBD) = 0,3      P(her | PRP$) = 0,2\nP(PRP  | VBD) = 0,4      P(her | PRP)  = 0,2\nP(NN | PRP$)  = 0,9      P(duck | NN)  = 0,02\nP(VB | PRP$)  = 0,01     P(duck | VB)  = 0,1   (endret)\nP(NN | PRP)   = 0,05\nP(VB | PRP)   = 0,3\n```\n\nKjør Viterbi. Hvilken taggsekvens vinner, og med hvilken δ?",
    "f": [
     [
@@ -153,6 +155,7 @@
   },
   {
    "t": "Regning: CYK på «the wumpus smells»",
+   "egen": true,
    "d": "Fyll CYK-chartet for «the wumpus smells» med dette utdraget av E₀:\n\n```\nS  → NP VP         [0,90]\nNP → Article Noun  [0,25]\nNP → Noun          [0,10]\nVP → Verb          [0,40]\nArticle → the      [0,40]\nNoun → wumpus      [0,15]\nVerb → smells      [0,10]\n```\n\nChomsky Normal Form tillater ikke enhetsregler som NP → Noun og VP → Verb. Slå dem sammen med ordreglene slik videoen gjør: X → Y → ord får sannsynligheten p(X → Y) · p(Y → ord).",
    "f": [
     [

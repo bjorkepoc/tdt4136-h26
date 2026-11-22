@@ -71,6 +71,7 @@
   },
   {
    "t": "Air cargo: relevante handlinger og regresjon",
+   "egen": true,
    "d": "Skjemaene fra fig. 11.1:\n\n```\nAction(Load(c, p, a),\n  PRECOND: At(c, a) ∧ At(p, a) ∧ Cargo(c) ∧ Plane(p) ∧ Airport(a)\n  EFFECT:  ¬At(c, a) ∧ In(c, p))\nAction(Unload(c, p, a),\n  PRECOND: In(c, p) ∧ At(p, a) ∧ Cargo(c) ∧ Plane(p) ∧ Airport(a)\n  EFFECT:  At(c, a) ∧ ¬In(c, p))\nAction(Fly(p, from, to),\n  PRECOND: At(p, from) ∧ Plane(p) ∧ Airport(from) ∧ Airport(to)\n  EFFECT:  ¬At(p, from) ∧ At(p, to))\n```\n\nMålet er g = At(P1, JFK) ∧ At(P2, SFO).",
    "f": [
     [

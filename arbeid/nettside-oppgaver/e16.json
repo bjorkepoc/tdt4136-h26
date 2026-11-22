@@ -19,6 +19,7 @@
   },
   {
    "t": "Skolemisering med nestede kvantorer",
+   "egen": true,
    "d": "Skolemiser `∀x ∃y ∀z ∃w P(x, y, z, w)`. Hvilke argumenter får hver Skolem-funksjon, og hvorfor?",
    "f": [
     [
@@ -51,6 +52,7 @@
   },
   {
    "t": "Unification: finn MGU eller forklar hvorfor det feiler",
+   "egen": "Egenlaget, bortsett fra c (eksamen 2024)",
    "d": "Finn MGU, eller forklar hvorfor unifiseringen feiler. Vis stegene. Variabler er små bokstaver (x, y, z, u). Jack, A og B er konstanter, og F og S er funksjoner.\n\n- (a) `Loves(x, F(x))` og `Loves(Jack, x)`, først uten og så med standardizing apart.\n- (b) `S(x)` og `S(S(x))`\n- (c) `F(x, F(u, x))` og `F(F(y, A), F(z, F(B, z)))`. Dette er eksamen 2024 Q17 (5 p), som var flervalg med disse alternativene:\n  - A. x/F(y, A); u/z; y/B; z/A\n  - B. x/F(x, A); y/x; u/z; z/A\n  - C. It is not possible to unify these sentences.\n  - D. y/A; u/z; x/z; z/A",
    "f": [
     [

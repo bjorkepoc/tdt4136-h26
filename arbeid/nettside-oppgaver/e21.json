@@ -80,6 +80,7 @@
   },
   {
    "t": "Regning: fairness-kriterier og k-anonymity",
+   "egen": true,
    "d": "**a)** En modell gir hver person høy eller lav risiko for ny kriminalitet. tp = høy risiko og begår ny, fp = høy risiko men begår ikke ny, fn = lav risiko og begår ny, tn = lav risiko og begår ikke ny. Gruppe B er fra videoen.\n\n| Gruppe | n | tp | fp | fn | tn |\n|---|---|---|---|---|---|\n| B | 100 | 28 | 12 | 12 | 48 |\n| C | 100 | 14 | 6 | 16 | 64 |\n\nI gruppe C begår 30 av 100 ny kriminalitet.\n\n**b)** Tabellen fra videoen. Kvasi-identifikatorene er fødselsdato, kjønn og postnummer. Diagnosen er det sensitive feltet.\n\n| Rad | Fødselsdato | Kjønn | Postnr. | Diagnose |\n|---|---|---|---|---|\n| 1 | 12.03.1985 | K | 7030 | influensa |\n| 2 | 30.07.1985 | K | 7034 | astma |\n| 3 | 05.11.1987 | M | 7041 | diabetes |\n| 4 | 21.01.1986 | M | 7043 | influensa |\n| 5 | 14.09.1985 | K | 7031 | migrene |\n| 6 | 02.02.1987 | M | 7048 | astma |",
    "f": [
     [

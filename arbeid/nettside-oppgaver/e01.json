@@ -3,6 +3,7 @@
  "tasks": [
   {
    "t": "Robotgressklipperen: PEAS og miljøegenskaper",
+   "egen": true,
    "d": "En robotgressklipper har kamera, GPS og støtsensor.\n\nSkriv PEAS, og klassifiser miljøet på alle sju aksene med én begrunnelse per akse. Si hvilken antakelse som avgjør hvert svar som kunne gått begge veier.",
    "f": [
     [
@@ -24,6 +25,7 @@
   },
   {
    "t": "Støvsugeren med flyttekostnad",
+   "egen": true,
    "d": "Støvsugerverdenen har to ruter, A og B. En tilstand skrives (agentens rute, status i A, status i B), så (A, Clean, Dirty) betyr at agenten står i A, A er ren og B er skitten. Handlingene er Left, Right og Suck, og Suck gjør ruta ren.\n\n```\nREFLEX-VACUUM-AGENT([location, status]):\n  if status = Dirty: return Suck\n  elif location = A: return Right\n  elif location = B: return Left\n```\n\nPerformance measure er ett poeng per ren rute per tidssteg (starttilstanden telles med), minus ett poeng per Left eller Right.\n\nStart i (A, Clean, Dirty). Spor REFLEX-VACUUM-AGENT i fire handlinger og regn ut summen. Hva får en agent som gjør det samme til alt er rent, men som deretter vet at alt er rent og står stille resten av de fire stegene?",
    "f": [
     [
@@ -55,6 +57,7 @@
   },
   {
    "t": "Tabellen til TABLE-DRIVEN-AGENT",
+   "egen": true,
    "d": "TABLE-DRIVEN-AGENT husker hele percept sequence og slår den opp i en tabell med én rad for hver mulig percept sequence agenten kan få i løpet av levetiden.\n\nI støvsugerverdenen er |P| = 4 percepter. Hvor mange rader har tabellen med levetid T = 3? Og med T = 10?",
    "f": [
     [
@@ -72,6 +75,7 @@
   },
   {
    "t": "Sant eller usant",
+   "egen": true,
    "d": "Fig. 2.6 er lærebokas tabell over eksempler på task environments og egenskapene deres.\n\n<details><summary>Fig. 2.6 i boka (klikk for å vise, gir svaret på d og f)</summary>\n\n| Task environment | Observable | Agents | Deterministic | Episodic | Static | Discrete |\n|---|---|---|---|---|---|---|\n| Crossword puzzle | Fully | Single | Deterministic | Sequential | Static | Discrete |\n| Chess with a clock | Fully | Multi | Deterministic | Sequential | Semi | Discrete |\n| Poker | Partially | Multi | Stochastic | Sequential | Static | Discrete |\n| Backgammon | Fully | Multi | Stochastic | Sequential | Static | Discrete |\n| Taxi driving | Partially | Multi | Stochastic | Sequential | Dynamic | Continuous |\n| Medical diagnosis | Partially | Single | Stochastic | Sequential | Dynamic | Continuous |\n| Image analysis | Fully | Single | Deterministic | Episodic | Semi | Continuous |\n| Part-picking robot | Partially | Single | Stochastic | Episodic | Dynamic | Continuous |\n| Refinery controller | Partially | Single | Stochastic | Sequential | Dynamic | Continuous |\n| English tutor | Partially | Multi | Stochastic | Sequential | Dynamic | Discrete |\n\n</details>",
    "tf": [
     "a) Et miljø som er known, er også fully observable.",
@@ -96,6 +100,7 @@
   },
   {
    "t": "Atomic, factored eller structured?",
+   "egen": true,
    "d": "Er tilstanden atomic, factored eller structured?",
    "f": [
     [
@@ -129,6 +134,7 @@
   },
   {
    "t": "Støvsugeren uten lokasjonssensor",
+   "egen": true,
    "d": "Støvsugeren har bare en skittsensor og ingen lokasjonssensor, så perceptet er bare `[Dirty]` eller `[Clean]`.\n\nForklar hvorfor en simple reflex agent kan gå i løkke. Vis deretter at en agent som kaster mynt (Left eller Right med sannsynlighet 1/2 hver når ruta er ren) i forventning bruker 2 steg på å komme til den andre ruta.",
    "f": [
     [

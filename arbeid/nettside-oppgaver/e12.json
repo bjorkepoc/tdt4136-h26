@@ -152,6 +152,7 @@
   },
   {
    "t": "Eksamen 2015, problem 3 c og d (2 + 2 p): Horn og CNF",
+   "egen": "Ekstraspørsmålet er egenlaget",
    "d": "**Problem 3 (15 points)**\n\nc) (2 points) Consider the following knowledge base containing four sentences in propositional logic:\n\nA=> (B ∨ C)\\\n¬A=> (B ∨ C)\\\n¬C\\\n(B ∨ D) => E\n\nCan these four sentences be converted to a set of Horn clauses? If yes, write them down; if not, explain why not.\n\nd) (2 points) Consider the following knowledge base containing four sentences in propositional logic: A => (B ∨ C), ¬A => (B ∨ C), ¬C, (B ∨ D) => E\n\nConvert the four sentences above into conjunctive normal form(CNF) and show the result as a set of clauses.\n\n*Merknad:* Ekstra (ikke i eksamensoppgaven): Følger B av KB? Følger E?",
    "f": [
     [

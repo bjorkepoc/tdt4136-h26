@@ -170,6 +170,7 @@
   },
   {
    "t": "Consistent heuristikk",
+   "egen": true,
    "img": [
     "nettside-figurer/e02-2023-q2.png"
    ],
@@ -186,6 +187,7 @@
   },
   {
    "t": "Weighted A*, W = 3",
+   "egen": true,
    "img": [
     "nettside-figurer/e02-2023-q2.png"
    ],

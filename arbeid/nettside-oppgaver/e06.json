@@ -3,6 +3,7 @@
  "tasks": [
   {
    "t": "AC-3 på Y = 2X og Z > Y",
+   "egen": true,
    "d": "X, Y, Z ∈ {1, 2, 3, 4} med Y = 2X og Z > Y.\n\nKjør AC-3 med startkøen X→Y, Y→X, Y→Z, Z→Y. Buen X→Y betyr at D(X) gjøres konsistent med Y. Vis tabellen. Er problemet løst etter AC-3?",
    "f": [
     [
@@ -29,6 +30,7 @@
   },
   {
    "t": "AC-3 på Australia-kartet",
+   "egen": true,
    "d": "Australia skal fargelegges med tre farger (red, green, blue), og naboer kan ikke ha samme farge. Naboer: WA–NT, WA–SA, NT–SA, NT–Q, SA–Q, SA–NSW, SA–V, Q–NSW og NSW–V. T (Tasmania) har ingen naboer.\n\nWA = red og SA = blue er gitt. Hva er domenene etter AC-3?",
    "f": [
     [
@@ -41,6 +43,7 @@
   },
   {
    "t": "Tre variabler, to verdier",
+   "egen": true,
    "d": "A, B, C ∈ {1, 2} med A ≠ B, B ≠ C og A ≠ C.",
    "f": [
     [
@@ -69,6 +72,7 @@
   },
   {
    "t": "Bounds propagation",
+   "egen": true,
    "d": "X + Y = 10 med X ∈ [0, 4] og Y ∈ [0, 8]. Hva gir bounds propagation?",
    "f": [
     [
@@ -101,6 +105,7 @@
   },
   {
    "t": "4-queens som CSP",
+   "egen": true,
    "d": "Modeller 4-queens som CSP: variabler, domener og constraints. Hvor mange binære constraints og buer får du?",
    "f": [
     [

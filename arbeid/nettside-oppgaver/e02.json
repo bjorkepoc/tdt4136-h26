@@ -3,6 +3,7 @@
  "tasks": [
   {
    "t": "Vacuum world som søkeproblem",
+   "egen": true,
    "d": "To ruter, venstre og høyre. Roboten står i én av dem, og hver rute kan være skitten eller ren. Formuler det som søkeproblem med de seks delene: states (state space), initial state, actions, transition model, goal test og action cost.",
    "f": [
     [
@@ -30,6 +31,7 @@
   },
   {
    "t": "Når UCS svarer feil",
+   "egen": true,
    "d": "Lag selv en graf med tre noder der UCS gir feil svar hvis målet testes når noden lages i stedet for når den tas ut. Vis begge kjøringene.",
    "f": [
     [
@@ -41,7 +43,8 @@
    "fasit": "**Graf:** S→G 10, S→A 1, A→G 1. Start S, mål G.\n\n**Tidlig måltest (feil):**\n\n| Steg | Tas ut (g) | Genererer | Frontier etterpå |\n|---|---|---|---|\n| 1 | S (0) | A 1, G 10, og G er mål | stopper |\n\nSvar: S–G med kostnad **10**.\n\n**Sen måltest (riktig UCS):**\n\n| Steg | Tas ut (g) | Nye eller oppdaterte i frontier | Frontier etterpå |\n|---|---|---|---|\n| 0 | – | S 0 | S 0 |\n| 1 | S (0) | A 1, G 10 | A 1, G 10 |\n| 2 | A (1) | G 2 erstatter G 10 | G 2 |\n| 3 | G (2): mål | – | – |\n\nSvar: S, A, (G), sti **S–A–G med kostnad 2**, som er optimalt.\n\nUCS tar ut noder i rekkefølge etter g. Når målet tas ut, er alle stier med lavere g allerede tatt ut, så ingen billigere vei finnes. Når målet bare er generert, kan en billigere vei fortsatt ligge i frontier, her via A.\n\n*Kilde: notatet til E02, Fasit Øv selv 2.*"
   },
   {
-   "t": "Egen øving: IDS på grafen fra eksamen 2025, oppgave 5",
+   "t": "IDS på grafen fra eksamen 2025, oppgave 5",
+   "egen": true,
    "img": [
     "nettside-figurer/e02-2025-q5.png"
    ],
@@ -135,6 +138,7 @@
   },
   {
    "t": "Sant eller usant",
+   "egen": "Egenlaget, bortsett fra e (eksamen 2015)",
    "tf": [
     "a) DFS som graph search er complete i endelige tilstandsrom.",
     "b) IDS bruker O(b^d) minne.",

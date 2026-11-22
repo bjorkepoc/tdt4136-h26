@@ -686,6 +686,7 @@
   },
   {
    "t": "Bøttespillet fra L8: alpha-beta",
+   "egen": "Egenlaget ut fra L8",
    "d": "MAX velger en av tre bøtter, og MIN velger deretter hvilket tall fra bøtta MAX får. MAX vil ha et så stort tall som mulig.\n\n```\n                MAX (rot)\n           /       |       \\\n          A        B        C       (MIN)\n        /   \\    /  \\    /   \\\n      −50    50  3    1  −5    15\n```\n\nBarna undersøkes fra venstre: A = {−50, 50}, B = {3, 1}, C = {−5, 15}.\n\nKjør alpha-beta. Skriv siste α og β i hver node, og begrunn kuttet.",
    "f": [
     [
@@ -718,6 +719,7 @@
   },
   {
    "t": "Halveringsspillet fra L8 og Ø3",
+   "egen": "Egenlaget ut fra L8",
    "d": "Spillet starter med et tall N. Spillerne bytter på å gjøre ett trekk: enten «trekk fra 1» (`--`) eller «halver og rund ned» (`/2`). Spilleren som sitter igjen med 0, vinner. Utility er +1 hvis MAX vinner og −1 hvis MIN vinner.\n\nStart på N = 5 med MAX i trekket. Hele spilltreet har 27 noder.\n\nHvem vinner, og med hvilket første trekk? Hvor mange av de 27 nodene besøker alpha-beta når `--` prøves før `/2`?",
    "f": [
     [

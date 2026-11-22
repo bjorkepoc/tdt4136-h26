@@ -2,6 +2,7 @@
  "tasks": [
   {
    "t": "Unification: finn MGU eller forklar hvorfor det feiler",
+   "egen": true,
    "d": "Finn most general unifier (MGU) for hvert par, eller forklar hvorfor UNIFY gir *failure*. Vis hvert steg: hvilke deler som matches, og hvilken binding det gir. Variabler er små bokstaver (x, y, z). Konstanter starter med stor bokstav (John, Sofie, A, B), og F, Father og Mother er funksjoner.\n\n- (a) `Older(Father(y), y)` og `Older(Father(x), John)`\n- (b) `Knows(x, Mother(x))` og `Knows(Mother(y), y)`\n- (c) `P(A, x, F(x))` og `P(y, B, F(B))`\n- (d) `Loves(x, F(x))` og `Loves(Sofie, z)`",
    "f": [
     [
@@ -94,6 +95,7 @@
   {
    "t": "Eksamen 2023, oppgave 3.2 (10 p) med forward og backward chaining",
    "resten": "e16/4",
+   "egen": "Egen variant av eksamen 2023",
    "d": "**3 Logic (20 pts total)**\n\n**3.2 First Order logic (10 pts)**\n\nYou are given the following information:\n\nFido is father of Snowy. Fido is alive. One’s father is ones parent and vice versa. Somebody’s alive parent is older than them.\n\nQuestion: Is there anybody older than Snowy?\n\n- a) Represent this information and the question in form of First Order Logic (FoL) sentences.\n- b) Using resolution refutation answer if there is anybody older than Snowy? If there is, who is this?\n\nNumber the CNF sentences starting from 1, and then employ resolution refutation. Show how you convert the FOL sentences to CNF sentences.\n\n*Merknad:* Variant: resolution-delen står i E16. Her skriver du KB-en som definite clauses og svarer med forward chaining og backward chaining, med θ for hvert delmål.",
    "f": [
     [
@@ -115,6 +117,7 @@
   },
   {
    "t": "Øving 4 (A4), oppgave 4b–4d med chaining: K-pop-anbefaleren",
+   "egen": "Egen variant av øving 4",
    "d": "Reglene fra A4 oppgave 4 (K-pop-anbefaleren), skrevet slik som i håndsporing 8 i notatet. Alle atomene har brukeren som argument, for eksempel `Reveluv(x) ⇒ Ballads(x)`.\n\n- GG ⇔ Sone, RV ⇔ Reveluv og BP ⇔ Blink. Hver ⇔ blir to definite clauses, for eksempel GG ⇒ Sone og Sone ⇒ GG.\n- Reveluv ⇒ Ballads\n- Blink ⇒ Dance\n- Dance ∧ Ballads ⇒ CH\n- Drama ∧ Ballads ⇒ HE\n- Sone ∧ Electro ⇒ DJH\n- Sone ∧ Drama ⇒ SEO\n- Sone ∧ Ballads ⇒ TAE\n\nØvingen ber om resolution i b og c. Her skal du bruke forward eller backward chaining:\n\n- (b) En ny bruker U1 liker GG og identifiserer seg som Reveluv. Følger TAE(U1)?\n- (c) Samme bruker U1: følger HE(U1)?\n- (d) Brukeren U2 sier at den er Sone, Reveluv og Blink, og at den liker Drama. Hva anbefaler systemet for U2?\n- Kjør også backward chaining for TAE(U1) der reglene fra GG ⇔ Sone (GG ⇒ Sone og Sone ⇒ GG) prøves før faktaen GG(U1). Hva skjer?",
    "f": [
     [

@@ -51,6 +51,7 @@
   },
   {
    "t": "Matching pennies",
+   "egen": true,
    "d": "Celle = (P1, P2). π₁ er sannsynligheten for at P1 velger første handling (Kron), og π₂ sannsynligheten for at P2 velger Kron.\n\n| P1 \\ P2 | Kron | Mynt |\n|---|---|---|\n| **Kron** | 1, −1 | −1, 1 |\n| **Mynt** | −1, 1 | 1, −1 |\n\nFinn den blandede likevekten og verdien av spillet for P1.",
    "f": [
     [
@@ -75,6 +76,7 @@
   },
   {
    "t": "Battle of the Sexes med andre tall",
+   "egen": true,
    "d": "Illustrasjon, ikke en eksamensoppgave. Celle = (P1, P2). π₁ = P(P1 velger movie), π₂ = P(P2 velger movie).\n\n| P1 \\ P2 | Movie | Opera |\n|---|---|---|\n| **Movie** | 3, 1 | 0, 0 |\n| **Opera** | 0, 0 | 1, 3 |\n\nFinn π₁ og π₂ i den blandede likevekten. Bruk riktig spillers tall.",
    "f": [
     [
@@ -126,6 +128,7 @@
   },
   {
    "t": "Grim trigger med andre tall",
+   "egen": true,
    "d": "Illustrasjon, ikke en eksamensoppgave. Fangens dilemma spilles uendelig mange ganger. Total nytte er Σₜ δᵗ · Uₜ for t = 0, 1, 2, …, med 0 < δ < 1. Celle = (P1, P2).\n\n| P1 \\ P2 | Tie | Vitne |\n|---|---|---|\n| **Tie** | 3, 3 | 0, 5 |\n| **Vitne** | 5, 0 | 1, 1 |\n\nGrim trigger: tie til motstanderen har vitnet én gang, deretter vitne for alltid.\n\nFor hvilke δ er grim mot grim en likevekt?",
    "f": [
     [

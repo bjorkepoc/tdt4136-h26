@@ -131,6 +131,7 @@
   },
   {
    "t": "UCB1 i Fig. 6.10",
+   "egen": true,
    "d": "I lærebokas MCTS-eksempel (Fig. 6.10) står hver node som U/N: antall seire U av N playouts. Noden 60/79 har to barn: 16/53 og 3/26.\n\n<!--fig-->\n\n*Fig. 6.10(a) gjengitt: hver node viser U/N. Den tykke stien er den SELECT følger med C = √2.*\n\nUCB1(n) = U(n)/N(n) + C · √(ln N(parent(n)) / N(n))\n\nMed C = √2 velger boka 16/53 under 60/79. Regn UCB1 for begge barna under 60/79 med C = 1. Velges fortsatt 16/53?",
    "img": [
     "nettside-figurer/e09-fig6-10-mcts.svg"
@@ -176,6 +177,7 @@
   },
   {
    "t": "Regret matching i stein, saks, papir",
+   "egen": true,
    "d": "Begge spillerne velger samtidig. Seier gir +1, uavgjort 0 og tap −1. *Regret* for et trekk er det trekket ville gitt minus det du faktisk fikk. Regrets summeres over rundene. Neste strategi får du ved å sette negative summerte regrets til 0 og dele på summen. Rekkefølgen i tabellen er stein, papir, saks.\n\n| Steg | Stein | Papir | Saks |\n|---|---|---|---|\n| Runde 1: du stein, motstander papir, du fikk −1 | | | |\n| ville gitt | −1 | 0 | +1 |\n| regret | 0 | 1 | 2 |\n| strategi (0, 1, 2)/3 | 0 | ⅓ | ⅔ |\n| Runde 2: du saks, motstander stein, du fikk −1 | | | |\n| ville gitt | 0 | +1 | −1 |\n| regret | 1 | 2 | 0 |\n| summert | 1 | 3 | 2 |\n| strategi (1, 3, 2)/6 | ⅙ | ½ | ⅓ |\n\nFortsett tabellen med runde 3, der du spiller papir og motstanderen saks.",
    "f": [
     [

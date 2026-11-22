@@ -105,6 +105,7 @@
   },
   {
    "t": "Semantisk nett til FOL (bokas fig. 10.4)",
+   "egen": true,
    "d": "Figuren er bokas fig. 10.4: et semantisk nett med fire objekter (John, Mary, 1 og 2) og fire kategorier. Oversett alle lenkene til first-order logic, også de to innrammede lenkene (HasMother og Legs ved Persons). Oppgaven er i samme stil som eksamen 2020 ordinær, som er spart til fullprøven.",
    "img": [
     "nettside-figurer/e17-fig10-4.png"
@@ -120,6 +121,7 @@
   },
   {
    "t": "Disjoint, Exhaustive eller Partition?",
+   "egen": true,
    "d": "Bruk bokas definisjoner av Disjoint, ExhaustiveDecomposition og Partition. Avgjør for hver mengde av kategorier om den er Disjoint, en ExhaustiveDecomposition og/eller en Partition av Integers.\n\nBokas definisjoner:\n\n```\nDisjoint(s) ⇔ (∀c₁, c₂ c₁ ∈ s ∧ c₂ ∈ s ∧ c₁ ≠ c₂ ⇒ Intersection(c₁, c₂) = { })\nExhaustiveDecomposition(s, c) ⇔ (∀i i ∈ c ⇔ ∃c₂ c₂ ∈ s ∧ i ∈ c₂)\nPartition(s, c) ⇔ Disjoint(s) ∧ ExhaustiveDecomposition(s, c)\n```",
    "f": [
     [
@@ -137,6 +139,7 @@
   },
   {
    "t": "Allens intervallrelasjoner",
+   "egen": true,
    "d": "La j = [4, 10]. Bruk bokas definisjoner av Meet, Before, After, During, Overlap, Starts, Finishes og Equals. I a–c: hvilken relasjon holder mellom intervallet i og j?\n\nBokas definisjoner:\n\n| Relasjon | Definisjon |\n|---|---|\n| `Meet(i, j)` | `End(i) = Begin(j)` |\n| `Before(i, j)` | `End(i) < Begin(j)` |\n| `After(j, i)` | `Before(i, j)` |\n| `During(i, j)` | `Begin(j) < Begin(i) < End(i) < End(j)` |\n| `Overlap(i, j)` | `Begin(i) < Begin(j) < End(i) < End(j)` |\n| `Starts(i, j)` | `Begin(i) = Begin(j)` |\n| `Finishes(i, j)` | `End(i) = End(j)` |\n| `Equals(i, j)` | `Begin(i) = Begin(j) ∧ End(i) = End(j)` |",
    "f": [
     [
@@ -183,6 +186,7 @@
   },
   {
    "t": "Event calculus på en tidslinje",
+   "egen": true,
    "d": "Tidslinjen fra videoen (S = Shankar):\n\n- Start: `Happens(Start, 0, 0)` og `Initiates(Start, At(S, SF), 0)`.\n- E₁ = Flyings(S, SF, DC) med `Happens(E₁, 2, 4)`.\n- E₂ = Flyings(S, DC, SF) med `Happens(E₂, 8, 10)`.\n- Start, E₁ og E₂ er alle hendelsene på tidslinjen, og Start terminerer ingen fluent: `¬Terminates(Start, f, t)` for alle f og t.\n\nAksiomene fra boka:\n\n```\nE = Flyings(a, here, there) ∧ Happens(E, t₁, t₂) ⇒ Terminates(E, At(a, here), t₁) ∧ Initiates(E, At(a, there), t₂)\nHappens(e, t₁, t₃) ∧ Initiates(e, f, t₂) ∧ ¬Terminated(f, t₂, t₄) ∧ t₁ ≤ t₂ ≤ t₃ ≤ t₄ ⇒ T(f, t₂, t₄)\nTerminated(f, t₁, t₅) ⇔ ∃e, t₂, t₃, t₄ Happens(e, t₂, t₄) ∧ Terminates(e, f, t₃) ∧ t₁ ≤ t₂ ≤ t₃ ≤ t₄ ≤ t₅\n```\n\nFølger formlene under? Begrunn med aksiomene.",
    "f": [
     [
@@ -220,6 +224,7 @@
   },
   {
    "t": "Description logic: CLASSIC",
+   "egen": true,
    "d": "Skriv i CLASSIC-syntaks (And, All, AtLeast, AtMost, Fills, …): «menn med minst to sønner, som alle er leger».",
    "f": [
     [
