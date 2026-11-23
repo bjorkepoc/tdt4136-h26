@@ -82,14 +82,15 @@ details.fasit summary{cursor:pointer;font-weight:600}
 /* «↑ Øverst» bare på et festet panel som har et annet festet panel over seg. */
 .dlg .opp{display:none}.dlg.hoyre[open]~.dlg.hoyre[open] .opp{display:block}
 /* Panelene festet til høyre (leksikon, notater, algoritmer): ingen bakteppe, og på brede skjermer gir siden plass til dem.
-   Flere festede deler høyden likt, i rekkefølgen i HTML-en. --hb er bredden på kolonnen, bredere når algoritmene er med. */
-:root:has(.dlg.hoyre[open]){--hb:min(clamp(320px,32vw,440px),100vw)}:root:has(#algodlg.hoyre[open]){--hb:min(clamp(360px,42vw,720px),100vw)}
+   Flere festede deler høyden likt, i rekkefølgen i HTML-en. --hb er bredden på kolonnen, bredere når algoritmene er med, eller --hbu når du har dratt i .hdrag (S.hb). */
+:root:has(.dlg.hoyre[open]){--hb:var(--hbu,min(clamp(320px,32vw,440px),100vw))}:root:has(#algodlg.hoyre[open]){--hb:var(--hbu,min(clamp(360px,42vw,720px),100vw))}
 :root:has(.dlg.hoyre[open]~.dlg.hoyre[open]){--hn:2}:root:has(.dlg.hoyre[open]~.dlg.hoyre[open]~.dlg.hoyre[open]){--hn:3}
 .dlg.hoyre{--hi:0;position:fixed;inset:calc(var(--hi)*100vh/var(--hn,1)) 0 auto auto;margin:0;width:var(--hb);height:calc(100vh/var(--hn,1));max-height:none;overflow:auto;border-width:0 0 0 1px;border-radius:0;z-index:6}
 #algodlg.hoyre{width:var(--hb)}.dlg.hoyre[open]~.dlg.hoyre[open]{--hi:1;border-top-width:2px}.dlg.hoyre[open]~.dlg.hoyre[open]~.dlg.hoyre[open]{--hi:2}
 /* Leksikon-knappen flyttes til venstre for de festede panelene, så den ikke blir dekket. */
 @media (min-width:700px){:root:has(.dlg.hoyre[open]) #leksknapp{right:calc(var(--hb) + 12px)}}
 @media (min-width:1000px){:root:has(.dlg.hoyre[open]) .wrap{margin-right:var(--hb)}}
+.hdrag{display:none;position:fixed;top:0;bottom:0;right:calc(var(--hb) - 5px);width:9px;padding:0;margin:0;border:0;border-radius:0;background:none;z-index:7;cursor:col-resize;touch-action:none;-webkit-user-select:none;user-select:none}:root:has(.dlg.hoyre[open]) .hdrag{display:block}
 .lsok{position:sticky;top:0;z-index:1;width:100%;font:inherit;padding:9px 12px;margin:4px 0 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--fg)}
 .lbody li{margin:3px 0}.lbody h2{margin:22px 0 6px}
 textarea.in{min-height:90px;resize:vertical;field-sizing:content}textarea.in.en{min-height:0}
@@ -124,12 +125,12 @@ main.ep .lft{padding:28px 36px 40px;min-width:0}
 main.ep .rgt{padding:0 36px 100px;min-width:0}
 .fig{display:block;max-width:100%;margin:10px auto;background:#fff;border-radius:8px;padding:6px}
 .drag{display:none}
+.drag::after,.hdrag::after{content:"";position:absolute;left:2px;top:50%;width:3px;height:44px;margin-top:-22px;border-radius:2px;background:var(--muted);opacity:.5}
+.drag:hover::after,.drag:focus-visible::after,.drag.on::after,.hdrag:hover::after,.hdrag:focus-visible::after,.hdrag.on::after{background:var(--accent);opacity:1}
 @media (min-width:1150px){
 main.ep{display:grid;grid-template-columns:minmax(0,1fr) 9px minmax(300px,var(--rw,40%))}
 main.ep .lft{padding-bottom:100px}
 main.ep .drag{display:block;position:sticky;top:0;height:100vh;padding:0;margin:0;border:0;border-left:1px solid var(--border);border-radius:0;background:var(--surface);cursor:col-resize;touch-action:none;-webkit-user-select:none;user-select:none}
-main.ep .drag::after{content:"";position:absolute;left:2px;top:50%;width:3px;height:44px;margin-top:-22px;border-radius:2px;background:var(--muted);opacity:.5}
-main.ep .drag:hover::after,main.ep .drag:focus-visible::after,main.ep .drag.on::after{background:var(--accent);opacity:1}
 main.ep .rgt{position:sticky;top:0;height:100vh;overflow-y:auto;padding:22px 24px 100px;background:var(--surface)}
 main.ep .rgt h2#ov{margin-top:0;border-top:0;padding-top:0}
 main.ep .rgt .task{background:var(--bg)}
@@ -140,7 +141,7 @@ main.ep.uv,main.ep.uh{grid-template-columns:minmax(0,1fr)}main.ep.uv .rgt,main.e
 <link rel="stylesheet" href="nettside-algo/motor.css">
 </head>
 <body>
-<button id="leksknapp" type="button" aria-haspopup="dialog" title="Slå opp et begrep (marker et ord først for å søke på det)">Leksikon</button><dialog id="leksdlg" class="dlg" data-s="ldock" closedby="any" aria-label="Leksikon"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha leksikonet åpent til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><dialog id="notdlg" class="dlg" data-s="ndock" closedby="any" aria-label="Notater"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha notatene åpne til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><dialog id="algodlg" class="dlg" data-s="adock" closedby="any" aria-label="Algoritmer"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha algoritmene åpne til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><div class="wrap"><div id="deler"><button id="meny" type="button" aria-controls="nav">Meny</button><button id="vis-v" type="button" hidden></button><button id="vis-h" type="button" hidden>Øv selv</button><button id="tema" type="button"></button><button id="notknapp" type="button" aria-haspopup="dialog" title="Notatene dine, med en egen side for hvert notat">Notater</button></div><nav id="nav"></nav><main id="main"></main></div>
+<button id="leksknapp" type="button" aria-haspopup="dialog" title="Slå opp et begrep (marker et ord først for å søke på det)">Leksikon</button><dialog id="leksdlg" class="dlg" data-s="ldock" closedby="any" aria-label="Leksikon"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha leksikonet åpent til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><dialog id="notdlg" class="dlg" data-s="ndock" closedby="any" aria-label="Notater"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha notatene åpne til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><dialog id="algodlg" class="dlg" data-s="adock" closedby="any" aria-label="Algoritmer"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha algoritmene åpne til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><button type="button" class="hdrag" title="Dra for å endre bredden. Dobbeltklikk for å nullstille." aria-label="Skillelinje for panelene festet til høyre. Piltastene endrer bredden."></button><div class="wrap"><div id="deler"><button id="meny" type="button" aria-controls="nav">Meny</button><button id="vis-v" type="button" hidden></button><button id="vis-h" type="button" hidden>Øv selv</button><button id="tema" type="button"></button><button id="notknapp" type="button" aria-haspopup="dialog" title="Notatene dine, med en egen side for hvert notat">Notater</button></div><nav id="nav"></nav><main id="main"></main></div>
 <script>const D = __DATA__;</script>
 <!-- Algoritmeanimasjoner og tegneverktøy, se nettside-algo/KONTRAKT.md -->
 <script src="nettside-algo/motor.js"></script><script src="nettside-algo/sok.js"></script><script src="nettside-algo/lokalt.js"></script><script src="nettside-algo/spill.js"></script><script src="nettside-algo/csp.js"></script><script src="nettside-algo/logikk.js"></script><script src="nettside-algo/plan.js"></script><script src="nettside-algo/sprak.js"></script>
@@ -509,6 +510,14 @@ const forst=d=>{const f=document.querySelector("body>.dlg");if(f&&f!==d)document
 document.querySelectorAll(".dlg").forEach(d=>{d.querySelector(".lukk").onclick=()=>d.close();d.querySelector(".opp").onclick=()=>{forst(d);S.dorden=[...document.querySelectorAll("body>.dlg")].map(x=>x.id);save()};d.querySelector(".feste").onclick=()=>{S[d.dataset.s]=!S[d.dataset.s];save();d.close();apne(d)};
 // closedby="any" mangler i Safari: lukk ved klikk utenfor dialogen.
 if(!("closedBy" in HTMLDialogElement.prototype))d.addEventListener("click",e=>{if(e.target!==d||!d.matches(":modal"))return;const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()})})
+// Bredden på de festede panelene (S.hb, px) dras i .hdrag, som skillelinja mellom video og oppgaver (S.rw).
+{const g=$(".hdrag"),r=document.documentElement,hb=p=>{S.hb=Math.round(Math.max(260,Math.min(r.clientWidth-200,p)));r.style.setProperty("--hbu",`min(${S.hb}px,100vw)`)};
+if(S.hb)hb(S.hb);
+g.onpointerdown=x=>{if(x.button===0){g.setPointerCapture(x.pointerId);g.classList.add("on")}};
+g.onpointermove=x=>{if(g.hasPointerCapture(x.pointerId))hb(r.clientWidth-x.clientX)};
+g.onlostpointercapture=()=>{g.classList.remove("on");save()};
+g.onkeydown=x=>{const d={ArrowLeft:20,ArrowRight:-20}[x.key];if(d){x.preventDefault();hb((S.hb||$(".dlg.hoyre[open]").offsetWidth)+d);save()}};
+g.ondblclick=()=>{delete S.hb;r.style.removeProperty("--hbu");save()}}
 function page(h){$("#main").className="";$("#main").innerHTML=h}
 function route(){
 const h=location.hash.slice(1)||"hjem",e=D.eps.find(x=>x.id===h)||D.ov.find(x=>x.id===h),A=window.ALGO,[h0,h1]=h.split("/"),AD=$("#algodlg");
