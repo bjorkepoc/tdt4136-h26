@@ -82,15 +82,15 @@ details.fasit summary{cursor:pointer;font-weight:600}
 /* «↑ Øverst» bare på et festet panel som har et annet festet panel over seg. */
 .dlg .opp{display:none}.dlg.hoyre[open]~.dlg.hoyre[open] .opp{display:block}
 /* Panelene festet til høyre (leksikon, notater, algoritmer): ingen bakteppe, og på brede skjermer gir siden plass til dem.
-   Flere festede deler høyden likt, i rekkefølgen i HTML-en. --hb er bredden på kolonnen, bredere når algoritmene er med, eller --hbu når du har dratt i .hdrag (S.hb). */
+   Flere festede står over hverandre i rekkefølgen i HTML-en, med høyden --ph og toppen --top fra JS (S.hv, .vdrag). --hb er bredden på kolonnen, bredere når algoritmene er med, eller --hbu når du har dratt i .hdrag (S.hb). */
 :root:has(.dlg.hoyre[open]){--hb:var(--hbu,min(clamp(320px,32vw,440px),100vw))}:root:has(#algodlg.hoyre[open]){--hb:var(--hbu,min(clamp(360px,42vw,720px),100vw))}
-:root:has(.dlg.hoyre[open]~.dlg.hoyre[open]){--hn:2}:root:has(.dlg.hoyre[open]~.dlg.hoyre[open]~.dlg.hoyre[open]){--hn:3}
-.dlg.hoyre{--hi:0;position:fixed;inset:calc(var(--hi)*100vh/var(--hn,1)) 0 auto auto;margin:0;width:var(--hb);height:calc(100vh/var(--hn,1));max-height:none;overflow:auto;border-width:0 0 0 1px;border-radius:0;z-index:6}
-#algodlg.hoyre{width:var(--hb)}.dlg.hoyre[open]~.dlg.hoyre[open]{--hi:1;border-top-width:2px}.dlg.hoyre[open]~.dlg.hoyre[open]~.dlg.hoyre[open]{--hi:2}
+.dlg.hoyre{position:fixed;inset:var(--top,0) 0 auto auto;margin:0;width:var(--hb);height:var(--ph,100vh);max-height:none;overflow:auto;border-width:0 0 0 1px;border-radius:0;z-index:6}
+#algodlg.hoyre{width:var(--hb)}.dlg.hoyre[open]~.dlg.hoyre[open]{border-top-width:2px}
 /* Leksikon-knappen flyttes til venstre for de festede panelene, så den ikke blir dekket. */
 @media (min-width:700px){:root:has(.dlg.hoyre[open]) #leksknapp{right:calc(var(--hb) + 12px)}}
 @media (min-width:1000px){:root:has(.dlg.hoyre[open]) .wrap{margin-right:var(--hb)}}
 .hdrag{display:none;position:fixed;top:0;bottom:0;right:calc(var(--hb) - 5px);width:9px;padding:0;margin:0;border:0;border-radius:0;background:none;z-index:7;cursor:col-resize;touch-action:none;-webkit-user-select:none;user-select:none}:root:has(.dlg.hoyre[open]) .hdrag{display:block}
+.vdrag{position:fixed;right:0;width:var(--hb);height:9px;padding:0;margin:0;border:0;border-radius:0;background:none;z-index:7;cursor:row-resize;touch-action:none;-webkit-user-select:none;user-select:none}.vdrag::after{content:"";position:absolute;top:3px;left:50%;width:44px;height:3px;margin-left:-22px;border-radius:2px;background:var(--muted);opacity:.5}
 .lsok{position:sticky;top:0;z-index:1;width:100%;font:inherit;padding:9px 12px;margin:4px 0 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--fg)}
 .lbody li{margin:3px 0}.lbody h2{margin:22px 0 6px}
 textarea.in{min-height:90px;resize:vertical;field-sizing:content}textarea.in.en{min-height:0}
@@ -115,7 +115,7 @@ textarea.in{min-height:90px;resize:vertical;field-sizing:content}textarea.in.en{
 .nottopp{margin:12px 0 0;min-height:36px}.notmeta{clear:both;margin:12px 0 8px;font-size:13px}
 .notfot{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
 .notsvar .fb{margin:0 0 8px}.notsvar blockquote{margin:0 0 6px;padding-left:10px;border-left:3px solid var(--border);color:var(--muted);white-space:pre-wrap}.notsvar .fjern{float:right;padding:0 7px;margin:-4px -8px 0 6px}
-.notslett{background:none;border-color:transparent;color:var(--bad)}.notslett:hover{border-color:var(--bad)}#notdlg.hoyre .notat{min-height:calc(100vh/var(--hn,1) - 190px)}
+.notslett{background:none;border-color:transparent;color:var(--bad)}.notslett:hover{border-color:var(--bad)}#notdlg.hoyre .notat{min-height:calc(var(--ph,100vh) - 190px)}
 .lbody :is(.spor,.pin){padding:1px 8px;font-size:12px}
 .sjr{font-size:13px;font-weight:600;margin-left:6px}.sjr.ja{color:var(--ok)}.sjr.nei{color:var(--bad)}
 #varsel{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:60;max-width:calc(100vw - 32px);padding:8px 14px;border-radius:8px;background:var(--bad);color:var(--surface);font-size:14px}#varsel:empty{display:none}
@@ -126,7 +126,7 @@ main.ep .rgt{padding:0 36px 100px;min-width:0}
 .fig{display:block;max-width:100%;margin:10px auto;background:#fff;border-radius:8px;padding:6px}
 .drag{display:none}
 .drag::after,.hdrag::after{content:"";position:absolute;left:2px;top:50%;width:3px;height:44px;margin-top:-22px;border-radius:2px;background:var(--muted);opacity:.5}
-.drag:hover::after,.drag:focus-visible::after,.drag.on::after,.hdrag:hover::after,.hdrag:focus-visible::after,.hdrag.on::after{background:var(--accent);opacity:1}
+.drag:hover::after,.drag:focus-visible::after,.drag.on::after,.hdrag:hover::after,.hdrag:focus-visible::after,.hdrag.on::after,.vdrag:hover::after,.vdrag:focus-visible::after,.vdrag.on::after{background:var(--accent);opacity:1}
 @media (min-width:1150px){
 main.ep{display:grid;grid-template-columns:minmax(0,1fr) 9px minmax(300px,var(--rw,40%))}
 main.ep .lft{padding-bottom:100px}
@@ -141,7 +141,7 @@ main.ep.uv,main.ep.uh{grid-template-columns:minmax(0,1fr)}main.ep.uv .rgt,main.e
 <link rel="stylesheet" href="nettside-algo/motor.css">
 </head>
 <body>
-<button id="leksknapp" type="button" aria-haspopup="dialog" title="Slå opp et begrep (marker et ord først for å søke på det)">Leksikon</button><dialog id="leksdlg" class="dlg" data-s="ldock" closedby="any" aria-label="Leksikon"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha leksikonet åpent til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><dialog id="notdlg" class="dlg" data-s="ndock" closedby="any" aria-label="Notater"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha notatene åpne til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><dialog id="algodlg" class="dlg" data-s="adock" closedby="any" aria-label="Algoritmer"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha algoritmene åpne til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><button type="button" class="hdrag" title="Dra for å endre bredden. Dobbeltklikk for å nullstille." aria-label="Skillelinje for panelene festet til høyre. Piltastene endrer bredden."></button><div class="wrap"><div id="deler"><button id="meny" type="button" aria-controls="nav">Meny</button><button id="vis-v" type="button" hidden></button><button id="vis-h" type="button" hidden>Øv selv</button><button id="tema" type="button"></button><button id="notknapp" type="button" aria-haspopup="dialog" title="Notatene dine, med en egen side for hvert notat">Notater</button></div><nav id="nav"></nav><main id="main"></main></div>
+<button id="leksknapp" type="button" aria-haspopup="dialog" title="Slå opp et begrep (marker et ord først for å søke på det)">Leksikon</button><dialog id="leksdlg" class="dlg" data-s="ldock" closedby="any" aria-label="Leksikon"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha leksikonet åpent til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><dialog id="notdlg" class="dlg" data-s="ndock" closedby="any" aria-label="Notater"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha notatene åpne til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><dialog id="algodlg" class="dlg" data-s="adock" closedby="any" aria-label="Algoritmer"><div class="dlg-k"><button type="button" class="opp" title="Legg dette panelet øverst">↑ Øverst</button><button type="button" class="tg feste" aria-pressed="false" title="Ha algoritmene åpne til høyre mens du jobber">Fest til høyre</button><button type="button" class="lukk">Lukk</button></div><div></div></dialog><button type="button" class="hdrag" title="Dra for å endre bredden. Dobbeltklikk for å nullstille." aria-label="Skillelinje for panelene festet til høyre. Piltastene endrer bredden."></button><button type="button" class="vdrag" hidden title="Dra for å endre høyden. Dobbeltklikk for lik høyde." aria-label="Skillelinje mellom panelene festet til høyre. Piltastene endrer høyden."></button><button type="button" class="vdrag" hidden title="Dra for å endre høyden. Dobbeltklikk for lik høyde." aria-label="Skillelinje mellom panelene festet til høyre. Piltastene endrer høyden."></button><div class="wrap"><div id="deler"><button id="meny" type="button" aria-controls="nav">Meny</button><button id="vis-v" type="button" hidden></button><button id="vis-h" type="button" hidden>Øv selv</button><button id="tema" type="button"></button><button id="notknapp" type="button" aria-haspopup="dialog" title="Notatene dine, med en egen side for hvert notat">Notater</button></div><nav id="nav"></nav><main id="main"></main></div>
 <script>const D = __DATA__;</script>
 <!-- Algoritmeanimasjoner og tegneverktøy, se nettside-algo/KONTRAKT.md -->
 <script src="nettside-algo/motor.js"></script><script src="nettside-algo/sok.js"></script><script src="nettside-algo/lokalt.js"></script><script src="nettside-algo/spill.js"></script><script src="nettside-algo/csp.js"></script><script src="nettside-algo/logikk.js"></script><script src="nettside-algo/plan.js"></script><script src="nettside-algo/sprak.js"></script>
@@ -518,6 +518,20 @@ g.onpointermove=x=>{if(g.hasPointerCapture(x.pointerId))hb(r.clientWidth-x.clien
 g.onlostpointercapture=()=>{g.classList.remove("on");save()};
 g.onkeydown=x=>{const d={ArrowLeft:20,ArrowRight:-20}[x.key];if(d){x.preventDefault();hb((S.hb||$(".dlg.hoyre[open]").offsetWidth)+d);save()}};
 g.ondblclick=()=>{delete S.hb;r.style.removeProperty("--hbu");save()}}
+// Festede paneler over hverandre deler høyden etter vektene S.hv[id] (standard 1). Hvert får --top og --ph (se .dlg.hoyre i CSS).
+// .vdrag k er grensen mellom panel k og k+1, og draget flytter vekt mellom de to. lay kjøres når et panel åpnes, lukkes, festes eller flyttes.
+{const V=[...document.querySelectorAll(".vdrag")],L=()=>[...document.querySelectorAll("body>.dlg.hoyre[open]")],w=d=>(S.hv||{})[d.id]||1,
+lay=()=>{const l=L(),W=l.reduce((s,d)=>s+w(d),0);let f=0;V.forEach((g,k)=>g.hidden=k>=l.length-1);
+document.querySelectorAll("body>.dlg").forEach(d=>{d.style.removeProperty("--top");d.style.removeProperty("--ph")});
+l.forEach((d,i)=>{const t=f/W*100;f+=w(d);d.style.setProperty("--top",t+"vh");d.style.setProperty("--ph",w(d)/W*100+"vh");if(i)V[i-1].style.top=`calc(${t}vh - 4px)`})},
+dra=(k,y)=>{const[a,b]=L().slice(k,k+2);if(!b)return;const t=a.getBoundingClientRect().top,h=b.getBoundingClientRect().bottom-t,s=w(a)+w(b),hv=S.hv||(S.hv={});
+hv[a.id]=+(s*Math.max(80,Math.min(h-80,y-t))/h).toFixed(3);hv[b.id]=+(s-hv[a.id]).toFixed(3);lay()};
+V.forEach((g,k)=>{g.onpointerdown=x=>{if(x.button===0){g.setPointerCapture(x.pointerId);g.classList.add("on")}};
+g.onpointermove=x=>{if(g.hasPointerCapture(x.pointerId))dra(k,x.clientY)};
+g.onlostpointercapture=()=>{g.classList.remove("on");save()};
+g.onkeydown=x=>{const d={ArrowUp:-20,ArrowDown:20}[x.key];if(d){x.preventDefault();dra(k,L()[k].getBoundingClientRect().bottom+d);save()}};
+g.ondblclick=()=>{delete S.hv;lay();save()}});
+const mo=new MutationObserver(lay);document.querySelectorAll("body>.dlg").forEach(d=>mo.observe(d,{attributes:true,attributeFilter:["open","class"]}));mo.observe(document.body,{childList:true});lay()}
 function page(h){$("#main").className="";$("#main").innerHTML=h}
 function route(){
 const h=location.hash.slice(1)||"hjem",e=D.eps.find(x=>x.id===h)||D.ov.find(x=>x.id===h),A=window.ALGO,[h0,h1]=h.split("/"),AD=$("#algodlg");
