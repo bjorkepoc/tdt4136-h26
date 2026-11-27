@@ -25,11 +25,13 @@ nav a{display:flex;gap:8px;align-items:baseline;padding:5px 8px;border-radius:6p
 nav a:hover{background:var(--code)}
 nav a.cur{background:var(--accent-bg);color:var(--accent)}
 nav a b{min-width:30px}
-nav a .tt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+nav a .tt{flex:1;min-width:0}
 nav a .pr{font-size:12px;color:var(--muted);white-space:nowrap}
 nav a .pr.seen{color:var(--ok)}
 nav .grp{font-size:12px;color:var(--muted);margin:16px 8px 4px;text-transform:uppercase;letter-spacing:.05em}
-main{max-width:900px;width:100%;padding:28px 36px 100px}
+main{max-width:960px;width:100%;margin:0 auto;padding:28px 36px 100px}
+main.bred{max-width:1320px}
+main.wide #pugg:first-child>.pkort{margin-top:30px}
 main.wide{max-width:none}
 h1{font-size:28px;line-height:1.25;margin:4px 0 12px}
 h2{font-size:21px;margin:32px 0 8px;padding-top:8px;border-top:1px solid var(--border)}
@@ -61,7 +63,7 @@ details.fasit summary{cursor:pointer;font-weight:600}
 .tfasit{margin-top:10px;border-top:1px dashed var(--border);padding-top:8px}.tfasit summary{cursor:pointer;font-weight:600;color:var(--accent)}
 .eks-top,.eks-nav{position:sticky;z-index:3;display:flex;align-items:center;gap:6px 12px;flex-wrap:wrap;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:10px}
 .eks-top{top:0;margin-bottom:12px}.eks-top b{flex:1}.eks-nav{bottom:0;margin-top:12px;gap:4px}
-#tid{font-weight:600;font-variant-numeric:tabular-nums}#tid.ute{color:var(--bad)}
+#nullE{color:var(--bad)}#tid{font-weight:600;font-variant-numeric:tabular-nums}#tid.ute{color:var(--bad)}
 .eks-s{display:none;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px 26px;min-height:55vh}.eks-s.cur{display:block}
 .eks .task{background:none;border:0;padding:0;margin:0}.eks .task h3{font-size:1.3em;margin-bottom:14px}
 .maks{color:var(--muted);font-size:14px;margin:18px 0 8px}
@@ -93,9 +95,39 @@ details.fasit summary{cursor:pointer;font-weight:600}
 .vdrag{position:fixed;right:0;width:var(--hb);height:9px;padding:0;margin:0;border:0;border-radius:0;background:none;z-index:7;cursor:row-resize;touch-action:none;-webkit-user-select:none;user-select:none}.vdrag::after{content:"";position:absolute;top:3px;left:50%;width:44px;height:3px;margin-left:-22px;border-radius:2px;background:var(--muted);opacity:.5}
 .lsok{position:sticky;top:0;z-index:1;width:100%;font:inherit;padding:9px 12px;margin:4px 0 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--fg)}
 .prio{display:inline-block;min-width:1.6em;text-align:center;padding:0 6px;border-radius:999px;font-size:12px;font-weight:700;vertical-align:1px}.pA{background:var(--accent);color:var(--bg)}.pB{background:var(--accent-bg);color:var(--accent)}.pC{border:1px solid var(--border);color:var(--muted)}
-.bk{border:1px solid var(--border);border-radius:10px;padding:8px 14px;margin:8px 0;background:var(--surface)}.bk>summary{cursor:pointer}.bk[open]>summary{margin-bottom:8px}.bkpr{float:right}ol.kort li{margin:6px 0}
-.pkort{border:2px solid var(--accent);border-radius:12px;padding:14px 20px;margin:12px 0 24px;background:var(--surface)}.pq{font-size:20px;font-weight:600;margin:8px 0}.pa{font-size:18px;border-top:1px solid var(--border);padding-top:8px}.pk{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.slv{display:grid;grid-template-columns:minmax(190px,240px) 1fr;gap:14px;align-items:start}.sll{position:sticky;top:8px}.sll a{display:flex;gap:8px;padding:5px 8px;border-radius:6px;color:var(--fg);text-decoration:none;font-size:13.5px;line-height:1.35}.sll a:hover{background:var(--code)}.sll a.cur{background:var(--accent-bg);color:var(--accent)}.sll b{min-width:34px}.slv iframe{width:100%;height:calc(100vh - 110px);border:1px solid var(--border);border-radius:6px;background:var(--surface)}@media(max-width:700px){.slv{grid-template-columns:1fr}}
+.bhode{display:flex;gap:16px 32px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}.bhode h1{margin:0 0 4px}.bhode ol{margin:6px 0 0;padding-left:20px;color:var(--muted)}
+.pstat{display:flex;gap:14px 20px;align-items:center;flex-wrap:wrap;padding:12px 16px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+.tall{display:flex;gap:20px}.tall span{display:flex;flex-direction:column;font-size:12.5px;color:var(--muted)}.tall b{font-size:26px;line-height:1.15;color:var(--fg)}
+.bar{display:block;height:6px;border-radius:3px;background:var(--border);overflow:hidden}.bar i{display:block;height:100%;background:var(--ok)}.pstat>.bar{width:150px}
+button.stor{font-size:16px;padding:10px 18px}
+.kapgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;margin:0 0 28px}
+.kapt{display:flex;flex-direction:column;gap:1px;text-align:left;padding:9px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);font:inherit;color:var(--fg);cursor:pointer}.kapt:hover{border-color:var(--accent)}.kapt>span:first-of-type{font-weight:600}.kapt .mut{font-size:12.5px}.kapt .bar{margin-top:8px}
+.bkap{margin:0 0 26px;scroll-margin-top:16px}.bkap h2{margin:0 0 10px}.bkap h2 .mut{font-weight:400;font-size:.8em}
+.bliste{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:6px}
+.brad{display:grid;grid-template-columns:52px minmax(0,1fr) auto 40px;gap:12px;align-items:center;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--fg);text-decoration:none}.brad:hover{border-color:var(--accent)}
+.bt{display:flex;flex-direction:column}.bt .mut{font-size:12.5px}.bkpr{font-size:12.5px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.bleg{margin:10px 0 0;font-size:13.5px}.bintro{margin-top:6px;max-width:75ch}.bintro>summary{cursor:pointer;color:var(--accent)}
+#main:has(#bov[hidden]) .bhode>div:first-child>:not(h1){display:none}
+.bsti{margin:0 0 12px}
+#bov:has(.blese){max-width:1100px;margin:0 auto}.blese{display:grid;grid-template-columns:minmax(280px,360px) minmax(0,1fr);gap:40px;align-items:start}.blese article{max-width:72ch;font-size:17px}.bkort{order:-1}
+.husk{padding:10px 14px;border-left:4px solid var(--accent);background:var(--accent-bg);border-radius:6px}.ph .phx{max-width:75ch}.blese article h1{margin-bottom:6px}
+.bkort{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto;padding:14px 18px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}.bkort h2{margin:0 0 4px;font-size:18px}.bkort ol{padding-left:20px}.bkort li{margin:8px 0}.bkort summary{cursor:pointer}.bkort details p{margin:4px 0 0;color:var(--muted)}
+.bnav{display:flex;justify-content:space-between;gap:16px;margin-top:32px;padding-top:12px;border-top:1px solid var(--border)}
+.pkort{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);border:2px solid var(--accent);border-radius:12px;background:var(--surface);margin:0 0 24px;overflow:hidden}.pkort.pfer{display:block;padding:16px 22px}
+.pv{padding:20px 24px}.ph{padding:18px 24px;border-left:1px solid var(--border);background:var(--bg);max-height:calc(100vh - 150px);overflow:auto}.ph>.pk{margin:0 0 10px}
+.pq{font-size:22px;font-weight:600;margin:10px 0 16px;line-height:1.35}.pa{font-size:18px;border-top:1px solid var(--border);padding-top:10px}.pk{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.ptips{font-size:12.5px;margin-top:18px}
+@media (max-width:1000px){.pkort,.blese{grid-template-columns:minmax(0,1fr)}.ph{border-left:0;border-top:1px solid var(--border);max-height:none}.bkort{position:static;max-height:none;order:0}.bliste{grid-template-columns:minmax(0,1fr)}}
+/* Eksamen: oppgaveteksten til venstre og svarfeltene til høyre, som delt visning i Inspera. Tekst uten svarfelt holdes smal og midtstilt. */
+.eks .task.split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0 36px;align-items:start}.eks .task.split>h3{grid-column:1/-1}
+.eks .task.split>.tv{position:sticky;top:64px;max-height:calc(100vh - 140px);overflow:auto;padding-right:8px}
+.eks-s:not(:has(.split))>*,.eks .etter{max-width:900px;margin-left:auto;margin-right:auto}
+@media (max-width:1000px){.eks .task.split{grid-template-columns:minmax(0,1fr)}.eks .task.split>.tv{position:static;max-height:none}}
+/* Slides: lista til venstre, PDF-en til høyre; «Fyll fanen» lar PDF-en dekke hele fanen. */
+.slbar{display:none}.slv.stor{position:fixed;inset:0;z-index:20;display:block;background:var(--bg)}.slv.stor .sll{display:none}.slv.stor iframe{height:100vh;border:0;border-radius:0}
+.slv.stor .slbar{display:flex;gap:6px;position:fixed;left:12px;bottom:12px;z-index:21;padding:6px;border-radius:10px;background:var(--surface);border:1px solid var(--border);box-shadow:0 4px 14px rgb(0 0 0/.25)}
+main.bred .lbody>ul{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));column-gap:48px;align-items:start}
+@media (hover:hover){.lbody li:not(:hover,:focus-within) :is(.spor,.pin:not([aria-pressed="true"])){visibility:hidden}}
+.slv{display:grid;grid-template-columns:minmax(190px,240px) 1fr;gap:18px;align-items:start}.sll h1{font-size:1.5em;margin:0 0 12px}.sll{position:sticky;top:8px}.sll a{display:flex;gap:8px;padding:5px 8px;border-radius:6px;color:var(--fg);text-decoration:none;font-size:13.5px;line-height:1.35}.sll a:hover{background:var(--code)}.sll a.cur{background:var(--accent-bg);color:var(--accent)}.sll b{min-width:34px}.slv iframe{width:100%;height:calc(100vh - 56px);border:1px solid var(--border);border-radius:6px;background:var(--surface)}@media(max-width:700px){.slv{grid-template-columns:1fr}}
 .lbody li{margin:3px 0}.lbody h2{margin:22px 0 6px}
 textarea.in{min-height:90px;resize:vertical;field-sizing:content}textarea.in.en{min-height:0}
 .tg[aria-pressed="true"],#deler [aria-pressed="true"]{background:var(--accent-bg);color:var(--accent);border-color:var(--accent)}
@@ -140,7 +172,10 @@ main.ep .rgt h2#ov{margin-top:0;border-top:0;padding-top:0}
 main.ep .rgt .task{background:var(--bg)}
 main.ep .goov{display:none}
 main.ep.uv,main.ep.uh{grid-template-columns:minmax(0,1fr)}main.ep.uv .rgt,main.ep.uh .lft{max-width:1100px}}
-@media (max-width:800px){main.ep .lft,main.ep .rgt{padding-left:16px;padding-right:16px}.wrap{grid-template-columns:minmax(0,1fr)}nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border)}main{padding:20px 16px 80px}#deler{position:absolute}}
+@media (max-width:800px){main.ep .lft,main.ep .rgt{padding-left:16px;padding-right:16px}.wrap{grid-template-columns:minmax(0,1fr)}nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border)}main{padding:20px 16px 80px}#deler,#leksknapp{position:absolute}}
+@media (max-width:700px){.kapgrid{grid-template-columns:1fr 1fr}.kapt>.mut,.kapt>.bar{display:none}}
+@media (max-width:600px){.brad{grid-template-columns:38px minmax(0,1fr) auto;gap:8px}.bkpr{grid-column:2;text-align:left}}
+main.fel{max-width:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(520px,100%),1fr));gap:0 40px;align-content:start}main.fel>:is(h1,p){grid-column:1/-1}
 </style>
 <link rel="stylesheet" href="nettside-algo/motor.css">
 </head>
@@ -234,7 +269,7 @@ const nDone=e=>e.tasks.filter((t,j)=>filled(svar(e)[j])).length;
 
 function nav(){
 const h=location.hash.slice(1)||"hjem",c=x=>h===x?' class="cur"':"";
-$("#nav").innerHTML=`<div class="top">TDT4136 eksamensløp</div><a href="#hjem"${c("hjem")}>Plan og fremdrift</a><a href="oversiktsark.pdf" target="_blank">Oversiktsark / cheat sheet (PDF) ↗</a><a href="#algoritmer"${h.startsWith("algoritmer")&&h!=="algoritmer/pseudokode"?' class="cur"':""}>Algoritmer animert</a>${D.pseudo.side?`<a href="#algoritmer/pseudokode"${c("algoritmer/pseudokode")}>Pseudokode</a>`:""}<a href="#verksted"${c("verksted")}>Tegn og sjekk</a><a href="#leksikon"${c("leksikon")}>Leksikon</a>${D.boka.s.length?`<a href="#boka"${c("boka")}><span class="tt">Bare i boka (pugg)</span><span class="pr">${pstat().due||""}</span></a>`:""}<a href="#slides"${h.startsWith("slides")?' class="cur"':""}>Forelesningsslides</a><div class="grp">Episoder</div>`+
+$("#nav").innerHTML=`<div class="top">TDT4136 eksamensløp</div><a href="#hjem"${c("hjem")}>Plan og fremdrift</a><a href="oversiktsark.pdf" target="_blank">Oversiktsark / cheat sheet (PDF) ↗</a><a href="#algoritmer"${h.startsWith("algoritmer")&&h!=="algoritmer/pseudokode"?' class="cur"':""}>Algoritmer animert</a>${D.pseudo.side?`<a href="#algoritmer/pseudokode"${c("algoritmer/pseudokode")}>Pseudokode</a>`:""}<a href="#verksted"${c("verksted")}>Tegn og sjekk</a><a href="#leksikon"${c("leksikon")}>Leksikon</a>${D.boka.s.length?`<a href="#boka"${h.startsWith("boka")?' class="cur"':""}><span class="tt">Bare i boka (pugg)</span><span class="pr">${pstat().due||""}</span></a>`:""}<a href="#slides"${h.startsWith("slides")?' class="cur"':""}>Forelesningsslides</a><div class="grp">Episoder</div>`+
 D.eps.map(e=>`<a href="#${e.id}"${c(e.id)} title="${e.title}"><b>${e.ep}</b><span class="tt">${e.title}</span><span class="pr${S.seen[e.id]?" seen":""}">${S.seen[e.id]?"✓ ":""}${nDone(e)}/${e.tasks.length}</span></a>`).join("")+
 [...new Set(D.ov.map(e=>e.grp))].map(g=>`<div class="grp">${g}</div>`+D.ov.filter(e=>e.grp===g).map(e=>`<a href="#${e.id}"${c(e.id)} title="${e.title}"><b>${e.ep}</b><span class="tt">${e.title}</span><span class="pr">${nDone(e)}/${e.tasks.length}</span></a>`).join("")).join("")+
 `<div class="grp">Mer</div><a href="#feller"${c("feller")}>Alle eksamensfeller</a>${D.feil?`<a href="#feillogg"${c("feillogg")}>Feillogg</a>`:""}<a href="#eksamener"${c("eksamener")}>Eksamener</a>`}
@@ -242,7 +277,7 @@ D.eps.map(e=>`<a href="#${e.id}"${c(e.id)} title="${e.title}"><b>${e.ep}</b><spa
 function home(){
 const d=new Date(),dager=Math.ceil((new Date(2026,11,7)-new Date(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);
 const sett=D.eps.filter(e=>S.seen[e.id]).length,last=D.eps.find(e=>e.id===S.last)||D.ov.find(e=>e.id===S.last);
-$("#main").className="";$("#main").innerHTML=`<h1>TDT4136: alt på ett sted</h1><p>Eksamen mandag 07.12.2026 kl. 15:00${dager>0?`, om ${dager} dager`:""}. Du har sett ${sett} av 21 videoer.</p>`+
+$("#main").className="";$("#main").innerHTML=`<h1>TDT4136: alt på ett sted</h1><p>Eksamen mandag 07.12.2026 kl. 15:00${dager>0?`, om ${dager} dager`:""}. Du har sett ${sett} av 21 videoer.</p><ul><li><a href="#e01">Episodene E01–E21</a>: video, notat og Øv selv.</li><li><a href="#boka">Bare i boka</a>: pensum som ikke ble forelest, med puggekort.</li><li>Øvinger, prøveeksamener og tidligere eksamener: i menyen til venstre, i eksamensvisning med klokke.</li><li><a href="#leksikon">Leksikon</a>, <a href="#algoritmer">algoritmer</a> og <a href="#slides">slides</a>: slå opp underveis.</li></ul>`+
 (last?`<p><a class="btn" href="#${last.id}">Fortsett med ${last.ep}: ${last.title} →</a></p>`:"")+D.plan+
 `<p class="mut">${D.plan?"Dagens rad i planen er markert. ":""}Svar og fremdrift lagres i denne nettleseren. Siden lages av <code>arbeid/lag-nettside.py</code>.</p>`;
 const k=String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0");
@@ -303,8 +338,8 @@ const mk=(m,s,r,fasit)=>{n++;if(r)ok++;m.className="sjr "+(s?(r?"ja":"nei"):"");
 Object.entries(k.grid||{}).forEach(([g,f])=>{const m=el.querySelector(`.sjr[data-g="${CSS.escape(g)}"]`);if(m)mk(m,a[g],a[g]===f,f)});
 (t.f||[]).forEach(([l],i)=>{const fa=(k.f||{})[l],m=el.querySelector(`.sjr[data-n="${i}"]`);if(!fa||!m)return;const s=a[l];mk(m,s,!!s&&fa.some(v=>likt(s,v)),fa[0])});
 el.querySelector(".sjm").innerHTML=`<b>${ok} av ${n} riktig.</b>`+(ok<n&&!vis?` <button type="button" class="vis" data-j="${j}">Vis riktig svar</button>`:"")+(k.merk?` <span class="mut">${esc(k.merk)}</span>`:"")}
-function visFB(){const id=location.hash.slice(1);document.querySelectorAll("#tasks .task").forEach(el=>{
-const j=el.id.slice(1),f=(FB[id]||{})[j],r=(S.rett[id]||{})[j],box=el.querySelector(".fb"),st=el.querySelector(".rs");if(!box)return;fbBoks(box,st,f,r,"Tilbakemelding")});
+function visFB(){const id=location.hash.slice(1),nu=((S.pv||{})[id]||{}).null||"";document.querySelectorAll("#tasks .task").forEach(el=>{
+const j=el.id.slice(1),box=el.querySelector(".fb"),st=el.querySelector(".rs");let f=(FB[id]||{})[j],r=(S.rett[id]||{})[j];if(!box)return;if(nu){if(f&&!(f.tid>nu))f=null;if(r&&!(r>nu))r=null}fbBoks(box,st,f,r,"Tilbakemelding")});
 // «Spør» i leksikonet: svaret står i FB.leks[begrep] og vises under begrepet.
 document.querySelectorAll(".lbody li[data-b]").forEach(li=>fbBoks(li.querySelector(".fb"),li.querySelector(".rs"),(FB.leks||{})[li.dataset.b],(S.rett.leks||{})[li.dataset.b],"Svar"));
 // «Spør» på et pugge-kort: svaret står i FB.pugg[kort-id].
@@ -338,7 +373,7 @@ b.classList.add("rec");b.textContent="Stopp";r.start()}
 function episode(e){
 // Øvingene (D.ov) bruker samme visning, bare uten video: oppgaveteksten står til venstre, oppgavene til høyre.
 const L=e.video?D.eps:D.ov.filter(x=>x.grp===e.grp),i=L.indexOf(e),pr=L[i-1],nx=L[i+1];
-const pv=/eksamen$/.test(e.art);$("#main").className=pv?"":"ep";
+const pv=/eksamen$/.test(e.art);$("#main").className=pv?"bred":"ep";
 $("#main").innerHTML=pv?prove(e):`<div class="lft"><p class="mut">${e.ep}${e.pensum?" · "+e.pensum:" · "+e.art}</p><h1>${e.title}</h1>
 ${e.video?`<video id="v" controls preload="metadata" src="${e.video}"></video>
 <div class="row"><label><input type="checkbox" id="seen"${S.seen[e.id]?" checked":""}> Sett</label><button id="cc"></button><span class="mut">${e.len}<span class="goov"> · <a href="javascript:void 0" onclick="document.getElementById('ov').scrollIntoView()">Gå til Øv selv</a></span></span></div>
@@ -401,8 +436,8 @@ navigator.clipboard?navigator.clipboard.writeText(s).then(ok,fb):fb()};if(pv)eks
 // Sjekk, fasit og retting skjules til settet er levert.
 const PT=4*3600e3;let tt;
 function prove(e){const n=e.tasks.length,b=(k,l)=>`<button type="button" data-k="${k}">${l}</button>`;
-return `<div class="eks"><div class="eks-top"><b>TDT4136 · ${e.ep} ${esc(e.title)}</b><span id="tid"></span><button type="button" class="tg" id="ovE" aria-pressed="false" title="Vis Sjekk, fasit, Spør og Rett denne før du leverer">Fasit underveis</button><button type="button" id="algoE">Algoritmer</button><button type="button" id="leksE">Leksikon</button><button type="button" id="notE">Notater</button><button type="button" id="lever">Lever</button></div>
-<section class="eks-s" id="s0">${e.note}${e.intro}<p><button type="button" class="pri" id="startp"></button></p></section>
+return `<div class="eks"><div class="eks-top"><b>TDT4136 · ${e.ep} ${esc(e.title)}</b><span id="tid"></span><button type="button" class="tg" id="ovE" aria-pressed="false" title="Vis Sjekk, fasit, Spør og Rett denne før du leverer">Fasit underveis</button><button type="button" id="algoE">Algoritmer</button><button type="button" id="leksE">Leksikon</button><button type="button" id="notE">Notater</button><button type="button" id="nullE" title="Tøm svarene og start settet på nytt">Nullstill</button><button type="button" class="pri" id="lever">Lever</button></div>
+<section class="eks-s" id="s0"><p><button type="button" class="pri" id="startp"></button></p>${e.note}${e.intro}</section>
 <div id="tasks">${e.tasks.map((t,j)=>`<section class="eks-s" id="s${j+1}">${task(e,t,j)}</section>`).join("")}</div>
 <section class="eks-s" id="s${n+1}">${e.art==="eksamen"?e.vedlegg||'<p class="mut">Eksamenen har ingen vedlegg.</p>':'<h3>Formula sheet</h3><img class="fig" src="nettside-figurer/e14-2025-formelark.svg" alt="Formelarket fra eksamen 2025">'}</section>
 <div class="etter"><div class="row">${API?'<button class="pri" id="rettalle">Send alle besvarte til retting</button>':""}<button id="copy">Kopier svarene</button><span class="mut" id="cmsg"></span></div><div id="cbox"></div>
@@ -415,11 +450,14 @@ if(m){el.querySelector("h3").textContent=m[1]+" "+m[3];el.querySelector(".sjm").
 const inp=el.querySelector('.in[data-k="Alternativ"]'),ls=[...el.querySelectorAll(".d li")].filter(li=>/^[A-E][.)]\s/.test(li.textContent.trim()));
 if(inp&&ls.length){const v=(svar(e)[j]||{}).Alternativ;inp.style.display=inp.previousElementSibling.style.display="none";
 ls[0].parentNode.outerHTML=`<div class="alt">${ls.map(li=>{const l=li.textContent.trim()[0];return `<label><input type="radio" name="a${j}" data-j="${j}" data-k="Alternativ" value="${l}"${v===l?" checked":""}><span>${li.innerHTML}</span></label>`}).join("")}</div>`}});
+// Delt visning: oppgaveteksten til venstre, svarfeltene til høyre. Bare når feltene står etter teksten, ikke inne i den (og ikke flervalg).
+X.querySelectorAll("#tasks .task").forEach(el=>{const d=el.querySelector(":scope>.d");if(!d||d.querySelector(".felt,.alt,.tg,.vk")||!el.querySelector(":scope>.felt,:scope>.row>.tg"))return;
+const v=document.createElement("div"),h=document.createElement("div");v.className="tv";h.className="th";v.append(d);h.append(...[...el.children].filter(x=>x.tagName!=="H3"));el.append(v,h);el.classList.add("split")});
 const merk=()=>X.querySelectorAll(".eks-nav [data-k]").forEach(b=>{const k=+b.dataset.k;b.classList.toggle("ok",k>0&&k<=n&&filled(svar(e)[k-1]));k===p.k?b.setAttribute("aria-current","step"):b.removeAttribute("aria-current")});
 const vis=k=>{p.k=Math.max(0,Math.min(n+1,k));save();X.querySelectorAll(".eks-s").forEach(s=>s.classList.toggle("cur",s.id==="s"+p.k));merk();scrollTo(0,0)};
 const tick=()=>{const t=$("#tid");if(!t)return clearInterval(tt);const r=PT-(p.start?Date.now()-p.start:0),z=x=>String(Math.floor(x)%60).padStart(2,"0"),k=x=>`${Math.floor(x/36e5)}:${z(x/6e4)}:${z(x/1e3)}`;
 // Når tiden er ute, teller klokka videre i rødt. Ingenting låses, så du kan bruke den tiden du trenger.
-t.textContent=p.levert?"Levert":r>0?`${p.start?"Tid igjen ":""}${k(r)}`:`+${k(-r)} over`;t.classList.toggle("ute",!p.levert&&r<=0)};
+t.textContent=p.levert?"Levert":r>0?`${p.start?"Tid igjen ":"Ikke startet · "}${k(r)}`:`+${k(-r)} over`;t.classList.toggle("ute",!p.levert&&r<=0)};
 const lev=()=>{X.classList.toggle("levert",!!p.levert);if(p.levert)e.tasks.forEach((t,j)=>t.sjekk&&sjekk(e,j,false));$("#startp").textContent=p.levert?"Se gjennom svarene":p.start?"Fortsett":"Start (4 timer)";tick()};
 // Leverer du i en annen fane, vises leveringen her også. Pilene går fra oppgaven som vises i denne fanen.
 friskProve=()=>{if(X.isConnected&&X.classList.contains("levert")!==!!p.levert)lev()};
@@ -430,6 +468,9 @@ $("#leksE").onclick=()=>$("#leksknapp").click();$("#notE").onclick=()=>$("#notkn
 // Algoritmene i en dialog: lenkene der åpnes i dialogen (se route), og siste side står der neste gang.
 $("#algoE").onclick=()=>{const d=$("#algodlg");d.dataset.h=location.hash.slice(1);if(!d.open)apne(d);if(!d.lastElementChild.childElementCount)ALGO.side(d.lastElementChild,"")};
 const ov=()=>{X.classList.toggle("ov",!!p.ov);$("#ovE").setAttribute("aria-pressed",!!p.ov)};$("#ovE").onclick=()=>{p.ov=!p.ov;save();ov()};ov();
+// Nullstill: feltene får tomme verdier (med nytt tidsstempel), så tømmingen også vinner i fila og i andre faner. Tilbakemeldinger fra før vises ikke.
+$("#nullE").onclick=()=>{if(!confirm("Nullstille hele settet? Svarene dine her slettes, og klokka og leveringen starter på nytt."))return;const A=svar(e);
+for(const j in A){const a=A[j];if(a&&typeof a==="object")for(const k of felt(a))a[k]=Array.isArray(a[k])?[]:""}Object.assign(p,{k:0,start:0,levert:0,null:now()});save();lagre();route()};
 $("#lever").onclick=()=>{if(confirm("Levere nå? Da kan du sjekke svarene, se fasit og sende alt til retting.")){p.levert=Date.now();save();lev()}};
 clearInterval(tt);tt=setInterval(tick,1000);lev();vis(p.k)}
 
@@ -548,41 +589,57 @@ hsh=s=>{let h=5381;for(const c of s)h=(h*33^c.codePointAt(0))>>>0;return h.toStr
 KORT=D.boka.s.flatMap(s=>s.k.map(([q,a])=>({id:hsh(s.n+q),s,q,a}))),PR={A:0,B:1,C:2},
 pstat=()=>{const P=svar({id:"pugg"}),i=dag();let due=0,ny=0,sitter=0;for(const k of KORT){const x=P[k.id];if(!x)ny++;else{if(x.d<=i)due++;if(x.b>=3)sitter++}}return{due,ny,sitter}};
 let PQ=[],PC=null,PV=false;
-function boka(){const P=svar({id:"pugg"}),kap={};D.boka.s.forEach(s=>(kap[s.n.split(".")[0]]||(kap[s.n.split(".")[0]]=[])).push(s));
-const sit=s=>`${s.k.filter(([q])=>(P[hsh(s.n+q)]||{}).b>=3).length}/${s.k.length}`;
-page(`<h1>Bare i boka</h1><div class="pstat"></div><div id="pugg"></div>${D.boka.intro}`+Object.entries(kap).map(([c,l])=>`<h2>Kapittel ${c}</h2>`+l.map(s=>`<details class="bk"><summary><b>${s.n}</b> ${esc(s.t)} <span class="prio p${s.p}" title="A: kan bli regneoppgave eller er spurt om før. B: kort teorispørsmål. C: lesestoff.">${s.p}</span> <span class="mut">${[s.ep,s.fo==="delvis"?"delvis forelest":"",s.ex?"eksamen "+s.ex:"",s.merk].filter(Boolean).map(esc).join(" · ")}</span><span class="bkpr mut" title="Kort som sitter (boks 3 eller høyere)">${sit(s)}</span></summary>${s.h}<ol class="kort">${s.k.map(([q,a])=>`<li><b>${esc(q)}</b><br>${esc(a)}</li>`).join("")}</ol></details>`).join("")).join(""));
-PQ=[];PC=null;pstat_vis()}
-function pstat_vis(){const el=$(".pstat");if(!el)return;const{due,ny,sitter}=pstat();el.innerHTML=`<p>${KORT.length} kort fra ${D.boka.s.length} seksjoner: <b>${sitter}</b> sitter, <b>${due}</b> skal repeteres i dag og <b>${ny}</b> er nye.</p>`+
-(PC?"":`<p class="pk"><button type="button" class="pri" data-pstart${due+ny?"":" disabled"}>${due+ny?"Pugg nå":"Ingenting å pugge i dag"}</button><span class="mut">En runde er kortene som skal repeteres i dag og inntil 25 nye. Mellomrom viser svaret, 1 = kunne ikke, 2 = kunne det.</span></p>`)}
-function pvis(){const el=$("#pugg");if(!el)return;PC=PQ[0]||null;PV=false;
-if(!PC){el.innerHTML=`<div class="pkort"><p><b>Runden er ferdig.</b> Kortene kommer igjen om 1–7 dager, de som satt dårligst først. Trykk «Pugg nå» for 25 nye.</p></div>`;return pstat_vis()}
-const s=PC.s,P=svar({id:"pugg"}),forst=s.k.every(([q])=>!P[hsh(s.n+q)]);
-el.innerHTML=`<div class="pkort" data-id="${PC.id}"><p class="mut">${s.n} ${esc(s.t)} <span class="prio p${s.p}">${s.p}</span>${P[PC.id]?"":" · nytt kort"} · ${PQ.length} igjen i runden</p>`+
-`<details${forst?" open":""}><summary>Forklaringen</summary>${s.h}</details><p class="pq">${esc(PC.q)}</p><div class="pa" hidden><p>${esc(PC.a)}</p></div>`+
-`<p class="pk"><button type="button" class="pri" data-pvis>Vis svar</button></p><p class="pk">${API?'<button type="button" data-pspor title="Send et spørsmål om dette kortet">Spør</button>':""}<button type="button" data-pstopp title="Avslutt runden. Det du har svart, er lagret.">Stopp</button><span class="mut rs"></span></p>${API?'<div class="fb" hidden></div>':""}</div>`;
+const KAPN={1:"Introduction",2:"Intelligent agents",3:"Solving problems by searching",4:"Search in complex environments",5:"Constraint satisfaction problems",6:"Adversarial search and games",7:"Logical agents",8:"First-order logic",9:"Inference in first-order logic",10:"Knowledge representation",11:"Automated planning",17:"Multiagent decision making",25:"Deep learning for NLP",28:"Philosophy, ethics and safety of AI"},
+kapN=s=>s.n.split(".")[0],sitN=(s,P)=>s.k.filter(([q])=>(P[hsh(s.n+q)]||{}).b>=3).length,bar=(a,b)=>`<span class="bar"><i style="width:${b?Math.round(100*a/b):0}%"></i></span>`,
+bmeta=s=>[s.ep,s.fo==="delvis"?"delvis forelest":"",s.ex?"eksamen "+s.ex:""].filter(Boolean).map(esc).join(" · "),
+bprio=s=>`<span class="prio p${s.p}" title="A: kan bli regneoppgave eller er spurt om før. B: kort teorispørsmål. C: lesestoff.">${s.p}</span>`;
+// #boka er oversikten (kapitler og seksjoner), #boka/3.4.5 er lesevisningen for én seksjon. En puggerunde skjuler begge (#bov) til den er ferdig.
+function boka(n){const P=svar({id:"pugg"}),s=D.boka.s.find(x=>x.n===n);PQ=[];PC=null;
+if(s){const L=D.boka.s,i=L.indexOf(s),pr=L[i-1],nx=L[i+1],c=kapN(s);
+page(`<div id="pugg"></div><div id="bov"><p class="bsti"><a href="#boka">← Bare i boka</a> <span class="mut">· Kapittel ${c} ${KAPN[c]||""}</span></p><div class="blese"><article><h1>${s.n} ${esc(s.t)}</h1><p class="mut">${bprio(s)} ${bmeta(s)}${s.merk?`<br>${esc(s.merk)}`:""}</p>${s.h}</article>
+<aside class="bkort"><h2>Kortene</h2><p class="mut">${sitN(s,P)} av ${s.k.length} sitter. Klikk et spørsmål for å se svaret.</p><p><button type="button" class="pri" data-pseksjon="${s.n}">Pugg disse ${s.k.length}</button></p><ol>${s.k.map(([q,a])=>`<li><details><summary>${esc(q)}</summary><p>${esc(a)}</p></details></li>`).join("")}</ol></aside></div>
+<p class="bnav">${pr?`<a href="#boka/${pr.n}">← ${pr.n} ${esc(pr.t)}</a>`:"<span></span>"}${nx?`<a href="#boka/${nx.n}">${nx.n} ${esc(nx.t)} →</a>`:""}</p></div>`);$("#main").className="wide";return}
+const kap={};D.boka.s.forEach(x=>(kap[kapN(x)]||(kap[kapN(x)]=[])).push(x));
+page(`<div class="bhode"><div><h1>Bare i boka</h1><p class="mut">Pensum som ikke ble forelest: ${D.boka.s.length} seksjoner og ${KORT.length} kort.</p><ol><li>Velg en seksjon og les forklaringen.</li><li>Trykk «Pugg disse» for å øve på kortene til seksjonen.</li><li>Hver dag: trykk «Pugg nå» for dagens repetisjon og nye kort.</li></ol><p class="mut bleg">${bprio({p:"A"})} kan bli regneoppgave eller er spurt før · ${bprio({p:"B"})} kort teorispørsmål · ${bprio({p:"C"})} lesestoff · 2/6 betyr at 2 av 6 kort sitter</p><details class="bintro"><summary>Mer om opplegget</summary>${D.boka.intro}</details></div><div class="pstat"></div></div><div id="pugg"></div>
+<div id="bov"><div class="kapgrid">${Object.entries(kap).map(([c,l])=>{const k=l.reduce((t,x)=>t+x.k.length,0),si=l.reduce((t,x)=>t+sitN(x,P),0);return `<button type="button" class="kapt" data-kap="${c}"><b>Kapittel ${c}</b><span>${KAPN[c]||""}</span><span class="mut">${l.length} seksjoner, ${l.filter(x=>x.p==="A").length} av dem A · ${si}/${k} kort sitter</span>${bar(si,k)}</button>`}).join("")}</div>
+${Object.entries(kap).map(([c,l])=>`<section class="bkap" id="kap${c}"><h2>Kapittel ${c} <span class="mut">${KAPN[c]||""}</span></h2><div class="bliste">${l.map(x=>`<a class="brad" href="#boka/${x.n}"><b>${x.n}</b><span class="bt">${esc(x.t)}<span class="mut">${bmeta(x)}</span></span>${bprio(x)}<span class="bkpr" title="Kort som sitter (boks 3 eller høyere)">${sitN(x,P)}/${x.k.length}</span></a>`).join("")}</div></section>`).join("")}</div>`);$("#main").className="wide";pstat_vis()}
+function pstat_vis(){const el=$(".pstat");if(!el)return;const{due,ny,sitter}=pstat(),r=due+Math.min(ny,25);
+el.innerHTML=`<div class="tall"><span><b>${due}</b>å repetere i dag</span><span><b>${ny}</b>nye kort</span><span><b>${sitter}</b>av ${KORT.length} sitter</span></div>${bar(sitter,KORT.length)}`+(PC?"":`<button type="button" class="pri stor" data-pstart${r?"":" disabled"}>${r?`Pugg nå (${r} kort)`:"Ingenting å pugge i dag"}</button>`)}
+// Nye kort viser forklaringen med en gang. Ved repetisjon kommer den først når svaret vises, så den ikke røper svaret.
+function pvis(){const el=$("#pugg");if(!el)return;PC=PQ[0]||null;PV=false;const ov=$("#bov");if(ov)ov.hidden=!!PC;
+if(!PC){el.innerHTML=`<div class="pkort pfer"><p><b>Runden er ferdig.</b> Kortene kommer igjen om 1–7 dager, de som satt dårligst først.</p><p><button type="button" class="pri" data-pstopp>Tilbake</button></p></div>`;return pstat_vis()}
+const s=PC.s,P=svar({id:"pugg"}),ny=!P[PC.id];
+el.innerHTML=`<div class="pkort" data-id="${PC.id}"><div class="pv"><p class="mut">${PQ.length} igjen i runden${ny?" · nytt kort":""}</p><p class="pq">${esc(PC.q)}</p><div class="pa" hidden><p>${esc(PC.a)}</p></div>`+
+`<p class="pk"><button type="button" class="pri" data-pvis>Vis svar</button></p><p class="pk">${API?'<button type="button" data-pspor title="Send et spørsmål om dette kortet">Spør</button>':""}<button type="button" data-pstopp title="Avslutt runden. Det du har svart, er lagret.">Stopp runden</button><span class="mut rs"></span></p>${API?'<div class="fb" hidden></div>':""}<p class="mut ptips">${ny?"Nytt kort: les forklaringen til høyre, og svar så. Neste gang er den skjult.":"Tenk ut svaret før du trykker «Vis svar»."} Tastatur: mellomrom viser svaret, 1 = nei, 2 = ja.</p></div>`+
+`<div class="ph"><p class="mut">Forklaring · <b>${s.n} ${esc(s.t)}</b> ${bprio(s)}</p><div class="phx"${ny?"":" hidden"}>${s.h}</div>${ny?"":`<p class="pk"><button type="button" data-pforkl>Vis forklaringen</button><span class="mut">Den vises også når du trykker «Vis svar».</span></p>`}</div></div>`;
 pstat_vis();visFB()}
-const psvar=()=>{if(!PC||PV)return;PV=true;const k=$("#pugg .pkort");k.querySelector(".pa").hidden=false;k.querySelector("[data-pvis]").parentNode.innerHTML='<button type="button" data-pnei>Kunne ikke (1)</button><button type="button" class="pri" data-pja>Kunne det (2)</button>'};
+const psvar=()=>{if(!PC||PV)return;PV=true;const k=$("#pugg .pkort");k.querySelector(".pa").hidden=false;k.querySelector(".phx").hidden=false;const f=k.querySelector("[data-pforkl]");if(f)f.parentNode.remove();k.querySelector("[data-pvis]").parentNode.innerHTML='<span>Hadde du svart riktig i hodet?</span> <button type="button" data-pnei title="Tast 1. Kortet kommer igjen om litt.">Nei, ta det igjen</button><button type="button" class="pri" data-pja title="Tast 2">Ja, jeg kunne det</button>'};
 const prate=ok=>{if(!PC||!PV)return;const P=svar({id:"pugg"}),x=P[PC.id]||(P[PC.id]={}),b=ok?Math.min((+x.b||0)+1,4):0;x.b=b;x.d=dag(PI[b]);save();lagre();
 PQ.shift();if(!ok)PQ.splice(Math.min(4,PQ.length),0,PC);pvis();nav()};
-document.addEventListener("click",e=>{const t=e.target.closest("[data-pstart],[data-pvis],[data-pja],[data-pnei],[data-pstopp],[data-pspor]");if(!t)return;
+document.addEventListener("click",e=>{const t=e.target.closest("[data-pstart],[data-pvis],[data-pja],[data-pnei],[data-pstopp],[data-pspor],[data-pseksjon],[data-kap],[data-pforkl]");if(!t)return;
+if(t.matches("[data-kap]"))return $("#kap"+t.dataset.kap).scrollIntoView({behavior:"smooth"});
+if(t.matches("[data-pforkl]")){t.closest(".ph").querySelector(".phx").hidden=false;return t.parentNode.remove()}
+if(t.matches("[data-pseksjon]")){PQ=KORT.filter(k=>k.s.n===t.dataset.pseksjon);pvis();return scrollTo(0,0)}
 if(t.matches("[data-pstart]")){const P=svar({id:"pugg"}),i=dag(),due=KORT.filter(k=>P[k.id]&&P[k.id].d<=i);for(let n=due.length;n>1;){const j=Math.random()*n--|0;[due[n],due[j]]=[due[j],due[n]]}
-PQ=[...due,...KORT.filter(k=>!P[k.id]).sort((a,b)=>PR[a.s.p]-PR[b.s.p]).slice(0,25)];pvis();$("#pugg").scrollIntoView({block:"start"})}
+PQ=[...due,...KORT.filter(k=>!P[k.id]).sort((a,b)=>PR[a.s.p]-PR[b.s.p]).slice(0,25)];pvis();scrollTo(0,0)}
 else if(t.matches("[data-pvis]"))psvar();else if(t.matches("[data-pja]"))prate(true);else if(t.matches("[data-pnei]"))prate(false);
-else if(t.matches("[data-pstopp]")){PQ=[];PC=null;$("#pugg").innerHTML="";pstat_vis()}
+else if(t.matches("[data-pstopp]")){PQ=[];PC=null;route()}
 else{const id=PC.id,q=prompt("Hva lurer du på om dette kortet? La feltet stå tomt for en grundigere forklaring.");if(q===null)return;const n=now();
 fetch("/api/rett",{method:"POST",body:JSON.stringify({pugg:id,sek:`${PC.s.n} ${PC.s.t}`,kort:PC.q,svar:PC.a,sporsmal:q.trim()||"Forklar dette grundigere, med et lite eksempel."})}).then(x=>{if(!x.ok)throw 0;(S.rett.pugg||(S.rett.pugg={}))[id]=n;save();visFB()}).catch(()=>{const r=$("#pugg .rs");if(r)r.textContent="Fikk ikke sendt. Kjører serveren?"})}});
 document.addEventListener("keydown",e=>{if(!PC||!$("#pugg .pkort")||e.metaKey||e.ctrlKey||e.altKey||e.target.closest("input,textarea,select,[contenteditable]"))return;
 if(e.key===" "&&!PV&&!e.target.closest("button,summary")){e.preventDefault();psvar()}else if(PV&&(e.key==="1"||e.key==="2")){e.preventDefault();prate(e.key==="2")}});
 function slides(i){i=D.slides[i]?+i:S.sl||0;const s=D.slides[i];S.sl=i;save();
-page(`<h1>Forelesningsslides</h1><div class="slv"><div class="sll">${D.slides.map((x,j)=>`<a href="#slides/${j}"${j===i?' class="cur"':""}><b>${x.n}</b><span>${esc(x.t)}</span></a>`).join("")}<p class="mut"><a href="${s.f}" target="_blank">Åpne ${s.n} i egen fane ↗</a></p></div><iframe src="${s.f}" title="${esc(s.n+" "+s.t)}"></iframe></div>`);$("#main").className="wide"}
+page(`<div class="slv${S.slstor?" stor":""}"><div class="sll"><h1>Forelesningsslides</h1><p><button type="button" class="slt" title="La PDF-en dekke hele fanen">Fyll fanen</button></p>${D.slides.map((x,j)=>`<a href="#slides/${j}"${j===i?' class="cur"':""}><b>${x.n}</b><span>${esc(x.t)}</span></a>`).join("")}<p class="mut"><a href="${s.f}" target="_blank">Åpne ${s.n} i egen fane ↗</a></p></div><iframe src="${s.f}#view=FitH" title="${esc(s.n+" "+s.t)}"></iframe><div class="slbar"><select aria-label="Velg forelesning">${D.slides.map((x,j)=>`<option value="${j}"${j===i?" selected":""}>${x.n} ${esc(x.t)}</option>`).join("")}</select><button type="button" class="slt">Vis lista igjen</button></div></div>`);$("#main").className="wide";
+// Bare klassen byttes, så PDF-en blir stående på samme side.
+document.querySelectorAll(".slt").forEach(b=>b.onclick=()=>{S.slstor=!S.slstor;save();$(".slv").classList.toggle("stor",!!S.slstor)});$(".slbar select").onchange=x=>location.hash="#slides/"+x.target.value}
 function route(){
 const h=location.hash.slice(1)||"hjem",e=D.eps.find(x=>x.id===h)||D.ov.find(x=>x.id===h),A=window.ALGO,[h0,h1]=h.split("/"),AD=$("#algodlg");
 // Algoritmene åpnet fra eksamen: en lenke til en annen algoritme vises i dialogen, og eksamen blir stående bak.
 if(AD.open){if(h0==="algoritmer"){history.replaceState(null,"","#"+AD.dataset.h);A.side(AD.lastElementChild,h1);AD.scrollTop=0;return}if(AD.classList.contains("hoyre"))AD.dataset.h=h;else AD.close()}
 if(rec)rec.stop();
 $("#leksknapp").hidden=$("#notknapp").hidden=!!e&&/eksamen$/.test(e.art); // der ligger knappen i toppfeltet, så den ikke dekker «Lever»
-if(e){S.last=e.id;save();episode(e)}else if(h0==="algoritmer"&&A&&A.side){$("#main").className="wide";A.side($("#main"),h1)}else if(h==="verksted"&&A&&A.verksted){$("#main").className="wide";A.verksted($("#main"))}else if(h==="leksikon"){page("");leks($("#main")).focus()}else if(h==="boka")boka();else if(h0==="slides")slides(h1);else if(h==="feller")page(D.feller);else if(h==="feillogg")page(D.feil);else if(h==="eksamener")page(D.exams);else home();
-nav();visDeler();scrollTo(0,0)}
+if(e){S.last=e.id;save();episode(e)}else if(h0==="algoritmer"&&A&&A.side){$("#main").className="wide";A.side($("#main"),h1)}else if(h==="verksted"&&A&&A.verksted){$("#main").className="wide";A.verksted($("#main"))}else if(h==="leksikon"){page("");$("#main").className="bred";leks($("#main")).focus()}else if(h0==="boka")boka(h1);else if(h0==="slides")slides(h1);else if(h==="feller"){page(D.feller);$("#main").className="fel"}else if(h==="feillogg")page(D.feil);else if(h==="eksamener")page(D.exams);else home();
+nav();visDeler();innerWidth<=800&&!S.lukket?$("#main").scrollIntoView():scrollTo(0,0)}
 addEventListener("hashchange",route);
 // Åpnet som fil mens serveren kjører: hopp dit og ta med svarene i #-delen, som aldri sendes over nettet.
 const [h0,ut]=location.hash.split("&svar=");

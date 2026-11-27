@@ -100,7 +100,7 @@ for p in sorted((V / "notater").glob("e[0-9][0-9]-*.md")):
     eps.append({"id": eid, "ep": ep, "title": html.escape(title), "pensum": html.escape(pensum), "video": "videoer/" + quote(video),
                 "len": length, "chap": kapitler(out / "chapters.txt"), "subs": tekst(out / "undertekster.srt"),
                 "note": md(body), "intro": md(data.get("intro", "")), "tasks": klargjor(data["tasks"], eid in PAPIR), "fasit": md(quizfasit(section(t, "Fasit")))})
-    feller.append(f'<h2><a href="#{eid}">{ep}</a> {html.escape(title)}</h2>' + md(section(t, "Eksamensfeller")))
+    feller.append(f'<section><h2><a href="#{eid}">{ep}</a> {html.escape(title)}</h2>' + md(section(t, "Eksamensfeller")) + "</section>")
 assert len(eps) == 21, len(eps)
 # «resten»: "e02/8" peker på de andre deloppgavene i samme eksamensoppgave. Siden viser feltene og fasiten deres bak en knapp.
 ved = {e["id"]: e for e in eps}
@@ -164,7 +164,7 @@ if (A / "BARE-I-BOKA.md").exists():
         tekst = "\n".join(l for l in kropp.splitlines() if not (l.startswith("- ") and " :: " in l))
         n, _, t = tittel.strip().partition(" ")
         boka["s"].append({"n": n, "t": t, "p": meta.get("prio", "C"), "ep": meta.get("ep", ""), "fo": meta.get("forelest", ""),
-                          "ex": meta.get("eksamen", ""), "merk": meta.get("merk", ""), "h": md(re.sub(r"<!--.*?-->", "", tekst, count=1)), "k": kort})
+                          "ex": meta.get("eksamen", ""), "merk": meta.get("merk", ""), "h": md(re.sub(r"<!--.*?-->", "", tekst, count=1)).replace("<p><strong>Husk:", '<p class="husk"><strong>Husk:'), "k": kort})
 # Forelesningsslidene vises i nettleserens PDF-visning på #slides. Oppgaveforelesning 1 finnes bare som pptx, så arbeid/slides/ har en PDF eksportert fra den.
 # Oppgaveforelesning 3 bruker alien-oppgaven fra eksamen 2020 (spart til fullprøven 03.12) og vises først fra 04.12, som AL3.
 slides = []
