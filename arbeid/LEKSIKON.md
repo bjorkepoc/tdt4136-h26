@@ -340,7 +340,7 @@ Korte forklaringer av begrepene i pensum. Den engelske termen står først, ford
 - **Component analysis**: clauses som ikke deler symboler, løses hver for seg. (E13)
 - **SAT (3-SAT, k-CNF)**: satisfiability-problemet: finnes en modell som gjør setningen sann? k-CNF har nøyaktig k literaler per clause, og 3-SAT er SAT for 3-CNF. NP-complete. (E13)
 - **Pure symbol**: et symbol som bare står med samme fortegn i alle gjenværende clauses. Det kan settes slik at alle de clausene blir sanne. (E13)
-- **Unit clause**: en clause der bare én literal er igjen uten verdi. Den må bli sann. (E13)
+- **Unit clause**: en clause der alle literalene unntatt én allerede er usanne. Den siste literalen må bli sann. (I DPLL også en clause med bare én literal.) (E13)
 - **WalkSAT**: lokalt søk for SAT. Velg en usann clause og flipp et symbol i den, tilfeldig eller det som gjør flest clauses sanne. (E13)
 - **Satisfiability threshold (underconstrained og overconstrained)**: forholdet mellom antall clauses og symboler der tilfeldige 3-SAT går fra nesten alltid satisfiable til nesten aldri. Rundt 4,26. Under terskelen er problemene underconstrained og lette, over den overconstrained og nesten alltid unsatisfiable. De vanskeligste ligger nær terskelen. (E13)
 - **Wumpus world**: eksempelverdenen i kapittel 7, med hull, en wumpus og gull. (E11)

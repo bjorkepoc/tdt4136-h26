@@ -92,6 +92,10 @@ details.fasit summary{cursor:pointer;font-weight:600}
 .hdrag{display:none;position:fixed;top:0;bottom:0;right:calc(var(--hb) - 5px);width:9px;padding:0;margin:0;border:0;border-radius:0;background:none;z-index:7;cursor:col-resize;touch-action:none;-webkit-user-select:none;user-select:none}:root:has(.dlg.hoyre[open]) .hdrag{display:block}
 .vdrag{position:fixed;right:0;width:var(--hb);height:9px;padding:0;margin:0;border:0;border-radius:0;background:none;z-index:7;cursor:row-resize;touch-action:none;-webkit-user-select:none;user-select:none}.vdrag::after{content:"";position:absolute;top:3px;left:50%;width:44px;height:3px;margin-left:-22px;border-radius:2px;background:var(--muted);opacity:.5}
 .lsok{position:sticky;top:0;z-index:1;width:100%;font:inherit;padding:9px 12px;margin:4px 0 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--fg)}
+.prio{display:inline-block;min-width:1.6em;text-align:center;padding:0 6px;border-radius:999px;font-size:12px;font-weight:700;vertical-align:1px}.pA{background:var(--accent);color:var(--bg)}.pB{background:var(--accent-bg);color:var(--accent)}.pC{border:1px solid var(--border);color:var(--muted)}
+.bk{border:1px solid var(--border);border-radius:10px;padding:8px 14px;margin:8px 0;background:var(--surface)}.bk>summary{cursor:pointer}.bk[open]>summary{margin-bottom:8px}.bkpr{float:right}ol.kort li{margin:6px 0}
+.pkort{border:2px solid var(--accent);border-radius:12px;padding:14px 20px;margin:12px 0 24px;background:var(--surface)}.pq{font-size:20px;font-weight:600;margin:8px 0}.pa{font-size:18px;border-top:1px solid var(--border);padding-top:8px}.pk{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.slv{display:grid;grid-template-columns:minmax(190px,240px) 1fr;gap:14px;align-items:start}.sll{position:sticky;top:8px}.sll a{display:flex;gap:8px;padding:5px 8px;border-radius:6px;color:var(--fg);text-decoration:none;font-size:13.5px;line-height:1.35}.sll a:hover{background:var(--code)}.sll a.cur{background:var(--accent-bg);color:var(--accent)}.sll b{min-width:34px}.slv iframe{width:100%;height:calc(100vh - 110px);border:1px solid var(--border);border-radius:6px;background:var(--surface)}@media(max-width:700px){.slv{grid-template-columns:1fr}}
 .lbody li{margin:3px 0}.lbody h2{margin:22px 0 6px}
 textarea.in{min-height:90px;resize:vertical;field-sizing:content}textarea.in.en{min-height:0}
 .tg[aria-pressed="true"],#deler [aria-pressed="true"]{background:var(--accent-bg);color:var(--accent);border-color:var(--accent)}
@@ -230,7 +234,7 @@ const nDone=e=>e.tasks.filter((t,j)=>filled(svar(e)[j])).length;
 
 function nav(){
 const h=location.hash.slice(1)||"hjem",c=x=>h===x?' class="cur"':"";
-$("#nav").innerHTML=`<div class="top">TDT4136 eksamensløp</div><a href="#hjem"${c("hjem")}>Plan og fremdrift</a><a href="oversiktsark.pdf" target="_blank">Oversiktsark / cheat sheet (PDF) ↗</a><a href="#algoritmer"${h.startsWith("algoritmer")&&h!=="algoritmer/pseudokode"?' class="cur"':""}>Algoritmer animert</a>${D.pseudo.side?`<a href="#algoritmer/pseudokode"${c("algoritmer/pseudokode")}>Pseudokode</a>`:""}<a href="#verksted"${c("verksted")}>Tegn og sjekk</a><a href="#leksikon"${c("leksikon")}>Leksikon</a><div class="grp">Episoder</div>`+
+$("#nav").innerHTML=`<div class="top">TDT4136 eksamensløp</div><a href="#hjem"${c("hjem")}>Plan og fremdrift</a><a href="oversiktsark.pdf" target="_blank">Oversiktsark / cheat sheet (PDF) ↗</a><a href="#algoritmer"${h.startsWith("algoritmer")&&h!=="algoritmer/pseudokode"?' class="cur"':""}>Algoritmer animert</a>${D.pseudo.side?`<a href="#algoritmer/pseudokode"${c("algoritmer/pseudokode")}>Pseudokode</a>`:""}<a href="#verksted"${c("verksted")}>Tegn og sjekk</a><a href="#leksikon"${c("leksikon")}>Leksikon</a>${D.boka.s.length?`<a href="#boka"${c("boka")}><span class="tt">Bare i boka (pugg)</span><span class="pr">${pstat().due||""}</span></a>`:""}<a href="#slides"${h.startsWith("slides")?' class="cur"':""}>Forelesningsslides</a><div class="grp">Episoder</div>`+
 D.eps.map(e=>`<a href="#${e.id}"${c(e.id)} title="${e.title}"><b>${e.ep}</b><span class="tt">${e.title}</span><span class="pr${S.seen[e.id]?" seen":""}">${S.seen[e.id]?"✓ ":""}${nDone(e)}/${e.tasks.length}</span></a>`).join("")+
 [...new Set(D.ov.map(e=>e.grp))].map(g=>`<div class="grp">${g}</div>`+D.ov.filter(e=>e.grp===g).map(e=>`<a href="#${e.id}"${c(e.id)} title="${e.title}"><b>${e.ep}</b><span class="tt">${e.title}</span><span class="pr">${nDone(e)}/${e.tasks.length}</span></a>`).join("")).join("")+
 `<div class="grp">Mer</div><a href="#feller"${c("feller")}>Alle eksamensfeller</a>${D.feil?`<a href="#feillogg"${c("feillogg")}>Feillogg</a>`:""}<a href="#eksamener"${c("eksamener")}>Eksamener</a>`}
@@ -303,6 +307,8 @@ function visFB(){const id=location.hash.slice(1);document.querySelectorAll("#tas
 const j=el.id.slice(1),f=(FB[id]||{})[j],r=(S.rett[id]||{})[j],box=el.querySelector(".fb"),st=el.querySelector(".rs");if(!box)return;fbBoks(box,st,f,r,"Tilbakemelding")});
 // «Spør» i leksikonet: svaret står i FB.leks[begrep] og vises under begrepet.
 document.querySelectorAll(".lbody li[data-b]").forEach(li=>fbBoks(li.querySelector(".fb"),li.querySelector(".rs"),(FB.leks||{})[li.dataset.b],(S.rett.leks||{})[li.dataset.b],"Svar"));
+// «Spør» på et pugge-kort: svaret står i FB.pugg[kort-id].
+const pk=document.querySelector("#pugg .pkort");if(pk&&API)fbBoks(pk.querySelector(".fb"),pk.querySelector(".rs"),(FB.pugg||{})[pk.dataset.id],(S.rett.pugg||{})[pk.dataset.id],"Svar");
 // «Stemmer dette?» i notatene: spørsmålene står i notatet (n.sp), svarene i FB.notat[id][k]. Nyeste øverst.
 const ns=document.querySelector("#notdlg .notsvar");if(ns){const id=ns.dataset.id,n=(S.svar.notater||{})[id],f=(FB.notat||{})[id]||{},
 h=Object.entries(n&&n.sp||{}).sort((a,b)=>a[1].sendt<b[1].sendt?1:-1).map(([k,q])=>`<div class="fb"><button type="button" class="fjern" data-fjern="${esc(k)}" title="Fjern spørsmålet og svaret">×</button><blockquote>${esc(q.utdrag)}</blockquote>${f[k]?`<div class="fbt">${esc(f[k].tekst)}</div>`:`<span class="mut">Venter på svar (sendt ${esc(q.sendt.slice(11,16))}).</span>`}</div>`).join("");
@@ -533,13 +539,49 @@ g.onkeydown=x=>{const d={ArrowUp:-20,ArrowDown:20}[x.key];if(d){x.preventDefault
 g.ondblclick=()=>{delete S.hv;lay();save()}});
 const mo=new MutationObserver(lay);document.querySelectorAll("body>.dlg").forEach(d=>mo.observe(d,{attributes:true,attributeFilter:["open","class"]}));mo.observe(document.body,{childList:true});lay()}
 function page(h){$("#main").className="";$("#main").innerHTML=h}
+// «Bare i boka» (#boka): pensum som ikke ble forelest, fra BARE-I-BOKA.md. Kortene repeteres etter Leitner-systemet:
+// S.svar.pugg[id] = {b: boks 0–4, d: neste dag}. «Kunne det» flytter kortet én boks opp (neste gang om 1, 2, 4 og 7 dager),
+// «Kunne ikke» setter det i boks 0, og da kommer det igjen fire kort senere i samme runde. Først kommer kortene som skal
+// repeteres i dag (stokket), så inntil 25 nye kort i rekkefølgen A, B, C. id er en hash av seksjon og spørsmål.
+const PI=[0,1,2,4,7],dag=(n=0)=>{const d=new Date();d.setDate(d.getDate()+n);return d.toLocaleDateString("sv")},
+hsh=s=>{let h=5381;for(const c of s)h=(h*33^c.codePointAt(0))>>>0;return h.toString(36)},
+KORT=D.boka.s.flatMap(s=>s.k.map(([q,a])=>({id:hsh(s.n+q),s,q,a}))),PR={A:0,B:1,C:2},
+pstat=()=>{const P=svar({id:"pugg"}),i=dag();let due=0,ny=0,sitter=0;for(const k of KORT){const x=P[k.id];if(!x)ny++;else{if(x.d<=i)due++;if(x.b>=3)sitter++}}return{due,ny,sitter}};
+let PQ=[],PC=null,PV=false;
+function boka(){const P=svar({id:"pugg"}),kap={};D.boka.s.forEach(s=>(kap[s.n.split(".")[0]]||(kap[s.n.split(".")[0]]=[])).push(s));
+const sit=s=>`${s.k.filter(([q])=>(P[hsh(s.n+q)]||{}).b>=3).length}/${s.k.length}`;
+page(`<h1>Bare i boka</h1><div class="pstat"></div><div id="pugg"></div>${D.boka.intro}`+Object.entries(kap).map(([c,l])=>`<h2>Kapittel ${c}</h2>`+l.map(s=>`<details class="bk"><summary><b>${s.n}</b> ${esc(s.t)} <span class="prio p${s.p}" title="A: kan bli regneoppgave eller er spurt om før. B: kort teorispørsmål. C: lesestoff.">${s.p}</span> <span class="mut">${[s.ep,s.fo==="delvis"?"delvis forelest":"",s.ex?"eksamen "+s.ex:"",s.merk].filter(Boolean).map(esc).join(" · ")}</span><span class="bkpr mut" title="Kort som sitter (boks 3 eller høyere)">${sit(s)}</span></summary>${s.h}<ol class="kort">${s.k.map(([q,a])=>`<li><b>${esc(q)}</b><br>${esc(a)}</li>`).join("")}</ol></details>`).join("")).join(""));
+PQ=[];PC=null;pstat_vis()}
+function pstat_vis(){const el=$(".pstat");if(!el)return;const{due,ny,sitter}=pstat();el.innerHTML=`<p>${KORT.length} kort fra ${D.boka.s.length} seksjoner: <b>${sitter}</b> sitter, <b>${due}</b> skal repeteres i dag og <b>${ny}</b> er nye.</p>`+
+(PC?"":`<p class="pk"><button type="button" class="pri" data-pstart${due+ny?"":" disabled"}>${due+ny?"Pugg nå":"Ingenting å pugge i dag"}</button><span class="mut">En runde er kortene som skal repeteres i dag og inntil 25 nye. Mellomrom viser svaret, 1 = kunne ikke, 2 = kunne det.</span></p>`)}
+function pvis(){const el=$("#pugg");if(!el)return;PC=PQ[0]||null;PV=false;
+if(!PC){el.innerHTML=`<div class="pkort"><p><b>Runden er ferdig.</b> Kortene kommer igjen om 1–7 dager, de som satt dårligst først. Trykk «Pugg nå» for 25 nye.</p></div>`;return pstat_vis()}
+const s=PC.s,P=svar({id:"pugg"}),forst=s.k.every(([q])=>!P[hsh(s.n+q)]);
+el.innerHTML=`<div class="pkort" data-id="${PC.id}"><p class="mut">${s.n} ${esc(s.t)} <span class="prio p${s.p}">${s.p}</span>${P[PC.id]?"":" · nytt kort"} · ${PQ.length} igjen i runden</p>`+
+`<details${forst?" open":""}><summary>Forklaringen</summary>${s.h}</details><p class="pq">${esc(PC.q)}</p><div class="pa" hidden><p>${esc(PC.a)}</p></div>`+
+`<p class="pk"><button type="button" class="pri" data-pvis>Vis svar</button></p><p class="pk">${API?'<button type="button" data-pspor title="Send et spørsmål om dette kortet">Spør</button>':""}<button type="button" data-pstopp title="Avslutt runden. Det du har svart, er lagret.">Stopp</button><span class="mut rs"></span></p>${API?'<div class="fb" hidden></div>':""}</div>`;
+pstat_vis();visFB()}
+const psvar=()=>{if(!PC||PV)return;PV=true;const k=$("#pugg .pkort");k.querySelector(".pa").hidden=false;k.querySelector("[data-pvis]").parentNode.innerHTML='<button type="button" data-pnei>Kunne ikke (1)</button><button type="button" class="pri" data-pja>Kunne det (2)</button>'};
+const prate=ok=>{if(!PC||!PV)return;const P=svar({id:"pugg"}),x=P[PC.id]||(P[PC.id]={}),b=ok?Math.min((+x.b||0)+1,4):0;x.b=b;x.d=dag(PI[b]);save();lagre();
+PQ.shift();if(!ok)PQ.splice(Math.min(4,PQ.length),0,PC);pvis();nav()};
+document.addEventListener("click",e=>{const t=e.target.closest("[data-pstart],[data-pvis],[data-pja],[data-pnei],[data-pstopp],[data-pspor]");if(!t)return;
+if(t.matches("[data-pstart]")){const P=svar({id:"pugg"}),i=dag(),due=KORT.filter(k=>P[k.id]&&P[k.id].d<=i);for(let n=due.length;n>1;){const j=Math.random()*n--|0;[due[n],due[j]]=[due[j],due[n]]}
+PQ=[...due,...KORT.filter(k=>!P[k.id]).sort((a,b)=>PR[a.s.p]-PR[b.s.p]).slice(0,25)];pvis();$("#pugg").scrollIntoView({block:"start"})}
+else if(t.matches("[data-pvis]"))psvar();else if(t.matches("[data-pja]"))prate(true);else if(t.matches("[data-pnei]"))prate(false);
+else if(t.matches("[data-pstopp]")){PQ=[];PC=null;$("#pugg").innerHTML="";pstat_vis()}
+else{const id=PC.id,q=prompt("Hva lurer du på om dette kortet? La feltet stå tomt for en grundigere forklaring.");if(q===null)return;const n=now();
+fetch("/api/rett",{method:"POST",body:JSON.stringify({pugg:id,sek:`${PC.s.n} ${PC.s.t}`,kort:PC.q,svar:PC.a,sporsmal:q.trim()||"Forklar dette grundigere, med et lite eksempel."})}).then(x=>{if(!x.ok)throw 0;(S.rett.pugg||(S.rett.pugg={}))[id]=n;save();visFB()}).catch(()=>{const r=$("#pugg .rs");if(r)r.textContent="Fikk ikke sendt. Kjører serveren?"})}});
+document.addEventListener("keydown",e=>{if(!PC||!$("#pugg .pkort")||e.metaKey||e.ctrlKey||e.altKey||e.target.closest("input,textarea,select,[contenteditable]"))return;
+if(e.key===" "&&!PV&&!e.target.closest("button,summary")){e.preventDefault();psvar()}else if(PV&&(e.key==="1"||e.key==="2")){e.preventDefault();prate(e.key==="2")}});
+function slides(i){i=D.slides[i]?+i:S.sl||0;const s=D.slides[i];S.sl=i;save();
+page(`<h1>Forelesningsslides</h1><div class="slv"><div class="sll">${D.slides.map((x,j)=>`<a href="#slides/${j}"${j===i?' class="cur"':""}><b>${x.n}</b><span>${esc(x.t)}</span></a>`).join("")}<p class="mut"><a href="${s.f}" target="_blank">Åpne ${s.n} i egen fane ↗</a></p></div><iframe src="${s.f}" title="${esc(s.n+" "+s.t)}"></iframe></div>`);$("#main").className="wide"}
 function route(){
 const h=location.hash.slice(1)||"hjem",e=D.eps.find(x=>x.id===h)||D.ov.find(x=>x.id===h),A=window.ALGO,[h0,h1]=h.split("/"),AD=$("#algodlg");
 // Algoritmene åpnet fra eksamen: en lenke til en annen algoritme vises i dialogen, og eksamen blir stående bak.
 if(AD.open){if(h0==="algoritmer"){history.replaceState(null,"","#"+AD.dataset.h);A.side(AD.lastElementChild,h1);AD.scrollTop=0;return}if(AD.classList.contains("hoyre"))AD.dataset.h=h;else AD.close()}
 if(rec)rec.stop();
 $("#leksknapp").hidden=$("#notknapp").hidden=!!e&&/eksamen$/.test(e.art); // der ligger knappen i toppfeltet, så den ikke dekker «Lever»
-if(e){S.last=e.id;save();episode(e)}else if(h0==="algoritmer"&&A&&A.side){$("#main").className="wide";A.side($("#main"),h1)}else if(h==="verksted"&&A&&A.verksted){$("#main").className="wide";A.verksted($("#main"))}else if(h==="leksikon"){page("");leks($("#main")).focus()}else if(h==="feller")page(D.feller);else if(h==="feillogg")page(D.feil);else if(h==="eksamener")page(D.exams);else home();
+if(e){S.last=e.id;save();episode(e)}else if(h0==="algoritmer"&&A&&A.side){$("#main").className="wide";A.side($("#main"),h1)}else if(h==="verksted"&&A&&A.verksted){$("#main").className="wide";A.verksted($("#main"))}else if(h==="leksikon"){page("");leks($("#main")).focus()}else if(h==="boka")boka();else if(h0==="slides")slides(h1);else if(h==="feller")page(D.feller);else if(h==="feillogg")page(D.feil);else if(h==="eksamener")page(D.exams);else home();
 nav();visDeler();scrollTo(0,0)}
 addEventListener("hashchange",route);
 // Åpnet som fil mens serveren kjører: hopp dit og ta med svarene i #-delen, som aldri sendes over nettet.

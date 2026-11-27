@@ -150,7 +150,40 @@ if (A / "PSEUDOKODE.md").exists():
         m = re.search(r"<!-- algo: (.*?) -->", blokk)
         for i in (m[1].replace(",", " ").split() if m else []):
             pseudo["per"][i] = pseudo["per"].get(i, "") + md("### " + blokk.split("\n## ")[0])
-D = {"pseudo": pseudo, "eps": eps, "ov": ovinger, "leks": {"intro": md(re.sub(r"^# .*\n", "", intro)), "body": md("## " + rest)}, "plan": valgfri(V / "SEEPLAN.md"), "feil": valgfri(A / "FEILLOGG.md"),
+# «Bare i boka»: pensum som ikke ble forelest. Hver «## 3.4.5 Tittel»-blokk har <!-- prio: A | ep: E02 | … -->, en forklaring
+# og pugge-kort som «- spørsmål :: svar». Kortene puggs med spaced repetition på siden (#boka).
+boka = {"intro": "", "s": []}
+if (A / "BARE-I-BOKA.md").exists():
+    intro_b, *blokker = re.split(r"(?m)^## ", (A / "BARE-I-BOKA.md").read_text())
+    boka["intro"] = md(re.sub(r"^# .*\n", "", intro_b))
+    for b in blokker:
+        tittel, _, kropp = b.partition("\n")
+        meta = dict(x.split(":", 1) for x in re.search(r"<!--(.*?)-->", kropp)[1].split("|") if ":" in x)
+        meta = {k.strip(): v.strip() for k, v in meta.items()}
+        kort = [[x.strip() for x in l[2:].split(" :: ", 1)] for l in kropp.splitlines() if l.startswith("- ") and " :: " in l]
+        tekst = "\n".join(l for l in kropp.splitlines() if not (l.startswith("- ") and " :: " in l))
+        n, _, t = tittel.strip().partition(" ")
+        boka["s"].append({"n": n, "t": t, "p": meta.get("prio", "C"), "ep": meta.get("ep", ""), "fo": meta.get("forelest", ""),
+                          "ex": meta.get("eksamen", ""), "merk": meta.get("merk", ""), "h": md(re.sub(r"<!--.*?-->", "", tekst, count=1)), "k": kort})
+# Forelesningsslidene vises i nettleserens PDF-visning på #slides. Oppgaveforelesning 1 finnes bare som pptx, så arbeid/slides/ har en PDF eksportert fra den.
+# Oppgaveforelesning 3 bruker alien-oppgaven fra eksamen 2020 (spart til fullprøven 03.12) og vises først fra 04.12, som AL3.
+slides = []
+for f, n, t in [("Lecture1-Fall2026_Part1_Pinar.pdf", "L1a", "Introduksjon: hva er AI"), ("Lecture1-Fall2026_Part2_Espen.pdf", "L1b", "Praktisk info og agenter"),
+                ("Lecture1-Fall2026_Part3_Massimiliano.pdf", "L1c", "Intelligent agents"), ("Lecture2-Fall2026.pdf", "L2", "Solving problems by searching"),
+                ("Lecture3-Fall2026.pdf", "L3", "A* og search in complex environments"), ("Lecture4-CSP-Fall2026.pdf", "L4", "Constraint satisfaction problems"),
+                ("Lecture5-PL-Fall2026.pdf", "L5", "Propositional logic"), ("Lecture6-FOL-Fall2026.pdf", "L6", "First-order logic"),
+                ("Lecture7-FOL-Inference-Fall2026.pdf", "L7", "Inference in first-order logic"), ("Lecture8-AS-Fall2026.pdf", "L8", "Adversarial search and games"),
+                ("Lecture9-NLP-Fall2026.pdf", "L9", "Natural language processing"), ("Lecture10-GT-Fall2026.pdf", "L10", "Game theory"),
+                ("Lecture11-PLANNING-Fall2026.pdf", "L11", "Automated planning"), ("Lecture12-KR-ETHICS-Fall2026.pdf", "L12", "Knowledge representation og etikk"),
+                ("Lecture13-Summary-CSP-AG-GT-Logic-Fall2026.pdf", "L13", "Oppsummering: CSP, spill, spillteori, logikk"),
+                ("AssignmentLecture1-Fall2026.pdf", "AL1", "Oppgaveforelesning: search"), ("AssignmentLecture2-Fall2026.pdf", "AL2", "Oppgaveforelesning: CSP"),
+                ("AssignmentLecture3-Fall2026.pdf", "AL3", "Oppgaveforelesning: adversarial search")]:
+    if n == "AL3" and date.today().isoformat() < "2026-12-04":
+        continue
+    sti = A / "slides" / f if n == "AL1" else EX.parent / f
+    assert sti.exists(), sti
+    slides.append({"n": n, "t": t, "f": ("slides/" if n == "AL1" else "../materiale/Files/") + quote(f)})
+D = {"boka": boka, "slides": slides, "pseudo": pseudo, "eps": eps, "ov": ovinger, "leks": {"intro": md(re.sub(r"^# .*\n", "", intro)), "body": md("## " + rest)}, "plan": valgfri(V / "SEEPLAN.md"), "feil": valgfri(A / "FEILLOGG.md"),
      "feller": "<h1>Alle eksamensfeller</h1><p>Sjekklista for den siste uka, samlet fra alle episodene.</p>" + "".join(feller), "exams": eksamener}
 page = (A / "nettside-mal.html").read_text().replace("__DATA__", json.dumps(D, ensure_ascii=False).replace("</", "<\\/"))
 # Svarene lagres under oppgavens nummer i settet. Skyves en oppgave inn foran en besvart oppgave, havner svaret under feil oppgave,
